@@ -1,23 +1,17 @@
+export interface ParseHelpReturn {
+	errors: string[];
+	help: Help;
+}
+
 export interface Help {
 	level: number;
 	keywords: string[];
 	body: string;
 }
 
-export interface HelpsSection {
-	helps: Help[];
-}
-
-export interface ParseHelpsReturn {
-	errors: string[];
-	section: HelpsSection;
-}
-
-export default function parseHelps(section: string): ParseHelpsReturn {
-	let errors: string[] = [];
+export default function parseHelps(section: string): ParseHelpReturn[] {
 	let parts = section.split('~');
-	let helps: Help[] = [];
-	let sectionClosed = false;
+	let helps: ParseHelpReturn[] = [];
 	let helpHeader = "";
 
 	while (parts.length > 0) {
@@ -26,33 +20,42 @@ export default function parseHelps(section: string): ParseHelpsReturn {
 		part = part.trim();
 		if (part.length === 0) continue;
 		if (part == "0$") {
-			sectionClosed = true;
 			continue;
 		}
 
-		if (part.match(/^-?[\d\.]+/) && part.indexOf("\n") === -1) {
+		if (!helpHeader && part.indexOf("\n") === -1) {
 			helpHeader = part;
 		} else {
-			let { errors: helpErrors, help } = makeHelp(helpHeader, part);
-			helps.push(help);
+			helps.push(makeHelp(helpHeader, part));
 			helpHeader = "";
 		}
 	}
 
-	return { errors, section: { helps } }
+	if (helpHeader) {
+		let { errors: errs, help } = makeHelp(helpHeader, "");
+		errs.push("Missing help body");
+		helps.push({ errors: errs, help });
+	}
+
+	return helps;
 }
 
 function makeHelp(header: string, body: string): { errors: string[], help: Help} {
 	let errors: string[] = [];
 	let level = 1;
 	let keywords: string[] = [];
-	let match = header.match(/^(-?[\d\.]+)\s+(.*)/);
+	let match = header.match(/^(\S+)\s+(.*)/);
 	if (match) {
 		let maybeLevel = parseInt(match[1]);
 		if (Number.isNaN(maybeLevel)) {
 			errors.push(`Help level ${match[1]} is not a number`);
+		} else {
+			level = maybeLevel;
 		}
 		let { errors: errs, keywords: parsedKeywords } = parseKeywords(match[2]);
+		for (let err of errs) {
+			errors.push(err);
+		}
 		keywords = parsedKeywords;
 	}
 
