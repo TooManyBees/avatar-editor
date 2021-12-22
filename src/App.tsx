@@ -19,7 +19,6 @@ function ReadAreaForm({onRead}: {onRead: Dispatch<SetStateAction<Area | null>>})
 	return (
 		<form>
 			<input type="file" onChange={onChange} />
-			<button>submit</button>
 		</form>
 	);
 }

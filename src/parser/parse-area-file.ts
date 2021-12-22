@@ -9,7 +9,7 @@ import parseShops from "./shops";
 import parseSpecials from "./specials";
 
 function splitSections(file: string): string[] {
-	let sections = file.split(/^(?=#(?:[a-zA-Z\$]+))/);
+	let sections = file.split(/^(?=#(?:[a-zA-Z\$]+))/m);
 	return sections.filter(s => s.trim().length > 0);
 }
 
@@ -17,7 +17,7 @@ type Dict = { [key: string]: string };
 
 function labelSections(unlabeledSections: string[]): Dict {
 	let sections = unlabeledSections.reduce((acc: Dict, section) => {
-		let match = section.match(/^#(\w+)\b/)
+		let match = section.match(/^#(?!0)(\w+)\b/)
 		if (match) {
 			let name = match[1];
 			if (name) {
