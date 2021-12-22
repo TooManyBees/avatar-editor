@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import './App.css';
+import parseAreaFile, { Area } from "./parser/parse-area-file";
+
+function ReadAreaForm({onRead}: {onRead: Dispatch<SetStateAction<Area | null>>}) {
+	function onChange(event: ChangeEvent<HTMLInputElement>) {
+		let input = event.currentTarget;
+		if (input.files && input.files.length > 0) {
+			let fileReader = new FileReader();
+			fileReader.onload = (event: ProgressEvent<FileReader>) => {
+				if (event.target && typeof event.target.result === "string") {
+					let parsed = parseAreaFile(event.target.result);
+					onRead(parsed);
+				}
+			};
+			fileReader.readAsText(input.files[0]);
+		}
+	}
+	return (
+		<form>
+			<input type="file" onChange={onChange} />
+			<button>submit</button>
+		</form>
+	);
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [areaFile, setAreaFile] = React.useState<Area | null>(null);
+	return (
+		<div className="App">
+			{ areaFile ?
+				<pre>{JSON.stringify(areaFile, null, "\t")}</pre> :
+				<ReadAreaForm onRead={setAreaFile} />
+			}
+		</div>
+	);
 }
 
 export default App;
