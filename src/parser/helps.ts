@@ -60,13 +60,13 @@ function makeHelp(header: string, body: string): { errors: string[], help: Help}
 }
 
 enum KeywordState {
+	BetweenWords,
 	Unquoted,
 	SingleQuoted,
 	DoubleQuoted,
-	BetweenWords,
 }
 
-function parseKeywords(line: string): { errors: string[], keywords: string[] } {
+export function parseKeywords(line: string): { errors: string[], keywords: string[] } {
 	let errors: string[] = [];
 	let state = KeywordState.BetweenWords;
 	let startOfWord = 0;
@@ -93,7 +93,7 @@ function parseKeywords(line: string): { errors: string[], keywords: string[] } {
 
 		if (state === KeywordState.Unquoted) {
 			if (c.match(/\s/)) {
-				keywords.push(line.substring(startOfWord, i + 1));
+				keywords.push(line.substring(startOfWord, i));
 				state = KeywordState.BetweenWords;
 			}
 			continue;
@@ -113,6 +113,15 @@ function parseKeywords(line: string): { errors: string[], keywords: string[] } {
 				keywords.push(line.substring(startOfWord, i));
 			}
 			continue;
+		}
+	}
+
+	if (state != KeywordState.BetweenWords) {
+		keywords.push(line.substring(startOfWord));
+		if (state === KeywordState.SingleQuoted) {
+			errors.push(`Quoted keyword without closing quote:\n'${line.substring(startOfWord)}`);
+		} else if (state === KeywordState.DoubleQuoted) {
+			errors.push(`Quoted keyword without closing quote:\n"${line.substring(startOfWord)}`);
 		}
 	}
 
