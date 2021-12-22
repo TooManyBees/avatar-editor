@@ -1,4 +1,4 @@
-import { parseKeywords } from "./helpers";
+import { parseKeywords, parseBits } from "./helpers";
 
 describe("parseKeywords", () => {
 	test("parses keywords", () => {
@@ -51,5 +51,37 @@ describe("parseKeywords", () => {
 		let { errors, keywords } = parseKeywords('a "long keyword');
 		expect(errors).toContain("Quoted keyword without closing quote:\n\"long keyword");
 		expect(keywords).toEqual(["a", "long keyword"]);
+	});
+});
+
+describe("parseBits", () => {
+	test("parses bits separated by pipes", () => {
+		let { error, bits } = parseBits('1|2|128');
+		expect(error).toBe(false);
+		expect(bits).toEqual([1, 2, 128]);
+	});
+
+	test("parses bits from one big number", () => {
+		let { error, bits } = parseBits('2|4112');
+		expect(error).toBe(false);
+		expect(bits).toEqual([2, 16, 4096]);
+	});
+
+	test("does not duplicate bits", () => {
+		let { error, bits } = parseBits('2|4|2|12');
+		expect(error).toBe(false);
+		expect(bits).toEqual([2, 4, 8]);
+	});
+
+	test("raises error on invalid bits", () => {
+		let { error, bits } = parseBits('2|abcd');
+		expect(error).toBe(true);
+		expect(bits).toEqual([2]);
+	});
+
+	test("ignores zero", () => {
+		let { error, bits } = parseBits('0|2|4');
+		expect(error).toBe(false);
+		expect(bits).toEqual([2, 4]);
 	});
 });

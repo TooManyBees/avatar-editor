@@ -66,3 +66,39 @@ export function parseKeywords(line: string): { errors: string[], keywords: strin
 
 	return { errors, keywords };
 }
+
+export function parseBits(s: string): { error: boolean, bits: number[] } {
+	let error = false;
+	if (!s) return { error, bits: [] };
+	let bitStrings = s.split("|");
+
+	let bitSet: Set<number> = new Set();
+	for (let b of bitStrings) {
+		if (b.length === 0) continue;
+		let number = parseInt(b);
+		if (Number.isNaN(number)) {
+			error = true;
+			continue;
+		}
+		if (number === 0) {
+			continue;
+		}
+		let bits = factor(number);
+		for (let bit of bits) {
+			bitSet.add(bit);
+		}
+	}
+
+	let bits = Array.from(bitSet).sort((a, b) => a - b);
+	return { error, bits };
+}
+
+function factor(n: number): number[] {
+	let factors: number[] = [];
+	for (let power = 0; power < 32; power++) {
+		if ((n & 1<<power) > 0) {
+			factors.push(1<<power);
+		}
+	}
+	return factors;
+}
