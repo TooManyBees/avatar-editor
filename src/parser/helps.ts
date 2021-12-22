@@ -1,24 +1,22 @@
-import { parseKeywords } from "./helpers";
-
-export interface ParseHelpReturn {
-	errors: string[];
-	help: Help;
-}
+import { parseKeywords, parseNumber } from "./helpers";
 
 export interface Help {
 	level: number;
 	keywords: string[];
 	body: string;
+	_error: {
+		level?: boolean;
+		keywords?: boolean;
+		body?: boolean;
+	};
 }
 
-export default function parseHelps(section: string): ParseHelpReturn[] {
+export default function parseHelps(section: string): Help[] {
 	let parts = section.split('~');
-	let helps: ParseHelpReturn[] = [];
+	let helps: Help[] = [];
 	let helpHeader = "";
 
-	while (parts.length > 0) {
-		let part = parts.shift();
-		if (!part) continue;
+	for (let part of parts) {
 		part = part.trim();
 		if (part.length === 0) continue;
 		if (part == "0$") {
@@ -34,32 +32,32 @@ export default function parseHelps(section: string): ParseHelpReturn[] {
 	}
 
 	if (helpHeader) {
-		let { errors: errs, help } = makeHelp(helpHeader, "");
-		errs.push("Missing help body");
-		helps.push({ errors: errs, help });
+		helps.push(makeHelp(helpHeader, null));
 	}
 
 	return helps;
 }
 
-function makeHelp(header: string, body: string): { errors: string[], help: Help} {
-	let errors: string[] = [];
-	let level = 1;
-	let keywords: string[] = [];
+function makeHelp(header: string, body: string | null): Help {
+	let help: Help = {
+		level: 1,
+		keywords: [],
+		body: "",
+		_error: {},
+	};
 	let match = header.match(/^(\S+)\s+(.*)/);
 	if (match) {
-		let maybeLevel = parseInt(match[1]);
-		if (Number.isNaN(maybeLevel)) {
-			errors.push(`Help level ${match[1]} is not a number`);
-		} else {
-			level = maybeLevel;
-		}
-		let { errors: errs, keywords: parsedKeywords } = parseKeywords(match[2]);
-		for (let err of errs) {
-			errors.push(err);
-		}
-		keywords = parsedKeywords;
+		let level = parseNumber(match[1]);
+		if (level != null) help.level = level;
+		else help._error.level = true;
+		
+		let { errors, keywords } = parseKeywords(match[2]);
+		if (errors.length > 0) help._error.keywords = true;
+		help.keywords = keywords;
 	}
 
-	return { errors, help: { level, keywords, body } };
+	if (body) help.body = body;
+	else help._error.body = true;
+
+	return help;
 }

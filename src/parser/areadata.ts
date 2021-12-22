@@ -1,6 +1,21 @@
+import { parseBits, parseNumber } from "./helpers";
+
 export interface PlaneData {
 	plane: number;
 	zone?: number;
+	_error: {
+		all?: boolean;
+		plane?: boolean,
+		zone?: boolean,
+	};
+}
+
+export interface FlagsData {
+	flags: number[],
+	_error: {
+		all?: boolean;
+		flags?: boolean;
+	};
 }
 
 export interface OutlawData {
@@ -9,6 +24,14 @@ export interface OutlawData {
 	deathVnum: number;
 	execVnum: number;
 	justice: number;
+	_error: {
+		all?: boolean;
+		dumpVnum?: boolean;
+		jailVnum?: boolean;
+		deathVnum?: boolean;
+		execVnum?: boolean;
+		justice?: boolean;
+	};
 }
 
 export interface KspawnData {
@@ -17,6 +40,14 @@ export interface KspawnData {
 	mobVnum: number;
 	roomVnum: number;
 	text: string;
+	_error: {
+		all?: boolean;
+		condition?: boolean;
+		command?: boolean;
+		mobVnum?: boolean;
+		roomVnum?: boolean;
+		text?: boolean;
+	};
 }
 
 export interface ModifierData {
@@ -28,6 +59,16 @@ export interface ModifierData {
 	respawnRoom: number;
 	tbd1: number;
 	tbd2: number;
+	_error: {
+		xpGain?: boolean;
+		hpRegen?: boolean;
+		manaRegen?: boolean;
+		moveRegen?: boolean;
+		statloss?: boolean;
+		respawnRoom?: boolean;
+		tbd1?: boolean;
+		tbd2?: boolean;
+	};
 }
 
 export interface GroupSizeData {
@@ -39,140 +80,125 @@ export interface GroupSizeData {
 	pct3: number;
 	div: number;
 	tbd: number;
+	_error: {
+		pct0?: boolean;
+		num1?: boolean;
+		pct1?: boolean;
+		num2?: boolean;
+		pct2?: boolean;
+		pct3?: boolean;
+		div?: boolean;
+		tbd?: boolean;
+	};
 }
 
 export interface VnumRangeData {
 	min: number;
 	max: number;
+	_error: {
+		min?: boolean;
+		max?: boolean;
+	};
 }
 
 export interface ScalingData {
 	maxGroupPower: number;
 	maxGroupToughness: number;
+	_error: {
+		maxGroupPower?: boolean;
+		maxGroupToughness?: boolean;
+	};
 }
 
 export interface AreadataSection {
-	plane?: { errors: string[], data: PlaneData } ;
-	flags?: { errors: string[], data: number[] } ;
-	outlaw?: { errors: string[], data: OutlawData } ;
-	kspawn?: { errors: string[], data: KspawnData } ;
-	modifier?: { errors: string[], data: ModifierData } ;
-	groupSize?: { errors: string[], data: GroupSizeData } ;
-	vnumRange?: { errors: string[], data: VnumRangeData } ;
-	scaling?: { errors: string[], data: ScalingData } ;
+	plane?: PlaneData;
+	flags?: FlagsData;
+	outlaw?: OutlawData;
+	kspawn?: KspawnData;
+	modifier?: ModifierData;
+	groupSize?: GroupSizeData;
+	vnumRange?: VnumRangeData;
+	scaling?: ScalingData;
 	// TODO: titan N and X lines
 }
 
-export interface ParseAreadataReturn {
-	section: AreadataSection,
-	errors: string[],
-}
+export const BLANK_AREADATA_SECTION = {};
 
-export default function parseAreadata(section: string): ParseAreadataReturn {
-	let errors: string[] = [];
+export default function parseAreadata(section: string): AreadataSection {
 	let lines = section.split(/\r?\n/);
 	let areaData: AreadataSection = {};
-	let sectionClosed = false;
 
 	for (let line of lines) {
 		line = line.trim();
-		if (sectionClosed) {
-			errors.push(`Dropped invalid line after #AREADATA ended:\n${line}`);
-			continue;
-		}
 		if (line.length === 0) continue;
 		let words = line.split(/\s+/);
 		switch (words[0].toUpperCase()) {
 			case "P": {
-				let { errors: lineErrors, data } = parsePlane(words.slice(1));
-				if (data) areaData.plane = { errors: lineErrors, data };
-				else errors = errors.concat(lineErrors);
+				areaData.plane = parsePlane(words.slice(1));
 				break;
 			}
 			case "F": {
-				let { errors: lineErrors, data } = parseFlags(words.slice(1));
-				if (data) areaData.flags = { errors: lineErrors, data };
-				else errors = errors.concat(lineErrors);
+				areaData.flags = parseFlags(words.slice(1));
 				break;
 			}
 			case "O": {
-				let { errors: lineErrors, data } = parseOutlaw(words.slice(1));
-				if (data) areaData.outlaw = { errors: lineErrors, data };
-				else errors = errors.concat(lineErrors);
+				areaData.outlaw = parseOutlaw(words.slice(1));
 				break;
 			}
 			case "K": {
-				let { errors: lineErrors, data } = parseKspawn(line);
-				if (data) areaData.kspawn = { errors: lineErrors, data };
-				else errors = errors.concat(lineErrors);
+				areaData.kspawn = parseKspawn(line);
 				break;
 			}
 			case "M": {
-				let { errors: lineErrors, data } = parseModifier(words.slice(1));
-				if (data) areaData.modifier = { errors: lineErrors, data };
-				else errors = errors.concat(lineErrors);
+				areaData.modifier = parseModifier(words.slice(1));
 				break;
 			}
 			case "G": {
-				let { errors: lineErrors, data } = parseGroupSize(words.slice(1));
-				if (data) areaData.groupSize = { errors: lineErrors, data };
-				else errors = errors.concat(lineErrors);
+				areaData.groupSize = parseGroupSize(words.slice(1));
 				break;
 			}
 			case "V": {
-				let { errors: lineErrors, data } = parseVnumRange(words.slice(1));
-				if (data) areaData.vnumRange = { errors: lineErrors, data };
-				else errors = errors.concat(lineErrors);
+				areaData.vnumRange = parseVnumRange(words.slice(1));
 				break;
 			}
 			case "B": {
-				let { errors: lineErrors, data } = parseScaling(words.slice(1));
-				if (data) areaData.scaling = { errors: lineErrors, data };
-				else errors = errors.concat(lineErrors);
+				areaData.scaling = parseScaling(words.slice(1));
 				break;
 			}
 			case "S": {
-				sectionClosed = true;
 				break;
 			}
 			// TODO: titan N and X lines
 			default: {
-				errors.push(`Unknown AREADATA line:\n${line}`);
+				// TODO: error here
 			}
 		}
 	}
 
-	return { errors, section: areaData };
+	return areaData;
 }
 
-function parsePlane(words: string[]): { errors: string[], data: PlaneData | null } {
-	let errors: string[] = [];
+export function parsePlane(words: string[]): PlaneData {
+	let plane: PlaneData = { plane: 1, _error: {} };
+
 	let [planeString, zoneString, ...rest] = words;
-	if (!planeString) return { errors, data: null };
 
-	let plane: PlaneData = { plane: 1 };
+	if (!planeString) {
+		plane._error.all = true;
+		return plane;
+	};
 
-	let planeNum = parseInt(planeString);
-	if (Number.isNaN(planeNum)) {
-		errors.push(`AREADATA plane ${planeString} is not a number`);
-	} else {
-		plane.plane = planeNum;
-	}
+	let planeNum = parseNumber(planeString);
+	if (planeNum != null && planeNum !== 0) plane.plane = planeNum;
+	else plane._error.plane = true;
 
 	if (zoneString) {
-		let zoneNum = parseInt(zoneString);
-		if (Number.isNaN(zoneNum)) {
-			errors.push(`AREADATA zone ${zoneString} is not a number`);
-		} else {
-			plane.zone = zoneNum;
-		}
+		let zoneNum = parseNumber(zoneString);
+		if (zoneNum != null) plane.zone = zoneNum;
+		else plane._error.zone = true;
 	}
 
-	if (rest.length > 0) {
-		errors.push(`Dropped invalid text at the end of AREADATA P line:\n${rest.join(" ")}`);
-	}
-
-	return { errors, data: plane };
+	return plane;
 }
 
 function factor(n: number): number[] {
@@ -185,86 +211,60 @@ function factor(n: number): number[] {
 	return factors;
 }
 
-function parseFlags(words: string[]): { errors: string[], data: number[] | null } {
-	let errors: string[] = [];
+export function parseFlags(words: string[]): FlagsData {
+	let flags: FlagsData = {
+		flags: [],
+		_error: {},
+	};
+
 	let [flagsWord, ...rest] = words;
-	if (!flagsWord) return { errors, data: null };
-	let flagStrings = flagsWord.split("|");
-
-	let flagSet: Set<number> = new Set();
-	for (let s of flagStrings) {
-		if (s.length === 0) continue;
-		let number = parseInt(s);
-		if (Number.isNaN(number)) {
-			errors.push(`AREADATA flag ${s} is not a number`);
-			continue;
-		}
-		let bits = factor(number);
-		for (let bit of bits) {
-			flagSet.add(bit);
-		}
+	if (!flagsWord) {
+		flags._error.all = true;
+		return flags;
 	}
 
-	if (rest.length > 0) {
-		errors.push(`Dropped invalid text at the end of AREADATA F line:\n${rest.join(" ")}`);
-	}
+	let { error, bits } = parseBits(flagsWord);
+	if (error) flags._error.flags = true;
+	flags.flags = bits;
 
-	let flags = Array.from(flagSet).sort((a, b) => a - b);
-
-	return { errors, data: flags };
+	return flags;
 }
 
-function parseOutlaw(words: string[]): { errors: string[], data: OutlawData | null } {
-	let errors: string[] = [];
+export function parseOutlaw(words: string[]): OutlawData {
 	let [dumpVnumString, jailVnumString, deathVnumString, execVnumString, justiceString, ...rest] = words;
-	let outlaw = {
+	let outlaw: OutlawData = {
 		dumpVnum: -1,
 		jailVnum: -1,
 		deathVnum: -1,
 		execVnum: -1,
 		justice: -1,
+		_error: {},
 	};
 
-	let dumpVnum = parseInt(dumpVnumString);
-	if (Number.isNaN(dumpVnum)) {
-		errors.push(`AREADATA outlaw dump vnum ${dumpVnumString} is not a number`);
-	} else {
-		outlaw.dumpVnum = dumpVnum;
-	}
-	let jailVnum = parseInt(jailVnumString);
-	if (Number.isNaN(jailVnum)) {
-		errors.push(`AREADATA outlaw jail vnum ${jailVnumString} is not a number`);
-	} else {
-		outlaw.jailVnum = jailVnum;
-	}
-	let deathVnum = parseInt(deathVnumString);
-	if (Number.isNaN(deathVnum)) {
-		errors.push(`AREADATA outlaw death vnum ${deathVnumString} is not a number`);
-	} else {
-		outlaw.deathVnum = deathVnum;
-	}
-	let execVnum = parseInt(execVnumString);
-	if (Number.isNaN(execVnum)) {
-		errors.push(`AREADATA outlaw exec vnum ${execVnumString} is not a number`);
-	} else {
-		outlaw.execVnum = execVnum;
-	}
-	let justice = parseInt(justiceString);
-	if (Number.isNaN(justice)) {
-		errors.push(`AREADATA outlaw justice ${justiceString} is not a number`);
-	} else {
-		outlaw.justice = justice;
-	}
+	let dumpVnum = parseNumber(dumpVnumString);
+	if (dumpVnum != null) outlaw.dumpVnum = dumpVnum;
+	else outlaw._error.dumpVnum = true;
 
-	if (rest.length > 0) {
-		errors.push(`Dropped invalid text at the end of AREADATA O line:\n${rest.join(" ")}`);
-	}
+	let jailVnum = parseNumber(jailVnumString);
+	if (jailVnum != null) outlaw.jailVnum = jailVnum;
+	else outlaw._error.jailVnum = true;
 
-	return { errors, data: outlaw };
+	let deathVnum = parseNumber(deathVnumString);
+	if (deathVnum != null) outlaw.deathVnum = deathVnum;
+	else outlaw._error.deathVnum = true;
+
+	let execVnum = parseNumber(execVnumString);
+	if (execVnum != null) outlaw.execVnum = execVnum;
+	else outlaw._error.execVnum = true;
+
+	let justice = parseNumber(justiceString);
+	if (justice != null) outlaw.justice = justice;
+	else outlaw._error.justice = true;
+
+	return outlaw;
 }
 
-function parseKspawn(rawLine: string): { errors: string[], data: KspawnData | null } {
-	let errors: string[] = [];
+export function parseKspawn(rawLine: string): KspawnData {
 	let tilde = rawLine.indexOf("~");
 	let line = rawLine;
 	let rest = "";
@@ -273,59 +273,40 @@ function parseKspawn(rawLine: string): { errors: string[], data: KspawnData | nu
 		rest = rawLine.substring(tilde + 1);
 	}
 
-	let match = line.match(/^K\s+([\w-]+)\s+([\w-]+)\s+([\w-]+)\s+([\w-]+)\s*(.*)/);
-	if (!match) {
-		errors.push(`AREADATA kspawn line is malformed:\n${rawLine}`);
-		return { errors, data: null };
-	}
 	let kspawn: KspawnData = {
 		condition: 1,
 		command: 1,
 		mobVnum: -1,
 		roomVnum: -1,
 		text: "",
+		_error: {},
 	};
+
+	let match = line.match(/^K\s+([\w-]+)\s+([\w-]+)\s+([\w-]+)\s+([\w-]+)\s*(.*)/);
+	if (!match) {
+		kspawn._error.all = true;
+		return kspawn;
+	}
+
 	let [, conditionString, commandString, mobVnumString, roomVnumString, text] = match;
-	let condition = parseInt(conditionString);
-	if (Number.isNaN(condition)) {
-		errors.push(`AREADATA kspawn condition ${conditionString} is not a number`);
-	} else {
-		kspawn.condition = condition;
-	}
-	let command = parseInt(commandString);
-	if (Number.isNaN(command)) {
-		errors.push(`AREADATA kspawn command ${commandString} is not a number`);
-	} else {
-		kspawn.command = command;
-	}
-	let mobVnum = parseInt(mobVnumString);
-	if (Number.isNaN(mobVnum)) {
-		errors.push(`AREADATA kspawn mob vnum ${mobVnumString} is not a number`);
-	} else {
-		kspawn.mobVnum = mobVnum;
-	}
-	let roomVnum = parseInt(roomVnumString);
-	if (Number.isNaN(roomVnum)) {
-		errors.push(`AREADATA kspawn room vnum ${roomVnumString} is not a number`);
-	} else {
-		kspawn.roomVnum = roomVnum;
-	}
+	let condition = parseNumber(conditionString);
+	if (condition != null) kspawn.condition = condition;
+	else kspawn._error.condition = true;
+	let command = parseNumber(commandString);
+	if (command != null) kspawn.command = command;
+	else kspawn._error.command = true;
+	let mobVnum = parseNumber(mobVnumString);
+	if (mobVnum != null) kspawn.mobVnum = mobVnum;
+	else kspawn._error.mobVnum = true;
+	let roomVnum = parseNumber(roomVnumString);
+	if (roomVnum != null) kspawn.roomVnum = roomVnum;
+	else kspawn._error.roomVnum = true;
 	kspawn.text = text;
 
-	if (rest.length > 0) {
-		errors.push(`Dropped invalid text at the end of AREADATA K line:\n${rest}`);
-	}
-
-	return { errors, data: kspawn };
+	return kspawn;
 }
 
-function parseModifier(words: string[]): { errors: string[], data: ModifierData | null } {
-	let errors: string[] = [];
-	let [
-		xpGainString, hpRegenString, manaRegenString,
-		moveRegenString, statlossString, respawnRoomString,
-		tbd1String, tbd2String, ...rest
-	] = words;
+export function parseModifier(words: string[]): ModifierData {
 	let modifier: ModifierData = {
 		xpGain: 0,
 		hpRegen: 0,
@@ -335,76 +316,49 @@ function parseModifier(words: string[]): { errors: string[], data: ModifierData 
 		respawnRoom: 0,
 		tbd1: 0,
 		tbd2: 0,
+		_error: {},
 	};
 
-	if (!xpGainString) return { errors, data: modifier };
-	let xpGain = parseInt(xpGainString);
-	if (Number.isNaN(xpGain)) {
-		errors.push(`AREADATA xpGain modifier ${xpGainString} is not a number`);
-	} else {
-		modifier.xpGain = xpGain;
-	}
-	if (!hpRegenString) return { errors, data: modifier };
-	let hpRegen = parseInt(hpRegenString);
-	if (Number.isNaN(hpRegen)) {
-		errors.push(`AREADATA hpRegen modifier ${hpRegenString} is not a number`);
-	} else {
-		modifier.hpRegen = hpRegen;
-	}
-	if (!manaRegenString) return { errors, data: modifier };
-	let manaRegen = parseInt(manaRegenString);
-	if (Number.isNaN(manaRegen)) {
-		errors.push(`AREADATA manaRegen modifier ${manaRegenString} is not a number`);
-	} else {
-		modifier.manaRegen = manaRegen;
-	}
-	if (!moveRegenString) return { errors, data: modifier };
-	let moveRegen = parseInt(moveRegenString);
-	if (Number.isNaN(moveRegen)) {
-		errors.push(`AREADATA moveRegen modifier ${moveRegenString} is not a number`);
-	} else {
-		modifier.moveRegen = moveRegen;
-	}
-	if (!statlossString) return { errors, data: modifier };
-	let statloss = parseInt(statlossString);
-	if (Number.isNaN(statloss)) {
-		errors.push(`AREADATA statloss modifier ${statlossString} is not a number`);
-	} else {
-		modifier.statloss = statloss;
-	}
-	if (!respawnRoomString) return { errors, data: modifier };
-	let respawnRoom = parseInt(respawnRoomString);
-	if (Number.isNaN(respawnRoom)) {
-		errors.push(`AREADATA respawnRoom modifier ${respawnRoomString} is not a number`);
-	} else {
-		modifier.respawnRoom = respawnRoom;
-	}
+	let [
+		xpGainString, hpRegenString, manaRegenString,
+		moveRegenString, statlossString, respawnRoomString,
+		tbd1String, tbd2String, ...rest
+	] = words;
 
-	if (!tbd1String) return { errors, data: modifier };
-	let tbd1 = parseInt(tbd1String);
-	if (!Number.isNaN(tbd1)) {
-		modifier.tbd1 = tbd1;
-	}
-	if (!tbd2String) return { errors, data: modifier };
-	let tbd2 = parseInt(tbd2String);
-	if (!Number.isNaN(tbd2)) {
-		modifier.tbd2 = tbd2;
-	}
+	let xpGain = parseNumber(xpGainString);
+	if (xpGain != null) modifier.xpGain = xpGain;
+	else modifier._error.xpGain = true;
 
-	if (rest.length > 0) {
-		errors.push(`Dropped invalid text at the end of AREADATA M line:\n${rest.join(" ")}`);
-	}
+	let hpRegen = parseNumber(hpRegenString);
+	if (hpRegen != null) modifier.hpRegen = hpRegen;
+	else modifier._error.hpRegen = true;
 
-	return { errors, data: modifier };
+	let manaRegen = parseNumber(manaRegenString);
+	if (manaRegen != null) modifier.manaRegen = manaRegen;
+	else modifier._error.manaRegen = true;
+
+	let moveRegen = parseNumber(moveRegenString);
+	if (moveRegen != null) modifier.moveRegen = moveRegen;
+	else modifier._error.moveRegen = true;
+
+	let statloss = parseNumber(statlossString);
+	if (statloss != null) modifier.statloss = statloss;
+	else modifier._error.statloss = true;
+
+	let respawnRoom = parseNumber(respawnRoomString);
+	if (respawnRoom != null) modifier.respawnRoom = respawnRoom;
+	else modifier._error.respawnRoom = true;
+
+	let tbd1 = parseNumber(tbd1String);
+	if (tbd1 != null) modifier.tbd1 = tbd1;
+
+	let tbd2 = parseNumber(tbd2String);
+	if (tbd2 != null) modifier.tbd2 = tbd2;
+
+	return modifier;
 }
 
-function parseGroupSize(words: string[]): { errors: string[], data: GroupSizeData | null } {
-	let errors: string[] = [];
-	let [
-		pct0String, num1String, pct1String, num2String,
-		pct2String, pct3String, divString, tbdString,
-		...rest
-	] = words;
+export function parseGroupSize(words: string[]): GroupSizeData {
 	let groupSize: GroupSizeData = {
 		pct0: 0,
 		num1: 0,
@@ -414,132 +368,93 @@ function parseGroupSize(words: string[]): { errors: string[], data: GroupSizeDat
 		pct3: 0,
 		div: 0,
 		tbd: 0,
+		_error: {},
 	};
+	let [
+		pct0String, num1String, pct1String, num2String,
+		pct2String, pct3String, divString, tbdString,
+		...rest
+	] = words;
 
-	if (!pct0String) return { errors, data: groupSize };
-	let pct0 = parseInt(pct0String);
-	if (Number.isNaN(pct0)) {
-		errors.push(`AREADATA pct0 groupSize ${pct0String} is not a number`);
-	} else {
-		groupSize.pct0 = pct0;
-	}
-	if (!num1String) return { errors, data: groupSize };
-	let num1 = parseInt(num1String);
-	if (Number.isNaN(num1)) {
-		errors.push(`AREADATA num1 groupSize ${num1String} is not a number`);
-	} else {
-		groupSize.num1 = num1;
-	}
-	if (!pct1String) return { errors, data: groupSize };
-	let pct1 = parseInt(pct1String);
-	if (Number.isNaN(pct1)) {
-		errors.push(`AREADATA pct1 groupSize ${pct1String} is not a number`);
-	} else {
-		groupSize.pct1 = pct1;
-	}
-	if (!num2String) return { errors, data: groupSize };
-	let num2 = parseInt(num2String);
-	if (Number.isNaN(num2)) {
-		errors.push(`AREADATA num2 groupSize ${num2String} is not a number`);
-	} else {
-		groupSize.num2 = num2;
-	}
-	if (!pct2String) return { errors, data: groupSize };
-	let pct2 = parseInt(pct2String);
-	if (Number.isNaN(pct2)) {
-		errors.push(`AREADATA pct2 groupSize ${pct2String} is not a number`);
-	} else {
-		groupSize.pct2 = pct2;
-	}
-	if (!pct3String) return { errors, data: groupSize };
-	let pct3 = parseInt(pct3String);
-	if (Number.isNaN(pct3)) {
-		errors.push(`AREADATA pct3 groupSize ${pct3String} is not a number`);
-	} else {
-		groupSize.pct3 = pct3;
-	}
-	if (!divString) return { errors, data: groupSize };
-	let div = parseInt(divString);
-	if (Number.isNaN(div)) {
-		errors.push(`AREADATA div groupSize ${divString} is not a number`);
-	} else {
-		groupSize.div = div;
-	}
+	let pct0 = parseNumber(pct0String);
+	if (pct0 != null) groupSize.pct0 = pct0;
+	else groupSize._error.pct0 = true;
 
-	if (!tbdString) return { errors, data: groupSize };
-	let tbd = parseInt(tbdString);
-	if (!Number.isNaN(tbd)) {
-		groupSize.tbd = tbd;
-	}
+	let num1 = parseNumber(num1String);
+	if (num1 != null) groupSize.num1 = num1;
+	else groupSize._error.num1 = true;
 
-	if (rest.length > 0) {
-		errors.push(`Dropped invalid text at the end of AREADATA G line:\n${rest.join(" ")}`);
-	}
+	let pct1 = parseNumber(pct1String);
+	if (pct1 != null) groupSize.pct1 = pct1;
+	else groupSize._error.pct1 = true;
 
-	return { errors, data: groupSize };
+	let num2 = parseNumber(num2String);
+	if (num2 != null) groupSize.num2 = num2;
+	else groupSize._error.num2 = true;
+
+	let pct2 = parseNumber(pct2String);
+	if (pct2 != null) groupSize.pct2 = pct2;
+	else groupSize._error.pct2 = true;
+
+	let pct3 = parseNumber(pct3String);
+	if (pct3 != null) groupSize.pct3 = pct3;
+	else groupSize._error.pct3 = true;
+
+	let div = parseNumber(divString);
+	if (div != null) groupSize.div = div;
+	else groupSize._error.div = true;
+
+
+	let tbd = parseNumber(tbdString);
+	if (tbd != null) groupSize.tbd = tbd;
+
+	return groupSize;
 }
 
-function parseVnumRange(words: string[]): { errors: string[], data: VnumRangeData | null } {
-	let errors: string[] = [];
-	let [minString, maxString, ...rest] = words;
+export function parseVnumRange(words: string[]): VnumRangeData {
 	let vnumRange: VnumRangeData = {
 		min: 0,
 		max: 0,
+		_error: {},
 	};
 
-	if (!minString) return { errors, data: null };
-	let min = parseInt(minString);
-	if (Number.isNaN(min)) {
-		errors.push(`AREADATA vnum range min ${minString} is not a number`);
-		return { errors, data: null };
-	} else {
-		vnumRange.min = min;
-	}
+	let [minString, maxString, ...rest] = words;
+
+	let min = parseNumber(minString);
+	if (min != null) vnumRange.min = min;
+	else vnumRange._error.min = true;
+
 	if (!maxString) {
 		vnumRange.max = vnumRange.min;
-		return { errors, data: vnumRange };
+		if (vnumRange._error.min) vnumRange._error.max = true;
+		return vnumRange;
 	}
-	let max = parseInt(maxString);
-	if (Number.isNaN(max)) {
-		errors.push(`AREADATA vnum range max ${maxString} is not a number`);
+	let max = parseNumber(maxString);
+	if (max != null) vnumRange.max = max;
+	else {
 		vnumRange.max = vnumRange.min;
-	} else {
-		vnumRange.max = max;
-	}
+		vnumRange._error.max = true
+	};
 
-	if (rest.length > 0) {
-		errors.push(`Dropped invalid text at the end of AREADATA V line:\n${rest.join(" ")}`);
-	}
-
-	return { errors, data: vnumRange };
+	return vnumRange;
 }
 
-function parseScaling(words: string[]): { errors: string[], data: ScalingData | null } {
-	let errors: string[] = [];
-	let [maxGroupPowerString, maxGroupToughnessString, ...rest] = words;
+export function parseScaling(words: string[]): ScalingData {
 	let scaling: ScalingData = {
 		maxGroupPower: 490,
 		maxGroupToughness: 180000,
+		_error: {},
 	};
 
-	if (!maxGroupPowerString) return { errors, data: scaling };
-	let maxGroupPower = parseInt(maxGroupPowerString);
-	if (Number.isNaN(maxGroupPower)) {
-		errors.push(`AREADATA scaling max group power ${maxGroupPowerString} is not a number`);
-	} else {
-		scaling.maxGroupPower = maxGroupPower;
-	}
-	if (!maxGroupToughnessString) return { errors, data: scaling };
-	let maxGroupToughness = parseInt(maxGroupToughnessString);
-	if (Number.isNaN(maxGroupToughness)) {
-		errors.push(`AREADATA scaling max group toughness ${maxGroupToughnessString} is not a number`);
-	} else {
-		scaling.maxGroupToughness = maxGroupToughness;
-	}
+	let [maxGroupPowerString, maxGroupToughnessString, ...rest] = words;
 
-	if (rest.length > 0) {
-		errors.push(`Dropped invalid text at the end of AREADATA B line:\n${rest.join(" ")}`);
-	}
+	let maxGroupPower = parseNumber(maxGroupPowerString);
+	if (maxGroupPower != null) scaling.maxGroupPower = maxGroupPower;
+	else scaling._error.maxGroupPower = true;
 
-	return { errors, data: scaling };
+	let maxGroupToughness = parseNumber(maxGroupToughnessString);
+	if (maxGroupToughness != null) scaling.maxGroupToughness = maxGroupToughness;
+	else scaling._error.maxGroupToughness = true;
+
+	return scaling;
 }

@@ -46,19 +46,12 @@ function makeHelps(help) {
 	return parseHelps(`\n${help}\n0$~\n`);
 }
 
-function unwrapData(thing) {
-	expect(thing).toBeTruthy();
-	expect(thing.errors).toHaveLength(0);
-	expect(thing.data).toBeTruthy();
-	return thing.data;
-}
-
 describe("parseHelps", () => {
 	test("parses a help", () => {
 		let helps = makeHelps(SINGLE_HELP);
 		expect(helps).toHaveLength(1);
-		let { errors, help } = helps[0];
-		expect(errors).toHaveLength(0);
+		let help = helps[0];
+		expectNoErrors(help);
 		expect(help.level).toBe(800);
 		expect(help.keywords).toEqual(["secret"]);
 		expect(help.body).toEqual("this is a very secret help file\n\nnone may view it");
@@ -68,15 +61,15 @@ describe("parseHelps", () => {
 		let helps = makeHelps(MULTIPLE_HELPS);
 		expect(helps).toHaveLength(2);
 		{
-			let { errors, help } = helps[0];
-			expect(errors).toHaveLength(0);
+			let help = helps[0];
+			expectNoErrors(help);
 			expect(help.level).toBe(1);
 			expect(help.keywords).toEqual(["secret"]);
 			expect(help.body).toEqual("there are no secrets here!");
 		}
 		{
-			let { errors, help } = helps[1];
-			expect(errors).toHaveLength(0);
+			let help = helps[1];
+			expectNoErrors(help);
 			expect(help.level).toBe(800);
 			expect(help.keywords).toEqual(["secret"]);
 			expect(help.body).toEqual("this is a very secret help file\n\nnone may view it");
@@ -86,8 +79,8 @@ describe("parseHelps", () => {
 	test("parses a help with a negative level", () => {
 		let helps = makeHelps(MOTD);
 		expect(helps).toHaveLength(1);
-		let { errors, help } = helps[0];
-		expect(errors).toHaveLength(0);
+		let help = helps[0];
+		expectNoErrors(help);
 		expect(help.level).toBe(-1);
 		expect(help.keywords).toEqual(["MOTD"]);
 		expect(help.body).toEqual("welcome to the club!");
@@ -97,16 +90,15 @@ describe("parseHelps", () => {
 		let helps = makeHelps(WONKY_HELPS);
 		expect(helps).toHaveLength(2);
 		{
-			let { errors, help } = helps[0];
-			expect(errors).toHaveLength(0)
+			let help = helps[0];
+			expectNoErrors(help);
 			expect(help.level).toBe(1);
 			expect(help.keywords).toEqual(["secret"]);
 			expect(help.body).toBe("there are no secrets here!");
 		}
 		{
-			let { errors, help } = helps[1];
-			expect(errors).toHaveLength(1);
-			expect(errors).toContain("Missing help body");
+			let help = helps[1];
+			expectSingleError(help, "body");
 			expect(help.level).toBe(800);
 			expect(help.keywords).toEqual(["secret"]);
 			expect(help.body).toEqual("");
@@ -116,9 +108,8 @@ describe("parseHelps", () => {
 	test("raises error when level is invalid", () => {
 		let helps = makeHelps(INVALID_LEVEL);
 		expect(helps).toHaveLength(1);
-		let { errors, help } = helps[0];
-		expect(errors).toHaveLength(1);
-		expect(errors).toContain("Help level so is not a number")
+		let help = helps[0];
+		expectSingleError(help, "level");
 	});
 
 	test("silently accepts helps after the 0$~", () => {
@@ -127,34 +118,16 @@ describe("parseHelps", () => {
 	});
 });
 
-describe("parseBits", () => {
-	test("parses bits separated by pipes", () => {
-		let { error, bits } = parseBits('1|2|128');
-		expect(bits).toEqual([1, 2, 128]);
-	});
+function expectNoErrors(thing) {
+	expect(thing).toBeTruthy();
+	expect(thing._error).toEqual({});
+}
 
-	test("parses bits from one big number", () => {
-		let { error, bits } = parseBits('2|4112');
-		expect(bits).toEqual([2, 16, 4096]);
-	});
-
-	test("does not duplicate bits", () => {
-		let { error, bits } = parseBits('2|4|2|12');
-		expect(bits).toEqual([2, 4, 8]);
-	});
-
-	test("ignores 0 when there are other bits", () => {
-		let { error, bits } = parseBits('1|2|0|128');
-		expect(bits).toEqual([1, 2, 128]);
-	});
-
-	test("raises error on invalid bits", () => {
-		let { error, bits } = parseBits('2|abcd');
-		expect(bits).toEqual([2]);
-	});
-
-	test("raises error on extra tokens on line", () => {
-		let { error, bits } = parseBits('2|4 8');
-		expect(bits).toEqual([2, 4]);
-	});
-});
+function expectSingleError(thing, key) {
+	expect(thing._error[key]).toBe(true);
+	for (let [k, v] of Object.entries(thing._error)) {
+		if (key !== k) {
+			expect(v).toBeFalsy();
+		}
+	}
+}

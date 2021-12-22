@@ -111,5 +111,5 @@ export function splitOnVnums(section: string): string[] {
 
 export function parseNumber(s: string): number | null {
 	let n = parseInt(s, 10);
-	return Number.isNaN(n) ? null : n;
+	return Number.isInteger(n) ? n : null;
 }
