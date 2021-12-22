@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import './App.css';
-import parseAreaFile, { Area } from "./parser/parse-area-file";
+import parseAreaFile, { Area } from "./parser";
 
 function ReadAreaForm({onRead}: {onRead: Dispatch<SetStateAction<Area | null>>}) {
 	function onChange(event: ChangeEvent<HTMLInputElement>) {

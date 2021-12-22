@@ -4,9 +4,9 @@ import parseHelps, { Help } from "./helps";
 import parseMobiles, { Mobile } from "./mobiles";
 import parseObjects, { Objekt } from "./objects";
 import parseRooms, { Room } from "./rooms";
-import parseResets from "./resets";
-import parseShops from "./shops";
-import parseSpecials from "./specials";
+import parseResets, { Reset } from "./resets";
+import parseShops, { Shop } from "./shops";
+import parseSpecials, { Special } from "./specials";
 
 function splitSections(file: string): string[] {
 	let sections = file.split(/^(?=#(?:[a-zA-Z\$]+))/m);
@@ -34,10 +34,13 @@ function labelSections(unlabeledSections: string[]): Dict {
 export interface Area {
 	area: AreaSection;
 	areadata: AreadataSection;
-	helps: Help[],
-	mobiles: Mobile[],
-	objects: Objekt[],
-	rooms: Room[],
+	helps: Help[];
+	mobiles: Mobile[];
+	objects: Objekt[];
+	rooms: Room[];
+	resets: Reset[];
+	shops: Shop[];
+	specials: Special[];
 }
 
 export const BLANK_AREA: Area = {
@@ -47,6 +50,9 @@ export const BLANK_AREA: Area = {
 	mobiles: [],
 	objects: [],
 	rooms: [],
+	resets: [],
+	shops: [],
+	specials: [],
 };
 
 export default function parseFile(file: string): Area {
@@ -59,6 +65,9 @@ export default function parseFile(file: string): Area {
 		mobiles: [],
 		objects: [],
 		rooms: [],
+		resets: [],
+		shops: [],
+		specials: [],
 	};
 	for (let [name, section] of Object.entries(unparsedSections)) {
 		switch (name.toUpperCase()) {
@@ -87,12 +96,15 @@ export default function parseFile(file: string): Area {
 				break;
 			}
 			case "RESETS": {
+				parsedSections.resets = parseResets(section);
 				break;
 			}
 			case "SHOPS": {
+				parsedSections.shops = parseShops(section);
 				break;
 			}
 			case "SPECIALS": {
+				parsedSections.specials = parseSpecials(section);
 				break;
 			}
 		}
