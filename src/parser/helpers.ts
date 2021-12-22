@@ -1,4 +1,4 @@
-enum KeywordState {
+const enum KeywordState {
 	BetweenWords,
 	Unquoted,
 	SingleQuoted,
@@ -107,4 +107,9 @@ export function splitOnVnums(section: string): string[] {
 	return section.trim().split(/^(?=#\S+)/m)
 		.map(s => s.trim())
 		.filter(s => s && !s.match(/^#0\b/));
+}
+
+export function parseNumber(s: string): number | null {
+	let n = parseInt(s, 10);
+	return Number.isNaN(n) ? null : n;
 }

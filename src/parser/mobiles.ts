@@ -1,4 +1,9 @@
-import { parseKeywords, parseBits, splitOnVnums } from "./helpers";
+import {
+	parseBits,
+	parseKeywords,
+	parseNumber,
+	splitOnVnums,
+} from "./helpers";
 
 export default function parseMobiles(section: string): Mobile[] {
 	let parts = splitOnVnums(section);
@@ -313,7 +318,7 @@ export function parseMobile(mobString: string): Mobile {
 		}
 	}
 
-	if (state == ParseState.KspawnMessage) {
+	if (state === ParseState.KspawnMessage) {
 		mobile.kspawn = kspawnBuffer;
 		mobile._error.kspawn = true;
 	} else if (state !== ParseState.ExtraLines) {
@@ -321,9 +326,4 @@ export function parseMobile(mobString: string): Mobile {
 	}
 
 	return mobile;
-}
-
-function parseNumber(s: string): number | null {
-	let n = parseInt(s, 10);
-	return Number.isNaN(n) ? null : n;
 }
