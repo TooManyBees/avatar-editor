@@ -102,3 +102,9 @@ function factor(n: number): number[] {
 	}
 	return factors;
 }
+
+export function splitOnVnums(section: string): string[] {
+	return section.trim().split(/^(?=#\S+)/m)
+		.map(s => s.trim())
+		.filter(s => s && !s.match(/^#0\b/));
+}

@@ -1,5 +1,5 @@
 import parseHelps from './helps';
-import { parseKeywords } from "./helpers";
+import { parseKeywords, parseBits } from "./helpers";
 
 const SINGLE_HELP = `
 800 secret~
@@ -124,5 +124,37 @@ describe("parseHelps", () => {
 	test("silently accepts helps after the 0$~", () => {
 		let helps = parseHelps("\n1 keyword~\nbody\nbody\nbody\n~\n\n0$~\n1 keyword~\ntechnically invalid\n~\n");
 		expect(helps).toHaveLength(2);
+	});
+});
+
+describe("parseBits", () => {
+	test("parses bits separated by pipes", () => {
+		let { error, bits } = parseBits('1|2|128');
+		expect(bits).toEqual([1, 2, 128]);
+	});
+
+	test("parses bits from one big number", () => {
+		let { error, bits } = parseBits('2|4112');
+		expect(bits).toEqual([2, 16, 4096]);
+	});
+
+	test("does not duplicate bits", () => {
+		let { error, bits } = parseBits('2|4|2|12');
+		expect(bits).toEqual([2, 4, 8]);
+	});
+
+	test("ignores 0 when there are other bits", () => {
+		let { error, bits } = parseBits('1|2|0|128');
+		expect(bits).toEqual([1, 2, 128]);
+	});
+
+	test("raises error on invalid bits", () => {
+		let { error, bits } = parseBits('2|abcd');
+		expect(bits).toEqual([2]);
+	});
+
+	test("raises error on extra tokens on line", () => {
+		let { error, bits } = parseBits('2|4 8');
+		expect(bits).toEqual([2, 4]);
 	});
 });
