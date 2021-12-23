@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import './App.css';
 import parseAreaFile, { Area } from "./parser";
 import MobileForm from "./ui/MobileForm";
+import VnumList from "./ui/VnumList";
 
 function ReadAreaForm({onRead}: {onRead: Dispatch<SetStateAction<Area | null>>}) {
 	function onChange(event: ChangeEvent<HTMLInputElement>) {
@@ -29,7 +30,7 @@ function App() {
 	return (
 		<div className="App">
 			{ areaFile && areaFile.mobiles[0] ?
-				<MobileForm mobile={areaFile.mobiles[0]} /> :
+				<VnumList items={areaFile.mobiles} FormComponent={MobileForm} /> :
 				<ReadAreaForm onRead={setAreaFile} />
 			}
 		</div>

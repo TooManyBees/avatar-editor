@@ -121,7 +121,7 @@ export class BitsField extends React.Component<BitsFieldProps, BitsFieldState> {
 			<fieldset>
 				<legend>{name}</legend>
 				{map.map(([bit, desc, help]) => (
-					<label title={help}><input key={bit}
+					<label key={bit} title={help}><input
 						type="checkbox"
 						value={bit}
 						checked={this.state.value.includes(bit)}

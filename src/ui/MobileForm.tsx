@@ -3,7 +3,7 @@ import { Mobile, Kspawn } from "../parser/mobiles";
 import { BitsField, NumberField, SelectField, TextField, TextArea } from "./fields";
 
 interface Props {
-	mobile: Mobile;
+	item: Mobile;
 }
 
 const ACT_FLAGS: [number, string, string][] = [
@@ -223,9 +223,6 @@ const KSPAWN_TYPE: [number, string, string][] = [
 export default class MobileForm extends React.Component<Props> {
 	constructor(props: Props) {
 		super(props);
-		this.state = {
-			...props.mobile,
-		};
 	}
 
 	renderKspawn(kspawn: Kspawn) {
@@ -242,7 +239,7 @@ export default class MobileForm extends React.Component<Props> {
 	}
 
 	render() {
-		const { mobile } = this.props;
+		const { item: mobile } = this.props;
 
 		return (
 			<div>
