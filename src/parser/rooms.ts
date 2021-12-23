@@ -1,11 +1,13 @@
 import {
+	newId,
 	parseBits,
 	parseKeywords,
 	parseNumber,
 	splitOnVnums,
 } from "./helpers";
 
-export interface Room {
+export class Room {
+	id: string;
 	vnum: number | null;
 	name: string;
 	description: string;
@@ -27,9 +29,23 @@ export interface Room {
 		alignFlags?: boolean;
 		classFlags?: boolean;
 	};
+
+	constructor() {
+		this.id = newId();
+		this.vnum = null;
+		this.name = "";
+		this.description = "";
+		this.flags = [];
+		this.sector = 0;
+		this.doors = [];
+		this.extraDescs = [];
+		this.alignFlags = [];
+		this.classFlags = [];
+		this._error = {};
+	}
 }
 
-export interface Door {
+export class Door {
 	direction: number;
 	description: string;
 	keywords: string[];
@@ -45,6 +61,16 @@ export interface Door {
 		key?: boolean;
 		toVnum?: boolean;
 	};
+
+	constructor() {
+		this.direction = 0;
+		this.description = "";
+		this.keywords = [];
+		this.locks = [];
+		this.key = 0;
+		this.toVnum = 1;
+		this._error = {};
+	}
 }
 
 const enum ParseState {
@@ -67,30 +93,11 @@ export default function parseRooms(section: string): Room[] {
 
 export function parseRoom(roomString: string): Room {
 	let state = ParseState.Vnum;
-	let room: Room = {
-		vnum: null,
-		name: "",
-		description: "",
-		flags: [],
-		sector: 0,
-		doors: [],
-		extraDescs: [],
-		alignFlags: [],
-		classFlags: [],
-		_error: {},
-	};
+	let room = new Room();
 
 	let multiLineBuffer = "";
 	let edescKeywords: string[] = [];
-	let door: Door = {
-		direction: 0,
-		description: "",
-		keywords: [],
-		locks: [],
-		key: 0,
-		toVnum: 1,
-		_error: {},
-	};
+	let door = new Door();
 
 	let lines = roomString.trim().split("\n");
 
@@ -220,15 +227,7 @@ export function parseRoom(roomString: string): Room {
 				else door._error.toVnum = true;
 
 				room.doors.push(door);
-				door = {
-					direction: 0,
-					description: "",
-					keywords: [],
-					locks: [],
-					key: 0,
-					toVnum: 1,
-					_error: {},
-				}
+				door = new Door();
 
 				break;
 			}

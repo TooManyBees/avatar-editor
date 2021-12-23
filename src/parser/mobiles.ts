@@ -1,4 +1,5 @@
 import {
+	newId,
 	parseBits,
 	parseKeywords,
 	parseNumber,
@@ -24,15 +25,24 @@ const enum ParseState {
 	KspawnMessage,
 }
 
-export interface Kspawn {
+export class Kspawn {
 	condition: number;
 	spawnType: number[];
 	spawnVnum: number;
 	roomVnum: number;
 	message: string;
+
+	constructor() {
+		this.condition = 0;
+		this.spawnType = [];
+		this.spawnVnum = -1;
+		this.roomVnum = -1;
+		this.message = "";
+	}
 }
 
-export interface Mobile {
+export class Mobile {
+	id: string;
 	vnum: number | null;
 	keywords: string[];
 	shortDesc: string;
@@ -66,31 +76,32 @@ export interface Mobile {
 		team?: boolean;
 		kspawn?: boolean;
 	};
+
+	constructor() {
+		this.id = newId();
+		this.vnum = null;
+		this.keywords = [];
+		this.shortDesc = "";
+		this.longDesc = "";
+		this.description = "";
+		this.act = [];
+		this.affected = [];
+		this.align = 0;
+		this.level = 1;
+		this.sex = 0;
+		this._error = {};
+	}
+
+	get name(): string {
+		return this.shortDesc;
+	}
 }
 
 export function parseMobile(mobString: string): Mobile {
 	let state = ParseState.Vnum;
-	let mobile: Mobile = {
-		vnum: null,
-		keywords: [],
-		shortDesc: "",
-		longDesc: "",
-		description: "",
-		act: [],
-		affected: [],
-		align: 0,
-		level: 1,
-		sex: 0,
-		_error: {},
-	};
+	let mobile = new Mobile();
 
-	let kspawnBuffer: Kspawn = {
-		condition: 0,
-		spawnType: [],
-		spawnVnum: -1,
-		roomVnum: -1,
-		message: "",
-	};
+	let kspawnBuffer = new Kspawn();
 	let multiLineBuffer = "";
 
 	let lines = mobString.trim().split("\n");
@@ -268,24 +279,12 @@ export function parseMobile(mobString: string): Mobile {
 							} else {
 								kspawnBuffer.message = message.substring(0, tilde);
 								mobile.kspawn = kspawnBuffer;
-								kspawnBuffer = {
-									condition: 0,
-									spawnType: [],
-									spawnVnum: -1,
-									roomVnum: -1,
-									message: "",
-								};
+								kspawnBuffer = new Kspawn();
 							}
 						} else {
 							mobile._error.kspawn = true;
 							mobile.kspawn = kspawnBuffer;
-							kspawnBuffer = {
-								condition: 0,
-								spawnType: [],
-								spawnVnum: -1,
-								roomVnum: -1,
-								message: "",
-							};
+							kspawnBuffer = new Kspawn();
 						}
 						break;
 					}
@@ -305,13 +304,7 @@ export function parseMobile(mobString: string): Mobile {
 					kspawnBuffer.message += "\n";
 					kspawnBuffer.message += line.substring(0, tilde);
 					mobile.kspawn = kspawnBuffer;
-					kspawnBuffer = {
-						condition: 0,
-						spawnType: [],
-						spawnVnum: -1,
-						roomVnum: -1,
-						message: "",
-					};
+					kspawnBuffer = new Kspawn();
 				}
 				break;
 			}

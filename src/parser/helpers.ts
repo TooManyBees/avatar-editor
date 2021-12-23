@@ -113,3 +113,19 @@ export function parseNumber(s: string): number | null {
 	let n = parseInt(s, 10);
 	return Number.isInteger(n) ? n : null;
 }
+
+declare global {
+	interface Crypto {
+		randomUUID: () => string;
+	}
+}
+
+export function newId(): string {
+	try {
+		return crypto.randomUUID();
+	} catch (_) {
+		let rand = Math.floor(Math.random() * 1000000);
+		let time = Date.now();
+		return `${rand}${time}`;
+	}
+}

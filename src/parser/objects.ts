@@ -1,4 +1,5 @@
 import {
+	newId,
 	parseBits,
 	parseKeywords,
 	parseNumber,
@@ -10,7 +11,8 @@ export default function parseObjects(section: string) {
 	return parts.map(part => parseObject(part));
 }
 
-export interface Objekt {
+export class Objekt {
+	id: string;
 	vnum: number | null;
 	keywords: string[];
 	shortDesc: string;
@@ -50,6 +52,32 @@ export interface Objekt {
 		applies?: boolean;
 		quality?: boolean;
 	};
+
+	constructor() {
+		this.id = newId();
+		this.vnum = null;
+		this.keywords = [];
+		this.shortDesc = "";
+		this.longDesc = "";
+		this.actionDesc = "";
+		this.itemType = 1;
+		this.extraFlags = [];
+		this.wearFlags = [];
+		this.value0 = "0";
+		this.value1 = "0";
+		this.value2 = "0";
+		this.value3 = "0";
+		this.weight = 0;
+		this.worth = 0;
+		this.racialFlags = [];
+		this.extraDescs = [];
+		this.applies = [];
+		this._error = {};
+	}
+
+	get name(): string {
+		return this.shortDesc;
+	}
 }
 
 const enum ParseState {
@@ -68,26 +96,7 @@ const enum ParseState {
 
 export function parseObject(objectString: string): Objekt {
 	let state = ParseState.Vnum;
-	let object: Objekt = {
-		vnum: null,
-		keywords: [],
-		shortDesc: "",
-		longDesc: "",
-		actionDesc: "",
-		itemType: 1,
-		extraFlags: [],
-		wearFlags: [],
-		value0: "0",
-		value1: "0",
-		value2: "0",
-		value3: "0",
-		weight: 0,
-		worth: 0,
-		racialFlags: [],
-		extraDescs: [],
-		applies: [],
-		_error: {},
-	};
+	let object = new Objekt();
 
 	let edescKeywords: string[] = [];
 	let multiLineBuffer = "";
