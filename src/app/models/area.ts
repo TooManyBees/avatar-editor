@@ -1,4 +1,4 @@
-import { AreaSection } from "./area-section";
+import { AreaSection, BLANK_AREA_SECTION } from "./area-section";
 import { AreadataSection } from "./areadata";
 import { Help } from "./helps";
 import { Mobile } from "./mobiles";
@@ -19,3 +19,15 @@ export interface Area {
 	shops: Shop[];
 	specials: Special[];
 }
+
+export const BLANK_AREA = {
+	area: BLANK_AREA_SECTION,
+	areadata: {},
+	helps: [],
+	mobiles: [],
+	objects: [],
+	rooms: [],
+	resets: [],
+	shops: [],
+	specials: [],
+};

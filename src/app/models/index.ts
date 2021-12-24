@@ -1,4 +1,5 @@
 export type { Area } from "./area";
+export { BLANK_AREA } from "./area";
 export type { AreaSection } from "./area-section";
 export { BLANK_AREA_SECTION } from "./area-section";
 export type { AreadataSection } from "./areadata";
