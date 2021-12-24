@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { Area } from "../parser";
 import VnumList from "./VnumList";
 import MobileForm from "./MobileForm";
+import ObjektForm from "./ObjektForm";
 
-
-import { Objekt } from "../parser/objects";
-const ObjektForm = ({ item }: { item: Objekt }) => null;
 import { Room } from "../parser/rooms";
 const RoomForm = ({ item }: { item: Room }) => null;
 

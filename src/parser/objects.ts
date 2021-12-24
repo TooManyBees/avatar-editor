@@ -171,7 +171,14 @@ export function parseObject(objectString: string): Objekt {
 				{
 					let { error, bits } = parseBits(wearString);
 					if (error) object._error.wearFlags = true;
-					if (bits.filter(b => b !== 1).length > 1) object._error.wearFlags = true;
+					if (bits.filter(b => b !== 1).length > 1) {
+						object._error.wearFlags = true;
+						let newBits = [];
+						if (bits.includes(1)) newBits.push(1);
+						let otherBit = bits.filter(b => b !== 1)[0];
+						if (otherBit) bits.push(otherBit);
+						bits = newBits;
+					}
 					object.wearFlags = bits;
 				}
 				break;
