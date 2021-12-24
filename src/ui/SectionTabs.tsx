@@ -4,6 +4,7 @@ import VnumList from "./VnumList";
 import MobileForm from "./MobileForm";
 import ObjektForm from "./ObjektForm";
 import RoomForm from "./RoomForm";
+import "./SectionTabs.css";
 
 interface Props {
 	area: Area;
@@ -28,14 +29,14 @@ export default function SectionTabs({ area }: Props) {
 	const view = renderSection(currentSection, area);
 
 	return (
-		<div>
-			<nav>
-				<div onClick={() => setSection("mobiles")}>#MOBILES</div>
-				<div onClick={() => setSection("objects")}>#OBJECTS</div>
-				<div onClick={() => setSection("rooms")}>#ROOMS</div>
+		<div className="SectionTabs">
+			<nav className="SectionTabsNav">
+				<div className="SectionTabsNavItem" onClick={() => setSection("mobiles")}>Moblies</div>
+				<div className="SectionTabsNavItem" onClick={() => setSection("objects")}>Objects</div>
+				<div className="SectionTabsNavItem" onClick={() => setSection("rooms")}>Rooms</div>
 			</nav>
 
-			<div>{view}</div>
+			{view}
 		</div>
 	);
 }

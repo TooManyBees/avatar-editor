@@ -22,7 +22,7 @@ export default class KeywordField extends React.Component<Props, State> {
 	render() {
 		return (
 			<div>
-				<label>{this.props.name}: {this.state.keywords.map(k => <span style={{background: "pink", marginRight: "1rem"}}>{k}</span>)}</label>
+				<label>{this.props.name}: {this.state.keywords.map((k, n) => <span key={n} style={{background: "pink", marginRight: "1rem"}}>{k}</span>)}</label>
 			</div>
 		);
 	}

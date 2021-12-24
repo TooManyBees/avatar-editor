@@ -1,4 +1,5 @@
 import React from "react";
+import "./VnumList.css";
 
 interface HasVnum {
 	id: string;
@@ -21,17 +22,19 @@ interface ListProps<T> {
 	onChange: (selected: string) => void;
 }
 
-function VnumList<T extends HasVnum>({ selected, items, onChange }: ListProps<T>) {
+function VnumItemList<T extends HasVnum>({ selected, items, onChange }: ListProps<T>) {
 	return (
-		<ol>
+		<ol className="VnumItemList">
 			{items.map(item => (
-				<li key={item.id} onClick={() => onChange(item.id)}>{item.vnum || ""} {item.name}</li>
+				<li key={item.id} onClick={() => onChange(item.id)}>
+					<span className="vnum">{item.vnum || ""}</span> {item.name}
+				</li>
 			))}
 		</ol>
 	);
 }
 
-export default class VnumListEditor<T extends HasVnum> extends React.Component<Props<T>, State> {
+export default class VnumItemEditor<T extends HasVnum> extends React.Component<Props<T>, State> {
 	constructor(props: Props<T>) {
 		super(props)
 		this.state = { selected: undefined };
@@ -47,12 +50,10 @@ export default class VnumListEditor<T extends HasVnum> extends React.Component<P
 		const selectedId = this.state.selected;
 		const selectedItem = items.find(i => i.id === selectedId);
 
-
-
 		return (
-			<div>
-				<VnumList items={items} selected={selectedId} onChange={this.onChange} />
-				{selectedItem ? <FormComponent key={selectedId} item={selectedItem} /> : null }
+			<div className="VnumItemEditor">
+				{selectedItem ? <FormComponent key={selectedId} item={selectedItem} /> : <div className="VnumItemEditorPlaceholder"/> }
+				<VnumItemList items={items} selected={selectedId} onChange={this.onChange} />
 			</div>
 		);
 	}

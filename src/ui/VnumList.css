@@ -1,0 +1,28 @@
+.VnumItemEditor {
+	display: flex;
+	height: calc(100vh - 2rem); /* eek! */
+}
+
+.VnumItemList {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	flex: 0 0 auto;
+	max-width: 20rem;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.VnumItemList li {
+	padding: 0.25rem;
+	margin: -0.15rem 0;
+	cursor: pointer;
+	white-space: nowrap;
+}
+.VnumItemList li:hover {
+	background: pink;
+}
+
+.VnumItemEditorPlaceholder {
+	flex: 1 0 auto;
+}
