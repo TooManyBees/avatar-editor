@@ -4,6 +4,7 @@ import * as Actions from "../../app/store/objects";
 import { selectedId } from "../../app/store/ui";
 import { Objekt } from "../../app/models";
 import {
+	ApplyFields,
 	BitsField,
 	KeywordField,
 	NumberField,
@@ -93,6 +94,7 @@ function ObjectForm({ item: object }: Props) {
 			{/* extra descs */}
 			{/* applies */}
 			<NumberField name="Quality" value={object.quality} min={1} onUpdate={updatedQuality} />
+			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} />
 		</div>
 	);
 }

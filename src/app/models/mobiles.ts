@@ -13,7 +13,7 @@ export interface MobileFields {
 	sex: number;
 	race?: number;
 	klass?: number;
-	applies?: [number, number][];
+	applies: [number, number][];
 	team?: number;
 	kspawn?: Kspawn;
 }
@@ -51,5 +51,6 @@ export const blankMobile = (): Mobile => ({
 	align: 0,
 	level: 1,
 	sex: 0,
+	applies: [],
 	_error: {},
 });

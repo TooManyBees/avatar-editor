@@ -77,13 +77,25 @@ const mobileSlice = createSlice({
 			if (mobile) mobile.klass = payload;
 		},
 		addedApply(state, action: PayloadAction<[string, [number, number]]>) {
-
+			const [id, payload] = action.payload;
+			const mobile = state.mobiles.find(m => m.id === id);
+			if (mobile) {
+				mobile.applies.push(payload);
+			}
 		},
 		removedApply(state, action: PayloadAction<[string, number]>) {
-
+			const [id, idx] = action.payload;
+			const mobile = state.mobiles.find(m => m.id === id);
+			if (mobile && idx < mobile.applies.length) {
+				mobile.applies = mobile.applies.slice(0, idx).concat(mobile.applies.slice(idx + 1));
+			}
 		},
 		updatedApply(state, action: PayloadAction<[string, number, [number, number]]>) {
-
+			const [id, idx, payload] = action.payload;
+			const mobile = state.mobiles.find(m => m.id === id);
+			if (mobile && idx < mobile.applies.length) {
+				mobile.applies[idx] = payload;
+			}
 		},
 		updatedTeam(state, action: PayloadAction<[string, number]>) {
 			const [id, payload] = action.payload;

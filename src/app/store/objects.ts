@@ -101,13 +101,25 @@ const objectSlice = createSlice({
 
 		},
 		addedApply(state, action: PayloadAction<[string, [number, number]]>) {
-
+			const [id, payload] = action.payload;
+			const object = state.objects.find(m => m.id === id);
+			if (object) {
+				object.applies.push(payload);
+			}
 		},
 		removedApply(state, action: PayloadAction<[string, number]>) {
-
+			const [id, idx] = action.payload;
+			const object = state.objects.find(m => m.id === id);
+			if (object && idx < object.applies.length) {
+				object.applies = object.applies.slice(0, idx).concat(object.applies.slice(idx + 1));
+			}
 		},
 		updatedApply(state, action: PayloadAction<[string, number, [number, number]]>) {
-
+			const [id, idx, payload] = action.payload;
+			const object = state.objects.find(m => m.id === id);
+			if (object && idx < object.applies.length) {
+				object.applies[idx] = payload;
+			}
 		},
 		updatedQuality(state, action: PayloadAction<[string, number]>) {
 			const [id, payload] = action.payload;

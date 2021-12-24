@@ -4,6 +4,7 @@ import * as Actions from "../../app/store/mobiles";
 import { selectedId } from "../../app/store/ui";
 import { Mobile, Kspawn } from "../../app/models";
 import {
+	ApplyFields,
 	BitsField,
 	KeywordField,
 	NumberField,
@@ -89,6 +90,7 @@ function MobileForm(props: Props) {
 			<SelectField name="Race" value={mobile.race} map={RACE} onUpdate={updatedRace} />
 			<SelectField name="Class" value={mobile.klass} map={CLASS} onUpdate={updatedClass} />
 			<SelectField name="Team" value={mobile.team} map={TEAM} onUpdate={updatedTeam} />
+			<ApplyFields applies={mobile.applies} id={id} updatedApply={Actions.updatedApply} />
 			{mobile.kspawn ? <KspawnComponent kspawn={mobile.kspawn} /> : null}
 		</div>
 	);

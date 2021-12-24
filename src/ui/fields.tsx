@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from "react";
 import KeywordField from "./KeywordField";
+import ApplyFields from "./ApplyFields";
 import "./fields.css";
 
 interface TextFieldProps {
@@ -211,5 +212,6 @@ export class SelectField extends React.Component<SelectFieldProps, SelectFieldSt
 }
 
 export {
+	ApplyFields,
 	KeywordField,
 }
