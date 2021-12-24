@@ -30,7 +30,7 @@ export class Objekt {
 	racialFlags: number[];
 	extraDescs: [string[], string][];
 	applies: [number, number][];
-	quality?: number;
+	quality: number | null;
 	_error: {
 		all?: boolean;
 		vnum?: boolean;
@@ -72,6 +72,7 @@ export class Objekt {
 		this.racialFlags = [];
 		this.extraDescs = [];
 		this.applies = [];
+		this.quality = null;
 		this._error = {};
 	}
 

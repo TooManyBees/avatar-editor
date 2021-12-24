@@ -28,7 +28,7 @@ export default class ObjektForm extends React.Component<Props> {
 				<BitsField name="Racial wear flags" value={object.racialFlags} map={RACIAL_WEAR_FLAGS} />
 				{/* extra descs */}
 				{/* applies */}
-				<NumberField name="Quality" value={object.quality || 0} />
+				<NumberField name="Quality" value={object.quality} min={1} />
 			</div>
 		);
 	}

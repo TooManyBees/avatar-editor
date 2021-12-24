@@ -3,9 +3,7 @@ import { Area } from "../parser";
 import VnumList from "./VnumList";
 import MobileForm from "./MobileForm";
 import ObjektForm from "./ObjektForm";
-
-import { Room } from "../parser/rooms";
-const RoomForm = ({ item }: { item: Room }) => null;
+import RoomForm from "./RoomForm";
 
 interface Props {
 	area: Area;
