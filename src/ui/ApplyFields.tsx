@@ -2,28 +2,33 @@ import React from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../app/hooks";
 import { BitsField, NumberField, SelectField } from "./fields";
+import "./ApplyFields.css";
 
 interface Props {
 	id: string;
 	applies: [number, number][];
 	updatedApply: ActionCreatorWithPayload<[string, number, [number, number]], string>;
+	addedApply: ActionCreatorWithPayload<string, string>;
+	removedApply: ActionCreatorWithPayload<[string, number], string>;
 }
 
-export default function ApplyFlags({ applies, id, updatedApply }: Props) {
+export default function ApplyFields({ applies, id, updatedApply, addedApply, removedApply }: Props) {
 	const dispatch = useAppDispatch();
 
 	const onUpdate = (n: number, p: [number, number]) => dispatch(updatedApply([id, n, p]));
 
 	return (
-		<ol>
+		<ol className="ApplyFields">
 			<p>Applies</p>
 			{applies.map(([type, value], n) => (
-				<li key={n}>
+				<li key={value * 1000000 + type * 10000 + n}>
 					<SelectField name="Type" value={type} map={APPLY_TYPE} onUpdate={(t: number) => onUpdate(n, [t, value])} />
 					<ApplyFlagField type={type} value={value} onUpdate={(v: number) => onUpdate(n, [type, v])} />
+					<button onClick={() => dispatch(removedApply([id, n]))}>Remove</button>
 					<p>{APPLY_TYPE.find(a => a[0] === type)?.[2]}</p>
 				</li>
 			))}
+			<button onClick={() => dispatch(addedApply(id))}>Add apply</button>
 		</ol>
 	);
 }

@@ -100,11 +100,10 @@ const objectSlice = createSlice({
 		updatedExtraDesc(state, action: PayloadAction<[string, number, [string[], string]]>) {
 
 		},
-		addedApply(state, action: PayloadAction<[string, [number, number]]>) {
-			const [id, payload] = action.payload;
-			const object = state.objects.find(m => m.id === id);
+		addedApply(state, action: PayloadAction<string>) {
+			const object = state.objects.find(m => m.id === action.payload);
 			if (object) {
-				object.applies.push(payload);
+				object.applies.push([1, 0]);
 			}
 		},
 		removedApply(state, action: PayloadAction<[string, number]>) {

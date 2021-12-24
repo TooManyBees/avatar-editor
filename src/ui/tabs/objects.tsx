@@ -94,7 +94,7 @@ function ObjectForm({ item: object }: Props) {
 			{/* extra descs */}
 			{/* applies */}
 			<NumberField name="Quality" value={object.quality} min={1} onUpdate={updatedQuality} />
-			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} />
+			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 		</div>
 	);
 }

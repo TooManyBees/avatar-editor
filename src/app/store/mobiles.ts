@@ -76,11 +76,10 @@ const mobileSlice = createSlice({
 			const mobile = state.mobiles.find(m => m.id === id);
 			if (mobile) mobile.klass = payload;
 		},
-		addedApply(state, action: PayloadAction<[string, [number, number]]>) {
-			const [id, payload] = action.payload;
-			const mobile = state.mobiles.find(m => m.id === id);
+		addedApply(state, action: PayloadAction<string>) {
+			const mobile = state.mobiles.find(m => m.id === action.payload);
 			if (mobile) {
-				mobile.applies.push(payload);
+				mobile.applies.push([1, 0]);
 			}
 		},
 		removedApply(state, action: PayloadAction<[string, number]>) {
