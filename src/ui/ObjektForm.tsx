@@ -1,6 +1,13 @@
 import React from "react";
 import { Objekt } from "../parser/objects";
-import { BitsField, NumberField, SelectField, TextField, TextArea } from "./fields";
+import {
+	BitsField,
+	KeywordField,
+	NumberField,
+	SelectField,
+	TextField,
+	TextArea,
+} from "./fields";
 
 interface Props {
 	item: Objekt;
@@ -15,7 +22,7 @@ export default class ObjektForm extends React.Component<Props> {
 		return (
 			<div>
 				<NumberField name="VNUM" value={object.vnum} min={0} />
-				{/* keywords */}
+				<KeywordField name="Keywords" value={object.keywords} />
 				<TextField name="Short desc" value={object.shortDesc} />
 				<TextField name="Long desc" value={object.longDesc} />
 				<TextField name="Action desc" value={object.actionDesc} />

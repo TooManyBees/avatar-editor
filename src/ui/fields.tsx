@@ -1,4 +1,5 @@
 import React, { ChangeEvent } from "react";
+import KeywordField from "./KeywordField";
 
 interface TextFieldProps {
 	name: string;
@@ -165,4 +166,8 @@ export class SelectField extends React.Component<SelectFieldProps, SelectFieldSt
 			</select></label>
 		);
 	}
+}
+
+export {
+	KeywordField,
 }

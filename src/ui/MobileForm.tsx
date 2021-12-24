@@ -1,6 +1,13 @@
 import React from "react";
 import { Mobile, Kspawn } from "../parser/mobiles";
-import { BitsField, NumberField, SelectField, TextField, TextArea } from "./fields";
+import {
+	BitsField,
+	KeywordField,
+	NumberField,
+	SelectField,
+	TextField,
+	TextArea,
+} from "./fields";
 
 interface Props {
 	item: Mobile;
@@ -30,7 +37,7 @@ export default class MobileForm extends React.Component<Props> {
 		return (
 			<div>
 				<NumberField name="VNUM" value={mobile.vnum} min={0} />
-				{/* keywords */}
+				<KeywordField name="Keywords" value={mobile.keywords} />
 				<TextField name="Short desc" value={mobile.shortDesc} />
 				<TextField name="Long desc" value={mobile.longDesc} />
 				<TextArea name="Description" value={mobile.description} />
