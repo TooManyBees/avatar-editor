@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from "react";
 import KeywordField from "./KeywordField";
+import "./fields.css";
 
 interface TextFieldProps {
 	name: string;
@@ -26,7 +27,9 @@ export class TextField extends React.Component<TextFieldProps, TextFieldState> {
 		const value = this.state.value;
 		const valueString = value == null ? "" : value.toString();
 		return (
-			<label>{name}: <input type="text" value={valueString} onChange={this.onChange} /></label>
+			<div className="TextField">
+				<label>{name}: <input type="text" value={valueString} onChange={this.onChange} /></label>
+			</div>
 		);
 	}
 }
@@ -47,7 +50,7 @@ export class TextArea extends React.Component<TextFieldProps, TextFieldState> {
 		const value = this.state.value;
 		const valueString = value == null ? "" : value.toString();
 		return (
-			<label>{name}: <textarea value={valueString} onChange={this.onChange} /></label>
+			<label className="TextArea">{name}: <textarea rows={8} value={valueString} onChange={this.onChange} /></label>
 		);
 	}
 }
@@ -84,7 +87,9 @@ export class NumberField extends React.Component<NumberFieldProps, NumberFieldSt
 		const value = this.state.value;
 		const valueString = value ? value.toString() : "";
 		return (
-			<label>{name}: <input type="text" value={valueString} min={min} max={max} onChange={this.onChange} /></label>
+			<div className="NumberField">
+				<label>{name}:</label> <input type="text" value={valueString} min={min} max={max} onChange={this.onChange} />
+			</div>
 		);
 	}
 }
@@ -119,7 +124,7 @@ export class BitsField extends React.Component<BitsFieldProps, BitsFieldState> {
 	render() {
 		const { map, name } = this.props;
 		return (
-			<fieldset>
+			<fieldset className="BitsField">
 				<legend>{name}</legend>
 				{map.map(([bit, desc, help]) => (
 					<label key={bit} title={help}><input
@@ -159,7 +164,7 @@ export class SelectField extends React.Component<SelectFieldProps, SelectFieldSt
 	render() {
 		const { map, name, } = this.props;
 		return (
-			<label>{name}: <select value={this.state.value} onChange={this.onChange}>
+			<label className="SelectField">{name}: <select value={this.state.value} onChange={this.onChange}>
 				{map.map(([bit, desc]) => (
 					<option key={bit} value={bit}>{desc}</option>
 				))}
