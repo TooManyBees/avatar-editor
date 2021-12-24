@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Area } from "../parser";
+import { Area } from "../app/models";
 import VnumList from "./VnumList";
 import MobileForm from "./MobileForm";
 import ObjektForm from "./ObjektForm";

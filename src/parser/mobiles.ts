@@ -1,5 +1,5 @@
+import { Mobile, Kspawn } from "../app/models/mobiles";
 import {
-	newId,
 	parseBits,
 	parseKeywords,
 	parseNumber,
@@ -23,78 +23,6 @@ const enum ParseState {
 	Sex,
 	ExtraLines,
 	KspawnMessage,
-}
-
-export class Kspawn {
-	condition: number;
-	spawnType: number[];
-	spawnVnum: number;
-	roomVnum: number;
-	message: string;
-
-	constructor() {
-		this.condition = 0;
-		this.spawnType = [];
-		this.spawnVnum = -1;
-		this.roomVnum = -1;
-		this.message = "";
-	}
-}
-
-export class Mobile {
-	id: string;
-	vnum: number | null;
-	keywords: string[];
-	shortDesc: string;
-	longDesc: string;
-	description: string;
-	act: number[];
-	affected: number[];
-	align: number;
-	level: number;
-	sex: number;
-	race?: number;
-	klass?: number;
-	applies?: [number, number][];
-	team?: number;
-	kspawn?: Kspawn;
-	_error: {
-		all?: boolean;
-		vnum?: boolean;
-		keywords?: boolean;
-		shortDesc?: boolean;
-		longDesc?: boolean;
-		description?: boolean;
-		act?: boolean;
-		affected?: boolean;
-		align?: boolean;
-		level?: boolean;
-		sex?: boolean;
-		race?: boolean;
-		klass?: boolean;
-		applies?: boolean;
-		team?: boolean;
-		kspawn?: boolean;
-	};
-
-	constructor() {
-		this.id = newId();
-		this.vnum = null;
-		this.keywords = [];
-		this.shortDesc = "";
-		this.longDesc = "";
-		this.description = "";
-		this.act = [];
-		this.affected = [];
-		this.align = 0;
-		this.level = 1;
-		this.sex = 0;
-		this._error = {};
-	}
-
-	get name(): string {
-		return this.shortDesc;
-	}
 }
 
 export function parseMobile(mobString: string): Mobile {

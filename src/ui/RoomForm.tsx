@@ -1,5 +1,5 @@
 import React from "react";
-import { Room } from "../parser/rooms";
+import { Room } from "../app/models";
 import { BitsField, NumberField, SelectField, TextField, TextArea } from "./fields";
 
 interface Props {

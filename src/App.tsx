@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import './App.css';
-import parseAreaFile, { Area } from "./parser";
+import { Area } from "./app/models";
+import parseAreaFile from "./parser";
 import SectionTabs from "./ui/SectionTabs";
 
 function ReadAreaForm({onRead}: {onRead: Dispatch<SetStateAction<Area | null>>}) {

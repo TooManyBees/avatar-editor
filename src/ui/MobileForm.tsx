@@ -1,5 +1,5 @@
 import React from "react";
-import { Mobile, Kspawn } from "../parser/mobiles";
+import { Mobile, Kspawn } from "../app/models";
 import {
 	BitsField,
 	KeywordField,

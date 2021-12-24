@@ -1,12 +1,17 @@
-import parseArea, { AreaSection, BLANK_AREA_SECTION } from "./area";
-import parseAreadata, { AreadataSection, BLANK_AREADATA_SECTION } from "./areadata";
-import parseHelps, { Help } from "./helps";
-import parseMobiles, { Mobile } from "./mobiles";
-import parseObjects, { Objekt } from "./objects";
-import parseRooms, { Room } from "./rooms";
-import parseResets, { Reset } from "./resets";
-import parseShops, { Shop } from "./shops";
-import parseSpecials, { Special } from "./specials";
+import parseArea from "./area";
+import parseAreadata from "./areadata";
+import parseHelps from "./helps";
+import parseMobiles from "./mobiles";
+import parseObjects from "./objects";
+import parseRooms from "./rooms";
+import parseResets from "./resets";
+import parseShops from "./shops";
+import parseSpecials from "./specials";
+
+import {
+	Area, AreaSection, AreadataSection, Help, Mobile, Objekt, Room, Shop, Reset, Special,
+	BLANK_AREA_SECTION,
+} from "./../app/models";
 
 function splitSections(file: string): string[] {
 	let sections = file.split(/^(?=#(?:[a-zA-Z\$]+))/m);
@@ -31,36 +36,12 @@ function labelSections(unlabeledSections: string[]): Dict {
 	return sections;
 }
 
-export interface Area {
-	area: AreaSection;
-	areadata: AreadataSection;
-	helps: Help[];
-	mobiles: Mobile[];
-	objects: Objekt[];
-	rooms: Room[];
-	resets: Reset[];
-	shops: Shop[];
-	specials: Special[];
-}
-
-export const BLANK_AREA: Area = {
-	area: BLANK_AREA_SECTION,
-	areadata: BLANK_AREADATA_SECTION,
-	helps: [],
-	mobiles: [],
-	objects: [],
-	rooms: [],
-	resets: [],
-	shops: [],
-	specials: [],
-};
-
 export default function parseFile(file: string): Area {
 	let unlabeledSections = splitSections(file);
 	let unparsedSections = labelSections(unlabeledSections);
 	let parsedSections: Area = {
 		area: BLANK_AREA_SECTION,
-		areadata: BLANK_AREADATA_SECTION,
+		areadata: {},
 		helps: [],
 		mobiles: [],
 		objects: [],

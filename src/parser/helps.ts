@@ -1,15 +1,5 @@
+import { Help } from "../app/models";
 import { parseKeywords, parseNumber } from "./helpers";
-
-export interface Help {
-	level: number;
-	keywords: string[];
-	body: string;
-	_error: {
-		level?: boolean;
-		keywords?: boolean;
-		body?: boolean;
-	};
-}
 
 export default function parseHelps(section: string): Help[] {
 	let parts = section.split('~');

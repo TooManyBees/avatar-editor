@@ -1,5 +1,5 @@
 import React from "react";
-import { Objekt } from "../parser/objects";
+import { Objekt } from "../app/models";
 import {
 	BitsField,
 	KeywordField,
