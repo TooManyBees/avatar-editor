@@ -71,7 +71,7 @@ export class NumberField extends React.Component<NumberFieldProps, NumberFieldSt
 	}
 
 	onChange(event: ChangeEvent<HTMLInputElement>) {
-		const value = parseInt(event.currentTarget.value, 10);
+		const value = Number(event.currentTarget.value);
 		const { max, min } = this.props;
 		if (!Number.isInteger(value)) return;
 		if (max != null && value > max) return;
@@ -84,7 +84,7 @@ export class NumberField extends React.Component<NumberFieldProps, NumberFieldSt
 		const value = this.state.value;
 		const valueString = value ? value.toString() : "";
 		return (
-			<label>{name}: <input type="number" value={valueString} min={min} max={max} onChange={this.onChange} /></label>
+			<label>{name}: <input type="text" value={valueString} min={min} max={max} onChange={this.onChange} /></label>
 		);
 	}
 }

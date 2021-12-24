@@ -22,6 +22,12 @@
 .VnumItemList li:hover {
 	background: pink;
 }
+.VnumItemList .vnum {
+	font-style: italic;
+	min-width: 3rem;
+	display: inline-block;
+	font-family: monospace;
+}
 
 .VnumItemEditorPlaceholder {
 	flex: 1 0 auto;
