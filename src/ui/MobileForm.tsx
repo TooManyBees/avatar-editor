@@ -6,6 +6,48 @@ interface Props {
 	item: Mobile;
 }
 
+export default class MobileForm extends React.Component<Props> {
+	constructor(props: Props) {
+		super(props);
+	}
+
+	renderKspawn(kspawn: Kspawn) {
+		return (
+			<fieldset>
+				<legend>Kspawn</legend>
+				<SelectField name="Condition" value={kspawn.condition} map={KSPAWN_CONDITION} />
+				<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} />
+				<NumberField name="Spawn VNUM" value={kspawn.spawnVnum} min={-1} />
+				<NumberField name="Room VNUM" value={kspawn.roomVnum} min={-1} />
+				<TextArea name="Text" value={kspawn.message} />
+			</fieldset>
+		);
+	}
+
+	render() {
+		const { item: mobile } = this.props;
+
+		return (
+			<div>
+				<NumberField name="VNUM" value={mobile.vnum} min={0} />
+				{/* keywords */}
+				<TextField name="Short desc" value={mobile.shortDesc} />
+				<TextField name="Long desc" value={mobile.longDesc} />
+				<TextArea name="Description" value={mobile.description} />
+				<BitsField name="Act Flags" value={mobile.act} map={ACT_FLAGS} />
+				<BitsField name="Affected Flags" value={mobile.act} map={AFF_FLAGS} />
+				<NumberField name="Alignment" value={mobile.align} min={-1000} max={1000} />
+				<NumberField name="Level" value={mobile.level} min={0} />
+				<SelectField name="Sex" value={mobile.sex} map={SEX} />
+				<SelectField name="Race" value={mobile.race} map={RACE} />
+				<SelectField name="Class" value={mobile.klass} map={CLASS} />
+				<SelectField name="Team" value={mobile.team} map={TEAM} />
+				{mobile.kspawn ? this.renderKspawn(mobile.kspawn) : null}
+			</div>
+		);
+	}
+}
+
 const ACT_FLAGS: [number, string, string][] = [
 	[1, "Is NPC", "All mobiles require this flag!"],
 	[2, "Sentinel", "Mob will not walk out of the room it is loaded in."],
@@ -219,45 +261,3 @@ const KSPAWN_TYPE: [number, string, string][] = [
 	[64, "KS trigger", "send the <death message> to the room and execute a mobprog check for the \"KS\" mobprog option on a mob with <spawn-vnum#>."],
 	[128, "KS with argument", "No death message is played to the room. Instead, the death message field is used as a text parameter for the mobprog C command = \"msg\". This allows a mob to react to diferent K-Spawns. Again, a mobprog check for the \"KS\" option on the mob with <spawn-vnum#> is done."]
 ];
-
-export default class MobileForm extends React.Component<Props> {
-	constructor(props: Props) {
-		super(props);
-	}
-
-	renderKspawn(kspawn: Kspawn) {
-		return (
-			<fieldset>
-				<legend>Kspawn</legend>
-				<SelectField name="Condition" value={kspawn.condition} map={KSPAWN_CONDITION} />
-				<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} />
-				<NumberField name="Spawn VNUM" value={kspawn.spawnVnum} min={-1} />
-				<NumberField name="Room VNUM" value={kspawn.roomVnum} min={-1} />
-				<TextArea name="Text" value={kspawn.message} />
-			</fieldset>
-		);
-	}
-
-	render() {
-		const { item: mobile } = this.props;
-
-		return (
-			<div>
-				<NumberField name="VNUM" value={mobile.vnum} min={0} />
-				{/* keywords */}
-				<TextField name="Short desc" value={mobile.shortDesc} />
-				<TextField name="Long desc" value={mobile.longDesc} />
-				<TextArea name="Description" value={mobile.description} />
-				<BitsField name="Act Flags" value={mobile.act} map={ACT_FLAGS} />
-				<BitsField name="Affected Flags" value={mobile.act} map={AFF_FLAGS} />
-				<NumberField name="Alignment" value={mobile.align} min={-1000} max={1000} />
-				<NumberField name="Level" value={mobile.level} min={0} />
-				<SelectField name="Sex" value={mobile.sex} map={SEX} />
-				<SelectField name="Race" value={mobile.race} map={RACE} />
-				<SelectField name="Class" value={mobile.klass} map={CLASS} />
-				<SelectField name="Team" value={mobile.team} map={TEAM} />
-				{mobile.kspawn ? this.renderKspawn(mobile.kspawn) : null}
-			</div>
-		);
-	}
-}
