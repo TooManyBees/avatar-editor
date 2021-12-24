@@ -7,3 +7,9 @@ export function newId(): string {
 		return `${rand}${time}`;
 	}
 }
+
+type ErrorMarkers2<T> = {
+	[Field in keyof T]?: boolean;
+}
+
+export type ErrorMarkers<T> = ErrorMarkers2<T> & { all?: boolean };

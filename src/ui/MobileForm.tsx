@@ -38,7 +38,7 @@ export default class MobileForm extends React.Component<Props> {
 			<div>
 				<NumberField name="VNUM" value={mobile.vnum} min={0} />
 				<KeywordField name="Keywords" value={mobile.keywords} />
-				<TextField name="Short desc" value={mobile.shortDesc} />
+				<TextField name="Short desc" value={mobile.name} />
 				<TextField name="Long desc" value={mobile.longDesc} />
 				<TextArea name="Description" value={mobile.description} />
 				<BitsField name="Act Flags" value={mobile.act} map={ACT_FLAGS} />

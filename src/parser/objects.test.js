@@ -6,7 +6,7 @@ describe("parseObject", () => {
 		expectNoErrors(object);
 		expect(object.vnum).toBe(8129);
 		expect(object.keywords).toEqual(["tattoo", "letters", "newbie", "tattoos"]);
-		expect(object.shortDesc).toBe("Official 'Avatar' Tattoos");
+		expect(object.name).toBe("Official 'Avatar' Tattoos");
 		expect(object.longDesc).toBe("A small pile of painted letters sit on the ground here.");
 		expect(object.actionDesc).toBe("You suddenly have the urge to get more tattoos!");
 		expect(object.itemType).toBe(9);

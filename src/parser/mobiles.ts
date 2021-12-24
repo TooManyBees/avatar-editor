@@ -1,4 +1,4 @@
-import { Mobile, Kspawn } from "../app/models/mobiles";
+import { Mobile, Kspawn, blankMobile, blankKspawn } from "../app/models/mobiles";
 import {
 	parseBits,
 	parseKeywords,
@@ -27,9 +27,9 @@ const enum ParseState {
 
 export function parseMobile(mobString: string): Mobile {
 	let state = ParseState.Vnum;
-	let mobile = new Mobile();
+	let mobile = blankMobile();
 
-	let kspawnBuffer = new Kspawn();
+	let kspawnBuffer = blankKspawn();
 	let multiLineBuffer = "";
 
 	let lines = mobString.trim().split("\n");
@@ -63,8 +63,8 @@ export function parseMobile(mobString: string): Mobile {
 				state = ParseState.LongDesc;
 				let tilde = line.indexOf("~");
 				let string = tilde === -1 ? line : line.substring(0, tilde);
-				if (tilde === -1) mobile._error.shortDesc = true;
-				mobile.shortDesc = string;
+				if (tilde === -1) mobile._error.name = true;
+				mobile.name = string;
 				break;
 			}
 			case ParseState.LongDesc: {
@@ -207,12 +207,12 @@ export function parseMobile(mobString: string): Mobile {
 							} else {
 								kspawnBuffer.message = message.substring(0, tilde);
 								mobile.kspawn = kspawnBuffer;
-								kspawnBuffer = new Kspawn();
+								kspawnBuffer = blankKspawn();
 							}
 						} else {
 							mobile._error.kspawn = true;
 							mobile.kspawn = kspawnBuffer;
-							kspawnBuffer = new Kspawn();
+							kspawnBuffer = blankKspawn();
 						}
 						break;
 					}
@@ -232,7 +232,7 @@ export function parseMobile(mobString: string): Mobile {
 					kspawnBuffer.message += "\n";
 					kspawnBuffer.message += line.substring(0, tilde);
 					mobile.kspawn = kspawnBuffer;
-					kspawnBuffer = new Kspawn();
+					kspawnBuffer = blankKspawn();
 				}
 				break;
 			}

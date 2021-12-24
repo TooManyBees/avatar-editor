@@ -1,4 +1,4 @@
-import { Objekt } from "../app/models";
+import { Objekt, blankObject } from "../app/models/objects";
 
 import {
 	parseBits,
@@ -28,7 +28,7 @@ const enum ParseState {
 
 export function parseObject(objectString: string): Objekt {
 	let state = ParseState.Vnum;
-	let object = new Objekt();
+	let object = blankObject();
 
 	let edescKeywords: string[] = [];
 	let multiLineBuffer = "";
@@ -62,8 +62,8 @@ export function parseObject(objectString: string): Objekt {
 				state = ParseState.LongDesc;
 				let tilde = line.indexOf("~");
 				let string = tilde === -1 ? line : line.substring(0, tilde);
-				if (tilde === -1) object._error.shortDesc = true;
-				object.shortDesc = string;
+				if (tilde === -1) object._error.name = true;
+				object.name = string;
 				break;
 			}
 			case ParseState.LongDesc: {

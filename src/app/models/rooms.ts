@@ -1,7 +1,6 @@
-import { newId } from "./helpers";
+import { newId, ErrorMarkers } from "./helpers";
 
-export class Room {
-	readonly id: string;
+export interface RoomFields {
 	vnum: number | null;
 	name: string;
 	description: string;
@@ -11,58 +10,46 @@ export class Room {
 	extraDescs: [string[], string][];
 	alignFlags: number[];
 	classFlags: number[];
-	_error: {
-		all?: true;
-		vnum?: boolean;
-		name?: boolean;
-		description?: boolean;
-		flags?: boolean;
-		sector?: boolean;
-		doors?: boolean;
-		extraDescs?: boolean;
-		alignFlags?: boolean;
-		classFlags?: boolean;
-	};
-
-	constructor() {
-		this.id = newId();
-		this.vnum = null;
-		this.name = "";
-		this.description = "";
-		this.flags = [];
-		this.sector = 0;
-		this.doors = [];
-		this.extraDescs = [];
-		this.alignFlags = [];
-		this.classFlags = [];
-		this._error = {};
-	}
 }
 
-export class Door {
+export interface Room extends RoomFields {
+	readonly id: string;
+	_error: ErrorMarkers<RoomFields>
+}
+
+export const blankRoom = (): Room => ({
+	id: newId(),
+	vnum: null,
+	name: "",
+	description: "",
+	flags: [],
+	sector: 0,
+	doors: [],
+	extraDescs: [],
+	alignFlags: [],
+	classFlags: [],
+	_error: {},
+});
+
+export interface DoorFields {
 	direction: number;
 	description: string;
 	keywords: string[];
 	locks: number[];
 	key: number;
 	toVnum: number;
-	_error: {
-		all?: true;
-		direction?: boolean;
-		description?: boolean;
-		keywords?: boolean;
-		locks?: boolean;
-		key?: boolean;
-		toVnum?: boolean;
-	};
-
-	constructor() {
-		this.direction = 0;
-		this.description = "";
-		this.keywords = [];
-		this.locks = [];
-		this.key = 0;
-		this.toVnum = 1;
-		this._error = {};
-	}
 }
+
+export interface Door extends DoorFields {
+	_error: ErrorMarkers<DoorFields>;
+}
+
+export const blankDoor = (): Door => ({
+	direction: 0,
+	description: "",
+	keywords: [],
+	locks: [],
+	key: 0,
+	toVnum: 1,
+	_error: {},
+});

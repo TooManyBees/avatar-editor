@@ -1,4 +1,4 @@
-import { Room, Door } from "../app/models";
+import { Room, Door, blankRoom, blankDoor } from "../app/models/rooms";
 import {
 	parseBits,
 	parseKeywords,
@@ -26,11 +26,11 @@ export default function parseRooms(section: string): Room[] {
 
 export function parseRoom(roomString: string): Room {
 	let state = ParseState.Vnum;
-	let room = new Room();
+	let room = blankRoom();
 
 	let multiLineBuffer = "";
 	let edescKeywords: string[] = [];
-	let door = new Door();
+	let door = blankDoor();
 
 	let lines = roomString.trim().split("\n");
 
@@ -160,7 +160,7 @@ export function parseRoom(roomString: string): Room {
 				else door._error.toVnum = true;
 
 				room.doors.push(door);
-				door = new Door();
+				door = blankDoor();
 
 				break;
 			}

@@ -23,7 +23,7 @@ export default class ObjektForm extends React.Component<Props> {
 			<div>
 				<NumberField name="VNUM" value={object.vnum} min={0} />
 				<KeywordField name="Keywords" value={object.keywords} />
-				<TextField name="Short desc" value={object.shortDesc} />
+				<TextField name="Short desc" value={object.name} />
 				<TextField name="Long desc" value={object.longDesc} />
 				<TextField name="Action desc" value={object.actionDesc} />
 				<SelectField name="Type" value={object.itemType} map={ITEM_TYPE} />
