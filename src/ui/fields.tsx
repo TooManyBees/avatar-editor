@@ -5,6 +5,7 @@ import "./fields.css";
 interface TextFieldProps {
 	name: string;
 	value: string | null;
+	onUpdate?: (s: string) => void;
 }
 
 interface TextFieldState {
@@ -16,10 +17,17 @@ export class TextField extends React.Component<TextFieldProps, TextFieldState> {
 		super(props);
 		this.state = { value: props.value };
 		this.onChange = this.onChange.bind(this);
+		this.onBlur = this.onBlur.bind(this);
 	}
 
 	onChange(event: ChangeEvent<HTMLInputElement>) {
 		this.setState({ value: event.currentTarget.value });
+	}
+
+	onBlur(event: any) {
+		if (this.props.onUpdate && this.state.value) {
+			this.props.onUpdate(this.state.value);
+		}
 	}
 
 	render() {
@@ -28,7 +36,7 @@ export class TextField extends React.Component<TextFieldProps, TextFieldState> {
 		const valueString = value == null ? "" : value.toString();
 		return (
 			<div className="TextField">
-				<label>{name}: <input type="text" value={valueString} onChange={this.onChange} /></label>
+				<label>{name}: <input type="text" value={valueString} onChange={this.onChange} onBlur={this.onBlur} /></label>
 			</div>
 		);
 	}
@@ -39,10 +47,17 @@ export class TextArea extends React.Component<TextFieldProps, TextFieldState> {
 		super(props);
 		this.state = { value: props.value };
 		this.onChange = this.onChange.bind(this);
+		this.onBlur = this.onBlur.bind(this);
 	}
 
 	onChange(event: ChangeEvent<HTMLTextAreaElement>) {
 		this.setState({ value: event.currentTarget.value });
+	}
+
+	onBlur(event: any) {
+		if (this.props.onUpdate && this.state.value) {
+			this.props.onUpdate(this.state.value);
+		}
 	}
 
 	render() {
@@ -50,7 +65,7 @@ export class TextArea extends React.Component<TextFieldProps, TextFieldState> {
 		const value = this.state.value;
 		const valueString = value == null ? "" : value.toString();
 		return (
-			<label className="TextArea">{name}: <textarea rows={8} value={valueString} onChange={this.onChange} /></label>
+			<label className="TextArea">{name}: <textarea rows={8} value={valueString} onChange={this.onChange} onBlur={this.onBlur} /></label>
 		);
 	}
 }
@@ -60,6 +75,7 @@ interface NumberFieldProps {
 	value: number | null;
 	min?: number;
 	max?: number;
+	onUpdate?: (n: number) => void;
 }
 
 interface NumberFieldState {
@@ -71,6 +87,7 @@ export class NumberField extends React.Component<NumberFieldProps, NumberFieldSt
 		super(props);
 		this.state = { value: props.value };
 		this.onChange = this.onChange.bind(this);
+		this.onBlur = this.onBlur.bind(this);
 	}
 
 	onChange(event: ChangeEvent<HTMLInputElement>) {
@@ -82,13 +99,19 @@ export class NumberField extends React.Component<NumberFieldProps, NumberFieldSt
 		this.setState({ value });
 	}
 
+	onBlur(event: any) {
+		if (this.props.onUpdate && this.state.value) {
+			this.props.onUpdate(this.state.value);
+		}
+	}
+
 	render() {
 		const { name, max, min } = this.props;
 		const value = this.state.value;
-		const valueString = value ? value.toString() : "";
+		const valueString = value != null ? value.toString() : "";
 		return (
 			<div className="NumberField">
-				<label>{name}:</label> <input type="text" value={valueString} min={min} max={max} onChange={this.onChange} />
+				<label>{name}:</label> <input type="text" value={valueString} min={min} max={max} onChange={this.onChange} onBlur={this.onBlur} />
 			</div>
 		);
 	}
@@ -98,6 +121,7 @@ interface BitsFieldProps {
 	name: string;
 	value: number[];
 	map: [number, string, string][];
+	onUpdate?: (bs: number[]) => void;
 }
 
 interface BitsFieldState {
@@ -114,10 +138,17 @@ export class BitsField extends React.Component<BitsFieldProps, BitsFieldState> {
 	onChange(event: ChangeEvent<HTMLInputElement>) {
 		const bit = parseInt(event.currentTarget.value, 10);
 		if (Number.isInteger(bit)) {
-			let idx = this.state.value.indexOf(bit);
-			const value = this.state.value;
-			if (idx > -1) this.setState({ value: value.slice(0, idx).concat(value.slice(idx + 1)) });
-			else this.setState({ value: value.concat(bit) });
+			let value = this.state.value;
+			let idx = value.indexOf(bit);
+			if (idx > -1){
+				value = value.slice(0, idx).concat(value.slice(idx + 1));
+			} else {
+				value = value.concat(bit);
+			}
+			this.setState({ value });
+			if (this.props.onUpdate) {
+				this.props.onUpdate(value);
+			}
 		}
 	}
 
@@ -143,6 +174,7 @@ interface SelectFieldProps {
 	name: string;
 	value: number | undefined;
 	map: [number, string, string][];
+	onUpdate?: (n: number) => void;
 }
 
 interface SelectFieldState {
@@ -158,7 +190,12 @@ export class SelectField extends React.Component<SelectFieldProps, SelectFieldSt
 
 	onChange(event: ChangeEvent<HTMLSelectElement>) {
 		const value = parseInt(event.currentTarget.value, 10);
-		if (Number.isInteger(value)) this.setState({ value });
+		if (Number.isInteger(value)){
+			this.setState({ value });
+			if (this.props.onUpdate) {
+				this.props.onUpdate(value);
+			}
+		}
 	}
 
 	render() {

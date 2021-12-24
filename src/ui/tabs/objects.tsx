@@ -1,5 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import * as Actions from "../../app/store/objects";
 import { selectedId } from "../../app/store/ui";
 import { Objekt } from "../../app/models";
 import {
@@ -40,32 +41,60 @@ interface Props {
 	item: Objekt;
 }
 
-class ObjectForm extends React.Component<Props> {
-	render() {
-		const { item: object } = this.props;
 
-		const wearFlags = object.wearFlags.reduce((sum, b) => sum + b, 0);
-
-		return (
-			<div>
-				<NumberField name="VNUM" value={object.vnum} min={0} />
-				<KeywordField name="Keywords" value={object.keywords} />
-				<TextField name="Short desc" value={object.name} />
-				<TextField name="Long desc" value={object.longDesc} />
-				<TextField name="Action desc" value={object.actionDesc} />
-				<SelectField name="Type" value={object.itemType} map={ITEM_TYPE} />
-				<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} />
-				<SelectField name="Wear flags" value={wearFlags} map={WEAR_FLAGS} />
-				{/* item type specific values */}
-				<NumberField name="Weight" value={object.weight} />
-				<NumberField name="Worth" value={object.worth} />
-				<BitsField name="Racial wear flags" value={object.racialFlags} map={RACIAL_WEAR_FLAGS} />
-				{/* extra descs */}
-				{/* applies */}
-				<NumberField name="Quality" value={object.quality} min={1} />
-			</div>
-		);
+// FIXME
+function factor(n: number): number[] {
+	let factors: number[] = [];
+	for (let power = 0; power < 32; power++) {
+		if ((n & 1<<power) > 0) {
+			factors.push(1<<power);
+		}
 	}
+	return factors;
+}
+
+function ObjectForm({ item: object }: Props) {
+	const dispatch = useAppDispatch();
+	const id = object.id;
+
+	const wearFlags = object.wearFlags.reduce((sum, b) => sum + b, 0);
+
+	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
+	const updatedKeywords = (ks: string[]) => dispatch(Actions.updatedKeywords([id, ks]));
+	const updatedShortDesc = (s: string) => dispatch(Actions.updatedShortDesc([id, s]));
+	const updatedLongDesc = (s: string) => dispatch(Actions.updatedLongDesc([id, s]));
+	const updatedActionDesc = (s: string) => dispatch(Actions.updatedActionDesc([id, s]));
+	const updatedItemType = (n: number) => dispatch(Actions.updatedItemType([id, n]));
+	const updatedExtraFlags = (bs: number[]) => dispatch(Actions.updatedExtraFlags([id, bs]));
+	const updatedWearFlags = (n: number) => dispatch(Actions.updatedWearFlags([id, factor(n)]));
+	const updatedValue0 = (n: number) => dispatch(Actions.updatedValue0([id, n]));
+	const updatedValue1 = (n: number) => dispatch(Actions.updatedValue1([id, n]));
+	const updatedValue2 = (n: number) => dispatch(Actions.updatedValue2([id, n]));
+	const updatedValue3 = (n: number) => dispatch(Actions.updatedValue3([id, n]));
+	const updatedWeight = (n: number) => dispatch(Actions.updatedWeight([id, n]));
+	const updatedWorth = (n: number) => dispatch(Actions.updatedWorth([id, n]));
+	const updatedRacialFlags = (bs: number[]) => dispatch(Actions.updatedRacialFlags([id, bs]));
+	const updatedQuality = (n: number) => dispatch(Actions.updatedQuality([id, n]));
+
+	return (
+		<div>
+			<NumberField name="VNUM" value={object.vnum} min={0} onUpdate={updatedVnum} />
+			<KeywordField name="Keywords" value={object.keywords} onUpdate={updatedKeywords} />
+			<TextField name="Short desc" value={object.name} onUpdate={updatedShortDesc} />
+			<TextField name="Long desc" value={object.longDesc} onUpdate={updatedLongDesc} />
+			<TextField name="Action desc" value={object.actionDesc} onUpdate={updatedActionDesc} />
+			<SelectField name="Type" value={object.itemType} map={ITEM_TYPE} onUpdate={updatedItemType} />
+			<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} onUpdate={updatedExtraFlags} />
+			<SelectField name="Wear flags" value={wearFlags} map={WEAR_FLAGS} onUpdate={updatedWearFlags} />
+			{/* item type specific values */}
+			<NumberField name="Weight" value={object.weight} onUpdate={updatedWeight} />
+			<NumberField name="Worth" value={object.worth} onUpdate={updatedWorth} />
+			<BitsField name="Racial wear flags" value={object.racialFlags} map={RACIAL_WEAR_FLAGS} onUpdate={updatedRacialFlags} />
+			{/* extra descs */}
+			{/* applies */}
+			<NumberField name="Quality" value={object.quality} min={1} onUpdate={updatedQuality} />
+		</div>
+	);
 }
 
 const ITEM_TYPE: [number, string, string][] = [

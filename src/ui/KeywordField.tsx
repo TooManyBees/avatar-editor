@@ -3,6 +3,7 @@ import React from "react";
 interface Props {
 	name: string;
 	value: string[];
+	onUpdate?: (ks: string[]) => void;
 }
 
 interface State {
@@ -17,6 +18,13 @@ export default class KeywordField extends React.Component<Props, State> {
 			keywords: props.value,
 			currentWord: null,
 		};
+		this.onBlur = this.onBlur.bind(this);
+	}
+
+	onBlur(event: any) {
+		if (this.props.onUpdate) {
+			this.props.onUpdate(this.state.keywords);
+		}
 	}
 
 	render() {

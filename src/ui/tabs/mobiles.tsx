@@ -1,5 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import * as Actions from "../../app/store/mobiles";
 import { selectedId } from "../../app/store/ui";
 import { Mobile, Kspawn } from "../../app/models";
 import {
@@ -41,46 +42,56 @@ interface Props {
 	item: Mobile;
 }
 
-class MobileForm extends React.Component<Props> {
-	constructor(props: Props) {
-		super(props);
-	}
+function KspawnComponent({kspawn }: {kspawn: Kspawn}) {
+	return (
+		<fieldset>
+			<legend>Kspawn</legend>
+			<SelectField name="Condition" value={kspawn.condition} map={KSPAWN_CONDITION} />
+			<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} />
+			<NumberField name="Spawn VNUM" value={kspawn.spawnVnum} min={-1} />
+			<NumberField name="Room VNUM" value={kspawn.roomVnum} min={-1} />
+			<TextArea name="Text" value={kspawn.message} />
+		</fieldset>
+	);
+}
 
-	renderKspawn(kspawn: Kspawn) {
-		return (
-			<fieldset>
-				<legend>Kspawn</legend>
-				<SelectField name="Condition" value={kspawn.condition} map={KSPAWN_CONDITION} />
-				<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} />
-				<NumberField name="Spawn VNUM" value={kspawn.spawnVnum} min={-1} />
-				<NumberField name="Room VNUM" value={kspawn.roomVnum} min={-1} />
-				<TextArea name="Text" value={kspawn.message} />
-			</fieldset>
-		);
-	}
+function MobileForm(props: Props) {
+	const dispatch = useAppDispatch();
+	const { item: mobile } = props;
+	const id = mobile.id;
 
-	render() {
-		const { item: mobile } = this.props;
+	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
+	const updatedKeywords = (ks: string[]) => dispatch(Actions.updatedKeywords([id, ks]));
+	const updatedShortDesc = (s: string) => dispatch(Actions.updatedShortDesc([id, s]));
+	const updatedLongDesc = (s: string) => dispatch(Actions.updatedLongDesc([id, s]));
+	const updatedDescription = (s: string) => dispatch(Actions.updatedDescription([id, s]));
+	const updatedAct = (bs: number[]) => dispatch(Actions.updatedAct([id, bs]));
+	const updatedAffected = (bs: number[]) => dispatch(Actions.updatedAffected([id, bs]));
+	const updatedAlign = (n: number) => dispatch(Actions.updatedAlign([id, n]));
+	const updatedLevel = (n: number) => dispatch(Actions.updatedLevel([id, n]));
+	const updatedSex = (n: number) => dispatch(Actions.updatedSex([id, n]));
+	const updatedRace = (n: number) => dispatch(Actions.updatedRace([id, n]));
+	const updatedClass = (n: number) => dispatch(Actions.updatedClass([id, n]));
+	const updatedTeam = (n: number) => dispatch(Actions.updatedTeam([id, n]));
 
-		return (
-			<div>
-				<NumberField name="VNUM" value={mobile.vnum} min={0} />
-				<KeywordField name="Keywords" value={mobile.keywords} />
-				<TextField name="Short desc" value={mobile.name} />
-				<TextField name="Long desc" value={mobile.longDesc} />
-				<TextArea name="Description" value={mobile.description} />
-				<BitsField name="Act Flags" value={mobile.act} map={ACT_FLAGS} />
-				<BitsField name="Affected Flags" value={mobile.act} map={AFF_FLAGS} />
-				<NumberField name="Alignment" value={mobile.align} min={-1000} max={1000} />
-				<NumberField name="Level" value={mobile.level} min={0} />
-				<SelectField name="Sex" value={mobile.sex} map={SEX} />
-				<SelectField name="Race" value={mobile.race} map={RACE} />
-				<SelectField name="Class" value={mobile.klass} map={CLASS} />
-				<SelectField name="Team" value={mobile.team} map={TEAM} />
-				{mobile.kspawn ? this.renderKspawn(mobile.kspawn) : null}
-			</div>
-		);
-	}
+	return (
+		<div>
+			<NumberField name="VNUM" value={mobile.vnum} min={0} onUpdate={updatedVnum} />
+			<KeywordField name="Keywords" value={mobile.keywords} onUpdate={updatedKeywords} />
+			<TextField name="Short desc" value={mobile.name} onUpdate={updatedShortDesc} />
+			<TextField name="Long desc" value={mobile.longDesc} onUpdate={updatedLongDesc} />
+			<TextArea name="Description" value={mobile.description} onUpdate={updatedDescription} />
+			<BitsField name="Act Flags" value={mobile.act} map={ACT_FLAGS} onUpdate={updatedAct} />
+			<BitsField name="Affected Flags" value={mobile.affected} map={AFF_FLAGS} onUpdate={updatedAffected} />
+			<NumberField name="Alignment" value={mobile.align} min={-1000} max={1000} onUpdate={updatedAlign} />
+			<NumberField name="Level" value={mobile.level} min={0} onUpdate={updatedLevel} />
+			<SelectField name="Sex" value={mobile.sex} map={SEX} onUpdate={updatedSex} />
+			<SelectField name="Race" value={mobile.race} map={RACE} onUpdate={updatedRace} />
+			<SelectField name="Class" value={mobile.klass} map={CLASS} onUpdate={updatedClass} />
+			<SelectField name="Team" value={mobile.team} map={TEAM} onUpdate={updatedTeam} />
+			{mobile.kspawn ? <KspawnComponent kspawn={mobile.kspawn} /> : null}
+		</div>
+	);
 }
 
 const ACT_FLAGS: [number, string, string][] = [
