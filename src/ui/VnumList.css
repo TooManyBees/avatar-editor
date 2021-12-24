@@ -1,6 +1,6 @@
 .VnumItemEditor {
 	display: flex;
-	height: calc(100vh - 2rem); /* eek! */
+	height: calc(100%);
 }
 
 .VnumItemList {

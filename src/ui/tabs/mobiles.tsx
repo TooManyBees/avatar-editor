@@ -1,5 +1,7 @@
 import React from "react";
-import { Mobile, Kspawn } from "../app/models";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectedId } from "../../app/store/ui";
+import { Mobile, Kspawn } from "../../app/models";
 import {
 	BitsField,
 	KeywordField,
@@ -7,13 +9,39 @@ import {
 	SelectField,
 	TextField,
 	TextArea,
-} from "./fields";
+} from "../fields";
+import { VnumItemList } from "../VnumList";
+import TabsNav from "./tabs-nav";
+
+import "./tabs.css";
+import "../VnumList.css";
+
+export default function MobilesTab() {
+	const dispatch = useAppDispatch();
+	const mobiles = useAppSelector(state => state.mobiles.mobiles);
+	const currentId = useAppSelector(state => state.ui.currentId);
+	const mobile = mobiles.find(m => m.id === currentId);
+
+	function onSelect(id: string) {
+		dispatch(selectedId(id));
+	}
+
+	return (
+		<div className="Tabs">
+			<div className={mobile ? undefined : "VnumItemEditorPlaceholder"}>
+				<TabsNav />
+				{mobile ? <MobileForm key={currentId} item={mobile} /> : null }
+			</div>
+			<VnumItemList items={mobiles} selected={currentId} onChange={onSelect} />
+		</div>
+	);
+}
 
 interface Props {
 	item: Mobile;
 }
 
-export default class MobileForm extends React.Component<Props> {
+class MobileForm extends React.Component<Props> {
 	constructor(props: Props) {
 		super(props);
 	}

@@ -23,8 +23,10 @@ const uiSlice = createSlice({
 			state.loaded = true;
 		},
 		changedTab(state, action: PayloadAction<TabName>) {
-			state.tab = action.payload;
-			state.currentId = null;
+			if (state.tab !== action.payload) {
+				state.tab = action.payload;
+				state.currentId = null;
+			}
 		},
 		selectedId(state, action: PayloadAction<string>) {
 			state.currentId = action.payload;

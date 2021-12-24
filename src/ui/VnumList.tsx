@@ -13,16 +13,16 @@ interface Props<T> {
 }
 
 interface State {
-	selected: string | undefined;
+	selected: string | null;
 }
 
 interface ListProps<T> {
-	selected: string | undefined;
+	selected: string | null;
 	items: T[];
 	onChange: (selected: string) => void;
 }
 
-function VnumItemList<T extends HasVnum>({ selected, items, onChange }: ListProps<T>) {
+export function VnumItemList<T extends HasVnum>({ selected, items, onChange }: ListProps<T>) {
 	return (
 		<ol className="VnumItemList">
 			{items.map(item => (
@@ -37,7 +37,7 @@ function VnumItemList<T extends HasVnum>({ selected, items, onChange }: ListProp
 export default class VnumItemEditor<T extends HasVnum> extends React.Component<Props<T>, State> {
 	constructor(props: Props<T>) {
 		super(props)
-		this.state = { selected: undefined };
+		this.state = { selected: null };
 		this.onChange = this.onChange.bind(this);
 	}
 

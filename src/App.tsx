@@ -2,9 +2,15 @@ import React, { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import './App.css';
 import { Area } from "./app/models";
 import parseAreaFile from "./parser";
-import SectionTabs from "./ui/SectionTabs";
+import Tabs from "./ui/tabs";
 
-function ReadAreaForm({onRead}: {onRead: Dispatch<SetStateAction<Area | null>>}) {
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { loaded } from "./app/store/ui";
+import { init as initMobs } from "./app/store/mobiles";
+import { init as initObjs } from "./app/store/objects";
+import { init as initRooms } from "./app/store/rooms";
+
+function ReadAreaForm({onRead}: {onRead: (a: Area) => void}) {
 	function onChange(event: ChangeEvent<HTMLInputElement>) {
 		let input = event.currentTarget;
 		if (input.files && input.files.length > 0) {
@@ -26,12 +32,21 @@ function ReadAreaForm({onRead}: {onRead: Dispatch<SetStateAction<Area | null>>})
 }
 
 function App() {
-	const [areaFile, setAreaFile] = React.useState<Area | null>(null);
+	const dispatch = useAppDispatch();
+	const isLoaded = useAppSelector(state => state.ui.loaded);
+
+	function onRead(area: Area) {
+		dispatch(initMobs(area.mobiles));
+		dispatch(initObjs(area.objects));
+		dispatch(initRooms(area.rooms));
+		dispatch(loaded());
+	}
+
 	return (
 		<div className="App">
-			{ areaFile ?
-				<SectionTabs area={areaFile} /> :
-				<ReadAreaForm onRead={setAreaFile} />
+			{ isLoaded ?
+				<Tabs /> :
+				<ReadAreaForm onRead={onRead} />
 			}
 		</div>
 	);

@@ -1,5 +1,7 @@
 import React from "react";
-import { Objekt } from "../app/models";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectedId } from "../../app/store/ui";
+import { Objekt } from "../../app/models";
 import {
 	BitsField,
 	KeywordField,
@@ -7,13 +9,38 @@ import {
 	SelectField,
 	TextField,
 	TextArea,
-} from "./fields";
+} from "../fields";
+import { VnumItemList } from "../VnumList";
+import TabsNav from "./tabs-nav";
+import "./tabs.css";
+import "../VnumList.css";
+
+export default function ObjectsTab() {
+	const dispatch = useAppDispatch();
+	const objects = useAppSelector(state => state.objects.objects);
+	const currentId = useAppSelector(state => state.ui.currentId);
+	const object = objects.find(m => m.id === currentId);
+
+	function onSelect(id: string) {
+		dispatch(selectedId(id));
+	}
+
+	return (
+		<div className="Tabs">
+			<div className={object ? undefined : "VnumItemEditorPlaceholder"}>
+				<TabsNav />
+				{object ? <ObjectForm key={currentId} item={object} /> : null }
+			</div>
+			<VnumItemList items={objects} selected={currentId} onChange={onSelect} />
+		</div>
+	);
+}
 
 interface Props {
 	item: Objekt;
 }
 
-export default class ObjektForm extends React.Component<Props> {
+class ObjectForm extends React.Component<Props> {
 	render() {
 		const { item: object } = this.props;
 

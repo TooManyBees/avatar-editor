@@ -1,12 +1,40 @@
 import React from "react";
-import { Room } from "../app/models";
-import { BitsField, NumberField, SelectField, TextField, TextArea } from "./fields";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectedId } from "../../app/store/ui";
+import { VnumItemList } from "../VnumList";
+import { Room } from "../../app/models";
+import { BitsField, NumberField, SelectField, TextField, TextArea } from "../fields";
+import TabsNav from "./tabs-nav";
+import "./tabs.css";
+import "../VnumList.css";
+
+export default function RoomsTab() {
+	const dispatch = useAppDispatch();
+	const rooms = useAppSelector(state => state.rooms.rooms);
+	const currentId = useAppSelector(state => state.ui.currentId);
+	const room = rooms.find(m => m.id === currentId);
+
+	function onSelect(id: string) {
+		dispatch(selectedId(id));
+	}
+
+	return (
+		<div className="Tabs">
+			<div className={room ? undefined : "VnumItemEditorPlaceholder"}>
+				<TabsNav />
+				{room ? <RoomForm key={currentId} item={room} /> : null }
+			</div>
+			<VnumItemList items={rooms} selected={currentId} onChange={onSelect} />
+		</div>
+	);
+}
+
 
 interface Props {
 	item: Room;
 }
 
-export default class RoomForm extends React.Component<Props> {
+class RoomForm extends React.Component<Props> {
 	render() {
 		const { item: room } = this.props;
 		return (

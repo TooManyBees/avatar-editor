@@ -1,18 +1,19 @@
-.SectionTabs {
+.Tabs {
 	height: 100%;
-}
-
-.SectionTabsNav {
 	display: flex;
 }
 
-.SectionTabsNavItem {
+.TabsNav {
+	display: flex;
+}
+
+.TabsNavItem {
 	cursor: pointer;
 	margin-right: 1rem;
 }
-.SectionTabsNavItem:last-child {
+.TabsNavItem:last-child {
 	margin-right: 0;
 }
-.SectionTabsNavItem:hover {
+.TabsNavItem:hover {
 	background-color: pink;
 }
