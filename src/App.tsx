@@ -6,6 +6,7 @@ import Tabs from "./ui/tabs";
 
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { loaded } from "./app/store/ui";
+import { init as initArea } from "./app/store/area-section";
 import { init as initMobs } from "./app/store/mobiles";
 import { init as initObjs } from "./app/store/objects";
 import { init as initRooms } from "./app/store/rooms";
@@ -36,6 +37,7 @@ function App() {
 	const isLoaded = useAppSelector(state => state.ui.loaded);
 
 	function onRead(area: Area) {
+		dispatch(initArea([area.area, area.areadata]));
 		dispatch(initMobs(area.mobiles));
 		dispatch(initObjs(area.objects));
 		dispatch(initRooms(area.rooms));

@@ -9,6 +9,7 @@ export default function TabsNav() {
 
 	return (
 		<nav className="TabsNav">
+			<div className="TabsNavItem" onClick={() => dispatch(changedTab("area"))}>Area</div>
 			<div className="TabsNavItem" onClick={() => dispatch(changedTab("mobiles"))}>Moblies</div>
 			<div className="TabsNavItem" onClick={() => dispatch(changedTab("objects"))}>Objects</div>
 			<div className="TabsNavItem" onClick={() => dispatch(changedTab("rooms"))}>Rooms</div>

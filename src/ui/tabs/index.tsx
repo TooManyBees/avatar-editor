@@ -1,5 +1,6 @@
 import React from "react";
 import { useAppSelector } from "../../app/hooks"
+import AreaTab from "./area";
 import MobilesTab from "./mobiles";
 import ObjectsTab from "./objects";
 import RoomsTab from "./rooms";
@@ -8,7 +9,7 @@ export default function Tabs() {
 	const tab = useAppSelector(state => state.ui.tab);
 	switch (tab) {
 		case "area":
-			return null;
+			return <AreaTab />;
 		case "helps":
 			return null;
 		case "mobiles":
