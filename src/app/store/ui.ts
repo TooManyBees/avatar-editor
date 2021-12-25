@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type TabName = "area" | "helps" | "mobiles" | "objects" | "rooms" | "shops";
+type TabName = "area" | "areadata" | "mobiles" | "objects" | "rooms" | "shops";
 
 interface UiState {
 	loaded: boolean;
@@ -10,7 +10,7 @@ interface UiState {
 
 const initialState: UiState = {
 	loaded: false,
-	tab: "mobiles", // FIXME: set to area later
+	tab: "area",
 	currentId: null,
 };
 
