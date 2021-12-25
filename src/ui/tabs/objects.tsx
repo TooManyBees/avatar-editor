@@ -6,6 +6,7 @@ import { Objekt } from "../../app/models";
 import {
 	ApplyFields,
 	BitsField,
+	EdescFields,
 	KeywordField,
 	NumberField,
 	SelectField,
@@ -94,6 +95,7 @@ function ObjectForm({ item: object }: Props) {
 			{/* extra descs */}
 			{/* applies */}
 			<NumberField name="Quality" value={object.quality} min={1} onUpdate={updatedQuality} />
+			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 		</div>
 	);
