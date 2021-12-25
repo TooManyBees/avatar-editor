@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Area } from "../models";
 
-type TabName = keyof Area;
+type TabName = "area" | "helps" | "mobiles" | "objects" | "rooms" | "shops";
 
 interface UiState {
 	loaded: boolean;

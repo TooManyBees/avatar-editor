@@ -9,8 +9,6 @@ export default function Tabs() {
 	switch (tab) {
 		case "area":
 			return null;
-		case "areadata":
-			return null;
 		case "helps":
 			return null;
 		case "mobiles":
@@ -19,11 +17,7 @@ export default function Tabs() {
 			return <ObjectsTab />;
 		case "rooms":
 			return <RoomsTab />;
-		case "resets":
-			return null;
 		case "shops":
-			return null;
-		case "specials":
 			return null;
 	}
 }
