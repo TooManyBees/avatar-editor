@@ -30,7 +30,7 @@ export default function MobilesTab() {
 
 	return (
 		<div className="Tabs">
-			<div className={mobile ? undefined : "VnumItemEditorPlaceholder"}>
+			<div className={mobile ? "TabsContents" : "VnumItemEditorPlaceholder"}>
 				<TabsNav />
 				{mobile ? <MobileForm key={currentId} item={mobile} /> : null }
 			</div>
@@ -41,19 +41,6 @@ export default function MobilesTab() {
 
 interface Props {
 	item: Mobile;
-}
-
-function KspawnComponent({kspawn }: {kspawn: Kspawn}) {
-	return (
-		<fieldset>
-			<legend>Kspawn</legend>
-			<SelectField name="Condition" value={kspawn.condition} map={KSPAWN_CONDITION} />
-			<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} />
-			<NumberField name="Spawn VNUM" value={kspawn.spawnVnum} min={-1} />
-			<NumberField name="Room VNUM" value={kspawn.roomVnum} min={-1} />
-			<TextArea name="Text" value={kspawn.message} />
-		</fieldset>
-	);
 }
 
 function MobileForm(props: Props) {
@@ -91,7 +78,16 @@ function MobileForm(props: Props) {
 			<SelectField name="Class" value={mobile.klass} map={CLASS} onUpdate={updatedClass} />
 			<SelectField name="Team" value={mobile.team} map={TEAM} onUpdate={updatedTeam} />
 			<ApplyFields applies={mobile.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
-			{mobile.kspawn ? <KspawnComponent kspawn={mobile.kspawn} /> : null}
+			{mobile.kspawn ? (
+				<fieldset>
+					<legend>Kspawn</legend>
+					<SelectField name="Condition" value={mobile.kspawn.condition} map={KSPAWN_CONDITION} />
+					<BitsField name="Type" value={mobile.kspawn.spawnType} map={KSPAWN_TYPE} />
+					<NumberField name="Spawn VNUM" value={mobile.kspawn.spawnVnum} min={-1} />
+					<NumberField name="Room VNUM" value={mobile.kspawn.roomVnum} min={-1} />
+					<TextArea name="Text" value={mobile.kspawn.message} />
+				</fieldset>
+			) : null}
 		</div>
 	);
 }
@@ -214,15 +210,15 @@ const RACE: [number, string, string][] = [
 	[46, "Verbull", ""],
 	[47, "Varbin", ""],
 	[48, "Varsil", ""],
-	[49, "Firedrake", ""],
-	[50, "Firedrake", ""],
-	[51, "Firedrake", ""],
-	[52, "Firedrake", ""],
-	[53, "Firedrake", ""],
-	[54, "Firedrake", ""],
-	[55, "Firedrake", ""],
-	[56, "Firedrake", ""],
-	[57, "Firedrake", ""],
+	[49, "Firedrake (Level 1)", ""],
+	[50, "Firedrake (Level 25)", ""],
+	[51, "Firedrake (Hero 1)", ""],
+	[52, "Firedrake (Hero 250)", ""],
+	[53, "Firedrake (Hero 500)", ""],
+	[54, "Firedrake (Hero 750)", ""],
+	[55, "Firedrake (Lord 1)", ""],
+	[56, "Firedrake (Lord 250)", ""],
+	[57, "Firedrake (Lord 500)", ""],
 	[58, "Draconian", ""],
 	[59, "Tuataur", ""],
 	[60, "Pit Fiend", ""],

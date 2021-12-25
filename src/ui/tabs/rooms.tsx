@@ -20,7 +20,7 @@ export default function RoomsTab() {
 
 	return (
 		<div className="Tabs">
-			<div className={room ? undefined : "VnumItemEditorPlaceholder"}>
+			<div className={room ? "TabsContents" : "VnumItemEditorPlaceholder"}>
 				<TabsNav />
 				{room ? <RoomForm key={currentId} item={room} /> : null }
 			</div>

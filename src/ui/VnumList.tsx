@@ -25,9 +25,9 @@ interface ListProps<T> {
 export function VnumItemList<T extends HasVnum>({ selected, items, onChange }: ListProps<T>) {
 	return (
 		<ol className="VnumItemList">
-			{items.map(item => (
-				<li key={item.id} onClick={() => onChange(item.id)}>
-					<span className="vnum">{item.vnum || ""}</span> {item.name}
+			{items.map(({ id, vnum, name }) => (
+				<li key={id} onClick={() => onChange(id)} className={selected === id ? "selected" : undefined}>
+					<span className="vnum">{vnum || ""}</span> {name}
 				</li>
 			))}
 		</ol>

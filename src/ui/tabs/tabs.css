@@ -17,3 +17,8 @@
 .TabsNavItem:hover {
 	background-color: pink;
 }
+
+.TabsContents {
+	height: 100%;
+	overflow-y: scroll;
+}

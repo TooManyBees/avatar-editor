@@ -24,7 +24,15 @@
 	display:  block;
 	width: 100%;
 	resize: vertical;
-	background-image: linear-gradient(to right, white, white 40rem, pink 40rem, pink);
+	background-image: linear-gradient(
+		to right,
+		white,
+		white 36rem,
+		#ffeeee 36rem,
+		#ffeeee 40rem,
+		#ffdddd 40rem,
+		#ffdddd
+	);
 	position: relative;
 }
 
@@ -38,5 +46,3 @@
 .SelectField {
 
 }
-
-/*This frightening individual removes his shirt and tosses it to the..............*/

@@ -65,8 +65,9 @@ export class TextArea extends React.Component<TextFieldProps, TextFieldState> {
 		const name = this.props.name;
 		const value = this.state.value;
 		const valueString = value == null ? "" : value.toString();
+		const rows = (valueString.match(/\n/g)?.length || 0) + 1;
 		return (
-			<label className="TextArea">{name}: <textarea rows={8} value={valueString} onChange={this.onChange} onBlur={this.onBlur} /></label>
+			<label className="TextArea">{name}: <textarea rows={rows} value={valueString} onChange={this.onChange} onBlur={this.onBlur} /></label>
 		);
 	}
 }

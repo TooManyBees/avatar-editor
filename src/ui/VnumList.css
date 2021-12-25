@@ -19,7 +19,7 @@
 	cursor: pointer;
 	white-space: nowrap;
 }
-.VnumItemList li:hover {
+.VnumItemList li:hover, .VnumItemList li.selected {
 	background: pink;
 }
 .VnumItemList .vnum {

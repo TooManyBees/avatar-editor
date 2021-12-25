@@ -29,7 +29,7 @@ export default function ObjectsTab() {
 
 	return (
 		<div className="Tabs">
-			<div className={object ? undefined : "VnumItemEditorPlaceholder"}>
+			<div className={object ? "TabsContents" : "VnumItemEditorPlaceholder"}>
 				<TabsNav />
 				{object ? <ObjectForm key={currentId} item={object} /> : null }
 			</div>
@@ -83,7 +83,7 @@ function ObjectForm({ item: object }: Props) {
 			<KeywordField name="Keywords" value={object.keywords} onUpdate={updatedKeywords} />
 			<TextField name="Short desc" value={object.name} onUpdate={updatedShortDesc} />
 			<TextField name="Long desc" value={object.longDesc} onUpdate={updatedLongDesc} />
-			<TextField name="Action desc" value={object.actionDesc} onUpdate={updatedActionDesc} />
+			<TextArea name="Action desc" value={object.actionDesc} onUpdate={updatedActionDesc} />
 			<SelectField name="Type" value={object.itemType} map={ITEM_TYPE} onUpdate={updatedItemType} />
 			<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} onUpdate={updatedExtraFlags} />
 			<SelectField name="Wear flags" value={wearFlags} map={WEAR_FLAGS} onUpdate={updatedWearFlags} />
@@ -142,37 +142,37 @@ const ITEM_TYPE: [number, string, string][] = [
 ];
 
 const EXTRA_FLAGS: [number, string, string][] = [
-	[1, "GLOW", "Makes item glow; no effect, but can be altered by enchanting, illuminate, or conceal object"],
-	[2, "HUM", "Makes item hum; no effect, but can be added by enchanting"],
-	[4, "DARK", "Makes item dark; affects levers (ITEM_MARKINGS: see Table L: Item Type Values, type 30); affects harmonize spell; added by violate spell"],
-	[8, "LOCK", "Gives item lock flag. If item is on the ground it can only be addressed by the full keyword. This is true both for looking at the object’s extra descriptions and the object’s name. No affect on carried objects."],
-	[16, "EVIL", "Makes item evil; no effect"],
-	[32, "INVIS", "Makes item invisible; cannot be seen by players 4 levels below item level even with detect invis (for weapons, 6 levels below)"],
-	[64, "MAGIC", "Makes item magic; affects transmute spell; added by enchanting, transmuting"],
-	[128, "NODROP", "Makes item undroppable; requires remove curse"],
-	[256, "BLESS", "Makes item blessed; item takes half damage; added by consecrate spell"],
-	[512, "ANTI_GOOD", "Makes item unholdable by good players; affects cleanse spell"],
-	[1024, "ANTI_EVIL", "Makes item unholdable by evil players"],
-	[2048, "ANTI_NEUTRAL", "Makes item unholdable by neutral players"],
-	[4096, "NOREMOVE", "Cannot remove item once worn"],
-	[8192, "INVENTORY", "Item disappears when character dies"],
-	[16384, "TIMED", "Item vanishes after timer expires; consult the Immortal in charge of your project if you need to use this"],
-	[32768, "CHARITY", "Item requires fence to sell, cannot be sacrificed; flag added when item is donated"],
-	[65536, "GOOD", "Makes item good; no effect"],
-	[131072, "NOLOCATE", "Item not located using 'locate object'; removed by illuminate spell"],
-	[262144, "HAGGLED", "Lowers value on item DO NOT USE IN BUILDING"],
-	[524288, "SHARP", "Item has a (Sharp) before it; no effect; can be added by sharpening an item"],
-	[1048576, "DULL", "Item has a (Dull) before it; no effect"],
-	[2097152, "REINFORCED", "Item is reinforced; item cannot be shattered by monk skill shatter strike; added by reinforce spell"],
-	[4194304, "ELECTRIC_WARD", "Item has an electric ward; added by ward spell"],
-	[8388608, "FIRE_WARD", "Item has a fire ward; added by ward spell"],
-	[16777216, "ICE_WARD", "Item has an ice ward; added by ward spell"],
-	[33554432, "MAGIC_WARD", "Item has a caustic ward; added by ward spell"],
-	[67108864, "MAJOR_WARD", "Item has all wards; added by major ward spell FOR LORD ITEMS ONLY"],
-	[134217728, "NOCHARM", "Wearer immune to charm and invis. If wearer is a mobile, player attempts to cast invis will send the player to jail instantly."],
-	[268435456, "SPIRITLINK", "Item has a spiritlink to character"],
-	[536870912, "ETCH", "Item has been etched"],
-	[1073741824, "RUNE", "Item has been runed "],
+	[1, "Glow", "Makes item glow; no effect, but can be altered by enchanting, illuminate, or conceal object"],
+	[2, "Hum", "Makes item hum; no effect, but can be added by enchanting"],
+	[4, "Dark", "Makes item dark; affects levers (ITEM_MARKINGS: see Table L: Item Type Values, type 30); affects harmonize spell; added by violate spell"],
+	[8, "Lock", "Gives item lock flag. If item is on the ground it can only be addressed by the full keyword. This is true both for looking at the object's extra descriptions and the object's name. No affect on carried objects."],
+	[16, "Evil", "Makes item evil; no effect"],
+	[32, "Invis", "Makes item invisible; cannot be seen by players 4 levels below item level even with detect invis (for weapons, 6 levels below)"],
+	[64, "Magic", "Makes item magic; affects transmute spell; added by enchanting, transmuting"],
+	[128, "Nodrop", "Makes item undroppable; requires remove curse"],
+	[256, "Bless", "Makes item blessed; item takes half damage; added by consecrate spell"],
+	[512, "Anti Good", "Makes item unholdable by good players; affects cleanse spell"],
+	[1024, "Anti Evil", "Makes item unholdable by evil players"],
+	[2048, "Anti Neutral", "Makes item unholdable by neutral players"],
+	[4096, "Noremove", "Cannot remove item once worn"],
+	[8192, "Inventory", "Item disappears when character dies"],
+	[16384, "Timed", "Item vanishes after timer expires; consult the Immortal in charge of your project if you need to use this"],
+	[32768, "Charity", "Item requires fence to sell, cannot be sacrificed; flag added when item is donated"],
+	[65536, "Good", "Makes item good; no effect"],
+	[131072, "Nolocate", "Item not located using 'locate object'; removed by illuminate spell"],
+	[262144, "Haggled", "Lowers value on item DO NOT USE IN BUILDING"],
+	[524288, "Sharp", "Item has a (Sharp) before it; no effect; can be added by sharpening an item"],
+	[1048576, "Dull", "Item has a (Dull) before it; no effect"],
+	[2097152, "Reinforced", "Item is reinforced; item cannot be shattered by monk skill shatter strike; added by reinforce spell"],
+	[4194304, "Electric Ward", "Item has an electric ward; added by ward spell"],
+	[8388608, "Fire Ward", "Item has a fire ward; added by ward spell"],
+	[16777216, "Ice Ward", "Item has an ice ward; added by ward spell"],
+	[33554432, "Magic Ward", "Item has a caustic ward; added by ward spell"],
+	[67108864, "Major Ward", "Item has all wards; added by major ward spell FOR LORD ITEMS ONLY"],
+	[134217728, "Nocharm", "Wearer immune to charm and invis. If wearer is a mobile, player attempts to cast invis will send the player to jail instantly."],
+	[268435456, "Spiritlink", "Item has a spiritlink to character"],
+	[536870912, "Etch", "Item has been etched"],
+	[1073741824, "Rune", "Item has been runed "],
 ];
 
 const WEAR_FLAGS: [number, string, string][] = [
