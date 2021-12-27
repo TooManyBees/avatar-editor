@@ -425,57 +425,34 @@ R 0 3334 4
 	});
 
 	test("marks error on mob reset when room vnum doesn't exist", () => {
-		let resets = parseResets("M 0 1111 1 9999");
-		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
-		expectSingleError(orphaned.mobile[0], "roomVnum");
-	});
-
-	test("links inventory resets to already-parsed mob", () => {
-		let [resets, _] = PARSED_RESETS
-		expectNoErrors(resets.inventory[0]);
-		expect(resets.inventory[0].mobId).toBe("mob-id-1112")
+		let parsed = parseResets("M 0 1111 1 9999");
+		let [resets, _] = corellateResets(parsed, MOBILES, OBJECTS, ROOMS);
+		expectSingleError(resets.mobile[0], "roomId");
 	});
 
 	test("links inventory resets to already-parsed object", () => {
 		let [resets, _] = PARSED_RESETS
-		expectNoErrors(resets.inventory[0]);
-		expect(resets.inventory[0].objectId).toBe("object-id-2222");
-	});
-
-	test("marks error on inventory reset when mob vnum doesn't exist", () => {
-		let resets = parseResets("G 0 2222");
-		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
-		expectSingleError(orphaned.inventory[0], "mobVnum");
+		expectNoErrors(resets.mobile[1].inventory[0]);
+		expect(resets.mobile[1].inventory[0].objectId).toBe("object-id-2222");
 	});
 
 	test("marks error on inventory reset when object vnum doesn't exist", () => {
-		let resets = parseResets("M 0 1111 1 3333\nG 0 9999 0");
-		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
-		expectSingleError(orphaned.inventory[0], "objectVnum");
-	});
-
-	test("links equipment resets to already-parsed mob", () => {
-		let [resets, _] = PARSED_RESETS
-		expectNoErrors(resets.equipment[0]);
-		expect(resets.equipment[0].mobId).toBe("mob-id-1112");
+		let parsed = parseResets("M 0 1111 1 3333\nG 0 9999 0");
+		let [resets, _] = corellateResets(parsed, MOBILES, OBJECTS, ROOMS);
+		expectSingleError(resets.mobile[0].inventory[0], "objectId");
 	});
 
 	test("links equipment resets to already-parsed object", () => {
 		let [resets, _] = PARSED_RESETS
-		expectNoErrors(resets.equipment[0]);
-		expect(resets.equipment[0].objectId).toBe("object-id-2223");
+		expectNoErrors(resets.mobile[1].equipment[0]);
+		expect(resets.mobile[1].equipment[0].objectId).toBe("object-id-2223");
 	});
 
-	test("marks error on equipment reset when mob vnum doesn't exist", () => {
-		let resets = parseResets("E 0 2223 0");
-		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
-		expectSingleError(orphaned.equipment[0], "mobVnum");
-	});
 
 	test("marks error on equipment reset when object vnum doesn't exist", () => {
-		let resets = parseResets("M 0 1111 1 3333\nE 0 9999 0");
-		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
-		expectSingleError(orphaned.equipment[0], "objectVnum");
+		let parsed = parseResets("M 0 1111 1 3333\nE 0 9999 0");
+		let [resets, _] = corellateResets(parsed, MOBILES, OBJECTS, ROOMS);
+		expectSingleError(resets.mobile[0].equipment[0], "objectId");
 	});
 
 	test("links object resets to already-parsed object", () => {
@@ -497,9 +474,9 @@ R 0 3334 4
 	});
 
 	test("marks error on object reset when room vnum doesn't exist", () => {
-		let resets = parseResets("O 0 2224 0 9999");
-		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
-		expectSingleError(orphaned.object[0], "roomVnum");
+		let parsed = parseResets("O 0 2224 0 9999");
+		let [resets, _] = corellateResets(parsed, MOBILES, OBJECTS, ROOMS);
+		expectSingleError(resets.object[0], "roomId");
 	});
 
 	test("links in-object resets to already-parsed object", () => {
@@ -521,9 +498,9 @@ R 0 3334 4
 	});
 
 	test("marks error on in-object reset when container vnum doesn't exist", () => {
-		let resets = parseResets("P 0 2225 0 9999");
-		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
-		expectSingleError(orphaned.inObject[0], "containerVnum");
+		let parsed = parseResets("P 0 2225 0 9999");
+		let [resets, _] = corellateResets(parsed, MOBILES, OBJECTS, ROOMS);
+		expectSingleError(resets.inObject[0], "containerId");
 	});
 
 	test("links door resets to already-parsed room", () => {

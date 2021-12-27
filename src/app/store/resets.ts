@@ -10,8 +10,6 @@ interface ResetsSlice {
 const initialState: ResetsSlice = {
 	resets: {
 		mobile: [],
-		inventory: [],
-		equipment: [],
 		object: [],
 		inObject: [],
 		door: [],
@@ -19,8 +17,6 @@ const initialState: ResetsSlice = {
 	},
 	orphaned: {
 		mobile: [],
-		inventory: [],
-		equipment: [],
 		object: [],
 		inObject: [],
 		door: [],

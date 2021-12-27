@@ -2,8 +2,6 @@ import { newId, ErrorMarkers } from "./helpers";
 
 export interface Resets {
 	mobile: MobReset[];
-	inventory: InventoryReset[];
-	equipment: EquipmentReset[];
 	object: ObjectReset[];
 	inObject: InObjectReset[];
 	door: DoorReset[];
@@ -12,8 +10,6 @@ export interface Resets {
 
 export interface UncorellatedResets {
 	mobile: MobResetU[];
-	inventory: InventoryResetU[];
-	equipment: EquipmentResetU[];
 	object: ObjectResetU[];
 	inObject: InObjectResetU[];
 	door: DoorResetU[];
@@ -22,8 +18,6 @@ export interface UncorellatedResets {
 
 export const BLANK_RESETS_SECTION: Resets = {
 	mobile: [],
-	inventory: [],
-	equipment: [],
 	object: [],
 	inObject: [],
 	door: [],
@@ -35,6 +29,8 @@ export interface MobResetU {
 	roomVnum: number;
 	limit: number;
 	comment: string;
+	inventory: InventoryResetU[];
+	equipment: EquipmentResetU[];
 	_error: {
 		mobVnum?: boolean;
 		roomVnum?: boolean;
@@ -51,11 +47,12 @@ interface MobResetFields {
 
 export interface MobReset extends MobResetFields {
 	readonly id: string;
+	inventory: InventoryReset[];
+	equipment: EquipmentReset[];
 	_error: ErrorMarkers<MobResetFields>;
 }
 
 export interface InventoryResetU {
-	mobVnum: number;
 	objectVnum: number;
 	limit: number;
 	comment: string;
@@ -67,7 +64,6 @@ export interface InventoryResetU {
 }
 
 interface InventoryResetFields {
-	mobId: string;
 	objectId: string;
 	limit: number;
 	comment: string;
@@ -79,7 +75,6 @@ export interface InventoryReset extends InventoryResetFields {
 }
 
 export interface EquipmentResetU {
-	mobVnum: number;
 	objectVnum: number;
 	limit: number;
 	wearLocation: number;
@@ -93,7 +88,6 @@ export interface EquipmentResetU {
 }
 
 interface EquipmentResetFields {
-	mobId: string;
 	objectId: string;
 	limit: number;
 	wearLocation: number;

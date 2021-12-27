@@ -24,17 +24,33 @@ import {
 import { parseNumber } from "./helpers";
 import { newId } from "../app/models/helpers";
 
+function newMobReset(): MobResetU {
+	return {
+		mobVnum: -1,
+		roomVnum: -1,
+		limit: -1,
+		comment: "",
+		inventory: [],
+		equipment: [],
+		_error: {},
+	};
+}
+
 export function parseResets(section: string): UncorellatedResets {
 	let resets: UncorellatedResets = {
 		mobile: [],
-		inventory: [],
-		equipment: [],
 		object: [],
 		inObject: [],
 		door: [],
 		randomExit: [],
 	};
-	let currentMobVnum = 0;
+	let currentMobReset = newMobReset();
+	function closeCurrentMob() {
+		if (currentMobReset.mobVnum >= 0) {
+			resets.mobile.push(currentMobReset);
+			currentMobReset = newMobReset();
+		}
+	}
 
 	let lines = section.split(/\r?\n/);
 
@@ -43,34 +59,39 @@ export function parseResets(section: string): UncorellatedResets {
 		if (line.length === 0) continue;
 		let type = line.split(/\s+/, 1)[0];
 		switch (type.toUpperCase()) {
-			case "M": {
-				let reset = parseMobReset(line);
-				currentMobVnum = reset.mobVnum;
-				resets.mobile.push(reset);
+			case "M":
+				closeCurrentMob();
+				currentMobReset = parseMobReset(line);
 				break;
-			}
 			case "G":
-				resets.inventory.push(parseInventoryReset(line, currentMobVnum));
+				currentMobReset.inventory.push(parseInventoryReset(line));
 				break;
 			case "E":
-				resets.equipment.push(parseEquipmentReset(line, currentMobVnum));
+				currentMobReset.equipment.push(parseEquipmentReset(line));
 				break;
 			case "O":
+				closeCurrentMob();
 				resets.object.push(parseObjectReset(line));
 				break;
 			case "P":
+				closeCurrentMob();
 				resets.inObject.push(parseInObjectReset(line));
 				break;
 			case "D":
+				closeCurrentMob();
 				resets.door.push(parseDoorReset(line));
 				break;
 			case "R":
+				closeCurrentMob();
 				resets.randomExit.push(parseRandomExitReset(line));
 				break;
 			default:
+				closeCurrentMob();
 				// TODO: error handling
 		}
 	}
+
+	closeCurrentMob();
 
 	return resets;
 }
@@ -78,8 +99,6 @@ export function parseResets(section: string): UncorellatedResets {
 export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles: Mobile[], objects: Objekt[], rooms: Room[]): [Resets, UncorellatedResets] {
 	let resets: Resets = {
 		mobile: [],
-		inventory: [],
-		equipment: [],
 		object: [],
 		inObject: [],
 		door: [],
@@ -88,8 +107,6 @@ export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles:
 
 	let orphanedResets: UncorellatedResets = {
 		mobile: [],
-		inventory: [],
-		equipment: [],
 		object: [],
 		inObject: [],
 		door: [],
@@ -99,79 +116,68 @@ export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles:
 	for (let uReset of uncorellatedResets.mobile) {
 		let mob = mobiles.find(m => m.vnum === uReset.mobVnum);
 		let room = rooms.find(r => r.vnum === uReset.roomVnum);
-		if (mob && room) {
+		if (mob) {
 			let reset: MobReset = {
 				id: newId(),
 				mobId: mob.id,
-				roomId: room.id,
+				roomId: room ? room.id : uReset.roomVnum.toString(),
 				limit: uReset.limit,
 				comment: uReset.comment,
+				inventory: [],
+				equipment: [],
 				_error: uReset._error,
 			};
+
+			for (let uInvReset of uReset.inventory) {
+				let object = objects.find(o => o.vnum === uInvReset.objectVnum);
+				let invReset: InventoryReset = {
+					id: newId(),
+					objectId: object ? object.id : uInvReset.objectVnum.toString(),
+					limit: uInvReset.limit,
+					comment: uInvReset.comment,
+					_error: uInvReset._error,
+				};
+				if (!object) invReset._error.objectId = true;
+				reset.inventory.push(invReset);
+			}
+
+			for (let uEqReset of uReset.equipment) {
+				let object = objects.find(o => o.vnum === uEqReset.objectVnum);
+				let eqReset: EquipmentReset = {
+					id: newId(),
+					objectId: object ? object.id : uEqReset.objectVnum.toString(),
+					limit: uEqReset.limit,
+					wearLocation: uEqReset.wearLocation,
+					comment: uEqReset.comment,
+					_error: uEqReset._error,
+				};
+				if (!object) eqReset._error.objectId = true;
+				reset.equipment.push(eqReset);
+			}
+
+			if (!room) reset._error.roomId = true;
 			resets.mobile.push(reset);
 		} else {
-			if (!mob) uReset._error.mobVnum = true;
-			if (!room) uReset._error.roomVnum = true;
+			uReset._error.mobVnum = true;
 			orphanedResets.mobile.push(uReset);
-		}
-	}
-
-	for (let uReset of uncorellatedResets.inventory) {
-		let mob = mobiles.find(m => m.vnum === uReset.mobVnum);
-		let object = objects.find(o => o.vnum === uReset.objectVnum);
-		if (mob && object) {
-			let reset: InventoryReset = {
-				id: newId(),
-				mobId: mob.id,
-				objectId: object.id,
-				limit: uReset.limit,
-				comment: uReset.comment,
-				_error: uReset._error,
-			};
-			resets.inventory.push(reset);
-		} else {
-			if (!mob) uReset._error.mobVnum = true;
-			if (!object) uReset._error.objectVnum = true;
-			orphanedResets.inventory.push(uReset);
-		}
-	}
-
-	for (let uReset of uncorellatedResets.equipment) {
-		let mob = mobiles.find(m => m.vnum === uReset.mobVnum);
-		let object = objects.find(o => o.vnum === uReset.objectVnum);
-		if (mob && object) {
-			let reset: EquipmentReset = {
-				id: newId(),
-				mobId: mob.id,
-				objectId: object.id,
-				limit: uReset.limit,
-				wearLocation: uReset.wearLocation,
-				comment: uReset.comment,
-				_error: uReset._error,
-			};
-			resets.equipment.push(reset);
-		} else {
-			if (!mob) uReset._error.mobVnum = true;
-			if (!object) uReset._error.objectVnum = true;
-			orphanedResets.equipment.push(uReset);
 		}
 	}
 
 	for (let uReset of uncorellatedResets.object) {
 		let object = objects.find(o => o.vnum === uReset.objectVnum);
 		let room = rooms.find(r => r.vnum === uReset.roomVnum);
-		if (object && room) {
+		if (object) {
 			let reset: ObjectReset = {
 				id: newId(),
 				objectId: object.id,
-				roomId: room.id,
+				roomId: room ? room.id : uReset.roomVnum.toString(),
 				comment: uReset.comment,
 				_error: {},
 			};
+			if (!room) reset._error.roomId = true;
 			resets.object.push(reset);
 		} else {
-			if (!object) uReset._error.objectVnum = true;
-			if (!room) uReset._error.roomVnum = true;
+			uReset._error.objectVnum = true;
 			orphanedResets.object.push(uReset);
 		}
 	}
@@ -179,18 +185,18 @@ export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles:
 	for (let uReset of uncorellatedResets.inObject) {
 		let object = objects.find(o => o.vnum === uReset.objectVnum);
 		let container = objects.find(o => o.vnum === uReset.containerVnum);
-		if (object && container) {
+		if (object) {
 			let reset: InObjectReset = {
 				id: newId(),
 				objectId: object.id,
-				containerId: container.id,
+				containerId: container ? container.id : uReset.containerVnum.toString(),
 				comment: uReset.comment,
 				_error: {},
 			};
+			if (!container) reset._error.containerId = true;
 			resets.inObject.push(reset);
 		} else {
-			if (!object) uReset._error.objectVnum = true;
-			if (!container) uReset._error.containerVnum = true;
+			uReset._error.objectVnum = true;
 			orphanedResets.inObject.push(uReset);
 		}
 	}
@@ -242,6 +248,8 @@ export function parseMobReset(line: string): MobResetU {
 		roomVnum: 0,
 		limit: 1,
 		comment: "",
+		inventory: [],
+		equipment: [],
 		_error: {},
 	};
 
@@ -264,10 +272,9 @@ export function parseMobReset(line: string): MobResetU {
 	return reset;
 }
 
-export function parseInventoryReset(line: string, mobVnum: number): InventoryResetU {
+export function parseInventoryReset(line: string): InventoryResetU {
 	let tokens = parseResetTokens(line, 3);
 	let reset: InventoryResetU = {
-		mobVnum,
 		objectVnum: 0,
 		limit: 0,
 		comment: "",
@@ -291,10 +298,9 @@ export function parseInventoryReset(line: string, mobVnum: number): InventoryRes
 	return reset;
 }
 
-export function parseEquipmentReset(line: string, mobVnum: number): EquipmentResetU {
+export function parseEquipmentReset(line: string): EquipmentResetU {
 	let tokens = parseResetTokens(line, 4);
 	let reset: EquipmentResetU = {
-		mobVnum,
 		objectVnum: 0,
 		limit: 0,
 		wearLocation: 0,

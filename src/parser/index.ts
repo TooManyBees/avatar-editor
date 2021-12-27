@@ -50,8 +50,6 @@ export default function parseFile(file: string): Area {
 		resets: BLANK_RESETS_SECTION,
 		orphanedResets: {
 			mobile: [],
-			equipment: [],
-			inventory: [],
 			object: [],
 			inObject: [],
 			door: [],
@@ -63,8 +61,6 @@ export default function parseFile(file: string): Area {
 
 	let uncorellatedResets: UncorellatedResets = {
 		mobile: [],
-		equipment: [],
-		inventory: [],
 		object: [],
 		inObject: [],
 		door: [],
