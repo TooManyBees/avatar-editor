@@ -4,7 +4,7 @@ import parseHelps from "./helps";
 import parseMobiles from "./mobiles";
 import parseObjects from "./objects";
 import parseRooms from "./rooms";
-import parseResets from "./resets";
+import { parseResets, corellateResets, UncorellatedResets } from "./resets";
 import parseShops from "./shops";
 import parseSpecials from "./specials";
 
@@ -50,6 +50,17 @@ export default function parseFile(file: string): Area {
 		shops: [],
 		specials: [],
 	};
+
+	let uncorellatedResets: UncorellatedResets = {
+		mobile: [],
+		equipment: [],
+		inventory: [],
+		object: [],
+		inObject: [],
+		door: [],
+		randomExit: [],
+	};
+
 	for (let [name, section] of Object.entries(unparsedSections)) {
 		switch (name.toUpperCase()) {
 			case "AREA": {
@@ -77,7 +88,7 @@ export default function parseFile(file: string): Area {
 				break;
 			}
 			case "RESETS": {
-				parsedSections.resets = parseResets(section);
+				uncorellatedResets = parseResets(section);
 				break;
 			}
 			case "SHOPS": {
@@ -90,5 +101,9 @@ export default function parseFile(file: string): Area {
 			}
 		}
 	}
+
+	let [resets, orphanedResets] = corellateResets(uncorellatedResets, parsedSections.mobiles, parsedSections.objects, parsedSections.rooms);
+	parsedSections.resets = resets;
+
 	return parsedSections;
 }

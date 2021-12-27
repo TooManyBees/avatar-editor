@@ -14,7 +14,7 @@ import {
 import { parseNumber } from "./helpers";
 import { newId } from "../app/models/helpers";
 
-interface UncorellatedResets {
+export interface UncorellatedResets {
 	mobile: MobResetU[];
 	inventory: InventoryResetU[];
 	equipment: EquipmentResetU[];
@@ -24,8 +24,8 @@ interface UncorellatedResets {
 	randomExit: RandomExitResetU[];
 }
 
-export default function parseResets(section: string, mobiles: Mobile[], objects: Objekt[], rooms: Room[]): [Resets, UncorellatedResets] {
-	let uncorellatedResets: UncorellatedResets = {
+export function parseResets(section: string): UncorellatedResets {
+	let resets: UncorellatedResets = {
 		mobile: [],
 		inventory: [],
 		equipment: [],
@@ -46,32 +46,36 @@ export default function parseResets(section: string, mobiles: Mobile[], objects:
 			case "M": {
 				let reset = parseMobReset(line);
 				currentMobVnum = reset.mobVnum;
-				uncorellatedResets.mobile.push(reset);
+				resets.mobile.push(reset);
 				break;
 			}
 			case "G":
-				uncorellatedResets.inventory.push(parseInventoryReset(line, currentMobVnum));
+				resets.inventory.push(parseInventoryReset(line, currentMobVnum));
 				break;
 			case "E":
-				uncorellatedResets.equipment.push(parseEquipmentReset(line, currentMobVnum));
+				resets.equipment.push(parseEquipmentReset(line, currentMobVnum));
 				break;
 			case "O":
-				uncorellatedResets.object.push(parseObjectReset(line));
+				resets.object.push(parseObjectReset(line));
 				break;
 			case "P":
-				uncorellatedResets.inObject.push(parseInObjectReset(line));
+				resets.inObject.push(parseInObjectReset(line));
 				break;
 			case "D":
-				uncorellatedResets.door.push(parseDoorReset(line));
+				resets.door.push(parseDoorReset(line));
 				break;
 			case "R":
-				uncorellatedResets.randomExit.push(parseRandomExitReset(line));
+				resets.randomExit.push(parseRandomExitReset(line));
 				break;
 			default:
 				// TODO: error handling
 		}
 	}
 
+	return resets;
+}
+
+export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles: Mobile[], objects: Objekt[], rooms: Room[]): [Resets, UncorellatedResets] {
 	let resets: Resets = {
 		mobile: [],
 		inventory: [],

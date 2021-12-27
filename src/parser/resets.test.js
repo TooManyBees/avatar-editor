@@ -1,4 +1,6 @@
-import parseResets, {
+import {
+	parseResets,
+	corellateResets,
 	parseMobReset,
 	parseInventoryReset,
 	parseEquipmentReset,
@@ -354,7 +356,7 @@ describe("parseRandomExitReset", () => {
 	});
 });
 
-describe("parseResets", () => {
+describe("parseResets & corellateResets", () => {
 	const MOBILES = [
 		{ id: "mob-id-1111", vnum: 1111 },
 		{ id: "mob-id-1112", vnum: 1112 },
@@ -393,7 +395,8 @@ P 0 2225 0 2224
 D 0 3333 2 1
 R 0 3334 4
 `;
-	const PARSED_RESETS = parseResets(SECTION, MOBILES, OBJECTS, ROOMS);
+	const parsedResets = parseResets(SECTION);
+	const PARSED_RESETS = corellateResets(parsedResets, MOBILES, OBJECTS, ROOMS);
 
 	test("links mob resets to already-parsed mob", () => {
 		let [resets, _] = PARSED_RESETS
@@ -416,12 +419,14 @@ R 0 3334 4
 	});
 
 	test("marks error on mob reset when mob vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("M 0 9999 1 3333", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("M 0 9999 1 3333");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(orphaned.mobile[0], "mobVnum");
 	});
 
 	test("marks error on mob reset when room vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("M 0 1111 1 9999", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("M 0 1111 1 9999");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(orphaned.mobile[0], "roomVnum");
 	});
 
@@ -438,12 +443,14 @@ R 0 3334 4
 	});
 
 	test("marks error on inventory reset when mob vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("G 0 2222", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("G 0 2222");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(orphaned.inventory[0], "mobVnum");
 	});
 
 	test("marks error on inventory reset when object vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("M 0 1111 1 3333\nG 0 9999 0", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("M 0 1111 1 3333\nG 0 9999 0");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(orphaned.inventory[0], "objectVnum");
 	});
 
@@ -460,12 +467,14 @@ R 0 3334 4
 	});
 
 	test("marks error on equipment reset when mob vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("E 0 2223 0", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("E 0 2223 0");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(orphaned.equipment[0], "mobVnum");
 	});
 
 	test("marks error on equipment reset when object vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("M 0 1111 1 3333\nE 0 9999 0", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("M 0 1111 1 3333\nE 0 9999 0");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(orphaned.equipment[0], "objectVnum");
 	});
 
@@ -482,12 +491,14 @@ R 0 3334 4
 	});
 
 	test("marks error on object reset when object vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("O 0 9999 0 3334", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("O 0 9999 0 3334");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(orphaned.object[0], "objectVnum");
 	});
 
 	test("marks error on object reset when room vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("O 0 2224 0 9999", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("O 0 2224 0 9999");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(orphaned.object[0], "roomVnum");
 	});
 
@@ -504,12 +515,14 @@ R 0 3334 4
 	});
 
 	test("marks error on in-object reset when object vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("P 0 9999 0 2224", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("P 0 9999 0 2224");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(orphaned.inObject[0], "objectVnum");
 	});
 
 	test("marks error on in-object reset when container vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("P 0 2225 0 9999", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("P 0 2225 0 9999");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(orphaned.inObject[0], "containerVnum");
 	});
 
@@ -520,12 +533,14 @@ R 0 3334 4
 	});
 
 	test("marks error on door reset when room vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("D 0 9999 2 1", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("D 0 9999 2 1");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(orphaned.door[0], "roomVnum");
 	});
 
 	test("marks error on door reset when room exit direction doesn't exist", () => {
-		let [resets, _] = parseResets("D 0 3333 1 1", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("D 0 3333 1 1");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expectSingleError(resets.door[0], "direction");
 	});
 
@@ -536,7 +551,8 @@ R 0 3334 4
 	});
 
 	test("marks error on random exit reset when room vnum doesn't exist", () => {
-		let [_, orphaned] = parseResets("R 0 9999 4", MOBILES, OBJECTS, ROOMS);
+		let resets = parseResets("R 0 9999 4");
+		let [_, orphaned] = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
 		expect(orphaned.randomExit).toHaveLength(1);
 		expect(orphaned.randomExit[0]._error.roomVnum).toBe(true);
 	});
