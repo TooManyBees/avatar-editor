@@ -91,6 +91,13 @@ const resetsSlice = createSlice({
 				}
 			}
 		},
+		removedInventoryReset(state, action: PayloadAction<[string, string]>) {
+			const [mobId, invId] = action.payload;
+			const mobReset = state.resets.mobile.find(r => r.id === mobId);
+			if (mobReset) {
+				mobReset.inventory = mobReset.inventory.filter(r => r.id === invId);
+			}
+		},
 		addedEquipmentReset(state, action: PayloadAction<string>) {
 			const reset = state.resets.mobile.find(r => r.id === action.payload);
 			if (reset) {
@@ -118,6 +125,25 @@ const resetsSlice = createSlice({
 				}
 			}
 		},
+		removedEquipmentReset(state, action: PayloadAction<[string, string]>) {
+			const [mobId, invId] = action.payload;
+			const mobReset = state.resets.mobile.find(r => r.id === mobId);
+			if (mobReset) {
+				mobReset.equipment = mobReset.equipment.filter(r => r.id === invId);
+			}
+		},
+		// addedObjectReset
+		// updatedObjectReset
+		// removedObjectReset
+		// addedInObjectReset
+		// updatedInObjectReset
+		// removedInObjectReset
+		// addedDoorReset
+		// updatedDoorReset
+		// removedDoorReset
+		// addedRandomExitReset
+		// updatedRandomExitReset
+		// removedRandomExitReset
 	},
 });
 
@@ -128,7 +154,21 @@ export const {
 	removedMobReset,
 	addedInventoryReset,
 	updatedInventoryReset,
+	removedInventoryReset,
 	addedEquipmentReset,
 	updatedEquipmentReset,
+	removedEquipmentReset,
+	// addedObjectReset,
+	// updatedObjectReset,
+	// removedObjectReset,
+	// addedInObjectReset,
+	// updatedInObjectReset,
+	// removedInObjectReset,
+	// addedDoorReset,
+	// updatedDoorReset,
+	// removedDoorReset,
+	// addedRandomExitReset,
+	// updatedRandomExitReset,
+	// removedRandomExitReset,
 } = resetsSlice.actions;
 export default resetsSlice.reducer;

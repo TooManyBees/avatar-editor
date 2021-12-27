@@ -17,7 +17,7 @@ export default function MobResets({ mobId }: Props) {
 	return (
 		<ol>
 			{resets.map(reset => (
-				<li>
+				<li key={reset.id}>
 					<MobReset reset={reset} rooms={rooms} objects={objects} />
 				</li>
 			))}

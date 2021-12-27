@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Mobile } from "../models";
+import { Mobile, Kspawn, blankKspawn } from "../models/mobiles";
 
 interface MobileState {
 	mobiles: Mobile[];
@@ -101,8 +101,24 @@ const mobileSlice = createSlice({
 			const mobile = state.mobiles.find(m => m.id === id);
 			if (mobile) mobile.team = payload;
 		},
-		updatedKspawn(state, action: PayloadAction<[string, ]>) {
-
+		addedKspawn(state, action: PayloadAction<string>) {
+			const mobile = state.mobiles.find(m => m.id === action.payload);
+			if (mobile && mobile.kspawn == null) {
+				mobile.kspawn = blankKspawn();
+			}
+		},
+		removedKspawn(state, action: PayloadAction<string>) {
+			const mobile = state.mobiles.find(m => m.id === action.payload);
+			if (mobile && mobile.kspawn != null) {
+				mobile.kspawn = undefined;
+			}
+		},
+		updatedKspawn(state, action: PayloadAction<[string, Kspawn]>) {
+			const [id, kspawn] = action.payload;
+			const mobile = state.mobiles.find(m => m.id === id);
+			if (mobile && mobile.kspawn != null) {
+				mobile.kspawn = kspawn;
+			}
 		},
 	},
 });
@@ -125,6 +141,8 @@ export const {
 	removedApply,
 	updatedApply,
 	updatedTeam,
+	addedKspawn,
+	removedKspawn,
 	updatedKspawn,
 } = mobileSlice.actions;
 export default mobileSlice.reducer;
