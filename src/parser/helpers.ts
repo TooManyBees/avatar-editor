@@ -110,7 +110,7 @@ export function splitOnVnums(section: string): string[] {
 }
 
 export function parseNumber(s: string): number | null {
-	let n = parseInt(s, 10);
+	let n = Number(s);
 	return Number.isInteger(n) ? n : null;
 }
 
