@@ -4,7 +4,8 @@ import parseHelps from "./helps";
 import parseMobiles from "./mobiles";
 import parseObjects from "./objects";
 import parseRooms from "./rooms";
-import { parseResets, corellateResets, UncorellatedResets } from "./resets";
+import { UncorellatedResets } from "../app/models/resets";
+import { parseResets, corellateResets } from "./resets";
 import parseShops from "./shops";
 import parseSpecials from "./specials";
 
@@ -47,6 +48,15 @@ export default function parseFile(file: string): Area {
 		objects: [],
 		rooms: [],
 		resets: BLANK_RESETS_SECTION,
+		orphanedResets: {
+			mobile: [],
+			equipment: [],
+			inventory: [],
+			object: [],
+			inObject: [],
+			door: [],
+			randomExit: [],
+		},
 		shops: [],
 		specials: [],
 	};
@@ -104,6 +114,7 @@ export default function parseFile(file: string): Area {
 
 	let [resets, orphanedResets] = corellateResets(uncorellatedResets, parsedSections.mobiles, parsedSections.objects, parsedSections.rooms);
 	parsedSections.resets = resets;
+	parsedSections.orphanedResets = orphanedResets;
 
 	return parsedSections;
 }

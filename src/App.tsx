@@ -11,6 +11,7 @@ import { init as initAreadata } from "./app/store/areadata";
 import { init as initMobs } from "./app/store/mobiles";
 import { init as initObjs } from "./app/store/objects";
 import { init as initRooms } from "./app/store/rooms";
+import { init as initResets } from "./app/store/resets";
 
 function ReadAreaForm({onRead}: {onRead: (a: Area) => void}) {
 	function onChange(event: ChangeEvent<HTMLInputElement>) {
@@ -43,6 +44,7 @@ function App() {
 		dispatch(initMobs(area.mobiles));
 		dispatch(initObjs(area.objects));
 		dispatch(initRooms(area.rooms));
+		dispatch(initResets([area.resets, area.orphanedResets]));
 		dispatch(loaded());
 	}
 

@@ -11,18 +11,18 @@ import {
 	Objekt,
 	Room,
 } from "../app/models";
+import {
+	UncorellatedResets,
+	MobResetU,
+	InventoryResetU,
+	EquipmentResetU,
+	ObjectResetU,
+	InObjectResetU,
+	DoorResetU,
+	RandomExitResetU,
+} from "../app/models/resets";
 import { parseNumber } from "./helpers";
 import { newId } from "../app/models/helpers";
-
-export interface UncorellatedResets {
-	mobile: MobResetU[];
-	inventory: InventoryResetU[];
-	equipment: EquipmentResetU[];
-	object: ObjectResetU[];
-	inObject: InObjectResetU[];
-	door: DoorResetU[];
-	randomExit: RandomExitResetU[];
-}
 
 export function parseResets(section: string): UncorellatedResets {
 	let resets: UncorellatedResets = {
@@ -233,86 +233,6 @@ export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles:
 	}
 
 	return [resets, orphanedResets];
-}
-
-interface MobResetU {
-	mobVnum: number;
-	roomVnum: number;
-	limit: number;
-	comment: string;
-	_error: {
-		mobVnum?: boolean;
-		roomVnum?: boolean;
-		limit?: boolean;
-	};
-}
-
-interface InventoryResetU {
-	mobVnum: number;
-	objectVnum: number;
-	limit: number;
-	comment: string;
-	_error: {
-		mobVnum?: boolean;
-		objectVnum?: boolean;
-		limit?: boolean;
-	};
-}
-
-interface EquipmentResetU {
-	mobVnum: number;
-	objectVnum: number;
-	limit: number;
-	wearLocation: number;
-	comment: string;
-	_error: {
-		mobVnum?: boolean;
-		objectVnum?: boolean;
-		limit?: boolean;
-		wearLocation?: boolean;
-	};
-}
-
-interface ObjectResetU {
-	objectVnum: number;
-	roomVnum: number;
-	comment: string;
-	_error: {
-		objectVnum?: boolean;
-		roomVnum?: boolean;
-	};
-}
-
-interface InObjectResetU {
-	objectVnum: number;
-	containerVnum: number;
-	comment: string;
-	_error: {
-		objectVnum?: boolean;
-		containerVnum?: boolean;
-	};
-}
-
-interface DoorResetU {
-	roomVnum: number;
-	direction: number;
-	state: number;
-	comment: string;
-	_error: {
-		roomVnum?: boolean;
-		direction?: boolean;
-		state?: boolean;
-	};
-}
-
-interface RandomExitResetU {
-	roomVnum: number;
-	numExits: number;
-	comment: string;
-	_error: {
-		roomVnum?: boolean;
-		numExits?: boolean;
-	};
 }
 
 export function parseMobReset(line: string): MobResetU {
