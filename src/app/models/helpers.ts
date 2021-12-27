@@ -4,7 +4,7 @@ export function newId(): string {
 	} catch (_) {
 		let rand = Math.floor(Math.random() * 1000000);
 		let time = Date.now();
-		return `${rand}${time}`;
+		return `id-${rand}${time}`;
 	}
 }
 

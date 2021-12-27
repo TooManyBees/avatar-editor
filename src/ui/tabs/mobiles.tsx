@@ -14,6 +14,7 @@ import {
 } from "../fields";
 import { VnumItemList } from "../VnumList";
 import TabsNav from "./tabs-nav";
+import MobResets from "../MobResets";
 
 import "./tabs.css";
 import "../VnumList.css";
@@ -32,7 +33,7 @@ export default function MobilesTab() {
 		<div className="Tabs">
 			<div className={mobile ? "TabsContents" : "VnumItemEditorPlaceholder"}>
 				<TabsNav />
-				{mobile ? <MobileForm key={currentId} item={mobile} /> : null }
+				{mobile ? <MobileForm key={currentId} mobile={mobile} /> : null }
 			</div>
 			<VnumItemList items={mobiles} selected={currentId} onChange={onSelect} />
 		</div>
@@ -40,12 +41,12 @@ export default function MobilesTab() {
 }
 
 interface Props {
-	item: Mobile;
+	mobile: Mobile;
 }
 
 function MobileForm(props: Props) {
 	const dispatch = useAppDispatch();
-	const { item: mobile } = props;
+	const { mobile } = props;
 	const id = mobile.id;
 
 	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
@@ -88,6 +89,8 @@ function MobileForm(props: Props) {
 					<TextArea name="Text" value={mobile.kspawn.message} />
 				</fieldset>
 			) : null}
+			<h2>Resets</h2>
+			<MobResets mobId={id} />
 		</div>
 	);
 }

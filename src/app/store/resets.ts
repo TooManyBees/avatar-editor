@@ -1,5 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { Resets } from "../models";
+import {
+	Resets,
+	MobReset,
+	InventoryReset,
+	EquipmentReset,
+	newId
+} from "../models";
 import type { UncorellatedResets } from "../models/resets";
 
 interface ResetsSlice {
@@ -33,8 +39,56 @@ const resetsSlice = createSlice({
 			state.resets = resets;
 			state.orphaned = orphaned;
 		},
+		addedMobReset(state, action: PayloadAction<[string, string]>) {
+			const [mobId, roomId] = action.payload;
+			const reset: MobReset = {
+				id: newId(),
+				mobId,
+				roomId,
+				limit: 1,
+				comment: "",
+				inventory: [],
+				equipment: [],
+				_error: {},
+			};
+			state.resets.mobile.push(reset);
+		},
+		removedMobReset(state, action: PayloadAction<string>) {
+			state.resets.mobile = state.resets.mobile.filter(r => r.id !== action.payload);
+		},
+		addedInventoryReset(state, action: PayloadAction<string>) {
+			const reset = state.resets.mobile.find(r => r.id === action.payload);
+			if (reset) {
+				const invReset: InventoryReset = {
+					id: newId(),
+					objectId: "",
+					limit: 0,
+					comment: "",
+					_error: {},
+				};
+				reset.inventory.push(invReset);
+			}
+		},
+		addedEquipmentReset(state, action: PayloadAction<string>) {
+			const reset = state.resets.mobile.find(r => r.id === action.payload);
+			if (reset) {
+				const eqReset: EquipmentReset = {
+					id: newId(),
+					objectId: "",
+					limit: 0,
+					wearLocation: 0,
+					comment: "",
+					_error: {},
+				};
+				reset.equipment.push(eqReset);
+			}
+		},
 	},
 });
 
-export const { init } = resetsSlice.actions;
+export const {
+	init,
+	addedMobReset,
+	removedMobReset,
+} = resetsSlice.actions;
 export default resetsSlice.reducer;
