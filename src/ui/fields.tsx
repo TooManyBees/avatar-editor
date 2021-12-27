@@ -114,7 +114,7 @@ export class NumberField extends React.Component<NumberFieldProps, NumberFieldSt
 		const valueString = value != null ? value.toString() : "";
 		return (
 			<div className="NumberField">
-				<label>{name}:</label> <input type="text" value={valueString} min={min} max={max} onChange={this.onChange} onBlur={this.onBlur} />
+				<label>{name}: <input type="text" value={valueString} min={min} max={max} onChange={this.onChange} onBlur={this.onBlur} /></label>
 			</div>
 		);
 	}

@@ -1,12 +1,16 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import * as Actions from "../app/store/resets";
 import { MobReset as MobResetType, Objekt, Room } from "../app/models";
+import { NumberField } from "./fields";
 
 interface Props {
 	mobId: string;
 }
 
 export default function MobResets({ mobId }: Props) {
+	// FIXME: could probably reduce redraws if we passed in state.resets.resets as a prop
+	// then filtered it inside *shrug*
 	const resets = useAppSelector(state => state.resets.resets.mobile.filter(r => r.mobId === mobId));
 	const objects = useAppSelector(state => state.objects.objects);
 	const rooms = useAppSelector(state => state.rooms.rooms);
@@ -22,46 +26,62 @@ export default function MobResets({ mobId }: Props) {
 }
 
 function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[], objects: Objekt[] }) {
+	const dispatch = useAppDispatch();
 	return (
 		<div>
-			<RoomSelector rooms={rooms} selected={reset.roomId} />
+			<RoomSelector rooms={rooms} selected={reset.roomId} onUpdate={id => dispatch(Actions.updatedMobReset({...reset, roomId: id}))} />
+			<NumberField name="Limit" value={reset.limit} onUpdate={l => dispatch(Actions.updatedMobReset({...reset, limit: l}))} />
 			<p>Equipment</p>
 			{reset.equipment.map(eqReset => (
 				<p key={eqReset.id}>
-					<ObjectSelector selected={eqReset.objectId} objects={objects} />
-					<WearSelector selected={eqReset.wearLocation} />
+					<ObjectSelector selected={eqReset.objectId} objects={objects} onUpdate={id => dispatch(Actions.updatedEquipmentReset([reset.id, {...eqReset, objectId: id}]))} />
+					<WearSelector selected={eqReset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...eqReset, wearLocation: l}]))} />
+					<NumberField name="Limit (0 for none)" value={eqReset.limit} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...eqReset, limit: l}]))} />
 				</p>
 			))}
 			{reset.inventory.map(invReset => (
 				<p key={invReset.id}>
-					<ObjectSelector selected={invReset.objectId} objects={objects} />
+					<ObjectSelector selected={invReset.objectId} objects={objects} onUpdate={id => dispatch(Actions.updatedInventoryReset([reset.id, {...invReset, objectId: id}]))} />
+					<NumberField name="Limit (0 for none)" value={invReset.limit} onUpdate={l => dispatch(Actions.updatedInventoryReset([reset.id, {...invReset, limit: l}]))} />
 				</p>
 			))}
 		</div>
 	);
 }
 
-function ObjectSelector({ selected, objects }: { selected: string, objects: Objekt[] }) {
+interface ObjectSelectorProps {
+	selected: string;
+	objects: Objekt[];
+	onUpdate: (id: string) => void;
+}
+
+function ObjectSelector({ selected, objects, onUpdate }: ObjectSelectorProps) {
 	return (
-		<select value={selected}>
+		<select value={selected} onChange={e => onUpdate(e.target.value)}>
 			{!objects.find(o => o.id === selected) && <option value={selected}>{selected} (not in area)</option>}
 			{objects.map(o => <option value={o.id} key={o.id}>{o.vnum} {o.name}</option>)}
 		</select>
 	);
 }
 
-function RoomSelector({ selected, rooms }: { selected: string, rooms: Room[] }) {
+interface RoomSelectorProps {
+	selected: string;
+	rooms: Room[];
+	onUpdate: (id: string) => void;
+}
+
+function RoomSelector({ selected, rooms, onUpdate }: RoomSelectorProps) {
 	return (
-		<select value={selected}>
+		<select value={selected} onChange={e=> onUpdate(e.target.value)}>
 			{!rooms.find(r => r.id === selected) && <option value={selected}>{selected} (not in area)</option>}
 			{rooms.map(r => <option value={r.id} key={r.id}>{r.vnum} {r.name}</option>)}
 		</select>
 	);
 }
 
-function WearSelector({ selected }: { selected: number }) {
+function WearSelector({ selected, onUpdate }: { selected: number, onUpdate: (n: number) => void }) {
 	return (
-		<select value={selected}>
+		<select value={selected} onChange={e => onUpdate(Number(e.target.value))}>
 			<option value="0">Light</option>
 			<option value="1">Left finger</option>
 			<option value="2">Right Finger</option>
