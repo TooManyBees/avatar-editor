@@ -8,5 +8,15 @@ export type { Mobile, Kspawn } from "./mobiles";
 export type { Objekt } from "./objects";
 export type { Room, Door } from "./rooms";
 export type { Shop } from "./shops";
-export type { Reset } from "./resets";
+export type {
+	Resets,
+	MobReset,
+	InventoryReset,
+	EquipmentReset,
+	ObjectReset,
+	InObjectReset,
+	DoorReset,
+	RandomExitReset,
+} from "./resets";
+export { BLANK_RESETS_SECTION } from "./resets";
 export type { Special } from "./specials";

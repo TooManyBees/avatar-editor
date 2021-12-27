@@ -9,8 +9,8 @@ import parseShops from "./shops";
 import parseSpecials from "./specials";
 
 import {
-	Area, AreaSection, AreadataSection, Help, Mobile, Objekt, Room, Shop, Reset, Special,
-	BLANK_AREA_SECTION,
+	Area, AreaSection, AreadataSection, Help, Mobile, Objekt, Room, Shop, Resets, Special,
+	BLANK_AREA_SECTION, BLANK_RESETS_SECTION,
 } from "./../app/models";
 
 function splitSections(file: string): string[] {
@@ -46,7 +46,7 @@ export default function parseFile(file: string): Area {
 		mobiles: [],
 		objects: [],
 		rooms: [],
-		resets: [],
+		resets: BLANK_RESETS_SECTION,
 		shops: [],
 		specials: [],
 	};
