@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Objekt } from "../models";
+import { Edesc, Objekt, newId } from "../models";
 
 interface ObjectState {
 	objects: Objekt[];
@@ -94,21 +94,25 @@ const objectSlice = createSlice({
 		addedExtraDesc(state, action: PayloadAction<string>) {
 			const object = state.objects.find(m => m.id === action.payload);
 			if (object) {
-				object.extraDescs.push([[], ""]);
+				object.extraDescs.push({ id: newId(), keywords: [], body: "", _error: {} });
 			}
 		},
-		removedExtraDesc(state, action: PayloadAction<[string, number]>) {
-			const [id, idx] = action.payload;
+		removedExtraDesc(state, action: PayloadAction<[string, string]>) {
+			const [id, edescId] = action.payload;
 			const object = state.objects.find(m => m.id === id);
-			if (object && idx < object.extraDescs.length) {
-				object.extraDescs.splice(idx, 1);
+			if (object) {
+				object.extraDescs = object.extraDescs.filter(e => e.id !== edescId);
 			}
 		},
-		updatedExtraDesc(state, action: PayloadAction<[string, number, [string[], string]]>) {
-			const [id, idx, payload] = action.payload;
+		updatedExtraDesc(state, action: PayloadAction<[string, Edesc]>) {
+			const [id, payload] = action.payload;
 			const object = state.objects.find(m => m.id === id);
-			if (object && idx < object.extraDescs.length) {
-				object.extraDescs[idx] = payload;
+			if (object) {
+				const edesc = object.extraDescs.find(e => e.id === payload.id);
+				if (edesc) {
+					edesc.keywords = payload.keywords;
+					edesc.body = payload.body;
+				}
 			}
 		},
 		addedApply(state, action: PayloadAction<string>) {

@@ -1,4 +1,4 @@
-import { Objekt, blankObject } from "../app/models/objects";
+import { Objekt, blankObject, blankEdesc } from "../app/models/objects";
 
 import {
 	parseBits,
@@ -30,7 +30,7 @@ export function parseObject(objectString: string): Objekt {
 	let state = ParseState.Vnum;
 	let object = blankObject();
 
-	let edescKeywords: string[] = [];
+	let edesc = blankEdesc();
 	let multiLineBuffer = "";
 
 	let lines = objectString.trim().split("\n");
@@ -174,8 +174,7 @@ export function parseObject(objectString: string): Objekt {
 				switch (type.toUpperCase()) {
 					case 'E': {
 						state = ParseState.EdescKeywords;
-						edescKeywords = [];
-						multiLineBuffer = "";
+						edesc = blankEdesc();
 						break;
 					}
 					case 'A': {
@@ -211,18 +210,18 @@ export function parseObject(objectString: string): Objekt {
 				line = tilde === -1 ? line : line.substring(0, tilde);
 				let { errors, keywords } = parseKeywords(line);
 				if (errors.length > 0) object._error.extraDescs = true;
-				edescKeywords = keywords;
+				edesc.keywords = keywords;
 				break;
 			}
 			case ParseState.EdescMessage: {
 				let tilde = line.indexOf("~");
 				if (tilde === -1) {
-					multiLineBuffer += line;
-					multiLineBuffer += "\n";
+					edesc.body += line;
+					edesc.body += "\n";
 				} else {
 					state = ParseState.ExtraLines;
-					multiLineBuffer += line.substring(0, tilde);
-					object.extraDescs.push([edescKeywords, multiLineBuffer.trimRight()]);
+					edesc.body += line.substring(0, tilde);
+					object.extraDescs.push(edesc);
 				}
 				break;
 			}
@@ -245,7 +244,7 @@ export function parseObject(objectString: string): Objekt {
 		object._error.extraDescs = true;
 	} else if (state === ParseState.EdescMessage) {
 		object._error.extraDescs = true;
-		object.extraDescs.push([edescKeywords, multiLineBuffer]);
+		object.extraDescs.push(edesc);
 	} else if (state !== ParseState.ExtraLines) {
 		object._error.all = true;
 	}

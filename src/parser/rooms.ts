@@ -1,4 +1,4 @@
-import { Room, Door, blankRoom, blankDoor } from "../app/models/rooms";
+import { Room, Door, blankRoom, blankDoor, blankEdesc } from "../app/models/rooms";
 import {
 	parseBits,
 	parseKeywords,
@@ -29,7 +29,7 @@ export function parseRoom(roomString: string): Room {
 	let room = blankRoom();
 
 	let multiLineBuffer = "";
-	let edescKeywords: string[] = [];
+	let edesc = blankEdesc();
 	let door = blankDoor();
 
 	let lines = roomString.trim().split("\n");
@@ -89,8 +89,7 @@ export function parseRoom(roomString: string): Room {
 				switch (type.toUpperCase()) {
 					case "E": {
 						state = ParseState.EdescKeywords;
-						edescKeywords = [];
-						multiLineBuffer = "";
+						edesc = blankEdesc();
 						break;
 					}
 					case "A": {
@@ -170,18 +169,18 @@ export function parseRoom(roomString: string): Room {
 				line = tilde === -1 ? line : line.substring(0, tilde);
 				let { errors, keywords } = parseKeywords(line);
 				if (errors.length > 0) room._error.extraDescs = true;
-				edescKeywords = keywords;
+				edesc.keywords = keywords;
 				break;
 			}
 			case ParseState.EdescMessage: {
 				let tilde = line.indexOf("~");
 				if (tilde === -1) {
-					multiLineBuffer += line;
-					multiLineBuffer += "\n";
+					edesc.body += line;
+					edesc.body += "\n";
 				} else {
 					state = ParseState.ExtraLines;
-					multiLineBuffer += line.substring(0, tilde);
-					room.extraDescs.push([edescKeywords, multiLineBuffer.trimRight()]);
+					edesc.body += line.substring(0, tilde);
+					room.extraDescs.push(edesc);
 				}
 				break;
 			}
@@ -200,7 +199,7 @@ export function parseRoom(roomString: string): Room {
 		room.doors.push(door)
 	} else if (state === ParseState.EdescMessage) {
 		room._error.extraDescs = true;
-		room.extraDescs.push([edescKeywords, multiLineBuffer]);
+		room.extraDescs.push(edesc);
 	}
 
 	return room;

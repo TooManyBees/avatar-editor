@@ -13,3 +13,17 @@ type ErrorMarkers2<T> = {
 }
 
 export type ErrorMarkers<T> = ErrorMarkers2<T> & { all?: boolean };
+
+interface EdescFields {
+	keywords: string[];
+	body: string;
+}
+
+export interface Edesc extends EdescFields {
+	id: string;
+	_error: ErrorMarkers<EdescFields>;
+}
+
+export function blankEdesc(): Edesc {
+	return { id: newId(), keywords: [], body: "", _error: {} };
+}

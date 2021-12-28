@@ -31,9 +31,9 @@ voice whispers in your mind...
 		expect(room.doors[1].locks).toEqual([]);
 		expect(room.doors[1].toVnum).toBe(8181);
 		expect(room.extraDescs).toHaveLength(2);
-		expect(room.extraDescs[0]).toEqual([
-			["notes"],
-			`.  All of this information is explained further by the help system.
+		expect(room.extraDescs[0]).toMatchObject({
+			keywords: ["notes"],
+			body: `.  All of this information is explained further by the help system.
 (type: help notes)   This is only a brief explanation to get you started.
 
    After reaching second level, when you log in, AVATAR will tell you how
@@ -49,11 +49,12 @@ note read <note number>   .
    note + <first line>
    note + <second line>
    note show
-   note post`
-		]);
-		expect(room.extraDescs[1]).toEqual([
-			["board"],
-			`.  There are currently SEVEN boards on AVATAR.  These are explained in more
+   note post
+`
+		});
+		expect(room.extraDescs[1]).toMatchObject({
+			keywords: ["board"],
+			body: `.  There are currently SEVEN boards on AVATAR.  These are explained in more
 detail with <help boards>
 
 For now, let's do a quick overview...  Type:  board
@@ -62,8 +63,9 @@ For now, let's do a quick overview...  Type:  board
 you have not.  It also shows you which board is currently 'active'.  To
 change a board, just type:  board <board number>   Whatever board you are
 on has its own set of notes.  If you choose to write a note or read a note on
-a certain board, just make that board active and do so... have fun. :)`
-		]);
+a certain board, just make that board active and do so... have fun. :)
+`
+		});
 	});
 
 	[

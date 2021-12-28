@@ -1,4 +1,5 @@
-import { newId, ErrorMarkers } from "./helpers";
+import { newId, Edesc, ErrorMarkers } from "./helpers";
+export { blankEdesc } from "./helpers";
 
 export interface RoomFields {
 	vnum: number | null;
@@ -7,7 +8,7 @@ export interface RoomFields {
 	flags: number[];
 	sector: number;
 	doors: Door[];
-	extraDescs: [string[], string][];
+	extraDescs: Edesc[];
 	alignFlags: number[];
 	classFlags: number[];
 }

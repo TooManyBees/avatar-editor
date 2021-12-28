@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Room } from "../models";
+import { Room, Edesc, newId } from "../models";
 
 interface RoomState {
 	rooms: Room[];
@@ -54,21 +54,25 @@ const roomSlice = createSlice({
 		addedExtraDesc(state, action: PayloadAction<string>) {
 			const room = state.rooms.find(m => m.id === action.payload);
 			if (room) {
-				room.extraDescs.push([[], ""]);
+				room.extraDescs.push({ id: newId(), keywords: [], body: "", _error: {} });
 			}
 		},
-		removedExtraDesc(state, action: PayloadAction<[string, number]>) {
-			const [id, idx] = action.payload;
+		removedExtraDesc(state, action: PayloadAction<[string, string]>) {
+			const [id, edescId] = action.payload;
 			const room = state.rooms.find(m => m.id === id);
-			if (room && idx < room.extraDescs.length) {
-				room.extraDescs.splice(idx, 1);
+			if (room) {
+				room.extraDescs = room.extraDescs.filter(e => e.id !== edescId);
 			}
 		},
-		updatedExtraDesc(state, action: PayloadAction<[string, number, [string[], string]]>) {
-			const [id, idx, payload] = action.payload;
+		updatedExtraDesc(state, action: PayloadAction<[string, Edesc]>) {
+			const [id, payload] = action.payload;
 			const room = state.rooms.find(m => m.id === id);
-			if (room && idx < room.extraDescs.length) {
-				room.extraDescs[idx] = payload;
+			if (room) {
+				const edesc = room.extraDescs.find(e => e.id === payload.id);
+				if (edesc) {
+					edesc.keywords = payload.keywords;
+					edesc.body = payload.body;
+				}
 			}
 		},
 	},
