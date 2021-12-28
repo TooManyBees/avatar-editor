@@ -1,5 +1,5 @@
 import { Help } from "../app/models";
-import { parseKeywords, parseNumber } from "./helpers";
+import { parseKeywords, parseNumber, newId } from "./helpers";
 
 export default function parseHelps(section: string): Help[] {
 	let parts = section.split('~');
@@ -30,6 +30,7 @@ export default function parseHelps(section: string): Help[] {
 
 function makeHelp(header: string, body: string | null): Help {
 	let help: Help = {
+		id: newId(),
 		level: 1,
 		keywords: [],
 		body: "",

@@ -1,4 +1,5 @@
 export interface Help {
+	id: string,
 	level: number;
 	keywords: string[];
 	body: string;

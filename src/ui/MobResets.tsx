@@ -33,17 +33,17 @@ function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[
 			<NumberField name="Limit" value={reset.limit} onUpdate={l => dispatch(Actions.updatedMobReset({...reset, limit: l}))} />
 			<p>Equipment</p>
 			{reset.equipment.map(eqReset => (
-				<p key={eqReset.id}>
+				<div key={eqReset.id}>
 					<ObjectSelector selected={eqReset.objectId} objects={objects} onUpdate={id => dispatch(Actions.updatedEquipmentReset([reset.id, {...eqReset, objectId: id}]))} />
 					<WearSelector selected={eqReset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...eqReset, wearLocation: l}]))} />
 					<NumberField name="Limit (0 for none)" value={eqReset.limit} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...eqReset, limit: l}]))} />
-				</p>
+				</div>
 			))}
 			{reset.inventory.map(invReset => (
-				<p key={invReset.id}>
+				<div key={invReset.id}>
 					<ObjectSelector selected={invReset.objectId} objects={objects} onUpdate={id => dispatch(Actions.updatedInventoryReset([reset.id, {...invReset, objectId: id}]))} />
 					<NumberField name="Limit (0 for none)" value={invReset.limit} onUpdate={l => dispatch(Actions.updatedInventoryReset([reset.id, {...invReset, limit: l}]))} />
-				</p>
+				</div>
 			))}
 		</div>
 	);

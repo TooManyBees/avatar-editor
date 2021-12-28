@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AreaSection, Help, BLANK_AREA_SECTION } from "../models";
+import { AreaSection, Help, newId, BLANK_AREA_SECTION } from "../models";
 
 interface AreaSectionState {
 	line: string;
@@ -24,13 +24,26 @@ const areaSectionSlice = createSlice({
 			state.line = action.payload;
 		},
 		addedHelp(state) {
-
+			let help = {
+				id: newId(),
+				level: 1,
+				keywords: [],
+				body: "",
+				_error: {},
+			};
+			state.helps.push(help);
 		},
-		removedHelp(state, action: PayloadAction<number>) {
-
+		removedHelp(state, action: PayloadAction<string>) {
+			state.helps = state.helps.filter(h => h.id !== action.payload);
 		},
-		updatedHelp(statet, action: PayloadAction<[number, Help]>) {
-
+		updatedHelp(state, action: PayloadAction<Help>) {
+			const newHelp = action.payload;
+			const help = state.helps.find(h => h.id === newHelp.id);
+			if (help) {
+				help.level = newHelp.level;
+				help.keywords = newHelp.keywords;
+				help.body = newHelp.body;
+			}
 		},
 	},
 });
