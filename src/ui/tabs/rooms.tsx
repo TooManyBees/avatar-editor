@@ -88,13 +88,30 @@ function Doors({ roomId, doors, rooms }: DoorsProps) {
 			{doors.map(door => (
 				<li key={door.id}>
 					<SelectField name="Direction" value={door.direction} map={DIRECTIONS} onUpdate={direction => dispatch(Actions.updatedDoor([roomId, {...door, direction}]))} />
+					<Destination roomId={roomId} doorId={door.id} rooms={rooms} value={door.toRoomId} onUpdate={toRoomId => dispatch(Actions.updatedDoor([roomId, {...door, toRoomId}]))} />
 					<SelectField name="Door" value={door.locks} map={LOCKS} onUpdate={locks => dispatch(Actions.updatedDoor([roomId, {...door, locks}]))} />
-					{/*<Connection roomId={roomId} doorId={door.id} rooms={rooms} value={door.roomId} />*/}
+					{/* key selector */}
 					<KeywordField name="Keywords" value={door.keywords} onUpdate={keywords => dispatch(Actions.updatedDoor([roomId, {...door, keywords}]))} />
 					<TextArea name="Description" value={door.description} onUpdate={description => dispatch(Actions.updatedDoor([roomId, {...door, description}]))} />
 				</li>
 			))}
 		</ol>
+	);
+}
+
+interface DestinationProps {
+	roomId: string;
+	doorId: string;
+	rooms: Room[];
+	value: string;
+	onUpdate: (s: string) => void;
+}
+
+function Destination(props: DestinationProps) {
+	return (
+		<label>Destination: <select value={props.value} onChange={e => props.onUpdate(e.target.value)}>
+			{props.rooms.map(r => <option key={r.id} value={r.id}>{r.vnum} {r.name}</option>)}
+		</select></label>
 	);
 }
 
