@@ -39,7 +39,7 @@ const mobileSlice = createSlice({
 		updatedShortDesc(state, action: PayloadAction<[string, string]>) {
 			const [id, payload] = action.payload;
 			const mobile = state.mobiles.find(m => m.id === id);
-			if (mobile) mobile.name = payload;
+			if (mobile) mobile.shortDesc = payload;
 		},
 		updatedLongDesc(state, action: PayloadAction<[string, string]>) {
 			const [id, payload] = action.payload;

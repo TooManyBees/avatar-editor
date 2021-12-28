@@ -4,7 +4,8 @@ import "./VnumList.css";
 interface HasVnum {
 	id: string;
 	vnum: number | null;
-	name: string;
+	name?: string;
+	shortDesc?: string;
 }
 
 interface Props<T> {
@@ -28,9 +29,9 @@ export function VnumItemList<T extends HasVnum>({ selected, itemName, items, onA
 	return (
 		<ol className="VnumItemList">
 			<button onClick={onAdd}>New {itemName}</button>
-			{items.map(({ id, vnum, name }) => (
+			{items.map(({ id, vnum, name, shortDesc }) => (
 				<li key={id} onClick={() => onChange(id)} className={selected === id ? "selected" : undefined}>
-					<span className="vnum">{vnum || ""}</span> {name}
+					<span className="vnum">{vnum || ""}</span> {name || shortDesc || ""}
 				</li>
 			))}
 		</ol>

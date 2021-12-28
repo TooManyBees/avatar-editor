@@ -70,7 +70,7 @@ function MobileForm(props: Props) {
 		<div>
 			<NumberField name="VNUM" value={mobile.vnum} min={0} onUpdate={updatedVnum} />
 			<KeywordField name="Keywords" value={mobile.keywords} onUpdate={updatedKeywords} />
-			<TextField name="Short desc" value={mobile.name} onUpdate={updatedShortDesc} />
+			<TextField name="Short desc" value={mobile.shortDesc} onUpdate={updatedShortDesc} />
 			<TextField name="Long desc" value={mobile.longDesc} onUpdate={updatedLongDesc} />
 			<TextArea name="Description" value={mobile.description} onUpdate={updatedDescription} />
 			<BitsField name="Act Flags" value={mobile.act} map={ACT_FLAGS} onUpdate={updatedAct} />

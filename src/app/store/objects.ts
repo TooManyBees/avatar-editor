@@ -40,7 +40,7 @@ const objectSlice = createSlice({
 		updatedShortDesc(state, action: PayloadAction<[string, string]>) {
 			const [id, payload] = action.payload;
 			const object = state.objects.find(m => m.id === id);
-			if (object) object.name = payload;
+			if (object) object.shortDesc = payload;
 		},
 		updatedLongDesc(state, action: PayloadAction<[string, string]>) {
 			const [id, payload] = action.payload;

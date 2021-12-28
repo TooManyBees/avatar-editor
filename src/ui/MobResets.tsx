@@ -59,7 +59,7 @@ function ObjectSelector({ selected, objects, onUpdate }: ObjectSelectorProps) {
 	return (
 		<select value={selected} onChange={e => onUpdate(e.target.value)}>
 			{!objects.find(o => o.id === selected) && <option value={selected}>{selected} (not in area)</option>}
-			{objects.map(o => <option value={o.id} key={o.id}>{o.vnum} {o.name}</option>)}
+			{objects.map(o => <option value={o.id} key={o.id}>{o.vnum} {o.shortDesc}</option>)}
 		</select>
 	);
 }

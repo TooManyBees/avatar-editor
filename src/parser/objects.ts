@@ -62,8 +62,8 @@ export function parseObject(objectString: string): Objekt {
 				state = ParseState.LongDesc;
 				let tilde = line.indexOf("~");
 				let string = tilde === -1 ? line : line.substring(0, tilde);
-				if (tilde === -1) object._error.name = true;
-				object.name = string;
+				if (tilde === -1) object._error.shortDesc = true;
+				object.shortDesc = string;
 				break;
 			}
 			case ParseState.LongDesc: {

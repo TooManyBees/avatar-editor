@@ -3,7 +3,7 @@ import { newId, ErrorMarkers } from "./helpers";
 export interface MobileFields {
 	vnum: number | null;
 	keywords: string[];
-	name: string;
+	shortDesc: string;
 	longDesc: string;
 	description: string;
 	act: number[];
@@ -43,7 +43,7 @@ export const blankMobile = (): Mobile => ({
 	id: newId(),
 	vnum: null,
 	keywords: [],
-	name: "",
+	shortDesc: "",
 	longDesc: "",
 	description: "",
 	act: [],

@@ -85,7 +85,7 @@ function ObjectForm({ item: object }: Props) {
 		<div>
 			<NumberField name="VNUM" value={object.vnum} min={0} onUpdate={updatedVnum} />
 			<KeywordField name="Keywords" value={object.keywords} onUpdate={updatedKeywords} />
-			<TextField name="Short desc" value={object.name} onUpdate={updatedShortDesc} />
+			<TextField name="Short desc" value={object.shortDesc} onUpdate={updatedShortDesc} />
 			<TextField name="Long desc" value={object.longDesc} onUpdate={updatedLongDesc} />
 			<TextArea name="Action desc" value={object.actionDesc} onUpdate={updatedActionDesc} />
 			<SelectField name="Type" value={object.itemType} map={ITEM_TYPE} onUpdate={updatedItemType} />

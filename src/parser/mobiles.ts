@@ -63,8 +63,8 @@ export function parseMobile(mobString: string): Mobile {
 				state = ParseState.LongDesc;
 				let tilde = line.indexOf("~");
 				let string = tilde === -1 ? line : line.substring(0, tilde);
-				if (tilde === -1) mobile._error.name = true;
-				mobile.name = string;
+				if (tilde === -1) mobile._error.shortDesc = true;
+				mobile.shortDesc = string;
 				break;
 			}
 			case ParseState.LongDesc: {

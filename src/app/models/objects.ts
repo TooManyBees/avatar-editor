@@ -4,7 +4,7 @@ export { blankEdesc } from "./helpers";
 export interface ObjectFields {
 	vnum: number | null;
 	keywords: string[];
-	name: string;
+	shortDesc: string;
 	longDesc: string;
 	actionDesc: string;
 	itemType: number;
@@ -31,7 +31,7 @@ export const blankObject = (): Objekt => ({
 	id: newId(),
 	vnum: null,
 	keywords: [],
-	name: "",
+	shortDesc: "",
 	longDesc: "",
 	actionDesc: "",
 	itemType: 1,
