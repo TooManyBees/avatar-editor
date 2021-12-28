@@ -1,10 +1,11 @@
-import { Room, Door, blankRoom, blankDoor, blankEdesc } from "../app/models/rooms";
+import { Room, RoomU, Door, DoorU, blankRoomU, blankDoorU, blankEdesc } from "../app/models/rooms";
 import {
 	parseBits,
 	parseKeywords,
 	parseNumber,
 	splitOnVnums,
 } from "./helpers";
+import { Objekt } from "../app/models";
 
 const enum ParseState {
 	Vnum,
@@ -19,18 +20,18 @@ const enum ParseState {
 	EdescMessage,
 };
 
-export default function parseRooms(section: string): Room[] {
+export default function parseRooms(section: string): RoomU[] {
 	let parts = splitOnVnums(section);
 	return parts.map(part => parseRoom(part));
 }
 
-export function parseRoom(roomString: string): Room {
+export function parseRoom(roomString: string): RoomU {
 	let state = ParseState.Vnum;
-	let room = blankRoom();
+	let room = blankRoomU();
 
 	let multiLineBuffer = "";
 	let edesc = blankEdesc();
-	let door = blankDoor();
+	let door = blankDoorU(room.id);
 
 	let lines = roomString.trim().split("\n");
 
@@ -159,7 +160,7 @@ export function parseRoom(roomString: string): Room {
 				else door._error.toVnum = true;
 
 				room.doors.push(door);
-				door = blankDoor();
+				door = blankDoorU(room.id);
 
 				break;
 			}
@@ -203,4 +204,53 @@ export function parseRoom(roomString: string): Room {
 	}
 
 	return room;
+}
+
+export function corellateDoors(objects: Objekt[], roomsU: RoomU[]): Room[] {
+	let rooms: Room[] = [];
+	for (let roomU of roomsU) {
+		let room: Room = {
+			id: roomU.id,
+			vnum: roomU.vnum,
+			name: roomU.name,
+			description: roomU.description,
+			flags: roomU.flags,
+			sector: roomU.sector,
+			doors: [],
+			extraDescs: roomU.extraDescs,
+			alignFlags: roomU.alignFlags,
+			classFlags: roomU.classFlags,
+			_error: roomU._error,
+		};
+
+		for (let doorU of roomU.doors) {
+			let door: Door = {
+				id: doorU.id,
+				direction: doorU.direction,
+				description: doorU.description,
+				keywords: doorU.keywords,
+				locks: doorU.locks,
+				keyId: null,
+				toRoomId: doorU.toVnum.toString(),
+				_error: doorU._error,
+			};
+
+			let toRoom = roomsU.find(r => r.vnum === doorU.toVnum);
+			if (toRoom) door.toRoomId = toRoom.id;
+			else door._error.toRoomId = true;
+
+			if (doorU.key !== 0) {
+				let key = objects.find(o => o.vnum === doorU.key);
+				if (key) door.keyId = key.id;
+				else {
+					door._error.keyId = true;
+					door.keyId = doorU.key.toString();
+				}
+			}
+
+			room.doors.push(door);
+		}
+		rooms.push(room);
+	}
+	return rooms;
 }

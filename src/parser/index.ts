@@ -3,14 +3,15 @@ import parseAreadata from "./areadata";
 import parseHelps from "./helps";
 import parseMobiles from "./mobiles";
 import parseObjects from "./objects";
-import parseRooms from "./rooms";
+import parseRooms, { corellateDoors } from "./rooms";
+import { RoomU, DoorU } from "../app/models/rooms";
 import { UncorellatedResets } from "../app/models/resets";
 import { parseResets, corellateResets } from "./resets";
 import parseShops from "./shops";
 import parseSpecials from "./specials";
 
 import {
-	Area, AreaSection, AreadataSection, Help, Mobile, Objekt, Room, Shop, Resets, Special,
+	Area, AreaSection, AreadataSection, Door, Help, Mobile, Objekt, Room, Shop, Resets, Special,
 	BLANK_AREA_SECTION, BLANK_RESETS_SECTION,
 } from "./../app/models";
 
@@ -67,6 +68,8 @@ export default function parseFile(file: string): Area {
 		randomExit: [],
 	};
 
+	let uncorellatedRooms: RoomU[] = [];
+
 	for (let [name, section] of Object.entries(unparsedSections)) {
 		switch (name.toUpperCase()) {
 			case "AREA": {
@@ -90,7 +93,7 @@ export default function parseFile(file: string): Area {
 				break;
 			}
 			case "ROOMS": {
-				parsedSections.rooms = parseRooms(section);
+				uncorellatedRooms = parseRooms(section);
 				break;
 			}
 			case "RESETS": {
@@ -107,6 +110,8 @@ export default function parseFile(file: string): Area {
 			}
 		}
 	}
+
+	parsedSections.rooms = corellateDoors(parsedSections.objects, uncorellatedRooms);
 
 	let [resets, orphanedResets] = corellateResets(uncorellatedResets, parsedSections.mobiles, parsedSections.objects, parsedSections.rooms);
 	parsedSections.resets = resets;

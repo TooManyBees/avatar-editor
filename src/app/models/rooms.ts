@@ -13,12 +13,26 @@ export interface RoomFields {
 	classFlags: number[];
 }
 
+export interface RoomU {
+	readonly id: string;
+	vnum: number | null;
+	name: string;
+	description: string;
+	flags: number[];
+	sector: number;
+	doors: DoorU[];
+	extraDescs: Edesc[];
+	alignFlags: number[];
+	classFlags: number[];
+	_error: ErrorMarkers<RoomFields>;
+}
+
 export interface Room extends RoomFields {
 	readonly id: string;
 	_error: ErrorMarkers<RoomFields>
 }
 
-export const blankRoom = (): Room => ({
+export const blankRoomU = (): RoomU => ({
 	id: newId(),
 	vnum: null,
 	name: "",
@@ -32,13 +46,33 @@ export const blankRoom = (): Room => ({
 	_error: {},
 });
 
+export interface DoorU {
+	id: string,
+	direction: number;	
+	description: string;
+	keywords: string[];
+	locks: number;
+	key: number;
+	fromRoomId: string;
+	toVnum: number;
+	_error: {
+		all?: boolean;
+		direction?: boolean;
+		description?: boolean;
+		keywords?: boolean;
+		locks?: boolean;
+		key?: boolean;
+		toVnum?: boolean;
+	};
+}
+
 export interface DoorFields {
 	direction: number;
 	description: string;
 	keywords: string[];
 	locks: number;
-	key: number;
-	toVnum: number;
+	keyId: string | null;
+	toRoomId: string;
 }
 
 export interface Door extends DoorFields {
@@ -46,13 +80,25 @@ export interface Door extends DoorFields {
 	_error: ErrorMarkers<DoorFields>;
 }
 
-export const blankDoor = (): Door => ({
+export const blankDoorU = (roomId: string): DoorU => ({
 	id: newId(),
 	direction: 0,
 	description: "",
 	keywords: [],
 	locks: 0,
 	key: 0,
+	fromRoomId: roomId,
 	toVnum: 1,
+	_error: {},
+});
+
+export const blankDoor = (): Door => ({
+	id: newId(),
+	direction: 0,
+	description: "",
+	keywords: [],
+	locks: 0,
+	keyId: null,
+	toRoomId: "",
 	_error: {},
 });

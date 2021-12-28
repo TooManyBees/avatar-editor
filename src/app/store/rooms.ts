@@ -90,8 +90,8 @@ const roomSlice = createSlice({
 					door.description = newDoor.description;
 					door.keywords = newDoor.keywords;
 					door.locks = newDoor.locks;
-					door.key = newDoor.key;
-					door.toVnum = newDoor.toVnum;
+					door.keyId = newDoor.keyId;
+					door.toRoomId = newDoor.toRoomId;
 				}
 			}
 		},
