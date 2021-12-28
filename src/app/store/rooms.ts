@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Room, Door, Edesc, newId } from "../models";
-import { blankDoor } from "../models/rooms";
+import { blankDoor, blankRoom } from "../models/rooms";
 
 interface RoomState {
 	rooms: Room[];
+	selectedId: string | null;
 }
 
 const initialState: RoomState = {
 	rooms: [],
+	selectedId: null,
 };
 
 const roomSlice = createSlice({
@@ -16,6 +18,14 @@ const roomSlice = createSlice({
 	reducers: {
 		init(state, action: PayloadAction<Room[]>) {
 			state.rooms = action.payload;
+		},
+		selectedId(state, action: PayloadAction<string>) {
+			state.selectedId = action.payload;
+		},
+		addedRoom(state) {
+			const newRoom = blankRoom();
+			state.rooms.unshift(newRoom);
+			state.selectedId = newRoom.id;
 		},
 		updatedVnum(state, action: PayloadAction<[string, number]>) {
 			const [id, payload] = action.payload;
@@ -105,6 +115,8 @@ const roomSlice = createSlice({
 
 export const {
 	init,
+	selectedId,
+	addedRoom,
 	updatedVnum,
 	updatedName,
 	updatedDescription,

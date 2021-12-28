@@ -5,13 +5,11 @@ type TabName = "area" | "areadata" | "mobiles" | "objects" | "rooms" | "shops";
 interface UiState {
 	loaded: boolean;
 	tab: TabName;
-	currentId: string | null;
 }
 
 const initialState: UiState = {
 	loaded: false,
 	tab: "area",
-	currentId: null,
 };
 
 const uiSlice = createSlice({
@@ -24,14 +22,13 @@ const uiSlice = createSlice({
 		changedTab(state, action: PayloadAction<TabName>) {
 			if (state.tab !== action.payload) {
 				state.tab = action.payload;
-				state.currentId = null;
 			}
 		},
-		selectedId(state, action: PayloadAction<string>) {
-			state.currentId = action.payload;
-		}
 	},
 });
 
-export const { loaded, changedTab, selectedId } = uiSlice.actions;
+export const {
+	loaded,
+	changedTab,
+} = uiSlice.actions;
 export default uiSlice.reducer;

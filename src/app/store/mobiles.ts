@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Mobile, Kspawn, blankKspawn } from "../models/mobiles";
+import { Mobile, Kspawn, blankKspawn, blankMobile } from "../models/mobiles";
 
 interface MobileState {
 	mobiles: Mobile[];
+	selectedId: string | null;
 }
 
 const initialState: MobileState = {
 	mobiles: [],
+	selectedId: null,
 };
 
 const mobileSlice = createSlice({
@@ -15,6 +17,14 @@ const mobileSlice = createSlice({
 	reducers: {
 		init(state, action: PayloadAction<Mobile[]>) {
 			state.mobiles = action.payload;
+		},
+		selectedId(state, action: PayloadAction<string>) {
+			state.selectedId = action.payload;
+		},
+		addedMobile(state) {
+			const newMob = blankMobile();
+			state.mobiles.unshift(newMob);
+			state.selectedId = newMob.id;
 		},
 		updatedVnum(state, action: PayloadAction<[string, number]>) {
 			const [id, payload] = action.payload;
@@ -125,6 +135,8 @@ const mobileSlice = createSlice({
 
 export const {
 	init,
+	selectedId,
+	addedMobile,
 	updatedVnum,
 	updatedKeywords,
 	updatedShortDesc,

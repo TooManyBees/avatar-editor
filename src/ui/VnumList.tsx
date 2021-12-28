@@ -18,13 +18,16 @@ interface State {
 
 interface ListProps<T> {
 	selected: string | null;
+	itemName: string;
 	items: T[];
+	onAdd: () => void;
 	onChange: (selected: string) => void;
 }
 
-export function VnumItemList<T extends HasVnum>({ selected, items, onChange }: ListProps<T>) {
+export function VnumItemList<T extends HasVnum>({ selected, itemName, items, onAdd, onChange }: ListProps<T>) {
 	return (
 		<ol className="VnumItemList">
+			<button onClick={onAdd}>New {itemName}</button>
 			{items.map(({ id, vnum, name }) => (
 				<li key={id} onClick={() => onChange(id)} className={selected === id ? "selected" : undefined}>
 					<span className="vnum">{vnum || ""}</span> {name}

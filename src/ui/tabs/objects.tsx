@@ -1,7 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/objects";
-import { selectedId } from "../../app/store/ui";
 import { Objekt } from "../../app/models";
 import {
 	ApplyFields,
@@ -21,11 +20,15 @@ import "../VnumList.css";
 export default function ObjectsTab() {
 	const dispatch = useAppDispatch();
 	const objects = useAppSelector(state => state.objects.objects);
-	const currentId = useAppSelector(state => state.ui.currentId);
+	const currentId = useAppSelector(state => state.objects.selectedId);
 	const object = objects.find(m => m.id === currentId);
 
 	function onSelect(id: string) {
-		dispatch(selectedId(id));
+		dispatch(Actions.selectedId(id));
+	}
+
+	function onAdd() {
+		dispatch(Actions.addedObject());
 	}
 
 	return (
@@ -34,7 +37,7 @@ export default function ObjectsTab() {
 				<TabsNav />
 				{object ? <ObjectForm key={currentId} item={object} /> : null }
 			</div>
-			<VnumItemList items={objects} selected={currentId} onChange={onSelect} />
+			<VnumItemList itemName="Object" items={objects} selected={currentId} onChange={onSelect} onAdd={onAdd} />
 		</div>
 	);
 }

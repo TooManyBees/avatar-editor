@@ -46,6 +46,20 @@ export const blankRoomU = (): RoomU => ({
 	_error: {},
 });
 
+export const blankRoom = (): Room => ({
+	id: newId(),
+	vnum: null,
+	name: "",
+	description: "",
+	flags: [],
+	sector: 0,
+	doors: [],
+	extraDescs: [],
+	alignFlags: [],
+	classFlags: [],
+	_error: {},
+});
+
 export interface DoorU {
 	id: string,
 	direction: number;	

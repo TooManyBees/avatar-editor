@@ -1,7 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/mobiles";
-import { selectedId } from "../../app/store/ui";
 import { Mobile, Kspawn } from "../../app/models";
 import {
 	ApplyFields,
@@ -22,11 +21,15 @@ import "../VnumList.css";
 export default function MobilesTab() {
 	const dispatch = useAppDispatch();
 	const mobiles = useAppSelector(state => state.mobiles.mobiles);
-	const currentId = useAppSelector(state => state.ui.currentId);
+	const currentId = useAppSelector(state => state.mobiles.selectedId);
 	const mobile = mobiles.find(m => m.id === currentId);
 
 	function onSelect(id: string) {
-		dispatch(selectedId(id));
+		dispatch(Actions.selectedId(id));
+	}
+
+	function onAdd() {
+		dispatch(Actions.addedMobile());
 	}
 
 	return (
@@ -35,7 +38,7 @@ export default function MobilesTab() {
 				<TabsNav />
 				{mobile ? <MobileForm key={currentId} mobile={mobile} /> : null }
 			</div>
-			<VnumItemList items={mobiles} selected={currentId} onChange={onSelect} />
+			<VnumItemList itemName="Mobile" items={mobiles} selected={currentId} onChange={onSelect} onAdd={onAdd} />
 		</div>
 	);
 }

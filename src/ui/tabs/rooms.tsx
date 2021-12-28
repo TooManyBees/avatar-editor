@@ -2,7 +2,6 @@ import React from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/rooms";
-import { selectedId } from "../../app/store/ui";
 import { VnumItemList } from "../VnumList";
 import { Room, Door } from "../../app/models";
 import {
@@ -21,11 +20,15 @@ import "../VnumList.css";
 export default function RoomsTab() {
 	const dispatch = useAppDispatch();
 	const rooms = useAppSelector(state => state.rooms.rooms);
-	const currentId = useAppSelector(state => state.ui.currentId);
+	const currentId = useAppSelector(state => state.rooms.selectedId);
 	const room = rooms.find(m => m.id === currentId);
 
 	function onSelect(id: string) {
-		dispatch(selectedId(id));
+		dispatch(Actions.selectedId(id));
+	}
+
+	function onAdd() {
+		dispatch(Actions.addedRoom());
 	}
 
 	return (
@@ -34,7 +37,7 @@ export default function RoomsTab() {
 				<TabsNav />
 				{room ? <RoomForm key={currentId} room={room} /> : null }
 			</div>
-			<VnumItemList items={rooms} selected={currentId} onChange={onSelect} />
+			<VnumItemList itemName="Room" items={rooms} selected={currentId} onChange={onSelect} onAdd={onAdd} />
 		</div>
 	);
 }

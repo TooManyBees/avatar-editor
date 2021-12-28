@@ -1,12 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Edesc, Objekt, newId } from "../models";
+import { blankObject } from "../models/objects";
 
 interface ObjectState {
 	objects: Objekt[];
+	selectedId: string | null;
 }
 
 const initialState: ObjectState = {
 	objects: [],
+	selectedId: null,
 };
 
 const objectSlice = createSlice({
@@ -15,6 +18,14 @@ const objectSlice = createSlice({
 	reducers: {
 		init(state, action: PayloadAction<Objekt[]>) {
 			state.objects = action.payload;
+		},
+		selectedId(state, action: PayloadAction<string>) {
+			state.selectedId = action.payload;
+		},
+		addedObject(state) {
+			const newObject = blankObject();
+			state.objects.unshift(newObject);
+			state.selectedId = newObject.id;
 		},
 		updatedVnum(state, action: PayloadAction<[string, number]>) {
 			const [id, payload] = action.payload;
@@ -145,6 +156,8 @@ const objectSlice = createSlice({
 
 export const {
 	init,
+	selectedId,
+	addedObject,
 	updatedVnum,
 	updatedKeywords,
 	updatedShortDesc,
