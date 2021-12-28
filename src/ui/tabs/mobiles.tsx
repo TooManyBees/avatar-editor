@@ -5,13 +5,13 @@ import * as SpecialActions from "../../app/store/specials";
 import { Mobile, Kspawn } from "../../app/models";
 import {
 	ApplyFields,
-	BitsField,
 	KeywordField,
 	NumberField,
 	SelectField,
 	TextField,
 	TextArea,
 } from "../fields";
+import BitsField from "../components/BitsField";
 import { VnumItemList } from "../VnumList";
 import TabsNav from "./tabs-nav";
 import MobResets from "../MobResets";

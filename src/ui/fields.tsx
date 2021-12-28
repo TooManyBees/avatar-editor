@@ -121,59 +121,6 @@ export class NumberField extends React.Component<NumberFieldProps, NumberFieldSt
 	}
 }
 
-interface BitsFieldProps {
-	name: string;
-	value: number[];
-	map: [number, string, string][];
-	onUpdate?: (bs: number[]) => void;
-}
-
-interface BitsFieldState {
-	value: number[];
-}
-
-export class BitsField extends React.Component<BitsFieldProps, BitsFieldState> {
-	constructor(props: BitsFieldProps) {
-		super(props);
-		this.state = { value: props.value };
-		this.onChange = this.onChange.bind(this);
-	}
-
-	onChange(event: ChangeEvent<HTMLInputElement>) {
-		const bit = parseInt(event.currentTarget.value, 10);
-		if (Number.isInteger(bit)) {
-			let value = this.state.value;
-			let idx = value.indexOf(bit);
-			if (idx > -1){
-				value = value.slice(0, idx).concat(value.slice(idx + 1));
-			} else {
-				value = value.concat(bit);
-			}
-			this.setState({ value });
-			if (this.props.onUpdate) {
-				this.props.onUpdate(value);
-			}
-		}
-	}
-
-	render() {
-		const { map, name } = this.props;
-		return (
-			<fieldset className="BitsField">
-				<legend>{name}</legend>
-				{map.map(([bit, desc, help]) => (
-					<label key={bit} title={help}><input
-						type="checkbox"
-						value={bit}
-						checked={this.state.value.includes(bit)}
-						onChange={this.onChange}
-					/> {desc}</label>
-				))}
-			</fieldset>
-		);
-	}
-}
-
 interface SelectFieldProps {
 	name: string;
 	value: number | undefined;

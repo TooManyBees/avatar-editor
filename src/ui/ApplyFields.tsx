@@ -1,7 +1,8 @@
 import React from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../app/hooks";
-import { BitsField, NumberField, SelectField } from "./fields";
+import { NumberField, SelectField } from "./fields";
+import BitsField from "./components/BitsField";
 import "./ApplyFields.css";
 
 interface Props {

@@ -4,7 +4,6 @@ import * as Actions from "../../app/store/objects";
 import { Objekt } from "../../app/models";
 import {
 	ApplyFields,
-	BitsField,
 	EdescFields,
 	KeywordField,
 	NumberField,
@@ -14,6 +13,7 @@ import {
 } from "../fields";
 import { VnumItemList } from "../VnumList";
 import TabsNav from "./tabs-nav";
+import BitsField from "../components/BitsField";
 import "./tabs.css";
 import "../VnumList.css";
 

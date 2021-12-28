@@ -5,7 +5,6 @@ import * as Actions from "../../app/store/rooms";
 import { VnumItemList } from "../VnumList";
 import { Room, Door } from "../../app/models";
 import {
-	BitsField,
 	EdescFields,
 	KeywordField,
 	NumberField,
@@ -14,6 +13,7 @@ import {
 	TextArea,
 } from "../fields";
 import TabsNav from "./tabs-nav";
+import BitsField from "../components/BitsField";
 import "./tabs.css";
 import "../VnumList.css";
 
