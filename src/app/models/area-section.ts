@@ -1,7 +1,5 @@
 export interface AreaSection {
-	levelRange: string;
-	author: string;
-	name: string;
+	line: string;
 	_error: {
 		levelRange?: boolean;
 		author?: boolean;
@@ -10,8 +8,6 @@ export interface AreaSection {
 }
 
 export const BLANK_AREA_SECTION: AreaSection = {
-	levelRange: "",
-	author: "",
-	name: "",
+	line: "",
 	_error: {},
 };

@@ -8,6 +8,7 @@ interface TextFieldProps {
 	name: string;
 	value: string | null;
 	onUpdate?: (s: string) => void;
+	className?: string;
 }
 
 interface TextFieldState {
@@ -33,12 +34,12 @@ export class TextField extends React.Component<TextFieldProps, TextFieldState> {
 	}
 
 	render() {
-		const name = this.props.name;
+		const { name, className } = this.props;
 		const value = this.state.value;
 		const valueString = value == null ? "" : value.toString();
 		return (
 			<div className="TextField">
-				<label>{name}: <input type="text" value={valueString} onChange={this.onChange} onBlur={this.onBlur} /></label>
+				<label>{name}: <input type="text" className={className} value={valueString} onChange={this.onChange} onBlur={this.onBlur} /></label>
 			</div>
 		);
 	}

@@ -3,23 +3,20 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as AreaActions from "../../app/store/area-section";
 import TabsNav from "./tabs-nav";
 import { NumberField, SelectField, TextArea, TextField } from "../fields";
+import "./area.css";
 
 export default function AreaTab() {
 	const dispatch = useAppDispatch();
 	const area = useAppSelector(state => state.area);
 
-	const updatedAuthor = (s: string) => dispatch(AreaActions.updatedAuthor(s));
-	const updatedName = (s: string) => dispatch(AreaActions.updatedName(s));
+	const updatedLine = (s: string) => dispatch(AreaActions.updatedLine(s));
 
 	return (
 		<div>
 			<TabsNav />
 
 			<div>
-				<TextField name="Author" value={area.author} onUpdate={updatedAuthor} />
-				<TextField name="Name" value={area.name} onUpdate={updatedName} />
-				<TextField name="Level Range" value={""} />
-
+				<TextField className="area-field" name="#AREA" value={area.line} onUpdate={updatedLine} />
 			</div>
 		</div>
 	);
