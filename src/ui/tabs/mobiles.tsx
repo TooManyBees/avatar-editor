@@ -52,6 +52,7 @@ function MobileForm(props: Props) {
 	const dispatch = useAppDispatch();
 	const { mobile } = props;
 	const id = mobile.id;
+	const kspawn = mobile.kspawn;
 
 	const specFun = useAppSelector(state => state.specials.specials[id]);
 
@@ -87,14 +88,14 @@ function MobileForm(props: Props) {
 			<SelectField name="Team" value={mobile.team} map={TEAM} onUpdate={updatedTeam} />
 			<ApplyFields applies={mobile.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 			<SpecialSelector selected={specFun} onUpdate={updatedSpecial} />
-			{mobile.kspawn ? (
+			{kspawn ? (
 				<fieldset>
 					<legend>Kspawn</legend>
-					<SelectField name="Condition" value={mobile.kspawn.condition} map={KSPAWN_CONDITION} />
-					<BitsField name="Type" value={mobile.kspawn.spawnType} map={KSPAWN_TYPE} />
-					<NumberField name="Spawn VNUM" value={mobile.kspawn.spawnVnum} min={-1} />
-					<NumberField name="Room VNUM" value={mobile.kspawn.roomVnum} min={-1} />
-					<TextArea name="Text" value={mobile.kspawn.message} />
+					<SelectField name="Condition" value={kspawn.condition} map={KSPAWN_CONDITION} onUpdate={condition => dispatch(Actions.updatedKspawn([id, {...kspawn, condition}]))} />
+					<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} onUpdate={spawnType => dispatch(Actions.updatedKspawn([id, {...kspawn, spawnType}]))} />
+					<NumberField name="Spawn VNUM" value={kspawn.spawnVnum} min={-1} onUpdate={spawnVnum => dispatch(Actions.updatedKspawn([id, {...kspawn, spawnVnum}]))} />
+					<NumberField name="Room VNUM" value={kspawn.roomVnum} min={-1} onUpdate={roomVnum => dispatch(Actions.updatedKspawn([id, {...kspawn, roomVnum}]))} />
+					<TextArea name="Text" value={kspawn.message} onUpdate={message => dispatch(Actions.updatedKspawn([id, {...kspawn, message}]))} />
 				</fieldset>
 			) : null}
 			<h2>Resets</h2>
