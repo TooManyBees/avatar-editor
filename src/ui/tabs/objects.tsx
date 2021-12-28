@@ -92,8 +92,6 @@ function ObjectForm({ item: object }: Props) {
 			<NumberField name="Weight" value={object.weight} onUpdate={updatedWeight} />
 			<NumberField name="Worth" value={object.worth} onUpdate={updatedWorth} />
 			<BitsField name="Racial wear flags" value={object.racialFlags} map={RACIAL_WEAR_FLAGS} onUpdate={updatedRacialFlags} />
-			{/* extra descs */}
-			{/* applies */}
 			<NumberField name="Quality" value={object.quality} min={1} onUpdate={updatedQuality} />
 			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />

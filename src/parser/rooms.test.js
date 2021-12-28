@@ -22,13 +22,13 @@ voice whispers in your mind...
 		expect(room.doors[0].direction).toBe(0);
 		expect(room.doors[0].description).toBe("");
 		expect(room.doors[0].keywords).toEqual([]);
-		expect(room.doors[0].locks).toEqual([]);
+		expect(room.doors[0].locks).toEqual(0);
 		expect(room.doors[0].toVnum).toBe(8182);
 		expectNoErrors(room.doors[1]);
 		expect(room.doors[1].direction).toBe(2);
 		expect(room.doors[1].description).toBe("");
 		expect(room.doors[1].keywords).toEqual([]);
-		expect(room.doors[1].locks).toEqual([]);
+		expect(room.doors[1].locks).toEqual(0);
 		expect(room.doors[1].toVnum).toBe(8181);
 		expect(room.extraDescs).toHaveLength(2);
 		expect(room.extraDescs[0]).toMatchObject({

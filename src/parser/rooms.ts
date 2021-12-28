@@ -146,9 +146,9 @@ export function parseRoom(roomString: string): Room {
 				state = ParseState.ExtraLines;
 				let [locksString, keyString, toVnumString, ...rest] = line.trimLeft().split(/\s+/);
 
-				let { error, bits } = parseBits(locksString);
-				if (error) door._error.locks = true;
-				door.locks = bits;
+				let locks = parseNumber(locksString);
+				if (locks != null) door.locks = locks;
+				else door._error.locks = true;
 
 				let key = parseNumber(keyString);
 				if (key != null) door.key = key;

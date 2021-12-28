@@ -1,12 +1,14 @@
 import React from "react";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/rooms";
 import { selectedId } from "../../app/store/ui";
 import { VnumItemList } from "../VnumList";
-import { Room } from "../../app/models";
+import { Room, Door } from "../../app/models";
 import {
 	BitsField,
 	EdescFields,
+	KeywordField,
 	NumberField,
 	SelectField,
 	TextField,
@@ -47,6 +49,8 @@ function RoomForm(props: Props) {
 	const { room } = props;
 	const id = room.id;
 
+	const rooms = useAppSelector(state => state.rooms.rooms);
+
 	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
 	const updatedName = (s: string) => dispatch(Actions.updatedName([id, s]));
 	const updatedDescription = (s: string) => dispatch(Actions.updatedDescription([id, s]));
@@ -62,11 +66,35 @@ function RoomForm(props: Props) {
 			<TextArea name="Description" value={room.description} onUpdate={updatedDescription} />
 			<BitsField name="Flags" value={room.flags} map={FLAGS} onUpdate={updatedFlags} />
 			<SelectField name="Sector" value={room.sector} map={SECTOR} onUpdate={updatedSector} />
-			{/* doors */}
 			<EdescFields edescs={room.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
+			<Doors roomId={id} doors={room.doors} rooms={rooms} />
 			<BitsField name="Prevent align from entering" value={room.alignFlags} map={ALIGN_FLAGS} onUpdate={updatedAlignFlags}/>
 			<BitsField name="Prevent class from entering" value={room.classFlags} map={CLASS_FLAGS} onUpdate={updatedClassFlags}/>
 		</div>
+	);
+}
+
+interface DoorsProps {
+	roomId: string,
+	doors: Door[],
+	rooms: Room[],
+}
+
+function Doors({ roomId, doors, rooms }: DoorsProps) {
+	const dispatch = useAppDispatch();
+	return (
+		<ol>
+			<p>Exits</p>
+			{doors.map(door => (
+				<li key={door.id}>
+					<SelectField name="Direction" value={door.direction} map={DIRECTIONS} onUpdate={direction => dispatch(Actions.updatedDoor([roomId, {...door, direction}]))} />
+					<SelectField name="Door" value={door.locks} map={LOCKS} onUpdate={locks => dispatch(Actions.updatedDoor([roomId, {...door, locks}]))} />
+					{/*<Connection roomId={roomId} doorId={door.id} rooms={rooms} value={door.roomId} />*/}
+					<KeywordField name="Keywords" value={door.keywords} onUpdate={keywords => dispatch(Actions.updatedDoor([roomId, {...door, keywords}]))} />
+					<TextArea name="Description" value={door.description} onUpdate={description => dispatch(Actions.updatedDoor([roomId, {...door, description}]))} />
+				</li>
+			))}
+		</ol>
 	);
 }
 
@@ -151,4 +179,25 @@ const CLASS_FLAGS: [number, string, string][] = [
 	[4194304, "Ripper", ""],
 	[8388608, "Bladedancer", ""],
 	[16777216, "Vizier", ""],
+];
+
+const DIRECTIONS: [number, string, string][] = [
+	[0, "North", ""],
+	[1, "East", ""],
+	[2, "South", ""],
+	[3, "West", ""],
+	[4, "Up", ""],
+	[5, "Down", ""],
+];
+
+const LOCKS: [number, string, string][] = [
+	[0, "No door", ""],
+	[1, "Plain door", ""],
+	[2, "Pickproof", ""],
+	[3, "Bashproof", ""],
+	[4, "Passproof", ""],
+	[5, "Pickproof, Passproof", ""],
+	[6, "Bashproof, Passproof", ""],
+	[7, "Pickproof, Bashproof", ""],
+	[8, "Everything-proof", ""],
 ];

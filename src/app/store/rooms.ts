@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Room, Edesc, newId } from "../models";
+import { Room, Door, Edesc, newId } from "../models";
+import { blankDoor } from "../models/rooms";
 
 interface RoomState {
 	rooms: Room[];
@@ -75,6 +76,30 @@ const roomSlice = createSlice({
 				}
 			}
 		},
+		addedDoor(state, action: PayloadAction<string>) {
+			const room = state.rooms.find(m => m.id === action.payload);
+			if (room) room.doors.push(blankDoor());
+		},
+		updatedDoor(state, action: PayloadAction<[string, Door]>) {
+			const [roomId, newDoor] = action.payload;
+			const room = state.rooms.find(m => m.id === roomId);
+			if (room) {
+				const door = room.doors.find(d => d.id === newDoor.id);
+				if (door) {
+					door.direction = newDoor.direction;
+					door.description = newDoor.description;
+					door.keywords = newDoor.keywords;
+					door.locks = newDoor.locks;
+					door.key = newDoor.key;
+					door.toVnum = newDoor.toVnum;
+				}
+			}
+		},
+		removedDoor(state, action: PayloadAction<[string, string]>) {
+			const [roomId, doorId] = action.payload;
+			const room = state.rooms.find(m => m.id === roomId);
+			if (room) room.doors = room.doors.filter(d => d.id !== doorId)
+		}
 	},
 });
 
@@ -90,5 +115,8 @@ export const {
 	addedExtraDesc,
 	removedExtraDesc,
 	updatedExtraDesc,
+	addedDoor,
+	updatedDoor,
+	removedDoor,
 } = roomSlice.actions;
 export default roomSlice.reducer;

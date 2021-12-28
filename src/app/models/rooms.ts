@@ -36,20 +36,22 @@ export interface DoorFields {
 	direction: number;
 	description: string;
 	keywords: string[];
-	locks: number[];
+	locks: number;
 	key: number;
 	toVnum: number;
 }
 
 export interface Door extends DoorFields {
+	id: string;
 	_error: ErrorMarkers<DoorFields>;
 }
 
 export const blankDoor = (): Door => ({
+	id: newId(),
 	direction: 0,
 	description: "",
 	keywords: [],
-	locks: [],
+	locks: 0,
 	key: 0,
 	toVnum: 1,
 	_error: {},
