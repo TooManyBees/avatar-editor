@@ -1,4 +1,5 @@
-import parseRooms, { parseRoom } from "./rooms";
+import parseRooms, { parseRoom, corellateDoors } from "./rooms";
+import { Objekt } from "../app/models";
 
 describe("parseRoom", () => {
 	test("parses a room", () => {
@@ -247,3 +248,145 @@ C {classFlags}
 describe("parseRooms", () => {
 
 });
+
+describe("corellateDoors", () => {
+	const OBJECTS = [
+		{
+			id: "object-id-12698",
+			vnum: 12698,
+			keywords: ["scarf", "key"],
+			name: "a key tied to a colorful scarf",
+			longDesc: "This key waits to be claimed by the winner of the fighting pit!",
+			actionDesc: "",
+			itemType: 18,
+			extraFlags: [131072],
+			wearFlags: [1],
+			value0: 0,
+			value1: 0,
+			value2: 0,
+			value3: 0,
+			weight: 0,
+			worth: 0,
+			racialFlags: [],
+			extraDescs: [],
+			applies: [],
+			quality: 50,
+		},
+	];
+
+	test("links rooms and keys together by id", () => {
+		const uncorellatedRooms = parseRooms(ROOMS);
+		const rooms = corellateDoors(OBJECTS, uncorellatedRooms);
+		expect(rooms).toHaveLength(uncorellatedRooms.length);
+
+		const room12652 = rooms.find(r => r.vnum === 12652);
+		expectNoErrors(room12652);
+		const room12655 = rooms.find(r => r.vnum === 12655);
+		expectNoErrors(room12655);
+		const room12656 = rooms.find(r => r.vnum === 12656);
+		expectNoErrors(room12656);
+		const room12659 = rooms.find(r => r.vnum === 12659);
+		expectNoErrors(room12659);
+
+		expectNoErrors(room12652.doors[0]);
+		expect(room12652.doors[0].direction).toBe(2);
+		expect(room12652.doors[0].toRoomId).toBe(room12655.id);
+
+		expectNoErrors(room12655.doors[0]);
+		expect(room12655.doors[0].direction).toBe(0);
+		expect(room12655.doors[0].toRoomId).toBe(room12652.id);
+		expectNoErrors(room12655.doors[1]);
+		expect(room12655.doors[1].direction).toBe(1);
+		expect(room12655.doors[1].toRoomId).toBe(room12656.id);
+		expectNoErrors(room12655.doors[2]);
+		expect(room12655.doors[2].direction).toBe(4);
+		expect(room12655.doors[2].toRoomId).toBe(room12659.id);
+		expect(room12655.doors[2].locks).toBe(8);
+		expect(room12655.doors[2].keyId).toBe('object-id-12698');
+
+		expectNoErrors(room12656.doors[0]);
+		expect(room12656.doors[0].direction).toBe(3);
+		expect(room12656.doors[0].toRoomId).toBe(room12655.id);
+
+		expectNoErrors(room12659.doors[0]);
+		expect(room12659.doors[0].direction).toBe(5);
+		expect(room12659.doors[0].toRoomId).toBe(room12655.id);
+		expect(room12659.doors[0].locks).toBe(8);
+		expect(room12659.doors[0].keyId).toBe('object-id-12698');
+	});
+
+	test("marks error when door destination vnum doesn't exist", () => {
+		const uncorellatedRooms = parseRooms(ROOMS.replace("8 12698 12655", "8 12698 12699"));
+		const rooms = corellateDoors(OBJECTS, uncorellatedRooms);
+
+		const room12659 = rooms.find(r => r.vnum === 12659);
+		expectNoErrors(room12659);
+
+		expectSingleError(room12659.doors[0], "toRoomId");
+	});
+
+	test("marks error when door key vnum doesn't exist", () => {
+		const uncorellatedRooms = parseRooms(ROOMS);
+		const rooms = corellateDoors([], uncorellatedRooms);
+
+		const room12655 = rooms.find(r => r.vnum === 12655);
+		expectNoErrors(room12655);
+
+		const room12659 = rooms.find(r => r.vnum === 12659);
+		expectNoErrors(room12659);
+
+		expectSingleError(room12655.doors[2], "keyId");
+		expectSingleError(room12659.doors[0], "keyId");
+	});
+});
+
+const ROOMS = `
+#12652
+Center stage of the arena!~
+~
+0 8|8192 0
+D2
+~
+~
+0 0 12655
+S
+#12655
+A cage in the corner of the arena~
+~
+0 4|8|8192 0
+D0
+~
+~
+0 0 12652
+D1
+~
+~
+0 0 12656
+D4
+The grate above you keeps you from escaping the cage for the relative
+safety of the bar above. Even if you could pick it open, the screaming
+mob above probably wouldn't let you out without first seeing you bleed
+a bit. Countless fingers reach through the openings for you.
+~
+door cage grate~
+8 12698 12659
+S
+#12656
+The edge of the arena~
+~
+0 8|8192 0
+D3
+~
+~
+0 0 12655
+S
+#12659
+Overlooking the fighting pit~
+~
+0 8|8192 1
+D5
+~
+cage grate door~
+8 12698 12655
+S
+`;
