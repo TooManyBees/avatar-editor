@@ -1,9 +1,17 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import * as Actions from "../../app/store/rooms";
 import { selectedId } from "../../app/store/ui";
 import { VnumItemList } from "../VnumList";
 import { Room } from "../../app/models";
-import { BitsField, NumberField, SelectField, TextField, TextArea } from "../fields";
+import {
+	BitsField,
+	EdescFields,
+	NumberField,
+	SelectField,
+	TextField,
+	TextArea,
+} from "../fields";
 import TabsNav from "./tabs-nav";
 import "./tabs.css";
 import "../VnumList.css";
@@ -22,7 +30,7 @@ export default function RoomsTab() {
 		<div className="Tabs">
 			<div className={room ? "TabsContents" : "VnumItemEditorPlaceholder"}>
 				<TabsNav />
-				{room ? <RoomForm key={currentId} item={room} /> : null }
+				{room ? <RoomForm key={currentId} room={room} /> : null }
 			</div>
 			<VnumItemList items={rooms} selected={currentId} onChange={onSelect} />
 		</div>
@@ -31,26 +39,35 @@ export default function RoomsTab() {
 
 
 interface Props {
-	item: Room;
+	room: Room;
 }
 
-class RoomForm extends React.Component<Props> {
-	render() {
-		const { item: room } = this.props;
-		return (
-			<div>
-				<NumberField name="VNUM" value={room.vnum} min={0} />
-				<TextField name="Name" value={room.name} />
-				<TextArea name="Description" value={room.description} />
-				<BitsField name="Flags" value={room.flags} map={FLAGS} />
-				<SelectField name="Sector" value={room.sector} map={SECTOR} />
-				{/* doors */}
-				{/* extra descs */}
-				<BitsField name="Prevent align from entering" value={room.alignFlags} map={ALIGN_FLAGS} />
-				<BitsField name="Prevent class from entering" value={room.classFlags} map={CLASS_FLAGS} />
-			</div>
-		);
-	}
+function RoomForm(props: Props) {
+	const dispatch = useAppDispatch();
+	const { room } = props;
+	const id = room.id;
+
+	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
+	const updatedName = (s: string) => dispatch(Actions.updatedName([id, s]));
+	const updatedDescription = (s: string) => dispatch(Actions.updatedDescription([id, s]));
+	const updatedFlags = (ns: number[]) => dispatch(Actions.updatedFlags([id, ns]));
+	const updatedSector = (n: number) => dispatch(Actions.updatedSector([id, n]));
+	const updatedAlignFlags = (ns: number[]) => dispatch(Actions.updatedAlignFlags([id, ns]));
+	const updatedClassFlags = (ns: number[]) => dispatch(Actions.updatedClassFlags([id, ns]));
+
+	return (
+		<div>
+			<NumberField name="VNUM" value={room.vnum} min={0} onUpdate={updatedVnum} />
+			<TextField name="Name" value={room.name} onUpdate={updatedName} />
+			<TextArea name="Description" value={room.description} onUpdate={updatedDescription} />
+			<BitsField name="Flags" value={room.flags} map={FLAGS} onUpdate={updatedFlags} />
+			<SelectField name="Sector" value={room.sector} map={SECTOR} onUpdate={updatedSector} />
+			{/* doors */}
+			<EdescFields edescs={room.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
+			<BitsField name="Prevent align from entering" value={room.alignFlags} map={ALIGN_FLAGS} onUpdate={updatedAlignFlags}/>
+			<BitsField name="Prevent class from entering" value={room.classFlags} map={CLASS_FLAGS} onUpdate={updatedClassFlags}/>
+		</div>
+	);
 }
 
 const FLAGS: [number, string, string][] = [
