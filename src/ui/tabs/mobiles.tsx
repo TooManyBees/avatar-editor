@@ -1,6 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/mobiles";
+import * as SpecialActions from "../../app/store/specials";
 import { Mobile, Kspawn } from "../../app/models";
 import {
 	ApplyFields,
@@ -52,6 +53,8 @@ function MobileForm(props: Props) {
 	const { mobile } = props;
 	const id = mobile.id;
 
+	const specFun = useAppSelector(state => state.specials.specials[id]);
+
 	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
 	const updatedKeywords = (ks: string[]) => dispatch(Actions.updatedKeywords([id, ks]));
 	const updatedShortDesc = (s: string) => dispatch(Actions.updatedShortDesc([id, s]));
@@ -65,6 +68,7 @@ function MobileForm(props: Props) {
 	const updatedRace = (n: number) => dispatch(Actions.updatedRace([id, n]));
 	const updatedClass = (n: number) => dispatch(Actions.updatedClass([id, n]));
 	const updatedTeam = (n: number) => dispatch(Actions.updatedTeam([id, n]));
+	const updatedSpecial = (s: string) => s ? dispatch(SpecialActions.updatedSpecial([id, s])) : dispatch(SpecialActions.removedSpecial(id));
 
 	return (
 		<div>
@@ -82,6 +86,7 @@ function MobileForm(props: Props) {
 			<SelectField name="Class" value={mobile.klass} map={CLASS} onUpdate={updatedClass} />
 			<SelectField name="Team" value={mobile.team} map={TEAM} onUpdate={updatedTeam} />
 			<ApplyFields applies={mobile.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
+			<SpecialSelector selected={specFun} onUpdate={updatedSpecial} />
 			{mobile.kspawn ? (
 				<fieldset>
 					<legend>Kspawn</legend>
@@ -95,6 +100,15 @@ function MobileForm(props: Props) {
 			<h2>Resets</h2>
 			<MobResets mobId={id} />
 		</div>
+	);
+}
+
+function SpecialSelector({ selected, onUpdate }: { selected: string, onUpdate: (s: string) => void }) {
+	return (
+		<label>Spec: <select value={selected} onChange={e => onUpdate(e.target.value)}>
+			{!SPEC_FUNS.includes(selected) && <option key={selected} value={selected}>{selected}</option>}
+			{SPEC_FUNS.map(s => <option key={s} value={s}>{s}</option>)}
+		</select></label>
 	);
 }
 
@@ -310,4 +324,66 @@ const KSPAWN_TYPE: [number, string, string][] = [
 	[32, "bind obj", "If an object with <spawn-vnum#> is successfully loaded (with 2), the object is bound to killer."],
 	[64, "KS trigger", "send the <death message> to the room and execute a mobprog check for the \"KS\" mobprog option on a mob with <spawn-vnum#>."],
 	[128, "KS with argument", "No death message is played to the room. Instead, the death message field is used as a text parameter for the mobprog C command = \"msg\". This allows a mob to react to diferent K-Spawns. Again, a mobprog check for the \"KS\" option on the mob with <spawn-vnum#> is done."]
+];
+
+const SPEC_FUNS: string[] = [
+	"none",
+	"SPEC_ANIMATE_DEAD",
+	"SPEC_ARCHER",
+	"SPEC_ASSASSIN",
+	"SPEC_BCI_LITE",
+	"SPEC_BERSERKER",
+	"SPEC_BODYGUARD",
+	"SPEC_BREATH_ANY",
+	"SPEC_BREATH_ACID",
+	"SPEC_BREATH_FIRE",
+	"SPEC_BREATH_FROST",
+	"SPEC_BREATH_GAS",
+	"SPEC_BREATH_LIGHTNING",
+	"SPEC_BUDDHA",
+	"SPEC_BUTTKICKER",
+	"SPEC_CAST_ADEPT",
+	"SPEC_CAST_CLERIC",
+	"SPEC_CAST_KINETIC",
+	"SPEC_CAST_MAGE",
+	"SPEC_CAST_PSION",
+	"SPEC_CAST_STORMLORD",
+	"SPEC_CAST_UNDEAD",
+	"SPEC_DOPPLEGANGER",
+	"SPEC_DRUID",
+	"SPEC_FIDO",
+	"SPEC_FUSILIER",
+	"SPEC_GUARD",
+	"SPEC_GUARD_WHITE",
+	"SPEC_GUILD_GUARD",
+	"SPEC_KINETIC_LITE",
+	"SPEC_KUNGFU_POISON",
+	"SPEC_KZIN",
+	"SPEC_JANITOR",
+	"SPEC_MINDBENDER",
+	"SPEC_MONK",
+	"SPEC_POISON",
+	"SPEC_PLAGUE",
+	"SPEC_PRIEST_LITE",
+	"SPEC_PUFF",
+	"SPEC_PUFF_ORIG",
+	"SPEC_ROGUE",
+	"SPEC_ROGUE_LITE",
+	"SPEC_SNIPER",
+	"SPEC_SORCEROR",
+	"SPEC_SOULBOUND",
+	"SPEC_STOMP_EM",
+	"SPEC_TEACHER",
+	"SPEC_THIEF",
+	"SPEC_WARLORD",
+	"SPEC_WARRIOR",
+	"SPEC_ARCHERALL",
+	"SPEC_BATTLE_CLERIC",
+	"SPEC_BATTLE_MAGE",
+	"SPEC_BATTLE_SOR",
+	"SPEC_BREATH_SUPER",
+	"SPEC_CAST_WIZARD",
+	"SPEC_DEMON",
+	"SPEC_ILLUSIONIST",
+	"SPEC_VOLLEY",
 ];

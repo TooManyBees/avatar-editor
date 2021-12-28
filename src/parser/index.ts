@@ -6,9 +6,10 @@ import parseObjects from "./objects";
 import parseRooms, { corellateDoors } from "./rooms";
 import { RoomU, DoorU } from "../app/models/rooms";
 import { UncorellatedResets } from "../app/models/resets";
+import { SpecialU } from "../app/models/specials";
 import { parseResets, corellateResets } from "./resets";
 import parseShops from "./shops";
-import parseSpecials from "./specials";
+import { parseSpecials, corellateSpecials } from "./specials";
 
 import {
 	Area, AreaSection, AreadataSection, Door, Help, Mobile, Objekt, Room, Shop, Resets, Special,
@@ -58,6 +59,7 @@ export default function parseFile(file: string): Area {
 		},
 		shops: [],
 		specials: [],
+		orphanedSpecials: [],
 	};
 
 	let uncorellatedResets: UncorellatedResets = {
@@ -67,8 +69,9 @@ export default function parseFile(file: string): Area {
 		door: [],
 		randomExit: [],
 	};
-
 	let uncorellatedRooms: RoomU[] = [];
+	let uncorellatedSpecials: SpecialU[] = [];
+	let uncorellatedShops: Shop[] = [];
 
 	for (let [name, section] of Object.entries(unparsedSections)) {
 		switch (name.toUpperCase()) {
@@ -101,11 +104,11 @@ export default function parseFile(file: string): Area {
 				break;
 			}
 			case "SHOPS": {
-				parsedSections.shops = parseShops(section);
+				uncorellatedShops = parseShops(section);
 				break;
 			}
 			case "SPECIALS": {
-				parsedSections.specials = parseSpecials(section);
+				uncorellatedSpecials = parseSpecials(section);
 				break;
 			}
 		}
@@ -116,6 +119,11 @@ export default function parseFile(file: string): Area {
 	let [resets, orphanedResets] = corellateResets(uncorellatedResets, parsedSections.mobiles, parsedSections.objects, parsedSections.rooms);
 	parsedSections.resets = resets;
 	parsedSections.orphanedResets = orphanedResets;
+
+	let [specials, orphanedSpecials] = corellateSpecials(parsedSections.mobiles, uncorellatedSpecials);
+	parsedSections.specials = specials;
+	parsedSections.orphanedSpecials = orphanedSpecials;
+	// corellateShops(parsedSections.mobiles, uncorellatedSpecials);
 
 	return parsedSections;
 }
