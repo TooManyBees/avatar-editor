@@ -6,7 +6,7 @@ describe("parseMobile", () => {
 		expectNoErrors(mobile);
 		expect(mobile.vnum).toBe(8113);
 		expect(mobile.keywords).toEqual(["nom", "meadow", "shaman"]);
-		expect(mobile.name).toBe("Nom");
+		expect(mobile.shortDesc).toBe("Nom");
 		expect(mobile.longDesc).toBe("An ageless shaman sits here smiling at you.");
 		expect(mobile.description).toBe(`This is Nom.  He's the eternal keeper of the Tree of Knowledge. Throughout
 time he's been here and could teach you a thing or two.  He can HEAL you.
@@ -49,7 +49,7 @@ type 'list' and perhaps haggle with him. Feel welcome to stay awhile.`);
 		expectNoErrors(mobile);
 		expect(mobile.vnum).toBe(8113);
 		expect(mobile.keywords).toEqual(["nom", "meadow", "shaman"]);
-		expect(mobile.name).toBe("Nom");
+		expect(mobile.shortDesc).toBe("Nom");
 		expect(mobile.longDesc).toBe("An ageless shaman sits here smiling at you.");
 		expect(mobile.description).toBe(`This is Nom.  He's the eternal keeper of the Tree of Knowledge. Throughout
 time he's been here and could teach you a thing or two.  He can HEAL you.
