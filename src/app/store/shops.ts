@@ -25,9 +25,9 @@ const shopsSlice = createSlice({
 		addedShop(state, action: PayloadAction<string>) {
 			state.shops[action.payload] = newShop(action.payload);
 		},
-		updatedShop(state, action: PayloadAction<[string, Shop]>) {
-			const [mobId, shop] = action.payload;
-			state.shops[mobId] = shop;
+		updatedShop(state, action: PayloadAction<Shop>) {
+			const shop = action.payload;
+			state.shops[shop.mobId] = shop;
 		},
 		removedShop(state, action: PayloadAction<string>) {
 			delete state.shops[action.payload];
@@ -35,5 +35,5 @@ const shopsSlice = createSlice({
 	},
 });
 
-export const { init, updatedShop, removedShop } = shopsSlice.actions;
+export const { init, addedShop, updatedShop, removedShop } = shopsSlice.actions;
 export default shopsSlice.reducer;

@@ -124,41 +124,29 @@ export class NumberField extends React.Component<NumberFieldProps, NumberFieldSt
 interface SelectFieldProps {
 	name: string;
 	value: number | undefined;
-	map: [number, string, string][];
+	map: [number, string, string?][];
 	onUpdate?: (n: number) => void;
 }
 
-interface SelectFieldState {
-	value: number | undefined;
-}
+export function SelectField(props: SelectFieldProps) {
 
-export class SelectField extends React.Component<SelectFieldProps, SelectFieldState> {
-	constructor(props: SelectFieldProps) {
-		super(props);
-		this.state = { value: props.value };
-		this.onChange = this.onChange.bind(this);
-	}
-
-	onChange(event: ChangeEvent<HTMLSelectElement>) {
-		const value = parseInt(event.currentTarget.value, 10);
+	function onChange(event: ChangeEvent<HTMLSelectElement>) {
+		const value = Number(event.currentTarget.value);
 		if (Number.isInteger(value)){
-			this.setState({ value });
-			if (this.props.onUpdate) {
-				this.props.onUpdate(value);
+			if (props.onUpdate) {
+				props.onUpdate(value);
 			}
 		}
 	}
 
-	render() {
-		const { map, name, } = this.props;
-		return (
-			<label className="SelectField">{name}: <select value={this.state.value} onChange={this.onChange}>
-				{map.map(([bit, desc]) => (
-					<option key={bit} value={bit}>{desc}</option>
-				))}
-			</select></label>
-		);
-	}
+	const { map, name, value } = props;
+	return (
+		<label className="SelectField">{name}: <select value={value} onChange={onChange}>
+			{map.map(([bit, desc]) => (
+				<option key={bit} value={bit}>{desc}</option>
+			))}
+		</select></label>
+	);
 }
 
 export {

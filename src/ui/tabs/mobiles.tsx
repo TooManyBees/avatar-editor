@@ -1,8 +1,9 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/mobiles";
-import * as SpecialActions from "../../app/store/specials";
-import { Mobile, Kspawn } from "../../app/models";
+import * as SpecialsActions from "../../app/store/specials";
+import * as ShopsActions from "../../app/store/shops";
+import { Mobile, Kspawn, Shop } from "../../app/models";
 import {
 	ApplyFields,
 	KeywordField,
@@ -12,6 +13,7 @@ import {
 	TextArea,
 } from "../fields";
 import BitsField from "../components/BitsField";
+import ShopFields from "../ShopFields";
 import { VnumItemList } from "../VnumList";
 import TabsNav from "./tabs-nav";
 import MobResets from "../MobResets";
@@ -69,7 +71,7 @@ function MobileForm(props: Props) {
 	const updatedRace = (n: number) => dispatch(Actions.updatedRace([id, n]));
 	const updatedClass = (n: number) => dispatch(Actions.updatedClass([id, n]));
 	const updatedTeam = (n: number) => dispatch(Actions.updatedTeam([id, n]));
-	const updatedSpecial = (s: string) => s ? dispatch(SpecialActions.updatedSpecial([id, s])) : dispatch(SpecialActions.removedSpecial(id));
+	const updatedSpecial = (s: string) => s ? dispatch(SpecialsActions.updatedSpecial([id, s])) : dispatch(SpecialsActions.removedSpecial(id));
 
 	return (
 		<div>
@@ -88,6 +90,7 @@ function MobileForm(props: Props) {
 			<SelectField name="Team" value={mobile.team} map={TEAM} onUpdate={updatedTeam} />
 			<ApplyFields applies={mobile.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 			<SpecialSelector selected={specFun} onUpdate={updatedSpecial} />
+			<ShopComponent mobId={id} />
 			{kspawn ? (
 				<fieldset>
 					<legend>Kspawn</legend>
@@ -111,6 +114,28 @@ function SpecialSelector({ selected, onUpdate }: { selected: string, onUpdate: (
 			{SPEC_FUNS.map(s => <option key={s} value={s}>{s}</option>)}
 		</select></label>
 	);
+}
+
+interface ShopProps {
+	mobId: string;
+}
+
+function ShopComponent(props: ShopProps) {
+	const dispatch = useAppDispatch();
+	const shop = useAppSelector(state => state.shops.shops[props.mobId]);
+
+	if (shop) {
+		return <>
+			<h2>Shop</h2>
+			<ShopFields shop={shop} />
+			<button onClick={() => dispatch(ShopsActions.removedShop(props.mobId))}>Remove shop</button>
+		</>;
+	} else {
+		return <>
+			<h2>Shop</h2>
+			<button onClick={() => dispatch(ShopsActions.addedShop(props.mobId))}>Add shop</button>
+		</>;
+	}
 }
 
 const ACT_FLAGS: [number, string, string][] = [
