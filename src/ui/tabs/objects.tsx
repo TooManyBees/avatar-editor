@@ -14,6 +14,7 @@ import {
 import { VnumItemList } from "../VnumList";
 import TabsNav from "./tabs-nav";
 import BitsField from "../components/BitsField";
+import ObjectValues from "../ObjectValues";
 import "./tabs.css";
 import "../VnumList.css";
 
@@ -91,7 +92,7 @@ function ObjectForm({ item: object }: Props) {
 			<SelectField name="Type" value={object.itemType} map={ITEM_TYPE} onUpdate={updatedItemType} />
 			<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} onUpdate={updatedExtraFlags} />
 			<SelectField name="Wear flags" value={wearFlags} map={WEAR_FLAGS} onUpdate={updatedWearFlags} />
-			{/* item type specific values */}
+			<ObjectValues id={id} type={object.itemType} value0={object.value0} value1={object.value1} value2={object.value2} value3={object.value3} />
 			<NumberField name="Weight" value={object.weight} onUpdate={updatedWeight} />
 			<NumberField name="Worth" value={object.worth} onUpdate={updatedWorth} />
 			<BitsField name="Racial wear flags" value={object.racialFlags} map={RACIAL_WEAR_FLAGS} onUpdate={updatedRacialFlags} />
