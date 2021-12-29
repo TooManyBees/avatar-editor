@@ -12,6 +12,7 @@ import { init as initMobs } from "./app/store/mobiles";
 import { init as initObjs } from "./app/store/objects";
 import { init as initRooms } from "./app/store/rooms";
 import { init as initResets } from "./app/store/resets";
+import { init as initShops } from "./app/store/shops";
 import { init as initSpecials } from "./app/store/specials";
 
 function ReadAreaForm({onRead}: {onRead: (a: Area) => void}) {
@@ -46,6 +47,7 @@ function App() {
 		dispatch(initObjs(area.objects));
 		dispatch(initRooms(area.rooms));
 		dispatch(initResets([area.resets, area.orphanedResets]));
+		dispatch(initShops([area.shops, area.orphanedShops]));
 		dispatch(initSpecials([area.specials, area.orphanedSpecials]));
 		dispatch(loaded());
 	}

@@ -8,7 +8,8 @@ import { RoomU, DoorU } from "../app/models/rooms";
 import { UncorellatedResets } from "../app/models/resets";
 import { SpecialU } from "../app/models/specials";
 import { parseResets, corellateResets } from "./resets";
-import parseShops from "./shops";
+import { parseShops, corellateShops } from "./shops";
+import { ShopU } from "../app/models/shops";
 import { parseSpecials, corellateSpecials } from "./specials";
 
 import {
@@ -58,6 +59,7 @@ export default function parseFile(file: string): Area {
 			randomExit: [],
 		},
 		shops: [],
+		orphanedShops: [],
 		specials: [],
 		orphanedSpecials: [],
 	};
@@ -71,7 +73,7 @@ export default function parseFile(file: string): Area {
 	};
 	let uncorellatedRooms: RoomU[] = [];
 	let uncorellatedSpecials: SpecialU[] = [];
-	let uncorellatedShops: Shop[] = [];
+	let uncorellatedShops: ShopU[] = [];
 
 	for (let [name, section] of Object.entries(unparsedSections)) {
 		switch (name.toUpperCase()) {
@@ -123,7 +125,9 @@ export default function parseFile(file: string): Area {
 	let [specials, orphanedSpecials] = corellateSpecials(parsedSections.mobiles, uncorellatedSpecials);
 	parsedSections.specials = specials;
 	parsedSections.orphanedSpecials = orphanedSpecials;
-	// corellateShops(parsedSections.mobiles, uncorellatedSpecials);
+	let [shops, orphanedShops] = corellateShops(parsedSections.mobiles, uncorellatedShops);
+	parsedSections.shops = shops;
+	parsedSections.orphanedShops = orphanedShops;
 
 	return parsedSections;
 }

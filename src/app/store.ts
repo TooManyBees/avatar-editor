@@ -6,6 +6,7 @@ import mobilesReducer from "./store/mobiles";
 import objectsReducer from "./store/objects";
 import roomsReducer from "./store/rooms";
 import resetsReducer from "./store/resets";
+import shopsReducer from "./store/shops";
 import specialsReducer from "./store/specials";
 
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
 		objects: objectsReducer,
 		rooms: roomsReducer,
 		resets: resetsReducer,
+		shops: shopsReducer,
 		specials: specialsReducer,
 	},
 });
