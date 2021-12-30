@@ -3,22 +3,25 @@
 }
 .textArea textarea {
 	resize: vertical;
-	background-image: linear-gradient(
-		to right,
-		white,
-		white 36rem,
-		#ffeeee 36rem,
-		#ffeeee 40rem,
-		#ffdddd 40rem,
-		#ffdddd
-	);
+	width: 100%;
 }
 
 .preview, .textArea textarea {
 	display:  block;
-	width: 100%;
 	white-space: pre;
 	font-family: monospace;
+	padding: 2px;
+	border: 2px inset;
+	line-height: normal;
+	background-image: linear-gradient(
+		to right,
+		transparent,
+		transparent 36rem,
+		rgba(255, 192, 192, 0.5) 36rem,
+		rgba(255, 192, 192, 0.5) 40rem,
+		rgba(255, 192, 192, 0.75) 40rem,
+		rgba(255, 192, 192, 0.75)
+	);
 }
 
 .preview {
