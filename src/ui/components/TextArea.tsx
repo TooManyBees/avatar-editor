@@ -29,15 +29,16 @@ export default function TextArea(props: TextFieldProps) {
 	const name = props.name;
 	const rows = (value.match(/\n/g)?.length || 0) + 1;
 	return (
-		<label className={styles.textArea}>
+		<div className={styles.textArea}>
 			<span className={styles.description}>
-				{name}:
+				{/* FIXME: apply htmlFor pointing to the textarea */}
+				<label>{name}:</label>
 				<label><input type="checkbox" checked={preview} onChange={togglePreview} /> Preview colors</label>
 			</span>
 			{ preview
 				? <div className={styles.preview} style={{height: textArea.current?.offsetHeight}}>{elementsFromColorCodes(value)}</div>
 				: <textarea rows={rows} value={value} onChange={onChange} onBlur={onBlur} ref={textArea} />
 			}
-		</label>
+		</div>
 	);
 }
