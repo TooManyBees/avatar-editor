@@ -1,0 +1,32 @@
+.textArea {
+	display: block;
+}
+.textArea textarea {
+	resize: vertical;
+	background-image: linear-gradient(
+		to right,
+		white,
+		white 36rem,
+		#ffeeee 36rem,
+		#ffeeee 40rem,
+		#ffdddd 40rem,
+		#ffdddd
+	);
+}
+
+.preview, .textArea textarea {
+	display:  block;
+	width: 100%;
+	white-space: pre;
+	font-family: monospace;
+}
+
+.preview {
+	background-color: black;
+	color: white;
+}
+
+.description {
+	display: flex;
+	justify-content: space-between;
+}
