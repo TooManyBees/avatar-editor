@@ -2,7 +2,7 @@ import React from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../app/hooks";
 import { Edesc } from "../../app/models";
-import { TextArea } from "../fields";
+import TextArea from "./TextArea";
 import KeywordField from "./KeywordField";
 import styles from "./EdescFields.module.css";
 

@@ -3,8 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/area-section";
 import { Help } from "../../app/models";
 import TabsLayout from "./tabs-layout";
-import { NumberField, SelectField, TextArea, TextField } from "../fields";
-import KeywordField from "../components/KeywordField";
+import { NumberField, SelectField, TextField } from "../fields";
+import { KeywordField, TextArea } from "../components";
 import styles from "./area.module.css";
 
 export default function AreaTab() {

@@ -42,35 +42,6 @@ export class TextField extends React.Component<TextFieldProps, TextFieldState> {
 	}
 }
 
-export class TextArea extends React.Component<TextFieldProps, TextFieldState> {
-	constructor(props: TextFieldProps) {
-		super(props);
-		this.state = { value: props.value };
-		this.onChange = this.onChange.bind(this);
-		this.onBlur = this.onBlur.bind(this);
-	}
-
-	onChange(event: ChangeEvent<HTMLTextAreaElement>) {
-		this.setState({ value: event.currentTarget.value });
-	}
-
-	onBlur(event: any) {
-		if (this.props.onUpdate && this.state.value) {
-			this.props.onUpdate(this.state.value);
-		}
-	}
-
-	render() {
-		const name = this.props.name;
-		const value = this.state.value;
-		const valueString = value == null ? "" : value.toString();
-		const rows = (valueString.match(/\n/g)?.length || 0) + 1;
-		return (
-			<label className="TextArea">{name}: <textarea rows={rows} value={valueString} onChange={this.onChange} onBlur={this.onBlur} /></label>
-		);
-	}
-}
-
 interface NumberFieldProps {
 	name: string;
 	value: number | null;

@@ -21,8 +21,9 @@ import {
 	updatedScaling,
 } from "../../app/store/areadata";
 import TabsLayout from "./tabs-layout";
-import { NumberField, SelectField, TextArea, TextField } from "../fields";
+import { NumberField, SelectField, TextField } from "../fields";
 import { BitsFieldN } from "../components/BitsField";
+import TextArea from "../components/TextArea";
 import ToggleContainer from "../components/ToggleContainer";
 
 export default function AreadataTab() {

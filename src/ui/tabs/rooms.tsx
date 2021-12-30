@@ -8,11 +8,13 @@ import {
 	NumberField,
 	SelectField,
 	TextField,
-	TextArea,
 } from "../fields";
-import BitsField from "../components/BitsField";
-import KeywordField from "../components/KeywordField";
-import EdescFields from "../components/EdescFields";
+import {
+	BitsField,
+	KeywordField,
+	EdescFields,
+	TextArea,
+} from "../components";
 import "../VnumList.css";
 import TabsLayout from "./tabs-layout";
 

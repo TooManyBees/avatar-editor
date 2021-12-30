@@ -8,11 +8,13 @@ import {
 	NumberField,
 	SelectField,
 	TextField,
-	TextArea,
 } from "../fields";
-import ApplyFields from "../components/ApplyFields";
-import KeywordField from "../components/KeywordField";
-import BitsField from "../components/BitsField";
+import {
+	ApplyFields,
+	KeywordField,
+	BitsField,
+	TextArea,
+} from "../components";
 import ShopFields from "../ShopFields";
 import { VnumItemList } from "../VnumList";
 import MobResets from "../MobResets";
