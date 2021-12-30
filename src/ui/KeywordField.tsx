@@ -1,37 +1,38 @@
-import React from "react";
+import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 
 interface Props {
 	name: string;
 	value: string[];
-	onUpdate?: (ks: string[]) => void;
+	onUpdate: (ks: string[]) => void;
 }
 
-interface State {
-	keywords: string[];
-	currentWord: string | null;
-}
+export default function KeywordField(props: Props) {
+	const [currentKeyword, setCurrentKeyword] = useState("");
 
-export default class KeywordField extends React.Component<Props, State> {
-	constructor(props: Props) {
-		super(props);
-		this.state = {
-			keywords: props.value,
-			currentWord: null,
-		};
-		this.onBlur = this.onBlur.bind(this);
-	}
-
-	onBlur(event: any) {
-		if (this.props.onUpdate) {
-			this.props.onUpdate(this.state.keywords);
+	function onChange(e: ChangeEvent<HTMLInputElement>) {
+		const value = e.target.value;
+		let match =
+			value.match(/^'([^']+)'$/) ||
+			value.match(/^"([^"]+)"$/) ||
+			value.match(/^(?!'|")(\S+)\s/);
+		if (match) {
+			props.onUpdate([...props.value, match[1]]);
+			setCurrentKeyword("");
+		} else {
+			setCurrentKeyword(value);
 		}
 	}
 
-	render() {
-		return (
-			<div>
-				<label>{this.props.name}: {this.state.keywords.map((k, n) => <span key={n} style={{background: "pink", marginRight: "1rem"}}>{k}</span>)}</label>
-			</div>
-		);
+	function onKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+		if (currentKeyword === "" && event.key === "Backspace") {
+			props.onUpdate(props.value.slice(0, props.value.length - 1));
+		}
 	}
+
+	return (
+		<label>
+			{props.name}: {props.value.map((k, n) => <span key={`${n} ${k}`} style={{background: "pink", marginRight: "1rem"}}>{k}</span>)}
+			<input type="text" value={currentKeyword} onChange={onChange} onKeyDown={onKeyDown} />
+		</label>
+	);
 }
