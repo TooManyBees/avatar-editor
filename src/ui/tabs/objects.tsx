@@ -73,10 +73,6 @@ function ObjectForm({ item: object }: Props) {
 	const updatedItemType = (n: number) => dispatch(Actions.updatedItemType([id, n]));
 	const updatedExtraFlags = (bs: number[]) => dispatch(Actions.updatedExtraFlags([id, bs]));
 	const updatedWearFlags = (n: number) => dispatch(Actions.updatedWearFlags([id, factor(n)]));
-	const updatedValue0 = (n: number) => dispatch(Actions.updatedValue0([id, n]));
-	const updatedValue1 = (n: number) => dispatch(Actions.updatedValue1([id, n]));
-	const updatedValue2 = (n: number) => dispatch(Actions.updatedValue2([id, n]));
-	const updatedValue3 = (n: number) => dispatch(Actions.updatedValue3([id, n]));
 	const updatedWeight = (n: number) => dispatch(Actions.updatedWeight([id, n]));
 	const updatedWorth = (n: number) => dispatch(Actions.updatedWorth([id, n]));
 	const updatedRacialFlags = (bs: number[]) => dispatch(Actions.updatedRacialFlags([id, bs]));

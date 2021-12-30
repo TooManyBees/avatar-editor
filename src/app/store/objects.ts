@@ -67,25 +67,25 @@ const objectSlice = createSlice({
 			const object = state.objects.find(m => m.id === id);
 			if (object) object.wearFlags = payload;
 		},
-		updatedValue0(state, action: PayloadAction<[string, number]>) {
+		updatedValue0(state, action: PayloadAction<[string, number | string]>) {
 			const [id, payload] = action.payload;
 			const object = state.objects.find(m => m.id === id);
-			if (object) object.value0 = payload.toString(); // FIXME
+			if (object) object.value0 = payload.toString();
 		},
-		updatedValue1(state, action: PayloadAction<[string, number]>) {
+		updatedValue1(state, action: PayloadAction<[string, number | string]>) {
 			const [id, payload] = action.payload;
 			const object = state.objects.find(m => m.id === id);
-			if (object) object.value1 = payload.toString(); // FIXME
+			if (object) object.value1 = payload.toString();
 		},
-		updatedValue2(state, action: PayloadAction<[string, number]>) {
+		updatedValue2(state, action: PayloadAction<[string, number | string]>) {
 			const [id, payload] = action.payload;
 			const object = state.objects.find(m => m.id === id);
-			if (object) object.value2 = payload.toString(); // FIXME
+			if (object) object.value2 = payload.toString();
 		},
-		updatedValue3(state, action: PayloadAction<[string, number]>) {
+		updatedValue3(state, action: PayloadAction<[string, number | string]>) {
 			const [id, payload] = action.payload;
 			const object = state.objects.find(m => m.id === id);
-			if (object) object.value3 = payload.toString(); // FIXME
+			if (object) object.value3 = payload.toString();
 		},
 		updatedWeight(state, action: PayloadAction<[string, number]>) {
 			const [id, payload] = action.payload;
