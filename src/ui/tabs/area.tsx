@@ -3,8 +3,9 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/area-section";
 import { Help } from "../../app/models";
 import TabsLayout from "./tabs-layout";
-import { KeywordField, NumberField, SelectField, TextArea, TextField } from "../fields";
-import "./area.css";
+import { NumberField, SelectField, TextArea, TextField } from "../fields";
+import KeywordField from "../components/KeywordField";
+import styles from "./area.module.css";
 
 export default function AreaTab() {
 	const dispatch = useAppDispatch();
@@ -15,7 +16,7 @@ export default function AreaTab() {
 	return (
 		<TabsLayout>
 			<div>
-				<TextField className="area-field" name="#AREA" value={area.line} onUpdate={updatedLine} />
+				<TextField className={styles.areaField} name="#AREA" value={area.line} onUpdate={updatedLine} />
 			</div>
 
 			<ol>

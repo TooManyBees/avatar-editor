@@ -3,16 +3,16 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/objects";
 import { Objekt } from "../../app/models";
 import {
-	ApplyFields,
-	EdescFields,
-	KeywordField,
 	NumberField,
 	SelectField,
 	TextField,
 	TextArea,
 } from "../fields";
 import { VnumItemList } from "../VnumList";
+import ApplyFields from "../components/ApplyFields";
 import BitsField from "../components/BitsField";
+import KeywordField from "../components/KeywordField";
+import EdescFields from "../components/EdescFields";
 import ObjectValues from "../ObjectValues";
 import "../VnumList.css";
 import TabsLayout from "./tabs-layout";

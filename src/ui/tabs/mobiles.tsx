@@ -5,13 +5,13 @@ import * as SpecialsActions from "../../app/store/specials";
 import * as ShopsActions from "../../app/store/shops";
 import { Mobile, Kspawn, Shop } from "../../app/models";
 import {
-	ApplyFields,
-	KeywordField,
 	NumberField,
 	SelectField,
 	TextField,
 	TextArea,
 } from "../fields";
+import ApplyFields from "../components/ApplyFields";
+import KeywordField from "../components/KeywordField";
 import BitsField from "../components/BitsField";
 import ShopFields from "../ShopFields";
 import { VnumItemList } from "../VnumList";

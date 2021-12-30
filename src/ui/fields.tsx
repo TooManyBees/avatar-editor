@@ -1,7 +1,4 @@
 import React, { ChangeEvent } from "react";
-import KeywordField from "./KeywordField";
-import ApplyFields from "./ApplyFields";
-import EdescFields from "./EdescFields";
 import "./fields.css";
 
 interface TextFieldProps {
@@ -147,10 +144,4 @@ export function SelectField(props: SelectFieldProps) {
 			))}
 		</select></label>
 	);
-}
-
-export {
-	ApplyFields,
-	EdescFields,
-	KeywordField,
 }

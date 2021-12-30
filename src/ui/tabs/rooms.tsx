@@ -5,14 +5,14 @@ import * as Actions from "../../app/store/rooms";
 import { VnumItemList } from "../VnumList";
 import { Room, Door } from "../../app/models";
 import {
-	EdescFields,
-	KeywordField,
 	NumberField,
 	SelectField,
 	TextField,
 	TextArea,
 } from "../fields";
 import BitsField from "../components/BitsField";
+import KeywordField from "../components/KeywordField";
+import EdescFields from "../components/EdescFields";
 import "../VnumList.css";
 import TabsLayout from "./tabs-layout";
 
