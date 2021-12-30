@@ -2,7 +2,7 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/area-section";
 import { Help } from "../../app/models";
-import TabsNav from "./tabs-nav";
+import TabsLayout from "./tabs-layout";
 import { KeywordField, NumberField, SelectField, TextArea, TextField } from "../fields";
 import "./area.css";
 
@@ -13,9 +13,7 @@ export default function AreaTab() {
 	const updatedLine = (s: string) => dispatch(Actions.updatedLine(s));
 
 	return (
-		<div>
-			<TabsNav />
-
+		<TabsLayout>
 			<div>
 				<TextField className="area-field" name="#AREA" value={area.line} onUpdate={updatedLine} />
 			</div>
@@ -24,7 +22,7 @@ export default function AreaTab() {
 				{area.helps.map(h => <li key={h.id}><HelpForm help={h} /></li>)}
 				<button onClick={() => dispatch(Actions.addedHelp())}>Add help</button>
 			</ol>
-		</div>
+		</TabsLayout>
 	);
 }
 

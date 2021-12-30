@@ -12,10 +12,9 @@ import {
 	TextField,
 	TextArea,
 } from "../fields";
-import TabsNav from "./tabs-nav";
 import BitsField from "../components/BitsField";
-import "./tabs.css";
 import "../VnumList.css";
+import TabsLayout from "./tabs-layout";
 
 export default function RoomsTab() {
 	const dispatch = useAppDispatch();
@@ -31,14 +30,12 @@ export default function RoomsTab() {
 		dispatch(Actions.addedRoom());
 	}
 
+	const sideNav = <VnumItemList itemName="Room" items={rooms} selected={currentId} onChange={onSelect} onAdd={onAdd} />;
+
 	return (
-		<div className="Tabs">
-			<div className={room ? "TabsContents" : "VnumItemEditorPlaceholder"}>
-				<TabsNav />
-				{room ? <RoomForm key={currentId} room={room} /> : null }
-			</div>
-			<VnumItemList itemName="Room" items={rooms} selected={currentId} onChange={onSelect} onAdd={onAdd} />
-		</div>
+		<TabsLayout sideNav={sideNav}>
+			{room && <RoomForm key={currentId} room={room} />}
+		</TabsLayout>
 	);
 }
 
@@ -63,7 +60,7 @@ function RoomForm(props: Props) {
 	const updatedClassFlags = (ns: number[]) => dispatch(Actions.updatedClassFlags([id, ns]));
 
 	return (
-		<div>
+		<>
 			<NumberField name="VNUM" value={room.vnum} min={0} onUpdate={updatedVnum} />
 			<TextField name="Name" value={room.name} onUpdate={updatedName} />
 			<TextArea name="Description" value={room.description} onUpdate={updatedDescription} />
@@ -73,7 +70,7 @@ function RoomForm(props: Props) {
 			<Doors roomId={id} doors={room.doors} rooms={rooms} />
 			<BitsField name="Prevent align from entering" value={room.alignFlags} map={ALIGN_FLAGS} onUpdate={updatedAlignFlags}/>
 			<BitsField name="Prevent class from entering" value={room.classFlags} map={CLASS_FLAGS} onUpdate={updatedClassFlags}/>
-		</div>
+		</>
 	);
 }
 

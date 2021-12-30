@@ -12,11 +12,10 @@ import {
 	TextArea,
 } from "../fields";
 import { VnumItemList } from "../VnumList";
-import TabsNav from "./tabs-nav";
 import BitsField from "../components/BitsField";
 import ObjectValues from "../ObjectValues";
-import "./tabs.css";
 import "../VnumList.css";
+import TabsLayout from "./tabs-layout";
 
 export default function ObjectsTab() {
 	const dispatch = useAppDispatch();
@@ -32,14 +31,12 @@ export default function ObjectsTab() {
 		dispatch(Actions.addedObject());
 	}
 
+	const sideNav = <VnumItemList itemName="Object" items={objects} selected={currentId} onChange={onSelect} onAdd={onAdd} />;
+
 	return (
-		<div className="Tabs">
-			<div className={object ? "TabsContents" : "VnumItemEditorPlaceholder"}>
-				<TabsNav />
-				{object ? <ObjectForm key={currentId} item={object} /> : null }
-			</div>
-			<VnumItemList itemName="Object" items={objects} selected={currentId} onChange={onSelect} onAdd={onAdd} />
-		</div>
+		<TabsLayout sideNav={sideNav}>
+			{object && <ObjectForm key={currentId} item={object} />}
+		</TabsLayout>
 	);
 }
 
@@ -79,7 +76,7 @@ function ObjectForm({ item: object }: Props) {
 	const updatedQuality = (n: number) => dispatch(Actions.updatedQuality([id, n]));
 
 	return (
-		<div>
+		<>
 			<NumberField name="VNUM" value={object.vnum} min={0} onUpdate={updatedVnum} />
 			<KeywordField name="Keywords" value={object.keywords} onUpdate={updatedKeywords} />
 			<TextField name="Short desc" value={object.shortDesc} onUpdate={updatedShortDesc} />
@@ -95,7 +92,7 @@ function ObjectForm({ item: object }: Props) {
 			<NumberField name="Quality" value={object.quality} min={1} onUpdate={updatedQuality} />
 			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
-		</div>
+		</>
 	);
 }
 

@@ -15,10 +15,10 @@ import {
 import BitsField from "../components/BitsField";
 import ShopFields from "../ShopFields";
 import { VnumItemList } from "../VnumList";
-import TabsNav from "./tabs-nav";
 import MobResets from "../MobResets";
 
-import "./tabs.css";
+import TabsLayout from "./tabs-layout";
+
 import "../VnumList.css";
 
 export default function MobilesTab() {
@@ -35,14 +35,12 @@ export default function MobilesTab() {
 		dispatch(Actions.addedMobile());
 	}
 
+	const sideNav = <VnumItemList itemName="Mobile" items={mobiles} selected={currentId} onChange={onSelect} onAdd={onAdd} />;
+
 	return (
-		<div className="Tabs">
-			<div className={mobile ? "TabsContents" : "VnumItemEditorPlaceholder"}>
-				<TabsNav />
-				{mobile ? <MobileForm key={currentId} mobile={mobile} /> : null }
-			</div>
-			<VnumItemList itemName="Mobile" items={mobiles} selected={currentId} onChange={onSelect} onAdd={onAdd} />
-		</div>
+		<TabsLayout sideNav={sideNav}>
+			{mobile && <MobileForm key={currentId} mobile={mobile} />}
+		</TabsLayout>
 	);
 }
 
@@ -74,7 +72,7 @@ function MobileForm(props: Props) {
 	const updatedSpecial = (s: string) => s ? dispatch(SpecialsActions.updatedSpecial([id, s])) : dispatch(SpecialsActions.removedSpecial(id));
 
 	return (
-		<div>
+		<>
 			<NumberField name="VNUM" value={mobile.vnum} min={0} onUpdate={updatedVnum} />
 			<KeywordField name="Keywords" value={mobile.keywords} onUpdate={updatedKeywords} />
 			<TextField name="Short desc" value={mobile.shortDesc} onUpdate={updatedShortDesc} />
@@ -103,7 +101,7 @@ function MobileForm(props: Props) {
 			) : null}
 			<h2>Resets</h2>
 			<MobResets mobId={id} />
-		</div>
+		</>
 	);
 }
 

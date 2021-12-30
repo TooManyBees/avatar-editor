@@ -1,9 +1,27 @@
-import React from "react"
+import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { changedTab } from "../../app/store/ui";
 import "./tabs.css";
 
-export default function TabsNav() {
+interface Props {
+	children: React.ReactNode;
+	sideNav?: React.ReactNode;
+}
+
+export default function TabsLayout(props: Props) {
+	const { children, sideNav = null } = props;
+	return (
+		<div className="Tabs">
+			<TabsNav />
+			<div className="TabsContentsContainer">
+				<div className="TabsContents">{children}</div>
+				{sideNav}
+			</div>
+		</div>
+	);
+}
+
+function TabsNav() {
 	const dispatch = useAppDispatch();
 	const currentTab = useAppSelector(state => state.ui.tab);
 
