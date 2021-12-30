@@ -1,9 +1,9 @@
-.Tabs {
+.tabs {
 	height: 100%;
 	display: flex;
 }
 
-.TabsContentsContainer {
+.tabsContentsContainer {
 	padding-top: 2rem;
 	height: 100%;
 	display: flex;
@@ -14,7 +14,7 @@
 	right: 0;
 }
 
-.TabsNav {
+.tabsNav {
 	height: 2rem;
 	display: flex;
 	align-items: center;
@@ -26,18 +26,18 @@
 	background-color: cornflowerblue;
 }
 
-.TabsNavItem {
+.tabsNavItem {
 	cursor: pointer;
 	margin-right: 1rem;
 }
-.TabsNavItem:last-child {
+.tabsNavItem:last-child {
 	margin-right: 0;
 }
-.TabsNavItem:hover {
+.tabsNavItem:hover {
 	background-color: pink;
 }
 
-.TabsContents {
+.tabsContents {
 	height: 100%;
 	overflow-y: auto;
 	padding: 1rem;

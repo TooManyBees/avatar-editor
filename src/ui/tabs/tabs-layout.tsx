@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { changedTab } from "../../app/store/ui";
-import "./tabs.css";
+import styles from "./tabs-layout.module.css";
 
 interface Props {
 	children: React.ReactNode;
@@ -11,10 +11,10 @@ interface Props {
 export default function TabsLayout(props: Props) {
 	const { children, sideNav = null } = props;
 	return (
-		<div className="Tabs">
+		<div className={styles.tabs}>
 			<TabsNav />
-			<div className="TabsContentsContainer">
-				<div className="TabsContents">{children}</div>
+			<div className={styles.tabsContentsContainer}>
+				<div className={styles.tabsContents}>{children}</div>
 				{sideNav}
 			</div>
 		</div>
@@ -26,12 +26,13 @@ function TabsNav() {
 	const currentTab = useAppSelector(state => state.ui.tab);
 
 	return (
-		<nav className="TabsNav">
-			<div className="TabsNavItem" onClick={() => dispatch(changedTab("area"))}>Area</div>
-			<div className="TabsNavItem" onClick={() => dispatch(changedTab("areadata"))}>Areadata</div>
-			<div className="TabsNavItem" onClick={() => dispatch(changedTab("mobiles"))}>Moblies</div>
-			<div className="TabsNavItem" onClick={() => dispatch(changedTab("objects"))}>Objects</div>
-			<div className="TabsNavItem" onClick={() => dispatch(changedTab("rooms"))}>Rooms</div>
+		<nav className={styles.tabsNav}>
+			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("area"))}>Area</div>
+			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("areadata"))}>Areadata</div>
+			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("mobiles"))}>Moblies</div>
+			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("objects"))}>Objects</div>
+			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("rooms"))}>Rooms</div>
+			<div></div>
 		</nav>
 	);
 }
