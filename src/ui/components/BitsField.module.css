@@ -1,0 +1,7 @@
+.bitsField {
+	display: flex;
+	flex-wrap: wrap;
+}
+.bitsField label {
+	width: 8rem;
+}

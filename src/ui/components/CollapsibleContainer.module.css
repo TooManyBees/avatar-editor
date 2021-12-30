@@ -1,25 +1,25 @@
-.ToggleContainer legend {
+.container legend {
 	display: flex;
 }
 
-.ToggleContainer .summary {
+.container .summary {
 	margin-left: 0.5rem;
 	display: inline-block;
 	overflow: hidden;
 	white-space: nowrap;
 }
 
-.ToggleContainer .children {
+.container .children {
 	height: 0px;
 	overflow: hidden;
 }
 
-.ToggleContainer.open .summary {
+.container.open .summary {
 	width: 0px;
 	overflow: hidden;
 }
 
-.ToggleContainer.open .children {
+.container.open .children {
 	height: unset;
 	overflow: unset;
 }

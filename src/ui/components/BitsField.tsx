@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from "react";
 import CollapsibleContainer from "./CollapsibleContainer";
+import styles from "./BitsField.module.css";
 
 interface BitsFieldProps {
 	name: string;
@@ -26,7 +27,7 @@ export default function BitsField(props: BitsFieldProps) {
 	const summary = map.filter(([bit]) => value.includes(bit)).map(([bit, name]) => name).join(", ");
 
 	return (
-		<CollapsibleContainer label={name} summary={summary}>
+		<CollapsibleContainer label={name} summary={summary} className={styles.bitsField}>
 			{map.map(([bit, desc, help]) => (
 				<label key={bit} title={help}><input
 					type="checkbox"

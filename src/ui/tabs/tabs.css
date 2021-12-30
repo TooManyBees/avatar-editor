@@ -3,9 +3,21 @@
 	display: flex;
 }
 
-.TabsNav {
+.TabsContentsContainer {
+	padding-top: 2rem;
+	height: 100%;
 	display: flex;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.TabsNav {
 	height: 2rem;
+	display: flex;
+	align-items: center;
 	width: 100%;
 	position: fixed;
 	top: 0;
@@ -23,17 +35,6 @@
 }
 .TabsNavItem:hover {
 	background-color: pink;
-}
-
-.TabsContentsContainer {
-	height: 100%;
-	display: flex;
-	padding-top: 2rem;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
 }
 
 .TabsContents {

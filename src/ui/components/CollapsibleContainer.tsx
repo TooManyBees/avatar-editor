@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import "./CollapsibleContainer.css";
+import styles from "./CollapsibleContainer.module.css";
 
 interface Props {
 	label: string;
 	summary: string;
-	children?: React.ReactNode;
+	children: React.ReactNode;
+	className?: string;
 }
 
 export default function ToggleContainer(props: Props) {
 	const [open, setOpen] = useState(false);
 	return (
-		<fieldset className={`ToggleContainer ${open ? "open" : ""}`}>
+		<fieldset className={`${styles.container} ${open ? styles.open : ""}`}>
 			<legend onClick={() => setOpen(!open)}>
-				{props.label} <span className="summary">{props.summary}</span>
+				{props.label} <span className={styles.summary}>{props.summary}</span>
 			</legend>
-			<div className="children">{props.children || null}</div>
+			<div className={`${styles.children} ${props.className || ""}`}>{props.children}</div>
 		</fieldset>
 	);
 }
