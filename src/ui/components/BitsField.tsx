@@ -2,15 +2,14 @@ import React, { ChangeEvent } from "react";
 import CollapsibleContainer from "./CollapsibleContainer";
 import styles from "./BitsField.module.css";
 
-interface BitsFieldProps {
-	name: string;
+interface BitsFieldNProps {
 	value: number[];
 	map: [number, string, string][];
 	onUpdate: (bs: number[]) => void;
 }
 
-export default function BitsField(props: BitsFieldProps) {
-	const { map, name, value, onUpdate } = props;
+export function BitsFieldN(props: BitsFieldNProps) {
+	const { map, value, onUpdate } = props;
 
 	function onChange(event: ChangeEvent<HTMLInputElement>) {
 		const bit = Number(event.currentTarget.value);
@@ -24,10 +23,8 @@ export default function BitsField(props: BitsFieldProps) {
 		}
 	}
 
-	const summary = map.filter(([bit]) => value.includes(bit)).map(([bit, name]) => name).join(", ");
-
 	return (
-		<CollapsibleContainer label={name} summary={summary} className={styles.bitsField}>
+		<div className={styles.bitsField}>
 			{map.map(([bit, desc, help]) => (
 				<label key={bit} title={help}><input
 					type="checkbox"
@@ -36,6 +33,20 @@ export default function BitsField(props: BitsFieldProps) {
 					onChange={onChange}
 				/> {desc}</label>
 			))}
+		</div>
+	);
+}
+
+interface BitsFieldProps extends BitsFieldNProps {
+	name: string;
+}
+
+export default function BitsField(props: BitsFieldProps) {
+	const { map, name, value } = props;
+	const summary = map.filter(([bit]) => value.includes(bit)).map(([bit, name]) => name).join(", ");
+	return (
+		<CollapsibleContainer label={name} summary={summary}>
+			<BitsFieldN {...props} />
 		</CollapsibleContainer>
 	);
 }

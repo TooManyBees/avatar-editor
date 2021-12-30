@@ -68,7 +68,7 @@ export default function parseAreadata(section: string): AreadataSection {
 }
 
 export function parsePlane(words: string[]): PlaneData {
-	let plane: PlaneData = { plane: 1, _error: {} };
+	let plane: PlaneData = { plane: 1, zone: null, _error: {} };
 
 	let [planeString, zoneString, ...rest] = words;
 

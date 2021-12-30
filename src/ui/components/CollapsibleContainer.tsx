@@ -5,7 +5,6 @@ interface Props {
 	label: string;
 	summary: string;
 	children: React.ReactNode;
-	className?: string;
 }
 
 export default function ToggleContainer(props: Props) {
@@ -15,7 +14,7 @@ export default function ToggleContainer(props: Props) {
 			<legend onClick={() => setOpen(!open)}>
 				{props.label} <span className={styles.summary}>{props.summary}</span>
 			</legend>
-			<div className={`${styles.children} ${props.className || ""}`}>{props.children}</div>
+			<div className={styles.children}>{props.children}</div>
 		</fieldset>
 	);
 }

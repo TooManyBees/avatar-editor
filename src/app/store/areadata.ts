@@ -58,28 +58,28 @@ const areadataSlice = createSlice({
 				state.areadataBits[k as keyof AreadataSection] = true;
 			}
 		},
-		updatePlane(state, action: PayloadAction<PlaneData>) {
+		updatedPlane(state, action: PayloadAction<PlaneData | null>) {
 			state.plane = action.payload;
 		},
-		updateFlags(state, action: PayloadAction<FlagsData>) {
+		updatedFlags(state, action: PayloadAction<FlagsData | null>) {
 			state.flags = action.payload;
 		},
-		updateOutlaw(state, action: PayloadAction<OutlawData>) {
+		updatedOutlaw(state, action: PayloadAction<OutlawData | null>) {
 			state.outlaw = action.payload;
 		},
-		updateKspawn(state, action: PayloadAction<KspawnData>) {
+		updatedKspawn(state, action: PayloadAction<KspawnData | null>) {
 			state.kspawn = action.payload;
 		},
-		updateModifier(state, action: PayloadAction<ModifierData>) {
+		updatedModifier(state, action: PayloadAction<ModifierData | null>) {
 			state.modifier = action.payload;
 		},
-		updateGroupSize(state, action: PayloadAction<GroupSizeData>) {
+		updatedGroupSize(state, action: PayloadAction<GroupSizeData | null>) {
 			state.groupSize = action.payload;
 		},
-		updateVnumRange(state, action: PayloadAction<VnumRangeData>) {
+		updatedVnumRange(state, action: PayloadAction<VnumRangeData | null>) {
 			state.vnumRange = action.payload;
 		},
-		updateScaling(state, action: PayloadAction<ScalingData>) {
+		updatedScaling(state, action: PayloadAction<ScalingData | null>) {
 			state.scaling = action.payload;
 		},
 	}
@@ -87,13 +87,13 @@ const areadataSlice = createSlice({
 
 export const {
 	init,
-	updatePlane,
-	updateFlags,
-	updateOutlaw,
-	updateKspawn,
-	updateModifier,
-	updateGroupSize,
-	updateVnumRange,
-	updateScaling,
+	updatedPlane,
+	updatedFlags,
+	updatedOutlaw,
+	updatedKspawn,
+	updatedModifier,
+	updatedGroupSize,
+	updatedVnumRange,
+	updatedScaling,
 } = areadataSlice.actions;
 export default areadataSlice.reducer;

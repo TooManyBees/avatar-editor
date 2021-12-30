@@ -1,6 +1,6 @@
 export interface PlaneData {
 	plane: number;
-	zone?: number;
+	zone: number | null;
 	_error: {
 		all?: boolean;
 		plane?: boolean,

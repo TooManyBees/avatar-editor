@@ -32,7 +32,7 @@ describe('parsePlane', () => {
 		let plane = parsePlane('1');
 		expectNoErrors(plane);
 		expect(plane.plane).toBe(1);
-		expect(plane.zone).toBeUndefined();
+		expect(plane.zone).toBe(null);
 	});
 
 	test('parses a plane and a zone', () => {
@@ -54,7 +54,7 @@ describe('parsePlane', () => {
 		expectSingleError(plane, "zone");
 		expect(plane).toBeTruthy()
 		expect(plane.plane).toBe(1);
-		expect(plane.zone).toBeUndefined();
+		expect(plane.zone).toBe(null);
 	});
 
 	test('marks error on plane 0', () => {
