@@ -19,6 +19,14 @@ import {
 	updatedGroupSize,
 	updatedVnumRange,
 	updatedScaling,
+	togglePlane,
+	toggleFlags,
+	toggleOutlaw,
+	toggleKspawn,
+	toggleModifier,
+	toggleGroupSize,
+	toggleVnumRange,
+	toggleScaling,
 } from "../../app/store/areadata";
 import TabsLayout from "./tabs-layout";
 import { NumberField, SelectField, TextField } from "../fields";
@@ -29,42 +37,38 @@ import ToggleContainer from "../components/ToggleContainer";
 export default function AreadataTab() {
 	const dispatch = useAppDispatch();
 	const areadata = useAppSelector(state => state.areadata);
+	const enabled = useAppSelector(state => state.areadata.areadataBits);
 
 	return (
 		<TabsLayout>
-			<VnumRange vnumRange={areadata.vnumRange} />
-			<AreaFlags flags={areadata.flags} />
-			<Plane plane={areadata.plane} />
-			<Outlaw outlaw={areadata.outlaw} />
-			<Kspawn kspawn={areadata.kspawn} />
-			<Modifier modifier={areadata.modifier} />
-			<GroupSize groupSize={areadata.groupSize} />
-			<Scaling scaling={areadata.scaling} />
+			<VnumRange vnumRange={areadata.vnumRange} opened={enabled.vnumRange} />
+			<AreaFlags flags={areadata.flags} opened={enabled.flags} />
+			<Plane plane={areadata.plane} opened={enabled.plane} />
+			<Outlaw outlaw={areadata.outlaw} opened={enabled.outlaw} />
+			<Kspawn kspawn={areadata.kspawn} opened={enabled.kspawn} />
+			<Modifier modifier={areadata.modifier} opened={enabled.modifier} />
+			<GroupSize groupSize={areadata.groupSize} opened={enabled.groupSize} />
+			<Scaling scaling={areadata.scaling} opened={enabled.scaling} />
 		</TabsLayout>
 	);
 }
 
-function VnumRange(props: { vnumRange: VnumRangeData | null }) {
+function VnumRange(props: { opened: boolean, vnumRange: VnumRangeData | null }) {
 	const dispatch = useAppDispatch();
-	const opened = !!props.vnumRange;
-	const vnumRange: VnumRangeData = props.vnumRange || { min: 0, max: 0, _error: {} };
-	const [min, setMin] = useState(vnumRange.min);
-	const [max, setMax] = useState(vnumRange.max);
+	const { min, max } = props.vnumRange || { min: 0, max: 0 };
 
-	const onEnabled = () => dispatch(updatedVnumRange({ ...vnumRange, min, max }));
-	const onDisabled = () => dispatch(updatedVnumRange(null));
+	const onEnabled = () => dispatch(toggleVnumRange(true));
+	const onDisabled = () => dispatch(toggleVnumRange(false));
 
 	function onUpdateMin(min: number) {
-		setMin(min);
 		dispatch(updatedVnumRange({min, max, _error: {}}))
 	}
 	function onUpdateMax(max: number) {
-		setMax(max);
 		dispatch(updatedVnumRange({min, max, _error: {}}));
 	}
 
 	return (
-		<ToggleContainer opened={opened} label="Vnum Range" onEnabled={onEnabled} onDisabled={onDisabled}>
+		<ToggleContainer opened={props.opened} label="Vnum Range" onEnabled={onEnabled} onDisabled={onDisabled}>
 			<NumberField name="Min" value={min} onUpdate={onUpdateMin} />
 			<NumberField name="Max" value={max} onUpdate={onUpdateMax} />
 		</ToggleContainer>
@@ -85,96 +89,78 @@ const AREA_FLAGS: [number, string, string][] = [
 	[1024, "No entrance", "blocks a variety of entrance spells (portal, nexus, teleport, mercy, summon, astral, raise dead). Does not block gurney, send, planeshift, salvation."],
 ];
 
-function AreaFlags(props: { flags: FlagsData | null }) {
+function AreaFlags(props: { opened: boolean, flags: FlagsData | null }) {
 	const dispatch = useAppDispatch();
-	const opened = !!props.flags;
-	const [flags, setFlags] = useState(props.flags?.flags || []);
+	const flags: number[] = props.flags?.flags || [];
 
 	function onEnabled() {
-		dispatch(updatedFlags({ flags, _error: {} }));
+		dispatch(toggleFlags(true));
 	}
 	function onDisabled() {
-		dispatch(updatedFlags(null));
+		dispatch(toggleFlags(false));
 	}
 	function onUpdate(flags: number[]) {
-		setFlags(flags);
 		dispatch(updatedFlags({ flags, _error: {} }))
 	}
 
 	return (
-		<ToggleContainer opened={opened} label="Area Flags" onEnabled={onEnabled} onDisabled={onDisabled}>
+		<ToggleContainer opened={props.opened} label="Area Flags" onEnabled={onEnabled} onDisabled={onDisabled}>
 			<BitsFieldN map={AREA_FLAGS} value={flags} onUpdate={onUpdate} />
 		</ToggleContainer>
 	);
 }
 
-function Plane(props: { plane: PlaneData | null }) {
+function Plane(props: { opened: boolean, plane: PlaneData | null }) {
 	const dispatch = useAppDispatch();
-	const opened = !!props.plane;
-	const planeData: PlaneData = props.plane || { plane: 1, zone: null, _error: {} };
-	const [plane, setPlane] = useState(planeData.plane);
-	const [zone, setZone] = useState(planeData.zone);
+	const { plane, zone } = props.plane || { plane: 1, zone: null };
 
-	const onEnabled = () => dispatch(updatedPlane({...planeData, plane, zone }));
-	const onDisabled = () => dispatch(updatedPlane(null));
+	const onEnabled = () => dispatch(togglePlane(true));
+	const onDisabled = () => dispatch(togglePlane(false));
 	function onUpdatePlane(plane: number) {
-		setPlane(plane);
-		dispatch(updatedPlane({...planeData, plane, zone}))
+		dispatch(updatedPlane({plane, zone, _error: {}}))
 	}
 	function onUpdateZone(zone: number) {
-		setZone(zone);
-		dispatch(updatedPlane({...planeData, plane, zone}));
+		dispatch(updatedPlane({plane, zone, _error: {}}));
 	}
 
 	return (
-		<ToggleContainer opened={opened} label="Plane" onEnabled={onEnabled} onDisabled={onDisabled}>
+		<ToggleContainer opened={props.opened} label="Plane" onEnabled={onEnabled} onDisabled={onDisabled}>
 			<NumberField name="Plane" value={plane} min={1} onUpdate={onUpdatePlane} />
 			<NumberField name="Zone" value={zone} min={1} onUpdate={onUpdateZone} />
 		</ToggleContainer>
 	);
 }
 
-function Outlaw(props: { outlaw: OutlawData | null }) {
+function Outlaw(props: { opened: boolean, outlaw: OutlawData | null }) {
 	const dispatch = useAppDispatch();
-	const opened = !!props.outlaw;
 	const outlaw: OutlawData = props.outlaw || { dumpVnum: -1, jailVnum: -1, deathVnum: -1, execVnum: -1, justice: -1, _error: {} };
-	const [dumpVnum, setDumpVnum] = useState(outlaw.dumpVnum);
-	const [jailVnum, setJailVnum] = useState(outlaw.jailVnum);
-	const [deathVnum, setDeathVnum] = useState(outlaw.deathVnum);
-	const [execVnum, setExecVnum] = useState(outlaw.execVnum);
-	const [justice, setJustice] = useState(outlaw.justice);
 
-	const onEnabled = () => dispatch(updatedOutlaw({...outlaw, dumpVnum, jailVnum, deathVnum, execVnum, justice}));
-	const onDisabled = () => dispatch(updatedOutlaw(null));
+	const onEnabled = () => dispatch(toggleOutlaw(true));
+	const onDisabled = () => dispatch(toggleOutlaw(false));
 
 	function onUpdateDumpVnum(dumpVnum: number) {
-		setDumpVnum(dumpVnum);
-		dispatch(updatedOutlaw({...outlaw, dumpVnum, jailVnum, deathVnum, execVnum, justice}));
+		dispatch(updatedOutlaw({...outlaw, dumpVnum}));
 	}
 	function onUpdateJailVnum(jailVnum: number) {
-		setJailVnum(jailVnum);
-		dispatch(updatedOutlaw({...outlaw, dumpVnum, jailVnum, deathVnum, execVnum, justice}));
+		dispatch(updatedOutlaw({...outlaw, jailVnum}));
 	}
 	function onUpdateDeathVnum(deathVnum: number) {
-		setDeathVnum(deathVnum);
-		dispatch(updatedOutlaw({...outlaw, dumpVnum, jailVnum, deathVnum, execVnum, justice}));
+		dispatch(updatedOutlaw({...outlaw, deathVnum}));
 	}
 	function onUpdateExecVnum(execVnum: number) {
-		setExecVnum(execVnum);
-		dispatch(updatedOutlaw({...outlaw, dumpVnum, jailVnum, deathVnum, execVnum, justice}));
+		dispatch(updatedOutlaw({...outlaw, execVnum}));
 	}
 	function onUpdateJustice(justice: number) {
-		setJustice(justice);
-		dispatch(updatedOutlaw({...outlaw, dumpVnum, jailVnum, deathVnum, execVnum, justice}));
+		dispatch(updatedOutlaw({...outlaw, justice}));
 	}
 
 	return (
-		<ToggleContainer opened={opened} label="Outlaw" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<NumberField name="Dump Room Vnum" value={dumpVnum} min={-1} onUpdate={onUpdateDumpVnum} />
-			<NumberField name="Jail Vnum" value={jailVnum} min={-1} onUpdate={onUpdateJailVnum} />
-			<NumberField name="Death Row Vnum" value={deathVnum} min={-1} onUpdate={onUpdateDeathVnum} />
-			<NumberField name="Executioner Vnum" value={execVnum} min={-1} onUpdate={onUpdateExecVnum} />
-			<NumberField name="Justice Factor" value={justice} min={-1} onUpdate={onUpdateJustice} />
+		<ToggleContainer opened={props.opened} label="Outlaw" onEnabled={onEnabled} onDisabled={onDisabled}>
+			<NumberField name="Dump Room Vnum" value={outlaw.dumpVnum} min={-1} onUpdate={onUpdateDumpVnum} />
+			<NumberField name="Jail Vnum" value={outlaw.jailVnum} min={-1} onUpdate={onUpdateJailVnum} />
+			<NumberField name="Death Row Vnum" value={outlaw.deathVnum} min={-1} onUpdate={onUpdateDeathVnum} />
+			<NumberField name="Executioner Vnum" value={outlaw.execVnum} min={-1} onUpdate={onUpdateExecVnum} />
+			<NumberField name="Justice Factor" value={outlaw.justice} min={-1} onUpdate={onUpdateJustice} />
 		</ToggleContainer>
 	);
 }
@@ -193,157 +179,120 @@ const KSPAWN_COMMAND: [number, string, string][] = [
 	[7, "Alarm-Spawn", "As Alarm, but if no mob is found, one is loaded. "],
 ];
 
-function Kspawn(props: { kspawn: KspawnData | null }) {
+function Kspawn(props: { opened: boolean, kspawn: KspawnData | null }) {
 	const dispatch = useAppDispatch();
-	const opened = !!props.kspawn;
 	const kspawn: KspawnData = props.kspawn || { condition: 1, command: 1, mobVnum: -1, roomVnum: -1, text: "", _error: {} };
-	const [condition, setCondition] = useState(kspawn.condition);
-	const [command, setCommand] = useState(kspawn.command);
-	const [mobVnum, setMobVnum] = useState(kspawn.mobVnum);
-	const [roomVnum, setRoomVnum] = useState(kspawn.roomVnum);
-	const [text, setText] = useState(kspawn.text);
 
-	const onEnabled = () => dispatch(updatedKspawn({...kspawn, condition, command, mobVnum, roomVnum, text}));
-	const onDisabled = () => dispatch(updatedKspawn(null));
+	const onEnabled = () => dispatch(toggleKspawn(true));
+	const onDisabled = () => dispatch(toggleKspawn(false));
 
 	function onUpdateCondition(condition: number) {
-		setCondition(condition);
-		dispatch(updatedKspawn({...kspawn, condition, command, mobVnum, roomVnum, text}));
+		dispatch(updatedKspawn({...kspawn, condition}));
 	}
 	function onUpdateCommand(command: number) {
-		setCommand(command);
-		dispatch(updatedKspawn({...kspawn, condition, command, mobVnum, roomVnum, text}));
+		dispatch(updatedKspawn({...kspawn, command}));
 	}
 	function onUpdateMobVnum(mobVnum: number) {
-		setMobVnum(mobVnum);
-		dispatch(updatedKspawn({...kspawn, condition, command, mobVnum, roomVnum, text}));
+		dispatch(updatedKspawn({...kspawn, mobVnum}));
 	}
 	function onUpdateRoomVnum(roomVnum: number) {
-		setRoomVnum(roomVnum);
-		dispatch(updatedKspawn({...kspawn, condition, command, mobVnum, roomVnum, text}));
+		dispatch(updatedKspawn({...kspawn, roomVnum}));
 	}
 	function onUpdateText(text: string) {
-		setText(text);
-		dispatch(updatedKspawn({...kspawn, condition, command, mobVnum, roomVnum, text}));
+		dispatch(updatedKspawn({...kspawn, text}));
 	}
 
 	return (
-		<ToggleContainer opened={opened} label="K-Spawn" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<SelectField name="Condition" value={condition} map={KSPAWN_CONDITION} onUpdate={onUpdateCondition} />
-			<SelectField name="Command" value={command} map={KSPAWN_COMMAND} onUpdate={onUpdateCommand} />
-			<NumberField name="Mob Vnum" value={mobVnum} min={1} onUpdate={onUpdateMobVnum} />
-			<NumberField name="Room Vnum" value={roomVnum} min={-1} onUpdate={onUpdateRoomVnum} />
-			<TextArea name="Text" value={text} onUpdate={onUpdateText} />
+		<ToggleContainer opened={props.opened} label="K-Spawn" onEnabled={onEnabled} onDisabled={onDisabled}>
+			<SelectField name="Condition" value={kspawn.condition} map={KSPAWN_CONDITION} onUpdate={onUpdateCondition} />
+			<SelectField name="Command" value={kspawn.command} map={KSPAWN_COMMAND} onUpdate={onUpdateCommand} />
+			<NumberField name="Mob Vnum" value={kspawn.mobVnum} min={1} onUpdate={onUpdateMobVnum} />
+			<NumberField name="Room Vnum" value={kspawn.roomVnum} min={-1} onUpdate={onUpdateRoomVnum} />
+			<TextArea name="Text" value={kspawn.text} onUpdate={onUpdateText} />
 		</ToggleContainer>
 	);
 }
 
-function Modifier(props: { modifier: ModifierData | null }) {
+function Modifier(props: { opened: boolean, modifier: ModifierData | null }) {
 	const dispatch = useAppDispatch();
-	const opened = !!props.modifier;
 	const modifier: ModifierData = props.modifier || { xpGain: 0, hpRegen: 0, manaRegen: 0, moveRegen: 0, statloss: 0, respawnRoom: 0, tbd1: 0, tbd2: 0, _error: {} };
-	const [xpGain, setXpGain] = useState(modifier.xpGain);
-	const [hpRegen, setHpRegen] = useState(modifier.hpRegen);
-	const [manaRegen, setManaRegen] = useState(modifier.manaRegen);
-	const [moveRegen, setMoveRegen] = useState(modifier.moveRegen);
-	const [statloss, setStatloss] = useState(modifier.statloss);
-	const [respawnRoom, setRespawnRoom] = useState(modifier.respawnRoom);
 
-	const onEnabled = () => dispatch(updatedModifier({...modifier, xpGain, hpRegen, manaRegen, moveRegen, statloss, respawnRoom}));
-	const onDisabled = () => dispatch(updatedModifier(null));
+	const onEnabled = () => dispatch(toggleModifier(true));
+	const onDisabled = () => dispatch(toggleModifier(false));
 
 	return (
-		<ToggleContainer opened={opened} label="Modifiers" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<NumberField name="XP Gain" value={xpGain} onUpdate={xpGain => dispatch(updatedModifier({...modifier, xpGain, hpRegen, manaRegen, moveRegen, statloss, respawnRoom}))} />
-			<NumberField name="HP Regen" value={hpRegen} onUpdate={hpRegen => dispatch(updatedModifier({...modifier, xpGain, hpRegen, manaRegen, moveRegen, statloss, respawnRoom}))} />
-			<NumberField name="Mana Regen" value={manaRegen} onUpdate={manaRegen => dispatch(updatedModifier({...modifier, xpGain, hpRegen, manaRegen, moveRegen, statloss, respawnRoom}))} />
-			<NumberField name="Move Regen" value={moveRegen} onUpdate={moveRegen => dispatch(updatedModifier({...modifier, xpGain, hpRegen, manaRegen, moveRegen, statloss, respawnRoom}))} />
-			<NumberField name="Statloss" value={statloss} onUpdate={statloss => dispatch(updatedModifier({...modifier, xpGain, hpRegen, manaRegen, moveRegen, statloss, respawnRoom}))} />
-			<NumberField name="Respawn Room" value={respawnRoom} min={0} onUpdate={respawnRoom => dispatch(updatedModifier({...modifier, xpGain, hpRegen, manaRegen, moveRegen, statloss, respawnRoom}))} />
+		<ToggleContainer opened={props.opened} label="Modifiers" onEnabled={onEnabled} onDisabled={onDisabled}>
+			<NumberField name="XP Gain" value={modifier.xpGain} onUpdate={xpGain => dispatch(updatedModifier({...modifier, xpGain}))} />
+			<NumberField name="HP Regen" value={modifier.hpRegen} onUpdate={hpRegen => dispatch(updatedModifier({...modifier, hpRegen}))} />
+			<NumberField name="Mana Regen" value={modifier.manaRegen} onUpdate={manaRegen => dispatch(updatedModifier({...modifier, manaRegen}))} />
+			<NumberField name="Move Regen" value={modifier.moveRegen} onUpdate={moveRegen => dispatch(updatedModifier({...modifier, moveRegen}))} />
+			<NumberField name="Statloss" value={modifier.statloss} onUpdate={statloss => dispatch(updatedModifier({...modifier, statloss}))} />
+			<NumberField name="Respawn Room" value={modifier.respawnRoom} min={0} onUpdate={respawnRoom => dispatch(updatedModifier({...modifier, respawnRoom}))} />
 		</ToggleContainer>
 	);
 }
 
-function GroupSize(props: { groupSize: GroupSizeData | null }) {
+function GroupSize(props: { opened: boolean, groupSize: GroupSizeData | null }) {
 	const dispatch = useAppDispatch();
-	const opened = !!props.groupSize;
 	const groupSize: GroupSizeData = props.groupSize || { pct0: 0, num1: 0, pct1: 0, num2: 0, pct2: 0, pct3: 0, div: 0, tbd: 0, _error: {} };
-	const [pct0, setPct0] = useState(groupSize.pct0);
-	const [num1, setNum1] = useState(groupSize.num1);
-	const [pct1, setPct1] = useState(groupSize.pct1);
-	const [num2, setNum2] = useState(groupSize.num2);
-	const [pct2, setPct2] = useState(groupSize.pct2);
-	const [pct3, setPct3] = useState(groupSize.pct3);
-	const [div, setDiv] = useState(groupSize.div);
 
-	const onEnabled = () => dispatch(updatedGroupSize({...groupSize, pct0, num1, pct1, num2, pct2, pct3, div}));
-	const onDisabled = () => dispatch(updatedGroupSize(null));
+
+	const onEnabled = () => dispatch(toggleGroupSize(true));
+	const onDisabled = () => dispatch(toggleGroupSize(false));
 
 	function onUpdatePct0(pct0: number) {
-		setPct0(pct0);
-		dispatch(updatedGroupSize({...groupSize, pct0, num1, pct1, num2, pct2, pct3, div}));
+		dispatch(updatedGroupSize({...groupSize, pct0}));
 	}
 	function onUpdateNum1(num1: number) {
-		setNum1(num1);
-		dispatch(updatedGroupSize({...groupSize, pct0, num1, pct1, num2, pct2, pct3, div}));
+		dispatch(updatedGroupSize({...groupSize, num1}));
 	}
 	function onUpdatePct1(pct1: number) {
-		setPct1(pct1);
-		dispatch(updatedGroupSize({...groupSize, pct0, num1, pct1, num2, pct2, pct3, div}));
+		dispatch(updatedGroupSize({...groupSize, pct1}));
 	}
 	function onUpdateNum2(num2: number) {
-		setNum2(num2);
-		dispatch(updatedGroupSize({...groupSize, pct0, num1, pct1, num2, pct2, pct3, div}));
+		dispatch(updatedGroupSize({...groupSize, num2}));
 	}
 	function onUpdatePct2(pct2: number) {
-		setPct2(pct2);
-		dispatch(updatedGroupSize({...groupSize, pct0, num1, pct1, num2, pct2, pct3, div}));
+		dispatch(updatedGroupSize({...groupSize, pct2}));
 	}
 	function onUpdatePct3(pct3: number) {
-		setPct3(pct3);
-		dispatch(updatedGroupSize({...groupSize, pct0, num1, pct1, num2, pct2, pct3, div}));
+		dispatch(updatedGroupSize({...groupSize, pct3}));
 	}
 	function onUpdateDiv(div: number) {
-		setDiv(div);
-		dispatch(updatedGroupSize({...groupSize, pct0, num1, pct1, num2, pct2, pct3, div}));
+		dispatch(updatedGroupSize({...groupSize, div}));
 	}
 
 	return (
-		<ToggleContainer opened={opened} label="XP Curve" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<NumberField name="Pct0" value={pct0} onUpdate={onUpdatePct0} />
-			<NumberField name="Num1" value={num1} onUpdate={onUpdateNum1} />
-			<NumberField name="Pct1" value={pct1} onUpdate={onUpdatePct1} />
-			<NumberField name="Num2" value={num2} onUpdate={onUpdateNum2} />
-			<NumberField name="Pct2" value={pct2} onUpdate={onUpdatePct2} />
-			<NumberField name="Pct3" value={pct3} onUpdate={onUpdatePct3} />
-			<NumberField name="Div" value={div} onUpdate={onUpdateDiv} />
+		<ToggleContainer opened={props.opened} label="XP Curve" onEnabled={onEnabled} onDisabled={onDisabled}>
+			<NumberField name="Pct0" value={groupSize.pct0} onUpdate={onUpdatePct0} />
+			<NumberField name="Num1" value={groupSize.num1} onUpdate={onUpdateNum1} />
+			<NumberField name="Pct1" value={groupSize.pct1} onUpdate={onUpdatePct1} />
+			<NumberField name="Num2" value={groupSize.num2} onUpdate={onUpdateNum2} />
+			<NumberField name="Pct2" value={groupSize.pct2} onUpdate={onUpdatePct2} />
+			<NumberField name="Pct3" value={groupSize.pct3} onUpdate={onUpdatePct3} />
+			<NumberField name="Div" value={groupSize.div} onUpdate={onUpdateDiv} />
 		</ToggleContainer>
 	);
 }
 
-function Scaling(props: { scaling: ScalingData | null }) {
+function Scaling(props: { opened: boolean, scaling: ScalingData | null }) {
 	const dispatch = useAppDispatch();
-	const opened = !!props.scaling;
 	const scaling: ScalingData = props.scaling || { maxGroupPower: 490, maxGroupToughness: 180000, _error: {} };
-	const [maxGroupPower, setMaxGroupPower] = useState(scaling.maxGroupPower);
-	const [maxGroupToughness, setMaxGroupToughness] = useState(scaling.maxGroupToughness);
 
-	const onEnabled = () => dispatch(updatedScaling({...scaling, maxGroupPower, maxGroupToughness}));
-	const onDisabled = () => dispatch(updatedScaling(null));
+	const onEnabled = () => dispatch(toggleScaling(true));
+	const onDisabled = () => dispatch(toggleScaling(false));
 
 	function onUpdateMaxGroupPower(maxGroupPower: number) {
-		setMaxGroupPower(maxGroupPower);
-		dispatch(updatedScaling({...scaling, maxGroupPower, maxGroupToughness}));
+		dispatch(updatedScaling({...scaling, maxGroupPower}));
 	}
 	function onUpdateMaxGroupToughness(maxGroupToughness: number) {
-		setMaxGroupToughness(maxGroupToughness);
-		dispatch(updatedScaling({...scaling, maxGroupPower, maxGroupToughness}));
+		dispatch(updatedScaling({...scaling, maxGroupToughness}));
 	}
 
 	return (
-		<ToggleContainer opened={opened} label="Dynamic Scaling" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<NumberField name="Max Group Power" value={maxGroupPower} onUpdate={onUpdateMaxGroupPower} />
-			<NumberField name="Max Group Toughness" value={maxGroupToughness} onUpdate={onUpdateMaxGroupToughness} />
+		<ToggleContainer opened={props.opened} label="Dynamic Scaling" onEnabled={onEnabled} onDisabled={onDisabled}>
+			<NumberField name="Max Group Power" value={scaling.maxGroupPower} onUpdate={onUpdateMaxGroupPower} />
+			<NumberField name="Max Group Toughness" value={scaling.maxGroupToughness} onUpdate={onUpdateMaxGroupToughness} />
 		</ToggleContainer>
 	);
 }

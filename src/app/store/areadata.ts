@@ -58,28 +58,52 @@ const areadataSlice = createSlice({
 				state.areadataBits[k as keyof AreadataSection] = true;
 			}
 		},
-		updatedPlane(state, action: PayloadAction<PlaneData | null>) {
+		togglePlane(state, action: PayloadAction<boolean>) {
+			state.areadataBits.plane = action.payload;
+		},
+		updatedPlane(state, action: PayloadAction<PlaneData>) {
 			state.plane = action.payload;
 		},
-		updatedFlags(state, action: PayloadAction<FlagsData | null>) {
+		toggleFlags(state, action: PayloadAction<boolean>) {
+			state.areadataBits.flags = action.payload;
+		},
+		updatedFlags(state, action: PayloadAction<FlagsData>) {
 			state.flags = action.payload;
 		},
-		updatedOutlaw(state, action: PayloadAction<OutlawData | null>) {
+		toggleOutlaw(state, action: PayloadAction<boolean>) {
+			state.areadataBits.outlaw = action.payload;
+		},
+		updatedOutlaw(state, action: PayloadAction<OutlawData>) {
 			state.outlaw = action.payload;
 		},
-		updatedKspawn(state, action: PayloadAction<KspawnData | null>) {
+		toggleKspawn(state, action: PayloadAction<boolean>) {
+			state.areadataBits.kspawn = action.payload;
+		},
+		updatedKspawn(state, action: PayloadAction<KspawnData>) {
 			state.kspawn = action.payload;
 		},
-		updatedModifier(state, action: PayloadAction<ModifierData | null>) {
+		toggleModifier(state, action: PayloadAction<boolean>) {
+			state.areadataBits.modifier = action.payload;
+		},
+		updatedModifier(state, action: PayloadAction<ModifierData>) {
 			state.modifier = action.payload;
 		},
-		updatedGroupSize(state, action: PayloadAction<GroupSizeData | null>) {
+		toggleGroupSize(state, action: PayloadAction<boolean>) {
+			state.areadataBits.groupSize = action.payload;
+		},
+		updatedGroupSize(state, action: PayloadAction<GroupSizeData>) {
 			state.groupSize = action.payload;
 		},
-		updatedVnumRange(state, action: PayloadAction<VnumRangeData | null>) {
+		toggleVnumRange(state, action: PayloadAction<boolean>) {
+			state.areadataBits.vnumRange = action.payload;
+		},
+		updatedVnumRange(state, action: PayloadAction<VnumRangeData>) {
 			state.vnumRange = action.payload;
 		},
-		updatedScaling(state, action: PayloadAction<ScalingData | null>) {
+		toggleScaling(state, action: PayloadAction<boolean>) {
+			state.areadataBits.scaling = action.payload;
+		},
+		updatedScaling(state, action: PayloadAction<ScalingData>) {
 			state.scaling = action.payload;
 		},
 	}
@@ -95,5 +119,13 @@ export const {
 	updatedGroupSize,
 	updatedVnumRange,
 	updatedScaling,
+	togglePlane,
+	toggleFlags,
+	toggleOutlaw,
+	toggleKspawn,
+	toggleModifier,
+	toggleGroupSize,
+	toggleVnumRange,
+	toggleScaling,
 } = areadataSlice.actions;
 export default areadataSlice.reducer;
