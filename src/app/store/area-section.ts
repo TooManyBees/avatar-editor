@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AreaSection, Help, newId, BLANK_AREA_SECTION } from "../models";
 
-interface AreaSectionState {
+export interface AreaSectionState {
 	line: string;
 	helps: Help[];
 }

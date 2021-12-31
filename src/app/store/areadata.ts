@@ -15,7 +15,7 @@ type AreadataLines = {
 	[F in keyof AreadataSection]-?: boolean;
 }
 
-interface AreaSectionState {
+export interface AreadataState {
 	plane: PlaneData | null,
 	flags: FlagsData | null,
 	outlaw: OutlawData | null,
@@ -27,7 +27,7 @@ interface AreaSectionState {
 	areadataBits: AreadataLines;
 }
 
-const initialState: AreaSectionState = {
+const initialState: AreadataState = {
 	plane: null,
 	flags: null,
 	outlaw: null,
