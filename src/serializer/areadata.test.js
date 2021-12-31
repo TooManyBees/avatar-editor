@@ -35,8 +35,7 @@ S
 });
 
 function parseState(string) {
-	// Trim off the #AREADATA\n
-	const areadata = parseAreadata(string.substring(10));
+	const areadata = parseAreadata(string.substring("#AREADATA\n".length));
 	const areadataBits = {};
 	for (let key of Object.keys(areadata)) {
 		areadataBits[key] = true;
