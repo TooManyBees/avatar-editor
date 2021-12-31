@@ -1,4 +1,5 @@
 import { Help } from "../app/models";
+import { quote } from "./helpers";
 
 export default function serializeHelps(helps: Help[]): string {
 	let buffer = "";
@@ -6,10 +7,7 @@ export default function serializeHelps(helps: Help[]): string {
 	for (let help of helps) {
 		buffer += `${help.level}`;
 		for (let keyword of help.keywords) {
-			let quoted = keyword;
-			if (keyword.match(/\s/))
-				quoted = keyword.includes("'") ? `"${keyword}"` : `'${keyword}'`;
-			buffer += ` ${quoted}`;
+			buffer += ` ${quote(keyword)}`;
 		}
 		buffer += "~\n";
 		buffer += help.body;

@@ -1,4 +1,5 @@
 import { AreadataState } from "../app/store/areadata";
+import { joinBits } from "./helpers";
 
 export default function serializeAreadata(state: AreadataState): string {
 	let buffer = "";
@@ -10,7 +11,7 @@ export default function serializeAreadata(state: AreadataState): string {
 			buffer += `P ${state.plane.plane}\n`;
 	}
 	if (state.areadataBits.flags && state.flags) {
-		buffer += `F ${state.flags.flags.join('|')}\n`;
+		buffer += `F ${joinBits(state.flags.flags)}\n`;
 	}
 	if (state.areadataBits.outlaw && state.outlaw) {
 		let { dumpVnum, jailVnum, deathVnum, execVnum, justice } = state.outlaw;
