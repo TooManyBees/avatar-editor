@@ -17,7 +17,7 @@ export default function serialize(state: RootState): string {
 	buffer += serializeHelps(state.area.helps) + "\n";
 	buffer += serializeMobiles(state.mobiles.mobiles) + "\n";
 	buffer += serializeObjects(state.objects.objects) + "\n";
-	buffer += serializeRooms(state.rooms.rooms) + "\n";
+	buffer += serializeRooms(state.rooms.rooms, state.objects.objects) + "\n";
 	buffer += serializeResets(state.resets.resets, state.mobiles.mobiles, state.objects.objects, state.rooms.rooms) + "\n";
 	buffer += serializeShops(state.shops.shops, state.mobiles.mobiles) + "\n";
 	buffer += serializeSpecials(state.specials.specials, state.mobiles.mobiles) + "\n";

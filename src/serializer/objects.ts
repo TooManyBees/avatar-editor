@@ -1,5 +1,5 @@
 import { Objekt } from "../app/models";
-import { joinBits, quote } from "./helpers";
+import { joinBits, quote, serializeEdescs } from "./helpers";
 
 export default function serializeObjects(objects: Objekt[]): string {
 	let buffer = "";
@@ -29,13 +29,7 @@ ${object.weight} ${object.worth} ${joinBits(object.racialFlags)} 0
 
 	if (object.quality != null) base += `Q ${object.quality}\n`;
 
-	for (let edesc of object.extraDescs) {
-		base += "E\n";
-		base += edesc.keywords.map(kw => quote(kw)).join(" ") + "~\n";
-		base += edesc.body;
-		if (edesc.body.endsWith("\n")) base += "~\n";
-		else base += "\n~\n";
-	}
+	base += serializeEdescs(object.extraDescs);
 
 	return base;
 }
