@@ -14,12 +14,12 @@ B 10000 100000
 S
 `
 
-	it("serializes all of the areadata lines", () => {
+	test("serializes all of the areadata lines", () => {
 		const state = parseState(AREADATA);
 		expect(serializeAreadata(state)).toBe(AREADATA);
 	});
 
-	it("serializes a plane without a zone", () => {
+	test("serializes a plane without a zone", () => {
 		const AREADATA_WITHOUT_ZONE = `#AREADATA
 P 1
 S
@@ -28,7 +28,7 @@ S
 		expect(serializeAreadata(state)).toBe(AREADATA_WITHOUT_ZONE);
 	});
 
-	it("omits areadata when it is empty", () => {
+	test("omits areadata when it is empty", () => {
 		const state = parseState("#AREADATA\nS\n");
 		expect(serializeAreadata(state)).toBe("");
 	});

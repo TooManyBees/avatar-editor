@@ -16,12 +16,12 @@ It's pretty cool.
 0$~
 `
 
-	it('serializes multiple helps', () => {
+	test('serializes multiple helps', () => {
 		const state = parseState(HELPS);
 		expect(serializeHelps(state)).toBe(HELPS);
 	});
 
-	it('appends a newline to the end of the body', () => {
+	test('appends a newline to the end of the body', () => {
 		const state = parseState(`#HELPS
 1 keyword~
 body~
@@ -30,7 +30,7 @@ body~
 		expect(serializeHelps(state)).toBe("#HELPS\n1 keyword~\nbody\n~\n\n0$~\n");
 	});
 
-	it ('omits an empty section', () => {
+	test('omits an empty section', () => {
 		const state = parseState("#HELPS\n\n\n\n0$~\n");
 		expect(serializeHelps(state)).toBe("");
 	});

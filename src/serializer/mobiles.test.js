@@ -2,12 +2,12 @@ import parseMobiles, { parseMobile } from "../parser/mobiles";
 import serializeMobiles, { serializeMob } from "./mobiles";
 
 describe("serializeMob", () => {
-	it("serializes a mobile", () => {
+	test("serializes a mobile", () => {
 		const mob = parseMobile(MOB);
 		expect(serializeMob(mob)).toBe(MOB);
 	});
 
-	it("serializes a mobile with extra applies", () => {
+	test("serializes a mobile with extra applies", () => {
 		const mob = parseMobile(MOB_WITH_APPLIES);
 		expect(serializeMob(mob)).toBe(MOB_WITH_APPLIES);
 	});
@@ -58,12 +58,12 @@ A nearby sparrow screams, "OH MY GOODNESS!"~
 
 
 describe("serializeMobiles", () => {
-	it("serializes a mobiles section", () => {
+	test("serializes a mobiles section", () => {
 		const mobs = parseState(MOBILES);
 		expect(serializeMobiles(mobs)).toBe(MOBILES);
 	});
 
-	it("omits an empty section", () => {
+	test("omits an empty section", () => {
 		const mobs = parseState("#MOBILES\n\n#0\n");
 		expect(serializeMobiles(mobs)).toBe("");
 	});
