@@ -27,3 +27,27 @@ export interface Edesc extends EdescFields {
 export function blankEdesc(): Edesc {
 	return { id: newId(), keywords: [], body: "", _error: {} };
 }
+
+interface HasVnum {
+	vnum: number | null;
+}
+
+export function sortByVnum<T extends HasVnum>(items: T[]): T[] {
+	return [...items].sort((a, b) => {
+		if (a.vnum == null) return -1;
+		if (b.vnum == null) return 1;
+		return a.vnum - b.vnum;
+	});
+}
+
+interface HasId {
+	id: string;
+}
+
+export function findVnum<T extends HasId & HasVnum>(items: T[], id: string): number | null {
+	let parsed = Number(id);
+	if (Number.isInteger(parsed) && parsed >= 0) return parsed;
+	let found = items.find(item => item.id === id);
+	if (found) return found.vnum;
+	return null;
+}
