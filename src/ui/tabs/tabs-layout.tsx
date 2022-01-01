@@ -1,6 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { changedTab } from "../../app/store/ui";
+import serializeArea from "../../serializer";
 import styles from "./tabs-layout.module.css";
 
 interface Props {
@@ -24,6 +25,15 @@ export default function TabsLayout(props: Props) {
 function TabsNav() {
 	const dispatch = useAppDispatch();
 	const currentTab = useAppSelector(state => state.ui.tab);
+	const rootState = useAppSelector(state => state);
+
+	function save() {
+		const output = serializeArea(rootState);
+		const w = window.open("");
+		if (w) {
+			w.document.write(`<pre><code>${output}</code></pre>`);
+		}
+	}
 
 	return (
 		<nav className={styles.tabsNav}>
@@ -32,7 +42,7 @@ function TabsNav() {
 			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("mobiles"))}>Moblies</div>
 			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("objects"))}>Objects</div>
 			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("rooms"))}>Rooms</div>
-			<div></div>
+			<button onClick={save}>Save</button>
 		</nav>
 	);
 }
