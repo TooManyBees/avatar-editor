@@ -16,7 +16,6 @@ export interface Area {
 	objects: Objekt[];
 	rooms: Room[];
 	resets: Resets;
-	orphanedResets: UncorellatedResets;
 	shops: Shop[];
 	orphanedShops: ShopU[];
 	specials: Special[];
@@ -31,7 +30,6 @@ export const BLANK_AREA = {
 	objects: [],
 	rooms: [],
 	resets: [],
-	orphanedResets: [],
 	shops: [],
 	orphanedShops: [],
 	specials: [],

@@ -96,16 +96,8 @@ export function parseResets(section: string): UncorellatedResets {
 	return resets;
 }
 
-export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles: Mobile[], objects: Objekt[], rooms: Room[]): [Resets, UncorellatedResets] {
+export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles: Mobile[], objects: Objekt[], rooms: Room[]): Resets {
 	let resets: Resets = {
-		mobile: [],
-		object: [],
-		inObject: [],
-		door: [],
-		randomExit: [],
-	};
-
-	let orphanedResets: UncorellatedResets = {
 		mobile: [],
 		object: [],
 		inObject: [],
@@ -116,129 +108,112 @@ export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles:
 	for (let uReset of uncorellatedResets.mobile) {
 		let mob = mobiles.find(m => m.vnum === uReset.mobVnum);
 		let room = rooms.find(r => r.vnum === uReset.roomVnum);
-		if (mob) {
-			let reset: MobReset = {
+
+		let reset: MobReset = {
+			id: newId(),
+			mobId: mob?.id || uReset.mobVnum.toString(),
+			roomId: room?.id || uReset.roomVnum.toString(),
+			limit: uReset.limit,
+			comment: uReset.comment,
+			orphan: !mob,
+			inventory: [],
+			equipment: [],
+			_error: uReset._error,
+		};
+		if (!room) reset._error.roomId = true;
+
+		for (let uInvReset of uReset.inventory) {
+			let object = objects.find(o => o.vnum === uInvReset.objectVnum);
+			let invReset: InventoryReset = {
 				id: newId(),
-				mobId: mob.id,
-				roomId: room ? room.id : uReset.roomVnum.toString(),
-				limit: uReset.limit,
-				comment: uReset.comment,
-				inventory: [],
-				equipment: [],
-				_error: uReset._error,
+				objectId: object?.id || uInvReset.objectVnum.toString(),
+				limit: uInvReset.limit,
+				comment: uInvReset.comment,
+				_error: uInvReset._error,
 			};
-
-			for (let uInvReset of uReset.inventory) {
-				let object = objects.find(o => o.vnum === uInvReset.objectVnum);
-				let invReset: InventoryReset = {
-					id: newId(),
-					objectId: object ? object.id : uInvReset.objectVnum.toString(),
-					limit: uInvReset.limit,
-					comment: uInvReset.comment,
-					_error: uInvReset._error,
-				};
-				if (!object) invReset._error.objectId = true;
-				reset.inventory.push(invReset);
-			}
-
-			for (let uEqReset of uReset.equipment) {
-				let object = objects.find(o => o.vnum === uEqReset.objectVnum);
-				let eqReset: EquipmentReset = {
-					id: newId(),
-					objectId: object ? object.id : uEqReset.objectVnum.toString(),
-					limit: uEqReset.limit,
-					wearLocation: uEqReset.wearLocation,
-					comment: uEqReset.comment,
-					_error: uEqReset._error,
-				};
-				if (!object) eqReset._error.objectId = true;
-				reset.equipment.push(eqReset);
-			}
-
-			if (!room) reset._error.roomId = true;
-			resets.mobile.push(reset);
-		} else {
-			uReset._error.mobVnum = true;
-			orphanedResets.mobile.push(uReset);
+			if (!object) invReset._error.objectId = true;
+			reset.inventory.push(invReset);
 		}
+
+		for (let uEqReset of uReset.equipment) {
+			let object = objects.find(o => o.vnum === uEqReset.objectVnum);
+			let eqReset: EquipmentReset = {
+				id: newId(),
+				objectId: object?.id || uEqReset.objectVnum.toString(),
+				limit: uEqReset.limit,
+				wearLocation: uEqReset.wearLocation,
+				comment: uEqReset.comment,
+				_error: uEqReset._error,
+			};
+			if (!object) eqReset._error.objectId = true;
+			reset.equipment.push(eqReset);
+		}
+
+		resets.mobile.push(reset);
 	}
 
 	for (let uReset of uncorellatedResets.object) {
 		let object = objects.find(o => o.vnum === uReset.objectVnum);
 		let room = rooms.find(r => r.vnum === uReset.roomVnum);
-		if (object) {
-			let reset: ObjectReset = {
-				id: newId(),
-				objectId: object.id,
-				roomId: room ? room.id : uReset.roomVnum.toString(),
-				comment: uReset.comment,
-				_error: {},
-			};
-			if (!room) reset._error.roomId = true;
-			resets.object.push(reset);
-		} else {
-			uReset._error.objectVnum = true;
-			orphanedResets.object.push(uReset);
-		}
+		let reset: ObjectReset = {
+			id: newId(),
+			objectId: object?.id || uReset.objectVnum.toString(),
+			roomId: room?.id || uReset.roomVnum.toString(),
+			comment: uReset.comment,
+			orphan: !object,
+			_error: {},
+		};
+		if (!room) reset._error.roomId = true;
+		resets.object.push(reset);
 	}
 
 	for (let uReset of uncorellatedResets.inObject) {
 		let object = objects.find(o => o.vnum === uReset.objectVnum);
 		let container = objects.find(o => o.vnum === uReset.containerVnum);
-		if (object) {
-			let reset: InObjectReset = {
-				id: newId(),
-				objectId: object.id,
-				containerId: container ? container.id : uReset.containerVnum.toString(),
-				comment: uReset.comment,
-				_error: {},
-			};
-			if (!container) reset._error.containerId = true;
-			resets.inObject.push(reset);
-		} else {
-			uReset._error.objectVnum = true;
-			orphanedResets.inObject.push(uReset);
-		}
+		let reset: InObjectReset = {
+			id: newId(),
+			objectId: object?.id || uReset.objectVnum.toString(),
+			containerId: container?.id || uReset.containerVnum.toString(),
+			comment: uReset.comment,
+			orphan: !object,
+			_error: {},
+		};
+		if (!container) reset._error.containerId = true;
+		resets.inObject.push(reset);
 	}
 
 	for (let uReset of uncorellatedResets.door) {
 		let room = rooms.find(r => r.vnum === uReset.roomVnum);
+		let reset: DoorReset = {
+			id: newId(),
+			roomId: room?.id || uReset.roomVnum.toString(),
+			direction: uReset.direction,
+			state: uReset.state,
+			comment: uReset.comment,
+			orphan: !room,
+			_error: uReset._error,
+		};
 		if (room) {
-			let reset: DoorReset = {
-				id: newId(),
-				roomId: room.id,
-				direction: uReset.direction,
-				state: uReset.state,
-				comment: uReset.comment,
-				_error: uReset._error,
-			};
 			let direction = room.doors.find(d => d.direction === uReset.direction);
 			if (!direction) reset._error.direction = true;
-			resets.door.push(reset);
-		} else {
-			uReset._error.roomVnum = true;
-			orphanedResets.door.push(uReset);
 		}
+		resets.door.push(reset);
 	}
 
 	for (let uReset of uncorellatedResets.randomExit) {
 		let room = rooms.find(r => r.vnum === uReset.roomVnum);
-		if (room) {
-			let reset: RandomExitReset = {
-				id: newId(),
-				roomId: room.id,
-				numExits: uReset.numExits,
-				comment: uReset.comment,
-				_error: uReset._error,
-			};
-			resets.randomExit.push(reset);
-		} else {
-			uReset._error.roomVnum = true;
-			orphanedResets.randomExit.push(uReset);
-		}
+		let reset: RandomExitReset = {
+			id: newId(),
+			roomId: room?.id || uReset.roomVnum.toString(),
+			numExits: uReset.numExits,
+			comment: uReset.comment,
+			orphan: !room,
+			_error: uReset._error,
+		};
+		resets.randomExit.push(reset);
 	}
 
-	return [resets, orphanedResets];
+	return resets;
 }
 
 export function parseMobReset(line: string): MobResetU {

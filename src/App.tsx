@@ -46,7 +46,7 @@ function App() {
 		dispatch(initMobs(area.mobiles));
 		dispatch(initObjs(area.objects));
 		dispatch(initRooms(area.rooms));
-		dispatch(initResets([area.resets, area.orphanedResets]));
+		dispatch(initResets(area.resets));
 		dispatch(initShops([area.shops, area.orphanedShops]));
 		dispatch(initSpecials([area.specials, area.orphanedSpecials]));
 		dispatch(loaded());

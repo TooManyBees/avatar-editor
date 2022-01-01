@@ -10,18 +10,10 @@ import type { UncorellatedResets } from "../models/resets";
 
 interface ResetsSlice {
 	resets: Resets;
-	orphaned: UncorellatedResets;
 }
 
 const initialState: ResetsSlice = {
 	resets: {
-		mobile: [],
-		object: [],
-		inObject: [],
-		door: [],
-		randomExit: [],
-	},
-	orphaned: {
 		mobile: [],
 		object: [],
 		inObject: [],
@@ -34,10 +26,8 @@ const resetsSlice = createSlice({
 	name: "resets",
 	initialState,
 	reducers: {
-		init(state, action: PayloadAction<[Resets, UncorellatedResets]>) {
-			const [resets, orphaned] = action.payload;
-			state.resets = resets;
-			state.orphaned = orphaned;
+		init(state, action: PayloadAction<Resets>) {
+			state.resets = action.payload;
 		},
 		addedMobReset(state, action: PayloadAction<[string, string]>) {
 			const [mobId, roomId] = action.payload;
@@ -47,6 +37,7 @@ const resetsSlice = createSlice({
 				roomId,
 				limit: 1,
 				comment: "",
+				orphan: false,
 				inventory: [],
 				equipment: [],
 				_error: {},

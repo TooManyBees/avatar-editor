@@ -51,13 +51,6 @@ export default function parseFile(file: string): Area {
 		objects: [],
 		rooms: [],
 		resets: BLANK_RESETS_SECTION,
-		orphanedResets: {
-			mobile: [],
-			object: [],
-			inObject: [],
-			door: [],
-			randomExit: [],
-		},
 		shops: [],
 		orphanedShops: [],
 		specials: [],
@@ -118,9 +111,8 @@ export default function parseFile(file: string): Area {
 
 	parsedSections.rooms = corellateDoors(parsedSections.objects, uncorellatedRooms);
 
-	let [resets, orphanedResets] = corellateResets(uncorellatedResets, parsedSections.mobiles, parsedSections.objects, parsedSections.rooms);
+	let resets = corellateResets(uncorellatedResets, parsedSections.mobiles, parsedSections.objects, parsedSections.rooms);
 	parsedSections.resets = resets;
-	parsedSections.orphanedResets = orphanedResets;
 
 	let [specials, orphanedSpecials] = corellateSpecials(parsedSections.mobiles, uncorellatedSpecials);
 	parsedSections.specials = specials;

@@ -47,6 +47,7 @@ interface MobResetFields {
 
 export interface MobReset extends MobResetFields {
 	readonly id: string;
+	orphan: boolean;
 	inventory: InventoryReset[];
 	equipment: EquipmentReset[];
 	_error: ErrorMarkers<MobResetFields>;
@@ -117,6 +118,7 @@ interface ObjectResetFields {
 
 export interface ObjectReset extends ObjectResetFields {
 	readonly id: string;
+	orphan: boolean;
 	_error: ErrorMarkers<ObjectResetFields>;
 }
 
@@ -138,6 +140,7 @@ interface InObjectResetFields {
 
 export interface InObjectReset extends InObjectResetFields {
 	readonly id: string;
+	orphan: boolean;
 	_error: ErrorMarkers<InObjectResetFields>;
 }
 
@@ -162,6 +165,7 @@ interface DoorResetFields {
 
 export interface DoorReset extends DoorResetFields {
 	readonly id: string;
+	orphan: boolean;
 	_error: ErrorMarkers<DoorResetFields>;
 }
 
@@ -183,5 +187,6 @@ interface RandomExitResetFields {
 
 export interface RandomExitReset extends RandomExitResetFields {
 	readonly id: string;
+	orphan: boolean;
 	_error: ErrorMarkers<RandomExitResetFields>;
 }
