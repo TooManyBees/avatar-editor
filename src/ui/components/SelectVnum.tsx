@@ -1,4 +1,5 @@
 import React from "react";
+import { CSSObjectWithLabel } from "react-select";
 import ReactSelect from "react-select/creatable";
 
 interface HasVnum {
@@ -15,29 +16,50 @@ interface Props<T> {
 }
 
 export function SelectVnum<T extends HasVnum>(props: Props<T>) {
+	const { items, selectedId } = props;
 	const options = props.items.map(item => ({
 		value: item.id,
-		label: serializeVnumItem(item),
+		vnum: item.vnum,
+		label: item.name || item.shortDesc || "",
 	}));
 
-	let selected = options.find(item => item.value === props.selectedId);
-	if (!selected && props.selectedId) {
-		if (isValidNewOption(props.selectedId)) {
-			selected = { value: props.selectedId, label: formatCreateLabel(props.selectedId) };
+	let selected = options.find(item => item.value === selectedId);
+	if (!selected && selectedId) {
+		if (isValidNewOption(selectedId)) {
+			selected = {
+				value: selectedId,
+				vnum: Number(selectedId),
+				label: "(outside area?)",
+			};
 			options.unshift(selected);
 		}
 	}
+
+	const styles = minWidthStyles(options);
 
 	return (
 		<ReactSelect
 			value={selected}
 			options={options}
+			formatOptionLabel={formatOptionLabel}
 			formatCreateLabel={formatCreateLabel}
 			isValidNewOption={isValidNewOption}
 			onChange={v => props.onUpdate(v ? v.value : "")}
 			blurInputOnSelect
+			captureMenuScroll
+			styles={styles}
 		/>
 	);
+}
+
+type Option = {
+	value: string;
+	vnum: number | null;
+	label: string;
+};
+
+function formatOptionLabel(data: Option): React.ReactNode {
+	return <><code>{data.vnum}</code> {data.label}</>
 }
 
 function formatCreateLabel(input: string): string {
@@ -49,6 +71,11 @@ function isValidNewOption(input: string): boolean {
 	return Number.isInteger(number);
 }
 
-function serializeVnumItem<T extends HasVnum>(item: T): string {
-	return `${item.vnum || ""} ${item.name || item.shortDesc || ""}`;
+function minWidthStyles(options: Option[]) {
+	const minWidth = options.reduce((maxLen, item) =>
+		Math.max(maxLen, (item.vnum?.toString()?.length || 0) + item.label.length), 0);
+	return {
+		control: (provided: CSSObjectWithLabel) => ({ ...provided, minWidth: `calc(55px + ${minWidth*8}px)` }),
+		singleValue: ({ maxWidth, position, top, transform, ...rest}: CSSObjectWithLabel) => ({...rest}),
+	};
 }
