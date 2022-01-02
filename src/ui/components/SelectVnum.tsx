@@ -75,7 +75,16 @@ function minWidthStyles(options: Option[]) {
 	const minWidth = options.reduce((maxLen, item) =>
 		Math.max(maxLen, (item.vnum?.toString()?.length || 0) + item.label.length), 0);
 	return {
-		control: (provided: CSSObjectWithLabel) => ({ ...provided, minWidth: `calc(55px + ${minWidth*8}px)` }),
-		singleValue: ({ maxWidth, position, top, transform, ...rest}: CSSObjectWithLabel) => ({...rest}),
+		control: (provided: CSSObjectWithLabel) => ({
+			...provided,
+			minWidth: `calc(55px + ${minWidth*8}px)`,
+			alignItems: "baseline",
+		}),
+		valueContainer: (provider: CSSObjectWithLabel) => ({
+			...provider,
+			alignItems: "baseline",
+			top: "2px",
+		}),
+		// singleValue: ({ maxWidth, position, top, transform, ...rest}: CSSObjectWithLabel) => ({...rest}),
 	};
 }

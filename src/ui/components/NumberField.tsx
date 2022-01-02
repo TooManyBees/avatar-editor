@@ -27,13 +27,12 @@ export default function NumberField(props: NumberFieldProps) {
 		}
 	}
 
-	const valueString = value != null ? value.toString() : "";
 	return (
 		<label className={styles.wrapper}>
 			{name && <span className={styles.label}>{name}:</span>}
 			<input
 				type="text"
-				value={valueString}
+				value={value}
 				min={min}
 				max={max}
 				onChange={onChange}
