@@ -29,12 +29,11 @@ const resetsSlice = createSlice({
 		init(state, action: PayloadAction<Resets>) {
 			state.resets = action.payload;
 		},
-		addedMobReset(state, action: PayloadAction<[string, string]>) {
-			const [mobId, roomId] = action.payload;
+		addedMobReset(state, action: PayloadAction<string>) {
 			const reset: MobReset = {
 				id: newId(),
-				mobId,
-				roomId,
+				mobId: action.payload,
+				roomId: "",
 				limit: 1,
 				comment: "",
 				orphan: false,
