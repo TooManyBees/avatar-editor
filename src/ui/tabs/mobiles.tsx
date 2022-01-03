@@ -1,12 +1,15 @@
 import React from "react";
+import { Dispatch } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/mobiles";
+import * as ResetsActions from "../../app/store/resets";
 import * as ShopsActions from "../../app/store/shops";
 import { Mobile, Kspawn, Shop } from "../../app/models";
 import {
 	ApplyFields,
 	KeywordField,
 	BitsField,
+	DeleteButton,
 	NumberField,
 	Row,
 	SelectField,
@@ -69,11 +72,16 @@ function MobileForm(props: Props) {
 	const updatedClass = (n: number | null) => dispatch(Actions.updatedClass([id, n]));
 	const updatedTeam = (n: number | null) => dispatch(Actions.updatedTeam([id, n]));
 	const updatedSpecial = (s: string | null) => dispatch(Actions.updatedSpecial([id, s]));
+	const removedMobile = () => {
+		dispatch(Actions.removedMobile(id));
+		dispatch(ResetsActions.removedAllMobResets(id)); // FIXME: we *could* leave them orphaned, nbd
+	};
 
 	return (
 		<>
-			<ToolRow>
+			<ToolRow style={{ justifyContent: "space-between" }}>
 				<NumberField name="VNUM" inline value={mobile.vnum} min={0} onUpdate={updatedVnum} />
+				<DeleteButton onClick={removedMobile}>Delete mob</DeleteButton>
 			</ToolRow>
 			<Row>
 				<KeywordField name="Keywords" value={mobile.keywords} onUpdate={updatedKeywords} />

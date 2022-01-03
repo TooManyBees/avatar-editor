@@ -31,6 +31,9 @@ const mobileSlice = createSlice({
 			state.mobiles.unshift(newMob);
 			state.selectedId = newMob.id;
 		},
+		removedMobile(state, action: PayloadAction<string>) {
+			state.mobiles = state.mobiles.filter(m => m.id !== action.payload);
+		},
 		updatedVnum(state, action: PayloadAction<[string, number]>) {
 			const [id, payload] = action.payload;
 			const mobile = state.mobiles.find(m => m.id === id);
@@ -147,6 +150,7 @@ export const {
 	init,
 	selectedId,
 	addedMobile,
+	removedMobile,
 	updatedVnum,
 	updatedKeywords,
 	updatedShortDesc,

@@ -54,6 +54,9 @@ const resetsSlice = createSlice({
 		removedMobReset(state, action: PayloadAction<string>) {
 			state.resets.mobile = state.resets.mobile.filter(r => r.id !== action.payload);
 		},
+		removedAllMobResets(state, action: PayloadAction<string>) {
+			state.resets.mobile = state.resets.mobile.filter(r => r.mobId !== action.payload);
+		},
 		addedEquipmentReset(state, action: PayloadAction<string>) {
 			const reset = state.resets.mobile.find(r => r.mobId === action.payload);
 			if (reset) {
@@ -108,6 +111,7 @@ export const {
 	addedMobReset,
 	updatedMobReset,
 	removedMobReset,
+	removedAllMobResets,
 	addedEquipmentReset,
 	updatedEquipmentReset,
 	removedEquipmentReset,
