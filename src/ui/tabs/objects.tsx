@@ -2,20 +2,20 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/objects";
 import { Objekt } from "../../app/models";
-import {
-	NumberField,
-	SelectField,
-	TextField,
-} from "../fields";
 import { VnumItemList } from "../VnumList";
 import {
 	ApplyFields,
 	BitsField,
 	KeywordField,
 	EdescFields,
+	NumberField,
+	Row,
+	SelectField,
 	TextArea,
+	TextField,
+	ToolRow,
 } from "../components";
-import ObjectValues from "../ObjectValues";
+import ObjectValues from "../objects/ObjectValues";
 import "../VnumList.css";
 import TabsLayout from "./tabs-layout";
 
@@ -79,65 +79,73 @@ function ObjectForm({ item: object }: Props) {
 
 	return (
 		<>
-			<NumberField name="VNUM" value={object.vnum} min={0} onUpdate={updatedVnum} />
+			<ToolRow>
+				<NumberField name="VNUM" inline value={object.vnum} min={0} onUpdate={updatedVnum} />
+			</ToolRow>
 			<KeywordField name="Keywords" value={object.keywords} onUpdate={updatedKeywords} />
-			<TextField name="Short desc" value={object.shortDesc} onUpdate={updatedShortDesc} />
-			<TextField name="Long desc" value={object.longDesc} onUpdate={updatedLongDesc} />
+			<Row>
+				<TextField name="Short desc" value={object.shortDesc} onUpdate={updatedShortDesc} />
+			</Row>
+			<Row>
+				<TextField name="Long desc" value={object.longDesc} onUpdate={updatedLongDesc} />
+			</Row>
 			<TextArea name="Action desc" value={object.actionDesc} onUpdate={updatedActionDesc} />
-			<SelectField name="Type" value={object.itemType} map={ITEM_TYPE} onUpdate={updatedItemType} />
-			<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} onUpdate={updatedExtraFlags} />
-			<SelectField name="Wear flags" value={wearFlags} map={WEAR_FLAGS} onUpdate={updatedWearFlags} />
+			<SelectField name="Type" value={object.itemType} options={ITEM_TYPE} defaultValue={ITEM_TYPE[0]} onUpdate={updatedItemType} />
 			<ObjectValues id={id} type={object.itemType} value0={object.value0} value1={object.value1} value2={object.value2} value3={object.value3} />
-			<NumberField name="Weight" value={object.weight} onUpdate={updatedWeight} />
-			<NumberField name="Worth" value={object.worth} onUpdate={updatedWorth} />
+			<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} onUpdate={updatedExtraFlags} />
+			<SelectField name="Wear flags" value={wearFlags} options={WEAR_FLAGS} defaultValue={WEAR_FLAGS[0]} onUpdate={updatedWearFlags} />
+			<ToolRow>
+				<NumberField name="Weight" value={object.weight} onUpdate={updatedWeight} />
+				<NumberField name="Worth" value={object.worth} onUpdate={updatedWorth} />
+				<NumberField name="Quality" value={object.quality} min={1} onUpdate={updatedQuality} />
+			</ToolRow>
 			<BitsField name="Racial wear flags" value={object.racialFlags} map={RACIAL_WEAR_FLAGS} onUpdate={updatedRacialFlags} />
-			<NumberField name="Quality" value={object.quality} min={1} onUpdate={updatedQuality} />
 			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 		</>
 	);
 }
 
-const ITEM_TYPE: [number, string, string][] = [
-	[1, "Light", ""],
-	[2, "Scroll", ""],
-	[3, "Wand", ""],
-	[4, "Staff", ""],
-	[5, "Weapon", ""],
-	[6, "Ticket", ""],
-	[7, "Rogue Tool", ""],
-	[8, "Treasure", ""],
-	[9, "Armor", ""],
-	[10, "Potion", ""],
-	[11, "Poisoned Weapon", ""],
-	[12, "Furniture", ""],
-	[13, "Trash", ""],
-	[14, "Poison", ""],
-	[15, "Container", ""],
-	// [16, "", ""],
-	[17, "Drink container", ""],
-	[18, "Key", ""],
-	[19, "Food", ""],
-	[20, "Money", ""],
-	// [21, "", ""],
-	[22, "Boat", ""],
-	// [23, "NPC Corpse", ""],
-	// [24, "PC Corpse", ""],
-	[25, "Fountain", ""],
-	[26, "Pill", ""],
-	// [27, "Sign_type_one", ""],
-	[28, "Portal", ""],
-	[29, "Nexus", ""],
-	[30, "Marking", ""],
-	[31, "Bow", ""],
-	[32, "Arrow", ""],
-	// [33, "Gemstone", ""],
-	// [34, "Perfect gemstone", ""],
-	[35, "Throwing weapon", ""],
-	// [36, "Perfect metal", ""],
-	[37, "Spellbook", ""],
-	// [38, "", ""],
-	[39, "Trap kit", ""],
+const ITEM_TYPE: { value: number, label: string }[] = [
+	{ value: 1, label: "Light", },
+	{ value: 2, label: "Scroll", },
+	{ value: 3, label: "Wand", },
+	{ value: 4, label: "Staff", },
+	{ value: 5, label: "Weapon", },
+	{ value: 6, label: "Ticket", },
+	{ value: 7, label: "Rogue Tool", },
+	{ value: 8, label: "Treasure", },
+	{ value: 9, label: "Armor", },
+	{ value: 10, label: "Potion", },
+	{ value: 11, label: "Poisoned Weapon", },
+	{ value: 12, label: "Furniture", },
+	{ value: 13, label: "Trash", },
+	{ value: 14, label: "Poison", },
+	{ value: 15, label: "Container", },
+	// { value: 16, label: "", },
+	{ value: 17, label: "Drink container", },
+	{ value: 18, label: "Key", },
+	{ value: 19, label: "Food", },
+	{ value: 20, label: "Money", },
+	// { value: 21, label: "", },
+	{ value: 22, label: "Boat", },
+	// { value: 23, label: "NPC Corpse", },
+	// { value: 24, label: "PC Corpse", },
+	{ value: 25, label: "Fountain", },
+	{ value: 26, label: "Pill", },
+	// { value: 27, label: "Sign_type_one", },
+	{ value: 28, label: "Portal", },
+	{ value: 29, label: "Nexus", },
+	{ value: 30, label: "Marking", },
+	{ value: 31, label: "Bow", },
+	{ value: 32, label: "Arrow", },
+	// { value: 33, label: "Gemstone", },
+	// { value: 34, label: "Perfect gemstone", },
+	{ value: 35, label: "Throwing weapon", },
+	// { value: 36, label: "Perfect metal", },
+	{ value: 37, label: "Spellbook", },
+	// { value: 38, label: "", },
+	{ value: 39, label: "Trap kit", },
 ];
 
 const EXTRA_FLAGS: [number, string, string][] = [
@@ -174,25 +182,25 @@ const EXTRA_FLAGS: [number, string, string][] = [
 	[1073741824, "Rune", "Item has been runed "],
 ];
 
-const WEAR_FLAGS: [number, string, string][] = [
-	[0, "Not carryable", ""],
-	[1, "Not wearable", ""],
-	[1 | 2, "Finger", ""],
-	[1 | 4, "Neck", ""],
-	[1 | 8, "On body", ""],
-	[1 | 16, "Head", ""],
-	[1 | 32, "Legs", ""],
-	[1 | 64, "Feet", ""],
-	[1 | 128, "Hands", ""],
-	[1 | 256, "Arms", ""],
-	[1 | 512, "Shield", ""],
-	[1 | 1024, "About body", ""],
-	[1 | 2048, "Waist", ""],
-	[1 | 4096, "Wrist", ""],
-	[1 | 8192, "Wield", ""],
-	[1 | 16384, "Hold", ""],
-	// [1 | 32768, "Floating", ""],
-	// [1 | 65536, "Insignia", ""],
+const WEAR_FLAGS: { value: number, label: string }[] = [
+	{ value: 0, label: "Not carryable" },
+	{ value: 1, label: "Not wearable" },
+	{ value: 1 | 2, label: "Finger" },
+	{ value: 1 | 4, label: "Neck" },
+	{ value: 1 | 8, label: "On body" },
+	{ value: 1 | 16, label: "Head" },
+	{ value: 1 | 32, label: "Legs" },
+	{ value: 1 | 64, label: "Feet" },
+	{ value: 1 | 128, label: "Hands" },
+	{ value: 1 | 256, label: "Arms" },
+	{ value: 1 | 512, label: "Shield" },
+	{ value: 1 | 1024, label: "About body" },
+	{ value: 1 | 2048, label: "Waist" },
+	{ value: 1 | 4096, label: "Wrist" },
+	{ value: 1 | 8192, label: "Wield" },
+	{ value: 1 | 16384, label: "Hold" },
+	// { value: 1 | 32768, label: "Floating" },
+	// { value: 1 | 65536, label: "Insignia" },
 ];
 
 const RACIAL_WEAR_FLAGS: [number, string, string][] = [
