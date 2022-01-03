@@ -1,7 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/mobiles";
-import * as SpecialsActions from "../../app/store/specials";
 import * as ShopsActions from "../../app/store/shops";
 import { Mobile, Kspawn, Shop } from "../../app/models";
 import {
@@ -56,8 +55,6 @@ function MobileForm(props: Props) {
 	const id = mobile.id;
 	const kspawn = mobile.kspawn;
 
-	const specFun = useAppSelector(state => state.specials.specials[id]);
-
 	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
 	const updatedKeywords = (ks: string[]) => dispatch(Actions.updatedKeywords([id, ks]));
 	const updatedShortDesc = (s: string) => dispatch(Actions.updatedShortDesc([id, s]));
@@ -71,7 +68,7 @@ function MobileForm(props: Props) {
 	const updatedRace = (n: number | null) => dispatch(Actions.updatedRace([id, n]));
 	const updatedClass = (n: number | null) => dispatch(Actions.updatedClass([id, n]));
 	const updatedTeam = (n: number | null) => dispatch(Actions.updatedTeam([id, n]));
-	const updatedSpecial = (s: string) => s ? dispatch(SpecialsActions.updatedSpecial([id, s])) : dispatch(SpecialsActions.removedSpecial(id));
+	const updatedSpecial = (s: string | null) => dispatch(Actions.updatedSpecial([id, s]));
 
 	return (
 		<>
@@ -101,7 +98,7 @@ function MobileForm(props: Props) {
 				<SelectField name="Team" inline value={mobile.team} options={TEAM} defaultValue={TEAM[0]} onUpdate={updatedTeam} />
 			</ToolRow>
 			<ApplyFields applies={mobile.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
-			<SpecialSelector selected={specFun} onUpdate={updatedSpecial} />
+			<SelectField name="Spec" inline value={mobile.specFun} options={SPEC_FUNS} defaultValue={SPEC_FUNS[0]} onUpdate={updatedSpecial} />
 			<ShopComponent mobId={id} />
 			{kspawn ? (
 				<fieldset>
@@ -116,15 +113,6 @@ function MobileForm(props: Props) {
 			<h2>Resets</h2>
 			<MobResets mobId={id} />
 		</>
-	);
-}
-
-function SpecialSelector({ selected, onUpdate }: { selected: string, onUpdate: (s: string) => void }) {
-	return (
-		<label>Spec: <select value={selected} onChange={e => onUpdate(e.target.value)}>
-			{!SPEC_FUNS.includes(selected) && <option key={selected} value={selected}>{selected}</option>}
-			{SPEC_FUNS.map(s => <option key={s} value={s}>{s}</option>)}
-		</select></label>
 	);
 }
 
@@ -365,64 +353,64 @@ const KSPAWN_TYPE: [number, string, string][] = [
 	[128, "KS with argument", "No death message is played to the room. Instead, the death message field is used as a text parameter for the mobprog C command = \"msg\". This allows a mob to react to diferent K-Spawns. Again, a mobprog check for the \"KS\" option on the mob with <spawn-vnum#> is done."]
 ];
 
-const SPEC_FUNS: string[] = [
-	"none",
-	"SPEC_ANIMATE_DEAD",
-	"SPEC_ARCHER",
-	"SPEC_ASSASSIN",
-	"SPEC_BCI_LITE",
-	"SPEC_BERSERKER",
-	"SPEC_BODYGUARD",
-	"SPEC_BREATH_ANY",
-	"SPEC_BREATH_ACID",
-	"SPEC_BREATH_FIRE",
-	"SPEC_BREATH_FROST",
-	"SPEC_BREATH_GAS",
-	"SPEC_BREATH_LIGHTNING",
-	"SPEC_BUDDHA",
-	"SPEC_BUTTKICKER",
-	"SPEC_CAST_ADEPT",
-	"SPEC_CAST_CLERIC",
-	"SPEC_CAST_KINETIC",
-	"SPEC_CAST_MAGE",
-	"SPEC_CAST_PSION",
-	"SPEC_CAST_STORMLORD",
-	"SPEC_CAST_UNDEAD",
-	"SPEC_DOPPLEGANGER",
-	"SPEC_DRUID",
-	"SPEC_FIDO",
-	"SPEC_FUSILIER",
-	"SPEC_GUARD",
-	"SPEC_GUARD_WHITE",
-	"SPEC_GUILD_GUARD",
-	"SPEC_KINETIC_LITE",
-	"SPEC_KUNGFU_POISON",
-	"SPEC_KZIN",
-	"SPEC_JANITOR",
-	"SPEC_MINDBENDER",
-	"SPEC_MONK",
-	"SPEC_POISON",
-	"SPEC_PLAGUE",
-	"SPEC_PRIEST_LITE",
-	"SPEC_PUFF",
-	"SPEC_PUFF_ORIG",
-	"SPEC_ROGUE",
-	"SPEC_ROGUE_LITE",
-	"SPEC_SNIPER",
-	"SPEC_SORCEROR",
-	"SPEC_SOULBOUND",
-	"SPEC_STOMP_EM",
-	"SPEC_TEACHER",
-	"SPEC_THIEF",
-	"SPEC_WARLORD",
-	"SPEC_WARRIOR",
-	"SPEC_ARCHERALL",
-	"SPEC_BATTLE_CLERIC",
-	"SPEC_BATTLE_MAGE",
-	"SPEC_BATTLE_SOR",
-	"SPEC_BREATH_SUPER",
-	"SPEC_CAST_WIZARD",
-	"SPEC_DEMON",
-	"SPEC_ILLUSIONIST",
-	"SPEC_VOLLEY",
+const SPEC_FUNS: { value: string | null, label: string }[] = [
+	{ value: null, label: "None"},
+	{ value: "SPEC_ANIMATE_DEAD", label: "SPEC_ANIMATE_DEAD" },
+	{ value: "SPEC_ARCHER", label: "SPEC_ARCHER" },
+	{ value: "SPEC_ASSASSIN", label: "SPEC_ASSASSIN" },
+	{ value: "SPEC_BCI_LITE", label: "SPEC_BCI_LITE" },
+	{ value: "SPEC_BERSERKER", label: "SPEC_BERSERKER" },
+	{ value: "SPEC_BODYGUARD", label: "SPEC_BODYGUARD" },
+	{ value: "SPEC_BREATH_ANY", label: "SPEC_BREATH_ANY" },
+	{ value: "SPEC_BREATH_ACID", label: "SPEC_BREATH_ACID" },
+	{ value: "SPEC_BREATH_FIRE", label: "SPEC_BREATH_FIRE" },
+	{ value: "SPEC_BREATH_FROST", label: "SPEC_BREATH_FROST" },
+	{ value: "SPEC_BREATH_GAS", label: "SPEC_BREATH_GAS" },
+	{ value: "SPEC_BREATH_LIGHTNING", label: "SPEC_BREATH_LIGHTNING" },
+	{ value: "SPEC_BUDDHA", label: "SPEC_BUDDHA" },
+	{ value: "SPEC_BUTTKICKER", label: "SPEC_BUTTKICKER" },
+	{ value: "SPEC_CAST_ADEPT", label: "SPEC_CAST_ADEPT" },
+	{ value: "SPEC_CAST_CLERIC", label: "SPEC_CAST_CLERIC" },
+	{ value: "SPEC_CAST_KINETIC", label: "SPEC_CAST_KINETIC" },
+	{ value: "SPEC_CAST_MAGE", label: "SPEC_CAST_MAGE" },
+	{ value: "SPEC_CAST_PSION", label: "SPEC_CAST_PSION" },
+	{ value: "SPEC_CAST_STORMLORD", label: "SPEC_CAST_STORMLORD" },
+	{ value: "SPEC_CAST_UNDEAD", label: "SPEC_CAST_UNDEAD" },
+	{ value: "SPEC_DOPPLEGANGER", label: "SPEC_DOPPLEGANGER" },
+	{ value: "SPEC_DRUID", label: "SPEC_DRUID" },
+	{ value: "SPEC_FIDO", label: "SPEC_FIDO" },
+	{ value: "SPEC_FUSILIER", label: "SPEC_FUSILIER" },
+	{ value: "SPEC_GUARD", label: "SPEC_GUARD" },
+	{ value: "SPEC_GUARD_WHITE", label: "SPEC_GUARD_WHITE" },
+	{ value: "SPEC_GUILD_GUARD", label: "SPEC_GUILD_GUARD" },
+	{ value: "SPEC_KINETIC_LITE", label: "SPEC_KINETIC_LITE" },
+	{ value: "SPEC_KUNGFU_POISON", label: "SPEC_KUNGFU_POISON" },
+	{ value: "SPEC_KZIN", label: "SPEC_KZIN" },
+	{ value: "SPEC_JANITOR", label: "SPEC_JANITOR" },
+	{ value: "SPEC_MINDBENDER", label: "SPEC_MINDBENDER" },
+	{ value: "SPEC_MONK", label: "SPEC_MONK" },
+	{ value: "SPEC_POISON", label: "SPEC_POISON" },
+	{ value: "SPEC_PLAGUE", label: "SPEC_PLAGUE" },
+	{ value: "SPEC_PRIEST_LITE", label: "SPEC_PRIEST_LITE" },
+	{ value: "SPEC_PUFF", label: "SPEC_PUFF" },
+	{ value: "SPEC_PUFF_ORIG", label: "SPEC_PUFF_ORIG" },
+	{ value: "SPEC_ROGUE", label: "SPEC_ROGUE" },
+	{ value: "SPEC_ROGUE_LITE", label: "SPEC_ROGUE_LITE" },
+	{ value: "SPEC_SNIPER", label: "SPEC_SNIPER" },
+	{ value: "SPEC_SORCEROR", label: "SPEC_SORCEROR" },
+	{ value: "SPEC_SOULBOUND", label: "SPEC_SOULBOUND" },
+	{ value: "SPEC_STOMP_EM", label: "SPEC_STOMP_EM" },
+	{ value: "SPEC_TEACHER", label: "SPEC_TEACHER" },
+	{ value: "SPEC_THIEF", label: "SPEC_THIEF" },
+	{ value: "SPEC_WARLORD", label: "SPEC_WARLORD" },
+	{ value: "SPEC_WARRIOR", label: "SPEC_WARRIOR" },
+	{ value: "SPEC_ARCHERALL", label: "SPEC_ARCHERALL" },
+	{ value: "SPEC_BATTLE_CLERIC", label: "SPEC_BATTLE_CLERIC" },
+	{ value: "SPEC_BATTLE_MAGE", label: "SPEC_BATTLE_MAGE" },
+	{ value: "SPEC_BATTLE_SOR", label: "SPEC_BATTLE_SOR" },
+	{ value: "SPEC_BREATH_SUPER", label: "SPEC_BREATH_SUPER" },
+	{ value: "SPEC_CAST_WIZARD", label: "SPEC_CAST_WIZARD" },
+	{ value: "SPEC_DEMON", label: "SPEC_DEMON" },
+	{ value: "SPEC_ILLUSIONIST", label: "SPEC_ILLUSIONIST" },
+	{ value: "SPEC_VOLLEY", label: "SPEC_VOLLEY" },
 ];

@@ -1,14 +1,10 @@
 import { Mobile } from "../app/models";
-import { findVnum } from "../app/models/helpers";
 
-type Specials = { [s: string]: string };
-
-export default function serializeSpecials(specials: Specials, mobiles: Mobile[]): string {
+export default function serializeSpecials(mobiles: Mobile[]): string {
 	let buffer = "";
 
-	for (let [mobId, specFun] of Object.entries(specials)) {
-		let vnum = findVnum(mobiles, mobId);
-		buffer += `M ${vnum} ${specFun}\n`;
+	for (let mob of mobiles) {
+		if (mob.specFun != null) buffer += `M ${mob.vnum} ${mob.specFun}\n`;
 	}
 
 	if (buffer !== "") return `#SPECIALS\n${buffer}S\n`;

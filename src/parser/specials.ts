@@ -1,4 +1,4 @@
-import { Mobile, Special } from "../app/models";
+import { Mobile } from "../app/models";
 import { SpecialU } from "../app/models/specials";
 import { parseNumber } from "./helpers";
 
@@ -32,18 +32,17 @@ export function parseSpecials(section: string): SpecialU[] {
 	return specials;
 }
 
-export function corellateSpecials(mobiles: Mobile[], specialsU: SpecialU[]): [Special[], SpecialU[]] {
-	let specials: Special[] = [];
+export function corellateSpecials(mobiles: Mobile[], specialsU: SpecialU[]): SpecialU[] {
 	let orphans: SpecialU[] = [];
 	for (let specialU of specialsU) {
 		if (specialU.special === "none") continue;
 		let mobile = mobiles.find(m => m.vnum === specialU.mobVnum);
 		if (mobile) {
-			specials.push({ mobId: mobile.id, special: specialU.special, _error: specialU._error });
+			mobile.specFun = specialU.special;
 		} else {
 			orphans.push(specialU);
 		}
 	}
 
-	return [specials, orphans];
+	return orphans;
 }

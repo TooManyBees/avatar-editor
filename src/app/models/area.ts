@@ -6,7 +6,7 @@ import { Objekt } from "./objects";
 import { Room } from "./rooms";
 import { Resets, UncorellatedResets } from "./resets";
 import { Shop, ShopU } from "./shops";
-import { Special, SpecialU } from "./specials";
+import { SpecialU } from "./specials";
 
 export interface Area {
 	area: AreaSection;
@@ -18,7 +18,6 @@ export interface Area {
 	resets: Resets;
 	shops: Shop[];
 	orphanedShops: ShopU[];
-	specials: Special[];
 	orphanedSpecials: SpecialU[];
 }
 
@@ -32,6 +31,5 @@ export const BLANK_AREA = {
 	resets: [],
 	shops: [],
 	orphanedShops: [],
-	specials: [],
 	orphanedSpecials: [],
 };

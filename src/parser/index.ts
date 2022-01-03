@@ -13,7 +13,7 @@ import { ShopU } from "../app/models/shops";
 import { parseSpecials, corellateSpecials } from "./specials";
 
 import {
-	Area, AreaSection, AreadataSection, Door, Help, Mobile, Objekt, Room, Shop, Resets, Special,
+	Area, AreaSection, AreadataSection, Door, Help, Mobile, Objekt, Room, Shop, Resets,
 	BLANK_AREA_SECTION, BLANK_RESETS_SECTION,
 } from "./../app/models";
 
@@ -53,7 +53,6 @@ export default function parseFile(file: string): Area {
 		resets: BLANK_RESETS_SECTION,
 		shops: [],
 		orphanedShops: [],
-		specials: [],
 		orphanedSpecials: [],
 	};
 
@@ -114,8 +113,7 @@ export default function parseFile(file: string): Area {
 	let resets = corellateResets(uncorellatedResets, parsedSections.mobiles, parsedSections.objects, parsedSections.rooms);
 	parsedSections.resets = resets;
 
-	let [specials, orphanedSpecials] = corellateSpecials(parsedSections.mobiles, uncorellatedSpecials);
-	parsedSections.specials = specials;
+	let orphanedSpecials = corellateSpecials(parsedSections.mobiles, uncorellatedSpecials);
 	parsedSections.orphanedSpecials = orphanedSpecials;
 	let [shops, orphanedShops] = corellateShops(parsedSections.mobiles, uncorellatedShops);
 	parsedSections.shops = shops;

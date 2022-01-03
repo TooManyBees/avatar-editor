@@ -18,6 +18,5 @@ export type {
 	RandomExitReset,
 } from "./resets";
 export { BLANK_RESETS_SECTION } from "./resets";
-export type { Special } from "./specials";
 export { newId } from "./helpers";
 export type { Edesc } from "./helpers";

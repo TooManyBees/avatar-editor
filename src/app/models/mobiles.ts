@@ -16,6 +16,7 @@ export interface MobileFields {
 	applies: [number, number][];
 	team: number | null;
 	kspawn?: Kspawn;
+	specFun: string | null;
 }
 
 export interface Kspawn {
@@ -55,5 +56,6 @@ export const blankMobile = (): Mobile => ({
 	klass: null,
 	applies: [],
 	team: null,
+	specFun: null,
 	_error: {},
 });
