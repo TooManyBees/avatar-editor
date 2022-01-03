@@ -6,20 +6,24 @@
 	width: 100%;
 	background: transparent;
 }
+.textArea textarea:hover {
+	border-color: hsl(0, 0%, 70%);
+}
 
 .colorPreview, .textArea textarea {
 	display:  block;
 	white-space: pre;
 	font-family: monospace;
-	padding: 0;
-	border: none;
-	padding: 2px;
-	border: 2px inset;
+	margin: 0.5rem 0;
+	padding: 4px 8px;
+	border: 1px solid hsl(0, 0%, 80%);
+	border-radius: 4px;
 	line-height: normal;
 }
 
 .colorPreview {
 	color: white;
+	background-color: black;
 }
 
 .description {
@@ -32,16 +36,12 @@
 	color: black;
 	background-color: white;
 }
-.editor.preview {
-	color: white;
-	background-color: black;
-}
 .editor:before, .editor:after {
 	display: block;
 	position: absolute;
-	top: 0;
-	left: 4px; /* account for textarea's 2px padding, 2px border */
-	bottom: 0;
+	top: 5px;
+	left: 9px; /* account for textarea's 8px padding, 1px border */
+	bottom: 5px;
 	font-family: monospace;
 	color: transparent;
 	border-right: 1px dashed red;

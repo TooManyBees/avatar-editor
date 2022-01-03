@@ -37,7 +37,7 @@ export default function TextArea(props: TextFieldProps) {
 				<label>{name}:</label>
 				<label><input type="checkbox" checked={preview} onChange={togglePreview} /> Preview colors</label>
 			</span>
-			<div className={`${styles.editor} ${preview ? styles.preview : ""}`}>
+			<div className={styles.editor}>
 				{ preview
 					? <div className={styles.colorPreview} style={{height}}>{elementsFromColorCodes(value)}</div>
 					: <textarea rows={rows} style={{height}} value={value} onChange={onChange} onBlur={onBlur} ref={textArea} />
