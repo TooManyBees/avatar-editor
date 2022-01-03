@@ -4,32 +4,52 @@
 .textArea textarea {
 	resize: vertical;
 	width: 100%;
+	background: transparent;
 }
 
-.preview, .textArea textarea {
+.colorPreview, .textArea textarea {
 	display:  block;
 	white-space: pre;
 	font-family: monospace;
+	padding: 0;
+	border: none;
 	padding: 2px;
 	border: 2px inset;
 	line-height: normal;
-	background-image: linear-gradient(
-		to right,
-		transparent,
-		transparent 36rem,
-		rgba(255, 192, 192, 0.5) 36rem,
-		rgba(255, 192, 192, 0.5) 40rem,
-		rgba(255, 192, 192, 0.75) 40rem,
-		rgba(255, 192, 192, 0.75)
-	);
 }
 
-.preview {
-	background-color: black;
+.colorPreview {
 	color: white;
 }
 
 .description {
 	display: flex;
 	justify-content: space-between;
+}
+
+.editor {
+	position: relative;
+	color: black;
+	background-color: white;
+}
+.editor.preview {
+	color: white;
+	background-color: black;
+}
+.editor:before, .editor:after {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 4px; /* account for textarea's 2px padding, 2px border */
+	bottom: 0;
+	font-family: monospace;
+	color: transparent;
+	border-right: 1px dashed red;
+	pointer-events: none;
+}
+.editor:before {
+	content: "........................................................................";
+}
+.editor:after {
+	content: "................................................................................";
 }
