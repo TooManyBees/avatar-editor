@@ -21,6 +21,7 @@
 }
 
 .delete {
+	white-space: nowrap;
 	color: red;
 }
 .delete:before {

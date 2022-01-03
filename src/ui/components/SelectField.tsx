@@ -6,7 +6,7 @@ import styles from "./inputs.module.css";
 interface Props<V> {
 	name?: string;
 	options: { value: V, label: string }[];
-	defaultValue: { value: V, label: string };
+	defaultValue?: { value: V, label: string };
 	value: V;
 	onUpdate: (v: V) => void;
 	inline?: boolean;
@@ -14,14 +14,14 @@ interface Props<V> {
 
 export default function SelectField<V>(props: Props<V>) {
 	const { inline, name, options, defaultValue, onUpdate } = props;
-	const value = options.find(({ value }) => value === props.value) || defaultValue;
+	const value = options.find(({ value }) => value === props.value) || options[0];
 	const selectStyles = minWidthStyles(options);
 
 	const select = (
 		<ReactSelect
 			options={options}
 			value={value}
-			onChange={v => onUpdate(v ? v.value : defaultValue.value)}
+			onChange={v => v && onUpdate(v.value)}
 			styles={selectStyles}
 		/>
 	);

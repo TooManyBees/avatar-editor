@@ -28,7 +28,7 @@
 	flex-grow: 1;
 }
 .input:hover {
-	border-color: hsl(0, 0%, 80%);
+	border-color: hsl(0, 0%, 70%);
 }
 
 .warning:focus {

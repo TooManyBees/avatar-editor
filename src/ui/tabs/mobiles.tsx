@@ -308,7 +308,7 @@ const CLASS: { value: number, label: string }[] = [
 	{ value: 15, label: "Shadowfist" },
 	{ value: 16, label: "Mindbender" },
 	{ value: 17, label: "Druid" },
-	{ value: 18, label: "Black" },
+	{ value: 18, label: "Black Circle Assassin" },
 	{ value: 19, label: "Bodyguard" },
 	{ value: 20, label: "Fusilier" },
 	{ value: 21, label: "Stormlord" },
