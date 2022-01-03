@@ -29,9 +29,13 @@ import {
 	toggleScaling,
 } from "../../app/store/areadata";
 import TabsLayout from "./tabs-layout";
-import { NumberField, SelectField, TextField } from "../fields";
 import { BitsFieldN } from "../components/BitsField";
-import TextArea from "../components/TextArea";
+import {
+	NumberField,
+	SelectField,
+	TextArea,
+	ToolRow,
+} from "../components";
 import ToggleContainer from "../components/ToggleContainer";
 
 export default function AreadataTab() {
@@ -69,8 +73,10 @@ function VnumRange(props: { opened: boolean, vnumRange: VnumRangeData | null }) 
 
 	return (
 		<ToggleContainer opened={props.opened} label="Vnum Range" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<NumberField name="Min" value={min} onUpdate={onUpdateMin} />
-			<NumberField name="Max" value={max} onUpdate={onUpdateMax} />
+			<ToolRow>
+				<NumberField name="Min" value={min} onUpdate={onUpdateMin} />
+				<NumberField name="Max" value={max} onUpdate={onUpdateMax} />
+			</ToolRow>
 		</ToggleContainer>
 	);
 }
@@ -125,8 +131,10 @@ function Plane(props: { opened: boolean, plane: PlaneData | null }) {
 
 	return (
 		<ToggleContainer opened={props.opened} label="Plane" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<NumberField name="Plane" value={plane} min={1} onUpdate={onUpdatePlane} />
-			<NumberField name="Zone" value={zone} min={1} onUpdate={onUpdateZone} />
+			<ToolRow>
+				<NumberField name="Plane" value={plane} min={1} onUpdate={onUpdatePlane} />
+				<NumberField name="Zone" value={zone} min={1} onUpdate={onUpdateZone} />
+			</ToolRow>
 		</ToggleContainer>
 	);
 }
@@ -156,27 +164,29 @@ function Outlaw(props: { opened: boolean, outlaw: OutlawData | null }) {
 
 	return (
 		<ToggleContainer opened={props.opened} label="Outlaw" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<NumberField name="Dump Room Vnum" value={outlaw.dumpVnum} min={-1} onUpdate={onUpdateDumpVnum} />
-			<NumberField name="Jail Vnum" value={outlaw.jailVnum} min={-1} onUpdate={onUpdateJailVnum} />
-			<NumberField name="Death Row Vnum" value={outlaw.deathVnum} min={-1} onUpdate={onUpdateDeathVnum} />
-			<NumberField name="Executioner Vnum" value={outlaw.execVnum} min={-1} onUpdate={onUpdateExecVnum} />
-			<NumberField name="Justice Factor" value={outlaw.justice} min={-1} onUpdate={onUpdateJustice} />
+			<ToolRow>
+				<NumberField name="Dump Room Vnum" value={outlaw.dumpVnum} min={-1} onUpdate={onUpdateDumpVnum} />
+				<NumberField name="Jail Vnum" value={outlaw.jailVnum} min={-1} onUpdate={onUpdateJailVnum} />
+				<NumberField name="Death Row Vnum" value={outlaw.deathVnum} min={-1} onUpdate={onUpdateDeathVnum} />
+				<NumberField name="Executioner Vnum" value={outlaw.execVnum} min={-1} onUpdate={onUpdateExecVnum} />
+				<NumberField name="Justice Factor" value={outlaw.justice} min={-1} onUpdate={onUpdateJustice} />
+			</ToolRow>
 		</ToggleContainer>
 	);
 }
 
-const KSPAWN_CONDITION: [number, string, string][] = [
-	[1, "Planeshift", ""],
+const KSPAWN_CONDITION: { value: number, label: string }[] = [
+	{ value: 1, label: "Planeshift" },
 ];
 
-const KSPAWN_COMMAND: [number, string, string][] = [
-	[1, "Spawn", "Loads a new mob at the room specified and sets it hunting the player."],
-	[2, "Page", "The first non-hunting mob of the matching vnum is set hunting the player."],
-	[3, "Page-Spawn", "As Page, but if no free mob is found, one is loaded."],
-	[4, "Swarm", "All non-hunting mobs of the matching vnum are set hunting the player."],
-	[5, "Swarm-Spawn", "As Swarm, but if no free mob is found, one is loaded."],
-	[6, "Alarm", "All mobs of the matching vnum are set hunting the player."],
-	[7, "Alarm-Spawn", "As Alarm, but if no mob is found, one is loaded. "],
+const KSPAWN_COMMAND: { value: number, label: string, desc: string }[] = [
+	{ value: 1, label: "Spawn", desc: "Loads a new mob at the room specified and sets it hunting the player." },
+	{ value: 2, label: "Page", desc: "The first non-hunting mob of the matching vnum is set hunting the player." },
+	{ value: 3, label: "Page-Spawn", desc: "As Page, but if no free mob is found, one is loaded." },
+	{ value: 4, label: "Swarm", desc: "All non-hunting mobs of the matching vnum are set hunting the player." },
+	{ value: 5, label: "Swarm-Spawn", desc: "As Swarm, but if no free mob is found, one is loaded." },
+	{ value: 6, label: "Alarm", desc: "All mobs of the matching vnum are set hunting the player." },
+	{ value: 7, label: "Alarm-Spawn", desc: "As Alarm, but if no mob is found, one is loaded. " },
 ];
 
 function Kspawn(props: { opened: boolean, kspawn: KspawnData | null }) {
@@ -204,10 +214,12 @@ function Kspawn(props: { opened: boolean, kspawn: KspawnData | null }) {
 
 	return (
 		<ToggleContainer opened={props.opened} label="K-Spawn" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<SelectField name="Condition" value={kspawn.condition} map={KSPAWN_CONDITION} onUpdate={onUpdateCondition} />
-			<SelectField name="Command" value={kspawn.command} map={KSPAWN_COMMAND} onUpdate={onUpdateCommand} />
-			<NumberField name="Mob Vnum" value={kspawn.mobVnum} min={1} onUpdate={onUpdateMobVnum} />
-			<NumberField name="Room Vnum" value={kspawn.roomVnum} min={-1} onUpdate={onUpdateRoomVnum} />
+			<ToolRow>
+				<SelectField name="Condition" value={kspawn.condition} options={KSPAWN_CONDITION} defaultValue={KSPAWN_CONDITION[0]} onUpdate={onUpdateCondition} />
+				<SelectField name="Command" value={kspawn.command} options={KSPAWN_COMMAND} defaultValue={KSPAWN_COMMAND[1]} onUpdate={onUpdateCommand} />
+				<NumberField name="Mob Vnum" value={kspawn.mobVnum} min={1} onUpdate={onUpdateMobVnum} />
+				<NumberField name="Room Vnum" value={kspawn.roomVnum} min={-1} onUpdate={onUpdateRoomVnum} />
+			</ToolRow>
 			<TextArea name="Text" value={kspawn.text} onUpdate={onUpdateText} />
 		</ToggleContainer>
 	);
@@ -222,12 +234,14 @@ function Modifier(props: { opened: boolean, modifier: ModifierData | null }) {
 
 	return (
 		<ToggleContainer opened={props.opened} label="Modifiers" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<NumberField name="XP Gain" value={modifier.xpGain} onUpdate={xpGain => dispatch(updatedModifier({...modifier, xpGain}))} />
-			<NumberField name="HP Regen" value={modifier.hpRegen} onUpdate={hpRegen => dispatch(updatedModifier({...modifier, hpRegen}))} />
-			<NumberField name="Mana Regen" value={modifier.manaRegen} onUpdate={manaRegen => dispatch(updatedModifier({...modifier, manaRegen}))} />
-			<NumberField name="Move Regen" value={modifier.moveRegen} onUpdate={moveRegen => dispatch(updatedModifier({...modifier, moveRegen}))} />
-			<NumberField name="Statloss" value={modifier.statloss} onUpdate={statloss => dispatch(updatedModifier({...modifier, statloss}))} />
-			<NumberField name="Respawn Room" value={modifier.respawnRoom} min={0} onUpdate={respawnRoom => dispatch(updatedModifier({...modifier, respawnRoom}))} />
+			<ToolRow>
+				<NumberField name="XP Gain" value={modifier.xpGain} onUpdate={xpGain => dispatch(updatedModifier({...modifier, xpGain}))} />
+				<NumberField name="HP Regen" value={modifier.hpRegen} onUpdate={hpRegen => dispatch(updatedModifier({...modifier, hpRegen}))} />
+				<NumberField name="Mana Regen" value={modifier.manaRegen} onUpdate={manaRegen => dispatch(updatedModifier({...modifier, manaRegen}))} />
+				<NumberField name="Move Regen" value={modifier.moveRegen} onUpdate={moveRegen => dispatch(updatedModifier({...modifier, moveRegen}))} />
+				<NumberField name="Statloss" value={modifier.statloss} onUpdate={statloss => dispatch(updatedModifier({...modifier, statloss}))} />
+				<NumberField name="Respawn Room" value={modifier.respawnRoom} min={0} onUpdate={respawnRoom => dispatch(updatedModifier({...modifier, respawnRoom}))} />
+			</ToolRow>
 		</ToggleContainer>
 	);
 }
@@ -264,13 +278,15 @@ function GroupSize(props: { opened: boolean, groupSize: GroupSizeData | null }) 
 
 	return (
 		<ToggleContainer opened={props.opened} label="XP Curve" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<NumberField name="Pct0" value={groupSize.pct0} onUpdate={onUpdatePct0} />
-			<NumberField name="Num1" value={groupSize.num1} onUpdate={onUpdateNum1} />
-			<NumberField name="Pct1" value={groupSize.pct1} onUpdate={onUpdatePct1} />
-			<NumberField name="Num2" value={groupSize.num2} onUpdate={onUpdateNum2} />
-			<NumberField name="Pct2" value={groupSize.pct2} onUpdate={onUpdatePct2} />
-			<NumberField name="Pct3" value={groupSize.pct3} onUpdate={onUpdatePct3} />
-			<NumberField name="Div" value={groupSize.div} onUpdate={onUpdateDiv} />
+			<ToolRow>
+				<NumberField name="Pct0" value={groupSize.pct0} onUpdate={onUpdatePct0} />
+				<NumberField name="Num1" value={groupSize.num1} onUpdate={onUpdateNum1} />
+				<NumberField name="Pct1" value={groupSize.pct1} onUpdate={onUpdatePct1} />
+				<NumberField name="Num2" value={groupSize.num2} onUpdate={onUpdateNum2} />
+				<NumberField name="Pct2" value={groupSize.pct2} onUpdate={onUpdatePct2} />
+				<NumberField name="Pct3" value={groupSize.pct3} onUpdate={onUpdatePct3} />
+				<NumberField name="Div" value={groupSize.div} onUpdate={onUpdateDiv} />
+			</ToolRow>
 		</ToggleContainer>
 	);
 }
@@ -291,8 +307,10 @@ function Scaling(props: { opened: boolean, scaling: ScalingData | null }) {
 
 	return (
 		<ToggleContainer opened={props.opened} label="Dynamic Scaling" onEnabled={onEnabled} onDisabled={onDisabled}>
-			<NumberField name="Max Group Power" value={scaling.maxGroupPower} onUpdate={onUpdateMaxGroupPower} />
-			<NumberField name="Max Group Toughness" value={scaling.maxGroupToughness} onUpdate={onUpdateMaxGroupToughness} />
+			<ToolRow>
+				<NumberField name="Max Group Power" value={scaling.maxGroupPower} onUpdate={onUpdateMaxGroupPower} />
+				<NumberField name="Max Group Toughness" value={scaling.maxGroupToughness} onUpdate={onUpdateMaxGroupToughness} />
+			</ToolRow>
 		</ToggleContainer>
 	);
 }
