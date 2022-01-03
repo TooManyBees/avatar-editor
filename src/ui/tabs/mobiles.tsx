@@ -5,15 +5,15 @@ import * as SpecialsActions from "../../app/store/specials";
 import * as ShopsActions from "../../app/store/shops";
 import { Mobile, Kspawn, Shop } from "../../app/models";
 import {
-	SelectField,
-} from "../fields";
-import {
 	ApplyFields,
 	KeywordField,
 	BitsField,
 	NumberField,
+	Row,
+	SelectField,
 	TextArea,
 	TextField,
+	ToolRow,
 } from "../components";
 import ShopFields from "../mobiles/ShopFields";
 import { VnumItemList } from "../VnumList";
@@ -68,33 +68,45 @@ function MobileForm(props: Props) {
 	const updatedAlign = (n: number) => dispatch(Actions.updatedAlign([id, n]));
 	const updatedLevel = (n: number) => dispatch(Actions.updatedLevel([id, n]));
 	const updatedSex = (n: number) => dispatch(Actions.updatedSex([id, n]));
-	const updatedRace = (n: number) => dispatch(Actions.updatedRace([id, n]));
-	const updatedClass = (n: number) => dispatch(Actions.updatedClass([id, n]));
-	const updatedTeam = (n: number) => dispatch(Actions.updatedTeam([id, n]));
+	const updatedRace = (n: number | null) => dispatch(Actions.updatedRace([id, n]));
+	const updatedClass = (n: number | null) => dispatch(Actions.updatedClass([id, n]));
+	const updatedTeam = (n: number | null) => dispatch(Actions.updatedTeam([id, n]));
 	const updatedSpecial = (s: string) => s ? dispatch(SpecialsActions.updatedSpecial([id, s])) : dispatch(SpecialsActions.removedSpecial(id));
 
 	return (
 		<>
-			<NumberField name="VNUM" inline value={mobile.vnum} min={0} onUpdate={updatedVnum} />
-			<KeywordField name="Keywords" value={mobile.keywords} onUpdate={updatedKeywords} />
-			<TextField name="Short desc" value={mobile.shortDesc} onUpdate={updatedShortDesc} />
-			<TextField name="Long desc" value={mobile.longDesc} onUpdate={updatedLongDesc} />
+			<ToolRow>
+				<NumberField name="VNUM" inline value={mobile.vnum} min={0} onUpdate={updatedVnum} />
+			</ToolRow>
+			<Row>
+				<KeywordField name="Keywords" value={mobile.keywords} onUpdate={updatedKeywords} />
+			</Row>
+			<Row>
+				<TextField name="Short desc" value={mobile.shortDesc} onUpdate={updatedShortDesc} />
+			</Row>
+			<Row>
+				<TextField name="Long desc" value={mobile.longDesc} onUpdate={updatedLongDesc} />
+			</Row>
 			<TextArea name="Description" value={mobile.description} onUpdate={updatedDescription} />
 			<BitsField name="Act Flags" value={mobile.act} map={ACT_FLAGS} onUpdate={updatedAct} />
 			<BitsField name="Affected Flags" value={mobile.affected} map={AFF_FLAGS} onUpdate={updatedAffected} />
-			<NumberField name="Alignment" inline value={mobile.align} min={-1000} max={1000} onUpdate={updatedAlign} />
-			<NumberField name="Level" inline value={mobile.level} min={0} onUpdate={updatedLevel} />
-			<SelectField name="Sex" value={mobile.sex} map={SEX} onUpdate={updatedSex} />
-			<SelectField name="Race" value={mobile.race} map={RACE} onUpdate={updatedRace} />
-			<SelectField name="Class" value={mobile.klass} map={CLASS} onUpdate={updatedClass} />
-			<SelectField name="Team" value={mobile.team} map={TEAM} onUpdate={updatedTeam} />
+			<ToolRow>
+				<NumberField name="Level" inline value={mobile.level} min={0} onUpdate={updatedLevel} />
+				<SelectField name="Race" inline value={mobile.race} options={RACE} defaultValue={RACE[0]} onUpdate={updatedRace} />
+				<SelectField name="Class" inline value={mobile.klass} options={CLASS} defaultValue={CLASS[0]} onUpdate={updatedClass} />
+			</ToolRow>
+			<ToolRow>
+				<NumberField name="Alignment" inline value={mobile.align} min={-1000} max={1000} onUpdate={updatedAlign} />
+				<SelectField name="Sex" inline value={mobile.sex} options={SEX} defaultValue={SEX[0]} onUpdate={updatedSex} />
+				<SelectField name="Team" inline value={mobile.team} options={TEAM} defaultValue={TEAM[0]} onUpdate={updatedTeam} />
+			</ToolRow>
 			<ApplyFields applies={mobile.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 			<SpecialSelector selected={specFun} onUpdate={updatedSpecial} />
 			<ShopComponent mobId={id} />
 			{kspawn ? (
 				<fieldset>
 					<legend>Kspawn</legend>
-					<SelectField name="Condition" value={kspawn.condition} map={KSPAWN_CONDITION} onUpdate={condition => dispatch(Actions.updatedKspawn([id, {...kspawn, condition}]))} />
+					<SelectField name="Condition" value={kspawn.condition} options={KSPAWN_CONDITION} defaultValue={KSPAWN_CONDITION[0]} onUpdate={condition => dispatch(Actions.updatedKspawn([id, {...kspawn, condition}]))} />
 					<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} onUpdate={spawnType => dispatch(Actions.updatedKspawn([id, {...kspawn, spawnType}]))} />
 					<NumberField name="Spawn VNUM" inline value={kspawn.spawnVnum} min={-1} onUpdate={spawnVnum => dispatch(Actions.updatedKspawn([id, {...kspawn, spawnVnum}]))} />
 					<NumberField name="Room VNUM" inline value={kspawn.roomVnum} min={-1} onUpdate={roomVnum => dispatch(Actions.updatedKspawn([id, {...kspawn, roomVnum}]))} />
@@ -200,145 +212,146 @@ const AFF_FLAGS: [number, string, string][] = [
 	[1073741824, "Calm", "Mob is affected by calm "],
 ];
 
-const SEX: [number, string, string][] = [
-	[0, "Neither", ""],
-	[1, "Male", ""],
-	[2, "Female", ""],
+const SEX: { value: number, label: string }[] = [
+	{ value: 0, label: "Neither" },
+	{ value: 1, label: "Male" },
+	{ value: 2, label: "Female" },
 ];
 
-const RACE: [number, string, string][] = [
-	[0, "Human", ""],
-	[1, "Deep Gnome", ""],
-	[2, "Drow", ""],
-	[3, "Duergar", ""],
-	[4, "Dwarf", ""],
-	[5, "Elf", ""],
-	[6, "Gnome", ""],
-	[7, "Halfling", ""],
-	[8, "Half-Elf", ""],
-	[9, "Half-Orc", ""],
-	[10, "Lizard Man", ""],
-	[11, "Sprite", ""],
-	[12, "Troglodyte", ""],
-	[13, "Dragon", ""],
-	[14, "Ogre", ""],
-	[15, "Troll", ""],
-	[16, "Kzinti", ""],
-	[17, "Centaur", ""],
-	[18, "Orc", ""],
-	[19, "Giant", ""],
-	[20, "Golem", ""],
-	[21, "Cyborg", ""],
-	[22, "Mobile", ""],
-	[23, "Goblin", ""],
-	[24, "Animal", ""],
-	[25, "Griffon", ""],
-	[26, "Gargoyle", ""],
-	[27, "Demon", ""],
-	[28, "Devil", ""],
-	[29, "Miraar", ""],
-	[30, "Elemental", ""],
-	[31, "Ent", ""],
-	[32, "Ghost", ""],
-	[33, "Gith", ""],
-	[34, "Harpy", ""],
-	[35, "Insectoid", ""],
-	[36, "Merman", ""],
-	[37, "High Elf", ""],
-	[38, "Minotaur", ""],
-	[39, "Demonseed", ""],
-	[40, "Fungoid", ""],
-	[41, "Kobold", ""],
-	[42, "Hobgoblin", ""],
-	[43, "Slug", ""],
-	[44, "Verbit", ""],
-	[45, "Verburg", ""],
-	[46, "Verbull", ""],
-	[47, "Varbin", ""],
-	[48, "Varsil", ""],
-	[49, "Firedrake (Level 1)", ""],
-	[50, "Firedrake (Level 25)", ""],
-	[51, "Firedrake (Hero 1)", ""],
-	[52, "Firedrake (Hero 250)", ""],
-	[53, "Firedrake (Hero 500)", ""],
-	[54, "Firedrake (Hero 750)", ""],
-	[55, "Firedrake (Lord 1)", ""],
-	[56, "Firedrake (Lord 250)", ""],
-	[57, "Firedrake (Lord 500)", ""],
-	[58, "Draconian", ""],
-	[59, "Tuataur", ""],
-	[60, "Pit Fiend", ""],
-	[61, "True Fae", ""],
-	[62, "Lesser Imp", ""],
-	[63, "Minor Imp", ""],
-	[64, "Dust Imp", ""],
-	[65, "Wave Imp", ""],
-	[66, "Vapour Imp", ""],
-	[67, "Pyro Imp", ""],
-	[68, "Lesser Elemental", ""],
-	[69, "Pain Elemental", ""],
-	[70, "Water Elemental", ""],
-	[71, "Fire Elemental", ""],
-	[72, "Earth Elemental", ""],
-	[73, "Air Elemental", ""],
-	[74, "Frost Giant", ""],
-	[75, "Fire Giant", ""],
-	[76, "Cloud Giant", ""],
-	[77, "Stone Giant", ""],
-	[78, "Black Dragon", ""],
-	[79, "Blue Dragon", ""],
-	[80, "Green Dragon", ""],
-	[81, "White Dragon", ""],
-	[82, "Ignatur ", ""],
+const RACE: { value: number | null, label: string }[] = [
+	{ value: null, label: "Undefined" },
+	{ value: 0, label: "Human" },
+	{ value: 1, label: "Deep Gnome" },
+	{ value: 2, label: "Drow" },
+	{ value: 3, label: "Duergar" },
+	{ value: 4, label: "Dwarf" },
+	{ value: 5, label: "Elf" },
+	{ value: 6, label: "Gnome" },
+	{ value: 7, label: "Halfling" },
+	{ value: 8, label: "Half-Elf" },
+	{ value: 9, label: "Half-Orc" },
+	{ value: 10, label: "Lizard Man" },
+	{ value: 11, label: "Sprite" },
+	{ value: 12, label: "Troglodyte" },
+	{ value: 13, label: "Dragon" },
+	{ value: 14, label: "Ogre" },
+	{ value: 15, label: "Troll" },
+	{ value: 16, label: "Kzinti" },
+	{ value: 17, label: "Centaur" },
+	{ value: 18, label: "Orc" },
+	{ value: 19, label: "Giant" },
+	{ value: 20, label: "Golem" },
+	{ value: 21, label: "Cyborg" },
+	{ value: 22, label: "Mobile" },
+	{ value: 23, label: "Goblin" },
+	{ value: 24, label: "Animal" },
+	{ value: 25, label: "Griffon" },
+	{ value: 26, label: "Gargoyle" },
+	{ value: 27, label: "Demon" },
+	{ value: 28, label: "Devil" },
+	{ value: 29, label: "Miraar" },
+	{ value: 30, label: "Elemental" },
+	{ value: 31, label: "Ent" },
+	{ value: 32, label: "Ghost" },
+	{ value: 33, label: "Gith" },
+	{ value: 34, label: "Harpy" },
+	{ value: 35, label: "Insectoid" },
+	{ value: 36, label: "Merman" },
+	{ value: 37, label: "High Elf" },
+	{ value: 38, label: "Minotaur" },
+	{ value: 39, label: "Demonseed" },
+	{ value: 40, label: "Fungoid" },
+	{ value: 41, label: "Kobold" },
+	{ value: 42, label: "Hobgoblin" },
+	{ value: 43, label: "Slug" },
+	{ value: 44, label: "Verbit" },
+	{ value: 45, label: "Verburg" },
+	{ value: 46, label: "Verbull" },
+	{ value: 47, label: "Varbin" },
+	{ value: 48, label: "Varsil" },
+	{ value: 49, label: "Firedrake (Level 1)" },
+	{ value: 50, label: "Firedrake (Level 25)" },
+	{ value: 51, label: "Firedrake (Hero 1)" },
+	{ value: 52, label: "Firedrake (Hero 250)" },
+	{ value: 53, label: "Firedrake (Hero 500)" },
+	{ value: 54, label: "Firedrake (Hero 750)" },
+	{ value: 55, label: "Firedrake (Lord 1)" },
+	{ value: 56, label: "Firedrake (Lord 250)" },
+	{ value: 57, label: "Firedrake (Lord 500)" },
+	{ value: 58, label: "Draconian" },
+	{ value: 59, label: "Tuataur" },
+	{ value: 60, label: "Pit Fiend" },
+	{ value: 61, label: "True Fae" },
+	{ value: 62, label: "Lesser Imp" },
+	{ value: 63, label: "Minor Imp" },
+	{ value: 64, label: "Dust Imp" },
+	{ value: 65, label: "Wave Imp" },
+	{ value: 66, label: "Vapour Imp" },
+	{ value: 67, label: "Pyro Imp" },
+	{ value: 68, label: "Lesser Elemental" },
+	{ value: 69, label: "Pain Elemental" },
+	{ value: 70, label: "Water Elemental" },
+	{ value: 71, label: "Fire Elemental" },
+	{ value: 72, label: "Earth Elemental" },
+	{ value: 73, label: "Air Elemental" },
+	{ value: 74, label: "Frost Giant" },
+	{ value: 75, label: "Fire Giant" },
+	{ value: 76, label: "Cloud Giant" },
+	{ value: 77, label: "Stone Giant" },
+	{ value: 78, label: "Black Dragon" },
+	{ value: 79, label: "Blue Dragon" },
+	{ value: 80, label: "Green Dragon" },
+	{ value: 81, label: "White Dragon" },
+	{ value: 82, label: "Ignatur " },
 ];
 
-const CLASS: [number, string, string][] = [
-	[0, "Mage", ""],
-	[1, "Cleric", ""],
-	[2, "Rogue", ""],
-	[3, "Warrior", ""],
-	[4, "Paladin", ""],
-	[5, "Ranger", ""],
-	[6, "Psionicist", ""],
-	[7, "Monk", ""],
-	[8, "Archer", ""],
-	[9, "Sorcerer", ""],
-	[10, "Soldier", ""],
-	[11, "Priest", ""],
-	[12, "Berserker", ""],
-	[13, "Assassin", ""],
-	[14, "Wizard", ""],
-	[15, "Shadowfist", ""],
-	[16, "Mindbender", ""],
-	[17, "Druid", ""],
-	[18, "Black", ""],
-	[19, "Bodyguard", ""],
-	[20, "Fusilier", ""],
-	[21, "Stormlord", ""],
-	[22, "Ripper", ""],
-	[23, "Bladedancer", ""],
-	[24, "Vizier", ""],
-	[25, "Forsaken", ""],
-	[26, "Fury", ""],
+const CLASS: { value: number, label: string }[] = [
+	{ value: 0, label: "Mage" },
+	{ value: 1, label: "Cleric" },
+	{ value: 2, label: "Rogue" },
+	{ value: 3, label: "Warrior" },
+	{ value: 4, label: "Paladin" },
+	{ value: 5, label: "Ranger" },
+	{ value: 6, label: "Psionicist" },
+	{ value: 7, label: "Monk" },
+	{ value: 8, label: "Archer" },
+	{ value: 9, label: "Sorcerer" },
+	{ value: 10, label: "Soldier" },
+	{ value: 11, label: "Priest" },
+	{ value: 12, label: "Berserker" },
+	{ value: 13, label: "Assassin" },
+	{ value: 14, label: "Wizard" },
+	{ value: 15, label: "Shadowfist" },
+	{ value: 16, label: "Mindbender" },
+	{ value: 17, label: "Druid" },
+	{ value: 18, label: "Black" },
+	{ value: 19, label: "Bodyguard" },
+	{ value: 20, label: "Fusilier" },
+	{ value: 21, label: "Stormlord" },
+	{ value: 22, label: "Ripper" },
+	{ value: 23, label: "Bladedancer" },
+	{ value: 24, label: "Vizier" },
+	{ value: 25, label: "Forsaken" },
+	{ value: 26, label: "Fury" },
 ];
 
-const TEAM: [number, string, string][] = [
-	[0, "None", ""],
-	[1, "Silver", ""],
-	[2, "Gold", ""],
-	[3, "Azure", ""],
-	[4, "PC team", ""],
-	[10, "Quest 1", ""],
-	[11, "Quest 2", ""],
-	[12, "Quest 3", ""],
-	[13, "Quest 4", ""],
+const TEAM: { value: number, label: string }[] = [
+	{ value: 0, label: "None" },
+	{ value: 1, label: "Silver" },
+	{ value: 2, label: "Gold" },
+	{ value: 3, label: "Azure" },
+	{ value: 4, label: "PC team" },
+	{ value: 10, label: "Quest 1" },
+	{ value: 11, label: "Quest 2" },
+	{ value: 12, label: "Quest 3" },
+	{ value: 13, label: "Quest 4" },
 ];
 
-const KSPAWN_CONDITION: [number, string, string][] = [
-	[1, "Death", "When the mob dies, the spawn is invoked"],
-	[2, "Clear", "When the mob dies and the room is empty, the spawn is invoked"],
-	[3, "Genocide", "When the mob dies and no other mobs with the same VNUM exist, the spawn is invoked"],
-	[4, "Massacre", "When the mob dies and no other mobs with massacre-type spawn exist in the area, the spawn is invoked"],
+const KSPAWN_CONDITION: { value: number, label: string, desc: string }[] = [
+	{ value: 1, label: "Death", desc: "When the mob dies, the spawn is invoked" },
+	{ value: 2, label: "Clear", desc: "When the mob dies and the room is empty, the spawn is invoked" },
+	{ value: 3, label: "Genocide", desc: "When the mob dies and no other mobs with the same VNUM exist, the spawn is invoked" },
+	{ value: 4, label: "Massacre", desc: "When the mob dies and no other mobs with massacre-type spawn exist in the area, the spawn is invoked" },
 ];
 
 const KSPAWN_TYPE: [number, string, string][] = [

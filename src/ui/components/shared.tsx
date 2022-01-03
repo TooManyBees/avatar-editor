@@ -7,6 +7,14 @@ interface RowProps {
 	className?: string;
 }
 
+export function Row(props: RowProps) {
+	return (
+		<div className={classnames(styles.row, props.className)}>
+			{props.children}
+		</div>
+	);
+}
+
 export function ToolRow(props: RowProps) {
 	return (
 		<div className={classnames(styles.toolRow, props.className)}>

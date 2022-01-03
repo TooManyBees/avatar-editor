@@ -12,7 +12,7 @@ import SelectField from "./SelectField";
 import { SelectVnum } from "./SelectVnum";
 import TextArea from "./TextArea";
 import TextField from "./TextField";
-import { ToolRow } from "./shared";
+import { Row, ToolRow } from "./shared";
 
 export {
 	ApplyFields,
@@ -23,6 +23,7 @@ export {
 	EdescFields,
 	KeywordField,
 	NumberField,
+	Row,
 	SelectField,
 	SelectVnum,
 	TextArea,

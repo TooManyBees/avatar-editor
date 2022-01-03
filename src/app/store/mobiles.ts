@@ -76,12 +76,12 @@ const mobileSlice = createSlice({
 			const mobile = state.mobiles.find(m => m.id === id);
 			if (mobile) mobile.sex = payload;
 		},
-		updatedRace(state, action: PayloadAction<[string, number]>) {
+		updatedRace(state, action: PayloadAction<[string, number | null]>) {
 			const [id, payload] = action.payload;
 			const mobile = state.mobiles.find(m => m.id === id);
 			if (mobile) mobile.race = payload;
 		},
-		updatedClass(state, action: PayloadAction<[string, number]>) {
+		updatedClass(state, action: PayloadAction<[string, number | null]>) {
 			const [id, payload] = action.payload;
 			const mobile = state.mobiles.find(m => m.id === id);
 			if (mobile) mobile.klass = payload;
@@ -106,7 +106,7 @@ const mobileSlice = createSlice({
 				mobile.applies[idx] = payload;
 			}
 		},
-		updatedTeam(state, action: PayloadAction<[string, number]>) {
+		updatedTeam(state, action: PayloadAction<[string, number | null]>) {
 			const [id, payload] = action.payload;
 			const mobile = state.mobiles.find(m => m.id === id);
 			if (mobile) mobile.team = payload;

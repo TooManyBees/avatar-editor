@@ -1,25 +1,37 @@
 import React from "react";
 import ReactSelect, { CSSObjectWithLabel } from "react-select";
+import classnames from "classnames";
+import styles from "./inputs.module.css";
 
 interface Props<V> {
+	name?: string;
 	options: { value: V, label: string }[];
 	defaultValue: { value: V, label: string };
 	value: V;
 	onUpdate: (v: V) => void;
+	inline?: boolean;
 }
 
 export default function SelectField<V>(props: Props<V>) {
-	const { options, defaultValue, onUpdate } = props;
+	const { inline, name, options, defaultValue, onUpdate } = props;
 	const value = options.find(({ value }) => value === props.value) || defaultValue;
-	const styles = minWidthStyles(options);
-	return (
+	const selectStyles = minWidthStyles(options);
+
+	const select = (
 		<ReactSelect
 			options={options}
 			value={value}
 			onChange={v => onUpdate(v ? v.value : defaultValue.value)}
-			styles={styles}
+			styles={selectStyles}
 		/>
 	);
+
+	return name ? (
+		<label className={classnames(styles.wrapper, inline && styles.inline)}>
+			<span className={styles.label}>{name}:</span>
+			{select}
+		</label>
+	) : select;
 }
 
 function minWidthStyles(options: { label: string }[]) {
