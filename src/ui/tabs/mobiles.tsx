@@ -5,15 +5,15 @@ import * as SpecialsActions from "../../app/store/specials";
 import * as ShopsActions from "../../app/store/shops";
 import { Mobile, Kspawn, Shop } from "../../app/models";
 import {
-	NumberField,
 	SelectField,
-	TextField,
 } from "../fields";
 import {
 	ApplyFields,
 	KeywordField,
 	BitsField,
+	NumberField,
 	TextArea,
+	TextField,
 } from "../components";
 import ShopFields from "../ShopFields";
 import { VnumItemList } from "../VnumList";
@@ -75,15 +75,15 @@ function MobileForm(props: Props) {
 
 	return (
 		<>
-			<NumberField name="VNUM" value={mobile.vnum} min={0} onUpdate={updatedVnum} />
+			<NumberField name="VNUM" inline value={mobile.vnum} min={0} onUpdate={updatedVnum} />
 			<KeywordField name="Keywords" value={mobile.keywords} onUpdate={updatedKeywords} />
 			<TextField name="Short desc" value={mobile.shortDesc} onUpdate={updatedShortDesc} />
 			<TextField name="Long desc" value={mobile.longDesc} onUpdate={updatedLongDesc} />
 			<TextArea name="Description" value={mobile.description} onUpdate={updatedDescription} />
 			<BitsField name="Act Flags" value={mobile.act} map={ACT_FLAGS} onUpdate={updatedAct} />
 			<BitsField name="Affected Flags" value={mobile.affected} map={AFF_FLAGS} onUpdate={updatedAffected} />
-			<NumberField name="Alignment" value={mobile.align} min={-1000} max={1000} onUpdate={updatedAlign} />
-			<NumberField name="Level" value={mobile.level} min={0} onUpdate={updatedLevel} />
+			<NumberField name="Alignment" inline value={mobile.align} min={-1000} max={1000} onUpdate={updatedAlign} />
+			<NumberField name="Level" inline value={mobile.level} min={0} onUpdate={updatedLevel} />
 			<SelectField name="Sex" value={mobile.sex} map={SEX} onUpdate={updatedSex} />
 			<SelectField name="Race" value={mobile.race} map={RACE} onUpdate={updatedRace} />
 			<SelectField name="Class" value={mobile.klass} map={CLASS} onUpdate={updatedClass} />
@@ -96,8 +96,8 @@ function MobileForm(props: Props) {
 					<legend>Kspawn</legend>
 					<SelectField name="Condition" value={kspawn.condition} map={KSPAWN_CONDITION} onUpdate={condition => dispatch(Actions.updatedKspawn([id, {...kspawn, condition}]))} />
 					<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} onUpdate={spawnType => dispatch(Actions.updatedKspawn([id, {...kspawn, spawnType}]))} />
-					<NumberField name="Spawn VNUM" value={kspawn.spawnVnum} min={-1} onUpdate={spawnVnum => dispatch(Actions.updatedKspawn([id, {...kspawn, spawnVnum}]))} />
-					<NumberField name="Room VNUM" value={kspawn.roomVnum} min={-1} onUpdate={roomVnum => dispatch(Actions.updatedKspawn([id, {...kspawn, roomVnum}]))} />
+					<NumberField name="Spawn VNUM" inline value={kspawn.spawnVnum} min={-1} onUpdate={spawnVnum => dispatch(Actions.updatedKspawn([id, {...kspawn, spawnVnum}]))} />
+					<NumberField name="Room VNUM" inline value={kspawn.roomVnum} min={-1} onUpdate={roomVnum => dispatch(Actions.updatedKspawn([id, {...kspawn, roomVnum}]))} />
 					<TextArea name="Text" value={kspawn.message} onUpdate={message => dispatch(Actions.updatedKspawn([id, {...kspawn, message}]))} />
 				</fieldset>
 			) : null}

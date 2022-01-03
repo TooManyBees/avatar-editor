@@ -10,6 +10,7 @@ import KeywordField from "./KeywordField";
 import NumberField from "./NumberField";
 import { SelectVnum } from "./SelectVnum";
 import TextArea from "./TextArea";
+import TextField from "./TextField";
 
 export {
 	ApplyFields,
@@ -22,4 +23,5 @@ export {
 	NumberField,
 	SelectVnum,
 	TextArea,
+	TextField,
 }
