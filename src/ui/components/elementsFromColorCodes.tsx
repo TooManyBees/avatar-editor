@@ -32,7 +32,6 @@ export default function elementsFromColorCodes(input: string, showColorCodes: bo
 			if (currentColor === null) {
 				output.push(<React.Fragment key={currentPos}>{text}</React.Fragment>);
 			} else {
-				console.log(colorMap[currentColor]);
 				output.push(<span key={currentPos} className={colorMap[currentColor]}>{text}</span>);
 			}
 		}

@@ -12,6 +12,7 @@ interface TextFieldProps {
 export default function TextArea(props: TextFieldProps) {
 	const [value, setState] = useState(props.value);
 	const [preview, setPreview] = useState(false);
+	const [height, setHeight] = useState<number | undefined>(undefined);
 	const textArea = useRef<HTMLTextAreaElement>(null);
 
 	function onChange(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -23,6 +24,7 @@ export default function TextArea(props: TextFieldProps) {
 	}
 
 	function togglePreview(event: ChangeEvent<HTMLInputElement>) {
+		if (textArea.current) setHeight(textArea.current.offsetHeight);
 		setPreview(event.target.checked);
 	}
 
@@ -37,8 +39,8 @@ export default function TextArea(props: TextFieldProps) {
 			</span>
 			<div className={`${styles.editor} ${preview ? styles.preview : ""}`}>
 				{ preview
-					? <div className={styles.colorPreview} style={{height: textArea.current?.offsetHeight}}>{elementsFromColorCodes(value)}</div>
-					: <textarea rows={rows} value={value} onChange={onChange} onBlur={onBlur} ref={textArea} />
+					? <div className={styles.colorPreview} style={{height}}>{elementsFromColorCodes(value)}</div>
+					: <textarea rows={rows} style={{height}} value={value} onChange={onChange} onBlur={onBlur} ref={textArea} />
 				}
 			</div>
 		</div>
