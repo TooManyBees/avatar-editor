@@ -38,27 +38,27 @@ export function VnumItemList<T extends HasVnum>({ selected, itemName, items, onA
 	);
 }
 
-export default class VnumItemEditor<T extends HasVnum> extends React.Component<Props<T>, State> {
-	constructor(props: Props<T>) {
-		super(props)
-		this.state = { selected: null };
-		this.onChange = this.onChange.bind(this);
-	}
+// export default class VnumItemEditor<T extends HasVnum> extends React.Component<Props<T>, State> {
+// 	constructor(props: Props<T>) {
+// 		super(props)
+// 		this.state = { selected: null };
+// 		this.onChange = this.onChange.bind(this);
+// 	}
 
-	onChange(selected: string) {
-		this.setState({ selected });
-	}
+// 	onChange(selected: string) {
+// 		this.setState({ selected });
+// 	}
 
-	render() {
-		const { items, FormComponent} = this.props;
-		const selectedId = this.state.selected;
-		const selectedItem = items.find(i => i.id === selectedId);
+// 	render() {
+// 		const { items, FormComponent} = this.props;
+// 		const selectedId = this.state.selected;
+// 		const selectedItem = items.find(i => i.id === selectedId);
 
-		return (
-			<div className="VnumItemEditor">
-				{selectedItem ? <FormComponent key={selectedId} item={selectedItem} /> : <div className="VnumItemEditorPlaceholder"/> }
-				<VnumItemList items={items} selected={selectedId} onChange={this.onChange} />
-			</div>
-		);
-	}
-}
+// 		return (
+// 			<div className="VnumItemEditor">
+// 				{selectedItem ? <FormComponent key={selectedId} item={selectedItem} /> : <div className="VnumItemEditorPlaceholder"/> }
+// 				<VnumItemList items={items} selected={selectedId} onChange={this.onChange} />
+// 			</div>
+// 		);
+// 	}
+// }
