@@ -13,3 +13,18 @@
 	border-color: red;
 	background-color: rgba(255, 0, 0, 0.025);
 }
+
+.toolRow {
+	margin: 0.25rem 0;
+	display: flex;
+	align-items: baseline;
+}
+.toolRow > * {
+	margin: 0 0.25rem;
+}
+.toolRow > *:first-child {
+	margin-left: 0;
+}
+.toolRow > *:last-child {
+	margin-right: 0;
+}

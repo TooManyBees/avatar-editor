@@ -8,9 +8,11 @@ import {
 import EdescFields from "./EdescFields";
 import KeywordField from "./KeywordField";
 import NumberField from "./NumberField";
+import SelectField from "./SelectField";
 import { SelectVnum } from "./SelectVnum";
 import TextArea from "./TextArea";
 import TextField from "./TextField";
+import { ToolRow } from "./shared";
 
 export {
 	ApplyFields,
@@ -21,7 +23,9 @@ export {
 	EdescFields,
 	KeywordField,
 	NumberField,
+	SelectField,
 	SelectVnum,
 	TextArea,
 	TextField,
+	ToolRow,
 }

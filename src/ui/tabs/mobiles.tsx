@@ -15,9 +15,9 @@ import {
 	TextArea,
 	TextField,
 } from "../components";
-import ShopFields from "../ShopFields";
+import ShopFields from "../mobiles/ShopFields";
 import { VnumItemList } from "../VnumList";
-import MobResets from "../MobResets";
+import MobResets from "../mobiles/MobResets";
 
 import TabsLayout from "./tabs-layout";
 

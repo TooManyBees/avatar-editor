@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import classNames from "classnames";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import * as Actions from "../app/store/resets";
-import { MobReset as MobResetType, EquipmentReset, Objekt, Room } from "../app/models";
+import classnames from "classnames";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import * as Actions from "../../app/store/resets";
+import { MobReset as MobResetType, EquipmentReset, Objekt, Room } from "../../app/models";
 import {
 	DeleteButton,
 	NumberField,
 	SelectVnum,
-} from "./components";
-import sharedStyles from "./components/shared.module.css";
+	ToolRow,
+} from "../components";
+import sharedStyles from "../components/shared.module.css";
 
 import ReactSelect, { CSSObjectWithLabel } from "react-select";
 
@@ -39,13 +40,13 @@ function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
 	return (
-		<div className={classNames(sharedStyles.container, {[sharedStyles.dangerTarget]: danger})}>
-			<div style={{display: "flex", alignItems: "baseline"}}>
+		<div className={classnames(sharedStyles.container, danger && sharedStyles.dangerTarget)}>
+			<ToolRow>
 				<NumberField inline name="Limit" value={reset.limit} min={0} onUpdate={l => dispatch(Actions.updatedMobReset({...reset, limit: l}))} />
-				&nbsp;in&nbsp;
+				in
 				<SelectVnum items={rooms} selectedId={reset.roomId} onUpdate={id => dispatch(Actions.updatedMobReset({...reset, roomId: id}))} />
 				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedMobReset(reset.id))}>Remove reset &amp; gear</DeleteButton>
-			</div>
+			</ToolRow>
 			<p>Equipment</p>
 			{reset.equipment.map(eqReset => <EqReset key={eqReset.id} reset={eqReset} mobResetId={reset.id} objects={objects} />)}
 		</div>
@@ -57,15 +58,13 @@ function EqReset({ mobResetId, reset, objects }: { mobResetId: string, reset: Eq
 	const [danger, setDanger] = useState(false);
 
 	return (
-		<div key={reset.id} className={classNames(sharedStyles.container, {[sharedStyles.dangerTarget]: danger})}>
-			<div style={{display:"flex", alignItems: "baseline"}}>
-				<SelectVnum items={objects} selectedId={reset.objectId} onUpdate={id => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, objectId: id}]))} />
-				&nbsp;on&nbsp;
-				<WearSelector selected={reset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, wearLocation: l}]))} />
-			</div>
+		<ToolRow key={reset.id} className={classnames(sharedStyles.container, danger && sharedStyles.dangerTarget)}>
+			<SelectVnum items={objects} selectedId={reset.objectId} onUpdate={id => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, objectId: id}]))} />
+			on
+			<WearSelector selected={reset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, wearLocation: l}]))} />
 			<NumberField inline name="Limit (0 for none)" value={reset.limit} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, limit: l}]))} />
 			<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedEquipmentReset([mobResetId, reset.id]))}>Remove</DeleteButton>
-		</div>
+		</ToolRow>
 	);
 }
 
@@ -99,7 +98,7 @@ function WearSelector({ selected, onUpdate }: { selected: number, onUpdate: (n: 
 		<ReactSelect
 			options={WEAR_OPTIONS}
 			value={value}
-			onChange={v => onUpdate(v ? v.value : 18)}
+			onChange={v => onUpdate(v ? v.value : -1)}
 			styles={WEAR_OPTION_STYLES}
 		/>
 	);
