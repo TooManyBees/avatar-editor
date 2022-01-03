@@ -15,6 +15,7 @@ import {
 	SelectField,
 	TextArea,
 	TextField,
+	ToggleContainer,
 	ToolRow,
 } from "../components";
 import ShopFields from "../mobiles/ShopFields";
@@ -132,18 +133,15 @@ function ShopComponent(props: ShopProps) {
 	const dispatch = useAppDispatch();
 	const shop = useAppSelector(state => state.shops.shops[props.mobId]);
 
-	if (shop) {
-		return <>
-			<h2>Shop</h2>
-			<ShopFields shop={shop} />
-			<button onClick={() => dispatch(ShopsActions.removedShop(props.mobId))}>Remove shop</button>
-		</>;
-	} else {
-		return <>
-			<h2>Shop</h2>
-			<button onClick={() => dispatch(ShopsActions.addedShop(props.mobId))}>Add shop</button>
-		</>;
-	}
+	return (
+		<ToggleContainer
+			label="Shop"
+			opened={!!shop}
+			onEnabled={() => dispatch(ShopsActions.addedShop(props.mobId))}
+			onDisabled={() => dispatch(ShopsActions.removedShop(props.mobId))}>
+			{shop && <ShopFields shop={shop} />}
+		</ToggleContainer>
+	);
 }
 
 const ACT_FLAGS: [number, string, string][] = [

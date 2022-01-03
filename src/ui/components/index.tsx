@@ -12,6 +12,7 @@ import SelectField from "./SelectField";
 import { SelectVnum } from "./SelectVnum";
 import TextArea from "./TextArea";
 import TextField from "./TextField";
+import ToggleContainer from "./ToggleContainer";
 import { Row, ToolRow } from "./shared";
 
 export {
@@ -28,5 +29,6 @@ export {
 	SelectVnum,
 	TextArea,
 	TextField,
+	ToggleContainer,
 	ToolRow,
 }
