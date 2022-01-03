@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/mobiles";
 import * as ResetsActions from "../../app/store/resets";
 import * as ShopsActions from "../../app/store/shops";
-import { Mobile, Kspawn, Shop } from "../../app/models";
+import { Mobile, Shop } from "../../app/models";
 import {
 	ApplyFields,
 	KeywordField,
@@ -21,6 +21,7 @@ import {
 import ShopFields from "../mobiles/ShopFields";
 import { VnumItemList } from "../VnumList";
 import MobResets from "../mobiles/MobResets";
+import KspawnFields from "../mobiles/KspawnFields";
 
 import TabsLayout from "./tabs-layout";
 
@@ -57,7 +58,6 @@ function MobileForm(props: Props) {
 	const dispatch = useAppDispatch();
 	const { mobile } = props;
 	const id = mobile.id;
-	const kspawn = mobile.kspawn;
 
 	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
 	const updatedKeywords = (ks: string[]) => dispatch(Actions.updatedKeywords([id, ks]));
@@ -106,20 +106,10 @@ function MobileForm(props: Props) {
 				<SelectField name="Sex" inline value={mobile.sex} options={SEX} defaultValue={SEX[0]} onUpdate={updatedSex} />
 				<SelectField name="Team" inline value={mobile.team} options={TEAM} defaultValue={TEAM[0]} onUpdate={updatedTeam} />
 			</ToolRow>
-			<ApplyFields applies={mobile.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 			<SelectField name="Spec" inline value={mobile.specFun} options={SPEC_FUNS} defaultValue={SPEC_FUNS[0]} onUpdate={updatedSpecial} />
+			<ApplyFields applies={mobile.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 			<ShopComponent mobId={id} />
-			{kspawn ? (
-				<fieldset>
-					<legend>Kspawn</legend>
-					<SelectField name="Condition" value={kspawn.condition} options={KSPAWN_CONDITION} defaultValue={KSPAWN_CONDITION[0]} onUpdate={condition => dispatch(Actions.updatedKspawn([id, {...kspawn, condition}]))} />
-					<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} onUpdate={spawnType => dispatch(Actions.updatedKspawn([id, {...kspawn, spawnType}]))} />
-					<NumberField name="Spawn VNUM" inline value={kspawn.spawnVnum} min={-1} onUpdate={spawnVnum => dispatch(Actions.updatedKspawn([id, {...kspawn, spawnVnum}]))} />
-					<NumberField name="Room VNUM" inline value={kspawn.roomVnum} min={-1} onUpdate={roomVnum => dispatch(Actions.updatedKspawn([id, {...kspawn, roomVnum}]))} />
-					<TextArea name="Text" value={kspawn.message} onUpdate={message => dispatch(Actions.updatedKspawn([id, {...kspawn, message}]))} />
-				</fieldset>
-			) : null}
-			<h2>Resets</h2>
+			<KspawnFields mobId={id} kspawn={mobile.kspawn || null} />
 			<MobResets mobId={id} />
 		</>
 	);
@@ -339,24 +329,6 @@ const TEAM: { value: number, label: string }[] = [
 	{ value: 11, label: "Quest 2" },
 	{ value: 12, label: "Quest 3" },
 	{ value: 13, label: "Quest 4" },
-];
-
-const KSPAWN_CONDITION: { value: number, label: string, desc: string }[] = [
-	{ value: 1, label: "Death", desc: "When the mob dies, the spawn is invoked" },
-	{ value: 2, label: "Clear", desc: "When the mob dies and the room is empty, the spawn is invoked" },
-	{ value: 3, label: "Genocide", desc: "When the mob dies and no other mobs with the same VNUM exist, the spawn is invoked" },
-	{ value: 4, label: "Massacre", desc: "When the mob dies and no other mobs with massacre-type spawn exist in the area, the spawn is invoked" },
-];
-
-const KSPAWN_TYPE: [number, string, string][] = [
-	[1, "load mob", "a mob specified with <spawn-vnum#> is loaded."],
-	[2, "load obj", "an object specified with <spawn-vnum#> is loaded on the ground."],
-	[4, "equip obj", "If a mob and object specified with <spawn-vnum#> is loaded (with 1 and 2), the mob attempts to wear object. Depending on object and mob’s alignment, object might zap and fall to the ground. The object must also have a wear location set."],
-	[8, "hunt", "If a mob with <spawn-vnum#> is successfully loaded (with 1), it is set to hunt killer."],
-	[16, "give obj", "If an object with <spawn-vnum#> is successfully loaded (with 2), the object is given to killer."],
-	[32, "bind obj", "If an object with <spawn-vnum#> is successfully loaded (with 2), the object is bound to killer."],
-	[64, "KS trigger", "send the <death message> to the room and execute a mobprog check for the \"KS\" mobprog option on a mob with <spawn-vnum#>."],
-	[128, "KS with argument", "No death message is played to the room. Instead, the death message field is used as a text parameter for the mobprog C command = \"msg\". This allows a mob to react to diferent K-Spawns. Again, a mobprog check for the \"KS\" option on the mob with <spawn-vnum#> is done."]
 ];
 
 const SPEC_FUNS: { value: string | null, label: string }[] = [

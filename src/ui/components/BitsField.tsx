@@ -4,7 +4,7 @@ import styles from "./BitsField.module.css";
 
 interface BitsFieldNProps {
 	value: number[];
-	map: [number, string, string][];
+	map: [number, string, string, ((bits: number[]) => boolean)?][];
 	onUpdate: (bs: number[]) => void;
 }
 
@@ -25,12 +25,13 @@ export function BitsFieldN(props: BitsFieldNProps) {
 
 	return (
 		<div className={styles.bitsField}>
-			{map.map(([bit, desc, help]) => (
+			{map.map(([bit, desc, help, isEnabled]) => (
 				<label key={bit} title={help}><input
 					type="checkbox"
 					value={bit}
 					checked={value.includes(bit)}
 					onChange={onChange}
+					disabled={isEnabled ? !isEnabled(value) : false}
 				/> {desc}</label>
 			))}
 		</div>
