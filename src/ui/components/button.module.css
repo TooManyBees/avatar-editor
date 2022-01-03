@@ -1,0 +1,30 @@
+.button {
+	height: 38px;
+	padding: 2px 8px;
+	background-color: white;
+	border: 1px solid hsl(0, 0%, 80%);
+	border-radius: 4px;
+	margin: 0 0.25rem;
+}
+.button:hover {
+	border-color:  hsl(0, 0%, 70%);
+}
+
+.link {
+	height: unset;
+	border: 0;
+	padding: 0;
+	background-color: transparent;
+	text-decoration: underline;
+	cursor: pointer;
+	color: blue;
+}
+
+.delete {
+	color: red;
+}
+.delete:before {
+	display: inline;
+	content: "✖ ";
+	text-decoration: none;
+}
