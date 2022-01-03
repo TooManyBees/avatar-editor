@@ -1,7 +1,6 @@
 import {
 	Resets,
 	MobReset,
-	InventoryReset,
 	EquipmentReset,
 	ObjectReset,
 	InObjectReset,
@@ -14,7 +13,6 @@ import {
 import {
 	UncorellatedResets,
 	MobResetU,
-	InventoryResetU,
 	EquipmentResetU,
 	ObjectResetU,
 	InObjectResetU,
@@ -30,7 +28,6 @@ function newMobReset(): MobResetU {
 		roomVnum: -1,
 		limit: -1,
 		comment: "",
-		inventory: [],
 		equipment: [],
 		_error: {},
 	};
@@ -64,7 +61,7 @@ export function parseResets(section: string): UncorellatedResets {
 				currentMobReset = parseMobReset(line);
 				break;
 			case "G":
-				currentMobReset.inventory.push(parseInventoryReset(line));
+				currentMobReset.equipment.push(parseInventoryReset(line));
 				break;
 			case "E":
 				currentMobReset.equipment.push(parseEquipmentReset(line));
@@ -116,24 +113,10 @@ export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles:
 			limit: uReset.limit,
 			comment: uReset.comment,
 			orphan: !mob,
-			inventory: [],
 			equipment: [],
 			_error: uReset._error,
 		};
 		if (!room) reset._error.roomId = true;
-
-		for (let uInvReset of uReset.inventory) {
-			let object = objects.find(o => o.vnum === uInvReset.objectVnum);
-			let invReset: InventoryReset = {
-				id: newId(),
-				objectId: object?.id || uInvReset.objectVnum.toString(),
-				limit: uInvReset.limit,
-				comment: uInvReset.comment,
-				_error: uInvReset._error,
-			};
-			if (!object) invReset._error.objectId = true;
-			reset.inventory.push(invReset);
-		}
 
 		for (let uEqReset of uReset.equipment) {
 			let object = objects.find(o => o.vnum === uEqReset.objectVnum);
@@ -223,7 +206,6 @@ export function parseMobReset(line: string): MobResetU {
 		roomVnum: 0,
 		limit: 1,
 		comment: "",
-		inventory: [],
 		equipment: [],
 		_error: {},
 	};
@@ -247,11 +229,12 @@ export function parseMobReset(line: string): MobResetU {
 	return reset;
 }
 
-export function parseInventoryReset(line: string): InventoryResetU {
+export function parseInventoryReset(line: string): EquipmentResetU {
 	let tokens = parseResetTokens(line, 3);
-	let reset: InventoryResetU = {
+	let reset: EquipmentResetU = {
 		objectVnum: 0,
 		limit: 0,
+		wearLocation: -1,
 		comment: "",
 		_error: {},
 	};

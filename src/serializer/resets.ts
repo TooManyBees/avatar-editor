@@ -3,7 +3,6 @@ import {
 	DoorReset,
 	EquipmentReset,
 	InObjectReset,
-	InventoryReset,
 	MobReset,
 	ObjectReset,
 	RandomExitReset,
@@ -18,10 +17,6 @@ export default function serializeResets(resets: Resets, mobiles: Mobile[], objec
 
 		for (let eqReset of reset.equipment) {
 			buffer += serializeEqReset(eqReset, objects);
-		}
-
-		for (let invReset of reset.inventory) {
-			buffer += serializeInvReset(invReset, objects);
 		}
 	}
 
@@ -63,18 +58,10 @@ function serializeEqReset(reset: EquipmentReset, objects: Objekt[]): string {
 	let comment = reset.comment;
 	if (comment && !comment.match(/^\s/)) comment = " " + comment;
 
-	return `E ${limit} ${vnum} 0 ${reset.wearLocation}${comment}\n`;
-}
-
-function serializeInvReset(reset: InventoryReset, objects: Objekt[]): string {
-	let vnum = findVnum(objects, reset.objectId);
-
-	let limit = reset.limit > 0 ? ~reset.limit : 0;
-
-	let comment = reset.comment;
-	if (comment && !comment.match(/^\s/)) comment = " " + comment;
-
-	return `G ${limit} ${vnum} 0${comment}\n`;
+	if (reset.wearLocation >= 0)
+		return `E ${limit} ${vnum} 0 ${reset.wearLocation}${comment}\n`;
+	else
+		return `G ${limit} ${vnum} 0${comment}\n`;
 }
 
 function serializeObjReset(reset: ObjectReset, objects: Objekt[], rooms: Room[]): string {

@@ -11,7 +11,6 @@ export type { Shop } from "./shops";
 export type {
 	Resets,
 	MobReset,
-	InventoryReset,
 	EquipmentReset,
 	ObjectReset,
 	InObjectReset,

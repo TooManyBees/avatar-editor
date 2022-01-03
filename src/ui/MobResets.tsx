@@ -54,18 +54,12 @@ function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[
 					<button onClick={() => dispatch(Actions.removedEquipmentReset([reset.mobId, eqReset.id]))}>Remove</button>
 				</div>
 			))}
-			{reset.inventory.map(invReset => (
-				<div key={invReset.id}>
-					<SelectVnum items={objects} selectedId={invReset.objectId} onUpdate={id => dispatch(Actions.updatedInventoryReset([reset.id, {...invReset, objectId: id}]))} />
-					<NumberField name="Limit (0 for none)" value={invReset.limit} onUpdate={l => dispatch(Actions.updatedInventoryReset([reset.id, {...invReset, limit: l}]))} />
-					<button onClick={() => dispatch(Actions.removedInventoryReset([reset.mobId, invReset.id]))}>Remove</button>
-				</div>
-			))}
 		</div>
 	);
 }
 
 const WEAR_OPTIONS = [
+	{ value: -1, label: "Inventory" },
 	{ value: 0, label: "Light" },
 	{ value: 1, label: "Left finger" },
 	{ value: 2, label: "Right Finger" },
@@ -89,7 +83,7 @@ const WEAR_OPTIONS = [
 const WEAR_OPTION_STYLES = minWidthStyles(WEAR_OPTIONS);
 
 function WearSelector({ selected, onUpdate }: { selected: number, onUpdate: (n: number) => void }) {
-	const value = WEAR_OPTIONS.find(({ value }) => value === selected) || { value: 18, label: "Wearing"};
+	const value = WEAR_OPTIONS.find(({ value }) => value === selected) || { value: -1, label: "Inventory"};
 	return (
 		<ReactSelect
 			options={WEAR_OPTIONS}

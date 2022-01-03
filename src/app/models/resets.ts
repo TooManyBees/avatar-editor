@@ -29,7 +29,6 @@ export interface MobResetU {
 	roomVnum: number;
 	limit: number;
 	comment: string;
-	inventory: InventoryResetU[];
 	equipment: EquipmentResetU[];
 	_error: {
 		mobVnum?: boolean;
@@ -48,31 +47,8 @@ interface MobResetFields {
 export interface MobReset extends MobResetFields {
 	readonly id: string;
 	orphan: boolean;
-	inventory: InventoryReset[];
 	equipment: EquipmentReset[];
 	_error: ErrorMarkers<MobResetFields>;
-}
-
-export interface InventoryResetU {
-	objectVnum: number;
-	limit: number;
-	comment: string;
-	_error: {
-		mobVnum?: boolean;
-		objectVnum?: boolean;
-		limit?: boolean;
-	};
-}
-
-interface InventoryResetFields {
-	objectId: string;
-	limit: number;
-	comment: string;
-}
-
-export interface InventoryReset extends InventoryResetFields {
-	readonly id: string;
-	_error: ErrorMarkers<InventoryResetFields>;
 }
 
 export interface EquipmentResetU {

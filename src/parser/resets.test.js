@@ -68,6 +68,7 @@ describe("parseInventoryReset", () => {
 		let reset = parseInventoryReset(line);
 		expect(reset.objectVnum).toBe(1234);
 		expect(reset.limit).toBe(0);
+		expect(reset.wearLocation).toBe(-1);
 		expect(reset.comment).toBe("");
 		expectNoErrors(reset);
 	});
@@ -77,6 +78,7 @@ describe("parseInventoryReset", () => {
 		let reset = parseInventoryReset(line);
 		expect(reset.objectVnum).toBe(1234);
 		expect(reset.limit).toBe(1);
+		expect(reset.wearLocation).toBe(-1);
 		expect(reset.comment).toBe("");
 		expectNoErrors(reset);
 	});
@@ -86,6 +88,7 @@ describe("parseInventoryReset", () => {
 		let reset = parseInventoryReset(line);
 		expect(reset.objectVnum).toBe(1234);
 		expect(reset.limit).toBe(0);
+		expect(reset.wearLocation).toBe(-1);
 		expect(reset.comment).toBe(" * Load the cool item");
 		expectNoErrors(reset);
 	});
@@ -95,6 +98,7 @@ describe("parseInventoryReset", () => {
 		let reset = parseInventoryReset(line);
 		expect(reset.objectVnum).toBe(1234);
 		expect(reset.limit).toBe(0);
+		expect(reset.wearLocation).toBe(-1);
 		expect(reset.comment).toBe("");
 		expectSingleError(reset, "limit");;
 	});
@@ -104,6 +108,7 @@ describe("parseInventoryReset", () => {
 		let reset = parseInventoryReset(line);
 		expect(reset.objectVnum).toBe(0);
 		expect(reset.limit).toBe(0);
+		expect(reset.wearLocation).toBe(-1);
 		expect(reset.comment).toBe("");
 		expectSingleError(reset, "objectVnum");;
 	});
@@ -433,20 +438,20 @@ R 0 3334 4
 
 	test("links inventory resets to already-parsed object", () => {
 		let resets = PARSED_RESETS
-		expectNoErrors(resets.mobile[1].inventory[0]);
-		expect(resets.mobile[1].inventory[0].objectId).toBe("object-id-2222");
+		expectNoErrors(resets.mobile[1].equipment[0]);
+		expect(resets.mobile[1].equipment[0].objectId).toBe("object-id-2222");
 	});
 
 	test("marks error on inventory reset when object vnum doesn't exist", () => {
 		let parsed = parseResets("M 0 1111 1 3333\nG 0 9999 0");
 		let resets = corellateResets(parsed, MOBILES, OBJECTS, ROOMS);
-		expectSingleError(resets.mobile[0].inventory[0], "objectId");
+		expectSingleError(resets.mobile[0].equipment[0], "objectId");
 	});
 
 	test("links equipment resets to already-parsed object", () => {
 		let resets = PARSED_RESETS
-		expectNoErrors(resets.mobile[1].equipment[0]);
-		expect(resets.mobile[1].equipment[0].objectId).toBe("object-id-2223");
+		expectNoErrors(resets.mobile[1].equipment[1]);
+		expect(resets.mobile[1].equipment[1].objectId).toBe("object-id-2223");
 	});
 
 
