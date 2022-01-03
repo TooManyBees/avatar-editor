@@ -41,7 +41,7 @@ function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[
 	return (
 		<div className={classNames(sharedStyles.container, {[sharedStyles.dangerTarget]: danger})}>
 			<div style={{display: "flex", alignItems: "baseline"}}>
-				<NumberField name="Limit" value={reset.limit} min={0} onUpdate={l => dispatch(Actions.updatedMobReset({...reset, limit: l}))} />
+				<NumberField inline name="Limit" value={reset.limit} min={0} onUpdate={l => dispatch(Actions.updatedMobReset({...reset, limit: l}))} />
 				&nbsp;in&nbsp;
 				<SelectVnum items={rooms} selectedId={reset.roomId} onUpdate={id => dispatch(Actions.updatedMobReset({...reset, roomId: id}))} />
 				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedMobReset(reset.id))}>Remove reset &amp; gear</DeleteButton>
@@ -63,7 +63,7 @@ function EqReset({ mobResetId, reset, objects }: { mobResetId: string, reset: Eq
 				&nbsp;on&nbsp;
 				<WearSelector selected={reset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, wearLocation: l}]))} />
 			</div>
-			<NumberField name="Limit (0 for none)" value={reset.limit} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, limit: l}]))} />
+			<NumberField inline name="Limit (0 for none)" value={reset.limit} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, limit: l}]))} />
 			<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedEquipmentReset([mobResetId, reset.id]))}>Remove</DeleteButton>
 		</div>
 	);

@@ -1,6 +1,10 @@
 .wrapper {
-	display: inline-flex;
+	display: flex;
 	align-items: baseline;
+}
+
+.inline {
+	display: inline-flex;
 }
 
 .label {
@@ -20,6 +24,8 @@
 
 	padding: 4px 8px 2px 8px;
 	color: hsl(0, 0%, 20%);
+
+	flex-grow: 1;
 }
 .input:hover {
 	border-color: hsl(0, 0%, 80%);

@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
+import classnames from "classnames";
 import styles from "./inputs.module.css";
 
 interface NumberFieldProps {
@@ -7,10 +8,11 @@ interface NumberFieldProps {
 	min?: number;
 	max?: number;
 	onUpdate?: (n: number) => void;
+	inline?: boolean;
 }
 
 export default function NumberField(props: NumberFieldProps) {
-	const { name, min, max } = props;
+	const { inline = false, name, min, max } = props;
 	const [value, setValue] = useState(props.value?.toString() || "");
 	const [warning, setWarning] = useState(parseValue(props.value, min, max) !== props.value);
 
@@ -28,16 +30,14 @@ export default function NumberField(props: NumberFieldProps) {
 	}
 
 	return (
-		<label className={styles.wrapper}>
+		<label className={classnames(styles.wrapper, inline && styles.inline)}>
 			{name && <span className={styles.label}>{name}:</span>}
 			<input
 				type="text"
 				value={value}
-				min={min}
-				max={max}
 				onChange={onChange}
 				onBlur={onBlur}
-				className={`${styles.input} ${warning ? styles.warning : ""}`}
+				className={classnames(styles.input, warning && styles.warning)}
 				style={{width: "5rem"}}
 			/>
 		</label>
