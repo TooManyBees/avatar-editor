@@ -55,7 +55,7 @@ const resetsSlice = createSlice({
 			state.resets.mobile = state.resets.mobile.filter(r => r.id !== action.payload);
 		},
 		addedEquipmentReset(state, action: PayloadAction<string>) {
-			const reset = state.resets.mobile.find(r => r.id === action.payload);
+			const reset = state.resets.mobile.find(r => r.mobId === action.payload);
 			if (reset) {
 				const eqReset: EquipmentReset = {
 					id: newId(),
@@ -69,8 +69,8 @@ const resetsSlice = createSlice({
 			}
 		},
 		updatedEquipmentReset(state, action: PayloadAction<[string, EquipmentReset]>) {
-			const [mobId, newReset] = action.payload;
-			const reset = state.resets.mobile.find(r => r.id === mobId);
+			const [resetId, newReset] = action.payload;
+			const reset = state.resets.mobile.find(r => r.id === resetId);
 			if (reset) {
 				const eqReset = reset.equipment.find(r => r.id === newReset.id);
 				if (eqReset) {
@@ -82,10 +82,10 @@ const resetsSlice = createSlice({
 			}
 		},
 		removedEquipmentReset(state, action: PayloadAction<[string, string]>) {
-			const [mobId, invId] = action.payload;
-			const mobReset = state.resets.mobile.find(r => r.id === mobId);
+			const [resetId, invId] = action.payload;
+			const mobReset = state.resets.mobile.find(r => r.id === resetId);
 			if (mobReset) {
-				mobReset.equipment = mobReset.equipment.filter(r => r.id === invId);
+				mobReset.equipment = mobReset.equipment.filter(r => r.id !== invId);
 			}
 		},
 		// addedObjectReset

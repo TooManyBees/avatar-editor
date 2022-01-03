@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
+import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import * as Actions from "../app/store/resets";
-import { MobReset as MobResetType, Objekt, Room } from "../app/models";
+import { MobReset as MobResetType, EquipmentReset, Objekt, Room } from "../app/models";
 import {
+	DeleteButton,
 	NumberField,
 	SelectVnum,
 } from "./components";
+import sharedStyles from "./components/shared.module.css";
 
 import ReactSelect, { CSSObjectWithLabel } from "react-select";
 
@@ -34,26 +37,34 @@ export default function MobResets({ mobId }: Props) {
 
 function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[], objects: Objekt[] }) {
 	const dispatch = useAppDispatch();
+	const [danger, setDanger] = useState(false);
 	return (
-		<div>
+		<div className={classNames(sharedStyles.container, {[sharedStyles.dangerTarget]: danger})}>
 			<div style={{display: "flex", alignItems: "baseline"}}>
 				<NumberField name="Limit" value={reset.limit} min={0} onUpdate={l => dispatch(Actions.updatedMobReset({...reset, limit: l}))} />
 				&nbsp;in&nbsp;
 				<SelectVnum items={rooms} selectedId={reset.roomId} onUpdate={id => dispatch(Actions.updatedMobReset({...reset, roomId: id}))} />
-				<button onClick={() => dispatch(Actions.removedMobReset(reset.id))}>Remove reset &amp; gear</button>
+				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedMobReset(reset.id))}>Remove reset &amp; gear</DeleteButton>
 			</div>
 			<p>Equipment</p>
-			{reset.equipment.map(eqReset => (
-				<div key={eqReset.id}>
-					<div style={{display:"flex", alignItems: "baseline"}}>
-						<SelectVnum items={objects} selectedId={eqReset.objectId} onUpdate={id => dispatch(Actions.updatedEquipmentReset([reset.id, {...eqReset, objectId: id}]))} />
-						&nbsp;on&nbsp;
-						<WearSelector selected={eqReset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...eqReset, wearLocation: l}]))} />
-					</div>
-					<NumberField name="Limit (0 for none)" value={eqReset.limit} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...eqReset, limit: l}]))} />
-					<button onClick={() => dispatch(Actions.removedEquipmentReset([reset.mobId, eqReset.id]))}>Remove</button>
-				</div>
-			))}
+			{reset.equipment.map(eqReset => <EqReset key={eqReset.id} reset={eqReset} mobResetId={reset.id} objects={objects} />)}
+		</div>
+	);
+}
+
+function EqReset({ mobResetId, reset, objects }: { mobResetId: string, reset: EquipmentReset, objects: Objekt[] }) {
+	const dispatch = useAppDispatch();
+	const [danger, setDanger] = useState(false);
+
+	return (
+		<div key={reset.id} className={classNames(sharedStyles.container, {[sharedStyles.dangerTarget]: danger})}>
+			<div style={{display:"flex", alignItems: "baseline"}}>
+				<SelectVnum items={objects} selectedId={reset.objectId} onUpdate={id => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, objectId: id}]))} />
+				&nbsp;on&nbsp;
+				<WearSelector selected={reset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, wearLocation: l}]))} />
+			</div>
+			<NumberField name="Limit (0 for none)" value={reset.limit} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, limit: l}]))} />
+			<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedEquipmentReset([mobResetId, reset.id]))}>Remove</DeleteButton>
 		</div>
 	);
 }
