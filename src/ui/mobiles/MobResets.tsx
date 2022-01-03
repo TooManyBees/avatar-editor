@@ -9,6 +9,7 @@ import {
 	SelectVnum,
 	ToolRow,
 } from "../components";
+import styles from "./MobResets.module.css";
 import sharedStyles from "../components/shared.module.css";
 
 import ReactSelect, { CSSObjectWithLabel } from "react-select";
@@ -24,16 +25,20 @@ export default function MobResets({ mobId }: Props) {
 	const resets = useAppSelector(state => state.resets.resets.mobile.filter(r => r.mobId === mobId));
 	const objects = useAppSelector(state => state.objects.objects);
 	const rooms = useAppSelector(state => state.rooms.rooms);
-	return (
-		<ol>
+	return <>
+		<ToolRow>
+			<h2>Resets</h2>
+			({resets.length})
+			<button onClick={() => dispatch(Actions.addedMobReset(mobId))}>Add reset</button>
+		</ToolRow>
+		<ol className={styles.list}>
 			{resets.map(reset => (
-				<li key={reset.id}>
+				<li key={reset.id} className={styles.listItem}>
 					<MobReset reset={reset} rooms={rooms} objects={objects} />
 				</li>
 			))}
-			<button onClick={() => dispatch(Actions.addedMobReset(mobId))}>Add reset</button>
 		</ol>
-	);
+	</>;
 }
 
 function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[], objects: Objekt[] }) {

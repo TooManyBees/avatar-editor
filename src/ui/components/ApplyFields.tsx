@@ -3,6 +3,7 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../app/hooks";
 import { NumberField, SelectField } from "../fields";
 import BitsField from "./BitsField";
+import { ToolRow } from "./shared";
 import styles from "./ApplyFields.module.css";
 
 interface Props {
@@ -18,9 +19,13 @@ export default function ApplyFields({ applies, id, updatedApply, addedApply, rem
 
 	const onUpdate = (n: number, p: [number, number]) => dispatch(updatedApply([id, n, p]));
 
-	return (
-		<ol className={styles.applyFields}>
+	return <>
+		<ToolRow>
 			<h2>Applies</h2>
+			({applies.length})
+			<button onClick={() => dispatch(addedApply(id))}>Add apply</button>
+		</ToolRow>
+		<ol className={styles.applyFields}>
 			{applies.map(([type, value], n) => (
 				<li key={value * 1000000 + type * 10000 + n}>
 					<SelectField name="Type" value={type} map={APPLY_TYPE} onUpdate={(t: number) => onUpdate(n, [t, value])} />
@@ -29,9 +34,8 @@ export default function ApplyFields({ applies, id, updatedApply, addedApply, rem
 					<p>{APPLY_TYPE.find(a => a[0] === type)?.[2]}</p>
 				</li>
 			))}
-			<button onClick={() => dispatch(addedApply(id))}>Add apply</button>
 		</ol>
-	);
+	</>;
 }
 
 // FIXME
