@@ -1,5 +1,6 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import styles from "./KeywordField.module.css";
+import inputStyles from "./inputs.module.css";
 
 interface Props {
 	name: string;
@@ -35,7 +36,7 @@ export default function KeywordField(props: Props) {
 			{props.name}: {props.value.map((k, n) => (
 				<span key={`${n} ${k}`} className={styles.keyword}>{k}</span>
 			))}
-			<input type="text" className={styles.input} value={currentKeyword} onChange={onChange} onKeyDown={onKeyDown} />
+			<input type="text" className={inputStyles.input} value={currentKeyword} onChange={onChange} onKeyDown={onKeyDown} />
 		</label>
 	);
 }

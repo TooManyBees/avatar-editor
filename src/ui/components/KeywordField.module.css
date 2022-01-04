@@ -1,14 +1,12 @@
 .keywordField {
-
+	display: flex;
+	align-items: baseline;
+	gap: 0.5rem;
 }
 
 .keyword {
-	margin-right: 0.5rem;
-	background: rgba(0, 0, 0, 0.15);
+	background: hsl(0, 0%, 97%);
 	padding: 2px 4px;
 	border-radius: 2px;
-}
-
-.input {
-	/*background-image: linear-gradient(10deg, pink, transparent);*/
+	border: 1px dashed hsl(0, 0%, 80%);
 }
