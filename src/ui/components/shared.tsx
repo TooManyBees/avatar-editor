@@ -2,13 +2,26 @@ import React, { CSSProperties } from "react";
 import classnames from "classnames";
 import styles from "./shared.module.css";
 
-interface RowProps {
+interface Props {
 	children: React.ReactNode;
 	className?: string;
 	style?: CSSProperties;
 }
 
-export function Row(props: RowProps) {
+interface SectionProps extends Props {
+	header?: React.ReactNode;
+}
+
+export function Section(props: SectionProps) {
+	return (
+		<div className={classnames(styles.section, props.className)} style={props.style}>
+			{props.header && <div className={styles.header}>{props.header}</div>}
+			{props.children}
+		</div>
+	);
+}
+
+export function Row(props: Props) {
 	return (
 		<div className={classnames(styles.row, props.className)} style={props.style}>
 			{props.children}
@@ -16,7 +29,7 @@ export function Row(props: RowProps) {
 	);
 }
 
-export function ToolRow(props: RowProps) {
+export function ToolRow(props: Props) {
 	return (
 		<div className={classnames(styles.toolRow, props.className)} style={props.style}>
 			{props.children}

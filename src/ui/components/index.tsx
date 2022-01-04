@@ -13,7 +13,7 @@ import { SelectVnum } from "./SelectVnum";
 import TextArea from "./TextArea";
 import TextField from "./TextField";
 import ToggleContainer from "./ToggleContainer";
-import { Row, ToolRow } from "./shared";
+import { Section, Row, ToolRow } from "./shared";
 
 export {
 	ApplyFields,
@@ -25,6 +25,7 @@ export {
 	KeywordField,
 	NumberField,
 	Row,
+	Section,
 	SelectField,
 	SelectVnum,
 	TextArea,

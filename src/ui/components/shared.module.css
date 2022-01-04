@@ -27,9 +27,15 @@
 }
 
 .section {
-	margin: 1rem 0;
+	margin: 1.5rem 0;
 }
 
 .header {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5rem;
 	margin: 0 0 1rem 0;
+}
+.header h1, .header h2, .header h3, .header h4, .header h5, .header h6 {
+	margin: 0
 }

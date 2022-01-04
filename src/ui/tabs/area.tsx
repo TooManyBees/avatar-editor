@@ -10,6 +10,7 @@ import {
 	KeywordField,
 	NumberField,
 	Row,
+	Section,
 	TextArea,
 	ToolRow,
 } from "../components";
@@ -28,13 +29,11 @@ export default function AreaTab() {
 				<TextField className={styles.areaField} name="#AREA" value={area.line} onUpdate={updatedLine} />
 			</div>
 
-			<ToolRow>
-				<h2>Helps</h2>
-				<button onClick={() => dispatch(Actions.addedHelp())}>Add help</button>
-			</ToolRow>
+			<Section header={<><h2>Helps</h2><button onClick={() => dispatch(Actions.addedHelp())}>Add help</button></>}>
 			<ol className={styles.helps}>
 				{area.helps.map(h => <li key={h.id} ><HelpForm help={h} /></li>)}
 			</ol>
+			</Section>
 		</TabsLayout>
 	);
 }
