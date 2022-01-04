@@ -10,8 +10,10 @@ import {
 	SelectField,
 	BitsField,
 	NumberField,
+	Row,
 	TextArea,
 	ToggleContainer,
+	ToolRow,
 } from "../components";
 
 interface Props {
@@ -31,10 +33,14 @@ export default function KspawnFields(props: Props) {
 			onDisabled={() => dispatch(removedKspawn(mobId))}
 		>
 			{kspawn && <>
-				<SelectField name="Condition" value={kspawn.condition} options={KSPAWN_CONDITION} defaultValue={KSPAWN_CONDITION[0]} onUpdate={condition => dispatch(updatedKspawn([mobId, {...kspawn, condition}]))} />
-				<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} onUpdate={spawnType => dispatch(updatedKspawn([mobId, {...kspawn, spawnType}]))} />
-				<NumberField name="Spawn VNUM" inline value={kspawn.spawnVnum} min={-1} onUpdate={spawnVnum => dispatch(updatedKspawn([mobId, {...kspawn, spawnVnum}]))} />
-				<NumberField name="Room VNUM" inline value={kspawn.roomVnum} min={-1} onUpdate={roomVnum => dispatch(updatedKspawn([mobId, {...kspawn, roomVnum}]))} />
+				<ToolRow>
+					<SelectField name="Condition" value={kspawn.condition} options={KSPAWN_CONDITION} defaultValue={KSPAWN_CONDITION[0]} onUpdate={condition => dispatch(updatedKspawn([mobId, {...kspawn, condition}]))} />
+					<NumberField name="Spawn VNUM" inline value={kspawn.spawnVnum} min={-1} onUpdate={spawnVnum => dispatch(updatedKspawn([mobId, {...kspawn, spawnVnum}]))} />
+					<NumberField name="Room VNUM" inline value={kspawn.roomVnum} min={-1} onUpdate={roomVnum => dispatch(updatedKspawn([mobId, {...kspawn, roomVnum}]))} />
+				</ToolRow>
+				<Row>
+					<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} onUpdate={spawnType => dispatch(updatedKspawn([mobId, {...kspawn, spawnType}]))} />
+				</Row>
 				<TextArea name={textAreaName} value={kspawn.message} onUpdate={message => dispatch(updatedKspawn([mobId, {...kspawn, message}]))} />
 			</>}
 		</ToggleContainer>
