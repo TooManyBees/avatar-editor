@@ -1,5 +1,5 @@
-import React, { ChangeEvent } from "react";
-import CollapsibleContainer from "./CollapsibleContainer";
+import React, { ChangeEvent, useState } from "react";
+import classnames from "classnames";
 import styles from "./BitsField.module.css";
 
 interface BitsFieldNProps {
@@ -43,11 +43,17 @@ interface BitsFieldProps extends BitsFieldNProps {
 }
 
 export default function BitsField(props: BitsFieldProps) {
-	const { map, name, value } = props;
-	const summary = map.filter(([bit]) => value.includes(bit)).map(([bit, name]) => name).join(", ");
+	const [open, setOpen] = useState(false);
+	const { name, map, value } = props;
+	const summary = map.filter(([bit]) => value.includes(bit)).map(([bit, name]) => name).join(", ") || "None";
 	return (
-		<CollapsibleContainer label={name} summary={summary}>
+		<details className={styles.details}>
+			<summary>
+				<span className={styles.label}>{name}:</span>
+				<span className={styles.marker} />
+				<span className={styles.summary}>{summary}</span>
+			</summary>
 			<BitsFieldN {...props} />
-		</CollapsibleContainer>
+		</details>
 	);
 }

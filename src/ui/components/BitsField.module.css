@@ -1,7 +1,36 @@
 .bitsField {
 	display: flex;
 	flex-wrap: wrap;
+	margin: 0.5rem 0;
 }
 .bitsField label {
 	width: 8rem;
+}
+
+.details summary {
+	display: flex;
+	height: 38px;
+	align-items: center;
+	cursor: pointer;
+}
+.marker {
+	display: list-item;
+	list-style-position: inside;
+	list-style-type: disclosure-closed;
+	margin: 0 0.5rem;
+}
+.details[open] .marker {
+	list-style-type: disclosure-open;
+}
+
+.label {
+
+}
+
+.arrow {
+
+}
+
+.summary {
+
 }
