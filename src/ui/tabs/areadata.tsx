@@ -72,7 +72,7 @@ function VnumRange(props: { opened: boolean, vnumRange: VnumRangeData | null }) 
 	}
 
 	return (
-		<ToggleContainer opened={props.opened} label="Vnum Range" onEnabled={onEnabled} onDisabled={onDisabled}>
+		<ToggleContainer section opened={props.opened} label="Vnum Range" onEnabled={onEnabled} onDisabled={onDisabled}>
 			<ToolRow>
 				<NumberField name="Min" value={min} onUpdate={onUpdateMin} />
 				<NumberField name="Max" value={max} onUpdate={onUpdateMax} />
@@ -110,7 +110,7 @@ function AreaFlags(props: { opened: boolean, flags: FlagsData | null }) {
 	}
 
 	return (
-		<ToggleContainer opened={props.opened} label="Area Flags" onEnabled={onEnabled} onDisabled={onDisabled}>
+		<ToggleContainer section opened={props.opened} label="Area Flags" onEnabled={onEnabled} onDisabled={onDisabled}>
 			<BitsFieldN map={AREA_FLAGS} value={flags} onUpdate={onUpdate} />
 		</ToggleContainer>
 	);
@@ -130,7 +130,7 @@ function Plane(props: { opened: boolean, plane: PlaneData | null }) {
 	}
 
 	return (
-		<ToggleContainer opened={props.opened} label="Plane" onEnabled={onEnabled} onDisabled={onDisabled}>
+		<ToggleContainer section opened={props.opened} label="Plane" onEnabled={onEnabled} onDisabled={onDisabled}>
 			<ToolRow>
 				<NumberField name="Plane" value={plane} min={1} onUpdate={onUpdatePlane} />
 				<NumberField name="Zone" value={zone} min={1} onUpdate={onUpdateZone} />
@@ -163,7 +163,7 @@ function Outlaw(props: { opened: boolean, outlaw: OutlawData | null }) {
 	}
 
 	return (
-		<ToggleContainer opened={props.opened} label="Outlaw" onEnabled={onEnabled} onDisabled={onDisabled}>
+		<ToggleContainer section opened={props.opened} label="Outlaw" onEnabled={onEnabled} onDisabled={onDisabled}>
 			<ToolRow>
 				<NumberField name="Dump Room Vnum" value={outlaw.dumpVnum} min={-1} onUpdate={onUpdateDumpVnum} />
 				<NumberField name="Jail Vnum" value={outlaw.jailVnum} min={-1} onUpdate={onUpdateJailVnum} />
@@ -213,7 +213,7 @@ function Kspawn(props: { opened: boolean, kspawn: KspawnData | null }) {
 	}
 
 	return (
-		<ToggleContainer opened={props.opened} label="K-Spawn" onEnabled={onEnabled} onDisabled={onDisabled}>
+		<ToggleContainer section opened={props.opened} label="K-Spawn" onEnabled={onEnabled} onDisabled={onDisabled}>
 			<ToolRow>
 				<SelectField name="Condition" value={kspawn.condition} options={KSPAWN_CONDITION} defaultValue={KSPAWN_CONDITION[0]} onUpdate={onUpdateCondition} />
 				<SelectField name="Command" value={kspawn.command} options={KSPAWN_COMMAND} defaultValue={KSPAWN_COMMAND[1]} onUpdate={onUpdateCommand} />
@@ -233,7 +233,7 @@ function Modifier(props: { opened: boolean, modifier: ModifierData | null }) {
 	const onDisabled = () => dispatch(toggleModifier(false));
 
 	return (
-		<ToggleContainer opened={props.opened} label="Modifiers" onEnabled={onEnabled} onDisabled={onDisabled}>
+		<ToggleContainer section opened={props.opened} label="Modifiers" onEnabled={onEnabled} onDisabled={onDisabled}>
 			<ToolRow>
 				<NumberField name="XP Gain" value={modifier.xpGain} onUpdate={xpGain => dispatch(updatedModifier({...modifier, xpGain}))} />
 				<NumberField name="HP Regen" value={modifier.hpRegen} onUpdate={hpRegen => dispatch(updatedModifier({...modifier, hpRegen}))} />
@@ -277,7 +277,7 @@ function GroupSize(props: { opened: boolean, groupSize: GroupSizeData | null }) 
 	}
 
 	return (
-		<ToggleContainer opened={props.opened} label="XP Curve" onEnabled={onEnabled} onDisabled={onDisabled}>
+		<ToggleContainer section opened={props.opened} label="XP Curve" onEnabled={onEnabled} onDisabled={onDisabled}>
 			<ToolRow>
 				<NumberField name="Pct0" value={groupSize.pct0} onUpdate={onUpdatePct0} />
 				<NumberField name="Num1" value={groupSize.num1} onUpdate={onUpdateNum1} />
@@ -306,7 +306,7 @@ function Scaling(props: { opened: boolean, scaling: ScalingData | null }) {
 	}
 
 	return (
-		<ToggleContainer opened={props.opened} label="Dynamic Scaling" onEnabled={onEnabled} onDisabled={onDisabled}>
+		<ToggleContainer section opened={props.opened} label="Dynamic Scaling" onEnabled={onEnabled} onDisabled={onDisabled}>
 			<ToolRow>
 				<NumberField name="Max Group Power" value={scaling.maxGroupPower} onUpdate={onUpdateMaxGroupPower} />
 				<NumberField name="Max Group Toughness" value={scaling.maxGroupToughness} onUpdate={onUpdateMaxGroupToughness} />

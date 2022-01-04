@@ -1,5 +1,7 @@
-import React, { ChangeEvent, ReactNode } from "react";
+import React, { ChangeEvent, CSSProperties, ReactNode } from "react";
+import classnames from "classnames";
 import styles from "./ToggleContainer.module.css";
+import sharedStyles from "./shared.module.css";
 
 interface Props {
 	label: string;
@@ -7,6 +9,7 @@ interface Props {
 	onEnabled: () => void;
 	onDisabled: () => void;
 	children: ReactNode;
+	section?: boolean;
 }
 
 export default function ToggleContainer(props: Props) {
@@ -16,9 +19,18 @@ export default function ToggleContainer(props: Props) {
 		else props.onDisabled();
 	}
 
+	const className = classnames({
+		[styles.container]: true,
+		[styles.open]: props.opened,
+		[sharedStyles.section]: props.section,
+	});
+
 	return (
-		<div className={`${styles.container} ${props.opened ? styles.open : ""}`}>
-			<h2 className={styles.label}><input type="checkbox" checked={props.opened} onChange={onChange} /> {props.label}</h2>
+		<div className={className}>
+			<div className={sharedStyles.header}>
+				<input type="checkbox" checked={props.opened} onChange={onChange} />
+				<h2 className={styles.label}>{props.label}</h2>
+			</div>
 			<div className={styles.children}>{props.children}</div>
 		</div>
 	);
