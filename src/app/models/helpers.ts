@@ -1,3 +1,9 @@
+declare global {
+	interface Crypto {
+		randomUUID: () => string;
+	}
+}
+
 export function newId(): string {
 	try {
 		return crypto.randomUUID();

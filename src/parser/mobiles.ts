@@ -163,7 +163,8 @@ export function parseMobile(mobString: string): Mobile {
 					}
 					case 'A': {
 						let applyType = parseNumber(tokens[0]);
-						let applyValue = parseNumber(tokens[1]);
+						let { error, bits } = parseBits(tokens[1]); // Apply 50 (immunity) can be represented as bits
+						let applyValue = bits.reduce((a, b) => a + b, 0);
 						if (applyType == null) {
 							mobile._error.applies = true;
 							break;
