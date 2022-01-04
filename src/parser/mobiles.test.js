@@ -27,7 +27,7 @@ type 'list' and perhaps haggle with him. Feel welcome to stay awhile.`);
 		expect(mobile.kspawn.roomVnum).toBe(-1);
 		expect(mobile.kspawn.message).toBe('Nom screams, "You\'ll pay for your treachery!"');
 		expect(mobile.team).toBe(4);
-		expect(mobile.applies).toEqual([[1, 2], [2, 3]]);
+		expect(mobile.applies).toMatchObject([{ type: 1, value: 2 }, { type: 2, value: 3 }]);
 	});
 
 	test("parses a mob with blank lines in its description", () => {

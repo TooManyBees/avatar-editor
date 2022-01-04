@@ -1,6 +1,7 @@
 import { Objekt, blankObject, blankEdesc } from "../app/models/objects";
 
 import {
+	parseApply,
 	parseBits,
 	parseKeywords,
 	parseNumber,
@@ -179,17 +180,9 @@ export function parseObject(objectString: string): Objekt {
 					}
 					case 'A': {
 						let [typeString, valueString] = tokens;
-						let applyType = parseNumber(typeString);
-						let applyValue = parseNumber(valueString);
-						if (applyType == null) {
-							object._error.applies = true;
-							break;
-						}
-						if (applyValue == null) {
-							object._error.applies = true;
-							applyValue = 1;
-						}
-						object.applies.push([applyType, applyValue]);
+						let { error, apply } = parseApply(typeString, valueString);
+						object.applies.push(apply);
+						if (error) object._error.applies = true;
 						break;
 					}
 					case 'Q': {

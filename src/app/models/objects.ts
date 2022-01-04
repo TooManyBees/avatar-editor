@@ -1,4 +1,4 @@
-import { newId, Edesc, ErrorMarkers } from "./helpers";
+import { newId, Apply, Edesc, ErrorMarkers } from "./helpers";
 export { blankEdesc } from "./helpers";
 
 export interface ObjectFields {
@@ -18,7 +18,7 @@ export interface ObjectFields {
 	worth: number;
 	racialFlags: number[];
 	extraDescs: Edesc[];
-	applies: [number, number][];
+	applies: Apply[];
 	quality: number | null;
 }
 

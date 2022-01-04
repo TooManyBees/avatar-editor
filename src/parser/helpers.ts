@@ -1,3 +1,5 @@
+import { Apply, blankApply } from "../app/models/helpers";
+
 const enum KeywordState {
 	BetweenWords,
 	Unquoted,
@@ -83,7 +85,7 @@ export function parseBits(s: string): { error: boolean, bits: number[] } {
 		if (number === 0) {
 			continue;
 		}
-		let bits = factor(number);
+		let bits = number > 0 ? factor(number) : [number];
 		for (let bit of bits) {
 			bitSet.add(bit);
 		}
@@ -112,4 +114,20 @@ export function splitOnVnums(section: string): string[] {
 export function parseNumber(s: string): number | null {
 	let n = Number(s);
 	return Number.isInteger(n) ? n : null;
+}
+
+export function parseApply(typeString: string, valueString: string): { error: boolean, apply: Apply} {
+	let error = false;
+	let applyType = parseNumber(typeString);
+	if (applyType == null) {
+		applyType = 1;
+		error = true;
+	}
+	let { error: valueError, bits } = parseBits(valueString); // Apply 50 (immunity) can be represented as bits
+	if (valueError) error = true;
+	let applyValue = bits.reduce((a, b) => a + b, 0);
+	let apply = blankApply();
+	apply.type = applyType;
+	apply.value = applyValue;
+	return { error, apply };
 }

@@ -23,8 +23,8 @@ ${object.value0} ${object.value1} ${object.value2} ${object.value3}
 ${object.weight} ${object.worth} ${joinBits(object.racialFlags)} 0
 `;
 
-	for (let [applyType, applyValue] of object.applies) {
-		base += `A ${applyType} ${applyValue}\n`;
+	for (let apply of object.applies) {
+		base += `A ${apply.type} ${apply.value}\n`;
 	}
 
 	if (object.quality != null) base += `Q ${object.quality}\n`;

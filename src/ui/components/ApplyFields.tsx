@@ -1,6 +1,7 @@
 import React from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../app/hooks";
+import { Apply } from "../../app/models";
 import { DeleteButton, NumberField, SelectField } from "../components";
 import BitsField from "./BitsField";
 import { ToolRow } from "./shared";
@@ -8,16 +9,16 @@ import styles from "./ApplyFields.module.css";
 
 interface Props {
 	id: string;
-	applies: [number, number][];
-	updatedApply: ActionCreatorWithPayload<[string, number, [number, number]], string>;
+	applies: Apply[];
+	updatedApply: ActionCreatorWithPayload<[string, Apply], string>;
 	addedApply: ActionCreatorWithPayload<string, string>;
-	removedApply: ActionCreatorWithPayload<[string, number], string>;
+	removedApply: ActionCreatorWithPayload<[string, string], string>;
 }
 
 export default function ApplyFields({ applies, id, updatedApply, addedApply, removedApply }: Props) {
 	const dispatch = useAppDispatch();
 
-	const onUpdate = (n: number, p: [number, number]) => dispatch(updatedApply([id, n, p]));
+	const onUpdate = (p: Apply) => dispatch(updatedApply([id, p]));
 
 	return <>
 		<ToolRow>
@@ -26,13 +27,13 @@ export default function ApplyFields({ applies, id, updatedApply, addedApply, rem
 			<button onClick={() => dispatch(addedApply(id))}>Add apply</button>
 		</ToolRow>
 		<ol className={styles.applyFields}>
-			{applies.map(([type, value], n) => (
-				<li key={value * 1000000 + type * 10000 + n}>
+			{applies.map(apply => (
+				<li key={apply.id}>
 					<ToolRow>
-					<SelectField name="Type" value={type} options={APPLY_TYPE} defaultValue={APPLY_TYPE[0]} onUpdate={(t: number) => onUpdate(n, [t, value])} />
-					<ApplyFlagField type={type} value={value} onUpdate={(v: number) => onUpdate(n, [type, v])} />
-					<em>{APPLY_TYPE.find(a => a.value === type)?.desc}</em>
-					<DeleteButton onClick={() => dispatch(removedApply([id, n]))}>Remove</DeleteButton>
+					<SelectField name="Type" value={apply.type} options={APPLY_TYPE} defaultValue={APPLY_TYPE[0]} onUpdate={type => onUpdate({...apply, type})} />
+					<ApplyFlagField type={apply.type} value={apply.value} onUpdate={(value: number) => onUpdate({...apply, value})} />
+					<em>{APPLY_TYPE.find(a => a.value === apply.type)?.desc}</em>
+					<DeleteButton onClick={() => dispatch(removedApply([id, apply.id]))}>Remove</DeleteButton>
 					</ToolRow>
 				</li>
 			))}

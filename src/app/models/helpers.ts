@@ -57,3 +57,13 @@ export function findVnum<T extends HasId & HasVnum>(items: T[], id: string): num
 	if (found) return found.vnum;
 	return null;
 }
+
+export interface Apply {
+	readonly id: string;
+	type: number;
+	value: number;
+}
+
+export function blankApply() {
+	return { id: newId(), type: 1, value: 0 };
+}

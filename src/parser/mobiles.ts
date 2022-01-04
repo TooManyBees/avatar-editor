@@ -1,5 +1,6 @@
 import { Mobile, Kspawn, blankMobile, blankKspawn } from "../app/models/mobiles";
 import {
+	parseApply,
 	parseBits,
 	parseKeywords,
 	parseNumber,
@@ -162,19 +163,9 @@ export function parseMobile(mobString: string): Mobile {
 						break;
 					}
 					case 'A': {
-						let applyType = parseNumber(tokens[0]);
-						let { error, bits } = parseBits(tokens[1]); // Apply 50 (immunity) can be represented as bits
-						let applyValue = bits.reduce((a, b) => a + b, 0);
-						if (applyType == null) {
-							mobile._error.applies = true;
-							break;
-						}
-						if (applyValue == null) {
-							mobile._error.applies = true;
-							applyValue = 1;
-						}
-						if (mobile.applies == null) mobile.applies = [];
-						mobile.applies.push([applyType, applyValue]);
+						let { error, apply } = parseApply(tokens[0], tokens[1]);
+						mobile.applies.push(apply);
+						if (error) mobile._error.applies = true;
 						break;
 					}
 					case 'L': {

@@ -19,4 +19,4 @@ export type {
 } from "./resets";
 export { BLANK_RESETS_SECTION } from "./resets";
 export { newId } from "./helpers";
-export type { Edesc } from "./helpers";
+export type { Apply, Edesc } from "./helpers";

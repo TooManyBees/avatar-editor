@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Mobile, Kspawn, blankKspawn, blankMobile } from "../models/mobiles";
 import { SpecialU } from "../models/specials";
+import { Apply, blankApply } from "../models/helpers";
 
 interface MobileState {
 	mobiles: Mobile[];
@@ -97,21 +98,22 @@ const mobileSlice = createSlice({
 		addedApply(state, action: PayloadAction<string>) {
 			const mobile = state.mobiles.find(m => m.id === action.payload);
 			if (mobile) {
-				mobile.applies.push([1, 0]);
+				mobile.applies.push(blankApply());
 			}
 		},
-		removedApply(state, action: PayloadAction<[string, number]>) {
-			const [id, idx] = action.payload;
+		removedApply(state, action: PayloadAction<[string, string]>) {
+			const [id, applyId] = action.payload;
 			const mobile = state.mobiles.find(m => m.id === id);
-			if (mobile && idx < mobile.applies.length) {
-				mobile.applies = mobile.applies.slice(0, idx).concat(mobile.applies.slice(idx + 1));
+			if (mobile) {
+				mobile.applies = mobile.applies.filter(a => a.id !== applyId);
 			}
 		},
-		updatedApply(state, action: PayloadAction<[string, number, [number, number]]>) {
-			const [id, idx, payload] = action.payload;
+		updatedApply(state, action: PayloadAction<[string, Apply]>) {
+			const [id, payload] = action.payload;
 			const mobile = state.mobiles.find(m => m.id === id);
-			if (mobile && idx < mobile.applies.length) {
-				mobile.applies[idx] = payload;
+			if (mobile) {
+				const idx = mobile.applies.findIndex(a => a.id === payload.id);
+				if (idx > -1) mobile.applies[idx] = payload;
 			}
 		},
 		updatedTeam(state, action: PayloadAction<[string, number | null]>) {

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Edesc, Objekt, newId } from "../models";
+import { Apply, Edesc, Objekt, newId } from "../models";
 import { blankObject } from "../models/objects";
+import { blankApply } from "../models/helpers";
 
 interface ObjectState {
 	objects: Objekt[];
@@ -129,21 +130,22 @@ const objectSlice = createSlice({
 		addedApply(state, action: PayloadAction<string>) {
 			const object = state.objects.find(m => m.id === action.payload);
 			if (object) {
-				object.applies.push([1, 0]);
+				object.applies.push(blankApply());
 			}
 		},
-		removedApply(state, action: PayloadAction<[string, number]>) {
-			const [id, idx] = action.payload;
+		removedApply(state, action: PayloadAction<[string, string]>) {
+			const [id, applyId] = action.payload;
 			const object = state.objects.find(m => m.id === id);
-			if (object && idx < object.applies.length) {
-				object.applies.splice(idx, 1);
+			if (object) {
+				object.applies = object.applies.filter(a => a.id !== applyId);
 			}
 		},
-		updatedApply(state, action: PayloadAction<[string, number, [number, number]]>) {
-			const [id, idx, payload] = action.payload;
+		updatedApply(state, action: PayloadAction<[string, Apply]>) {
+			const [id, payload] = action.payload;
 			const object = state.objects.find(m => m.id === id);
-			if (object && idx < object.applies.length) {
-				object.applies[idx] = payload;
+			if (object) {
+				const idx = object.applies.findIndex(a => a.id === payload.id);
+				if (idx > -1) object.applies[idx] = payload;
 			}
 		},
 		updatedQuality(state, action: PayloadAction<[string, number]>) {

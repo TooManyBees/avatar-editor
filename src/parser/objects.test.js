@@ -28,7 +28,7 @@ describe("parseObject", () => {
 `
 		});
 		expect(object.applies).toHaveLength(1);
-		expect(object.applies[0]).toEqual([18, 1]);
+		expect(object.applies[0]).toMatchObject({ type: 18, value: 1 });
 	});
 
 	test.skip("marks error on more than 2 wear flags", () => {

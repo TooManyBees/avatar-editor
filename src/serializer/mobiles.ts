@@ -30,8 +30,8 @@ ${mob.level} 0 0
 	if (mob.klass != null) base += `C ${mob.klass}\n`;
 	if (mob.team != null) base += `L ${mob.team}\n`;
 
-	for (let [applyType, applyValue] of mob.applies) {
-		base += `A ${applyType} ${applyValue}\n`;
+	for (let apply of mob.applies) {
+		base += `A ${apply.type} ${apply.value}\n`;
 	}
 
 	if (mob.kspawn) base += `K ${mob.kspawn.condition} ${mob.kspawn.spawnType.join("|")} ${mob.kspawn.spawnVnum} ${mob.kspawn.roomVnum} ${mob.kspawn.message}~\n`;

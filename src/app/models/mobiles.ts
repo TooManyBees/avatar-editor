@@ -1,4 +1,4 @@
-import { newId, ErrorMarkers } from "./helpers";
+import { newId, Apply, ErrorMarkers } from "./helpers";
 
 export interface MobileFields {
 	vnum: number | null;
@@ -13,7 +13,7 @@ export interface MobileFields {
 	sex: number;
 	race: number | null;
 	klass: number | null;
-	applies: [number, number][];
+	applies: Apply[];
 	team: number | null;
 	kspawn?: Kspawn;
 	specFun: string | null;
