@@ -13,7 +13,10 @@ export default function serializeResets(resets: Resets, mobiles: Mobile[], objec
 	let buffer = "";
 
 	for (let reset of resets.mobile) {
-		buffer += serializeMobReset(reset, mobiles, rooms);
+		let mobVnum = findVnum(mobiles, reset.mobId);
+		if (mobVnum == null) continue;
+
+		buffer += serializeMobReset(reset, mobVnum, rooms);
 
 		for (let eqReset of reset.equipment) {
 			buffer += serializeEqReset(eqReset, objects);
@@ -40,8 +43,7 @@ export default function serializeResets(resets: Resets, mobiles: Mobile[], objec
 	else return "";
 }
 
-function serializeMobReset(reset: MobReset, mobiles: Mobile[], rooms: Room[]): string {
-	let mobVnum = findVnum(mobiles, reset.mobId);
+function serializeMobReset(reset: MobReset, mobVnum: number, rooms: Room[]): string {
 	let roomVnum = findVnum(rooms, reset.roomId);
 
 	let comment = reset.comment;
