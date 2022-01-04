@@ -5,15 +5,15 @@ import * as Actions from "../../app/store/rooms";
 import { VnumItemList } from "../VnumList";
 import { Room, Door } from "../../app/models";
 import {
-	NumberField,
-	SelectField,
-	TextField,
-} from "../fields";
-import {
 	BitsField,
 	KeywordField,
 	EdescFields,
+	NumberField,
+	Row,
+	SelectField,
 	TextArea,
+	TextField,
+	ToolRow,
 } from "../components";
 import "../VnumList.css";
 import TabsLayout from "./tabs-layout";
@@ -63,12 +63,19 @@ function RoomForm(props: Props) {
 
 	return (
 		<>
-			<NumberField name="VNUM" value={room.vnum} min={0} onUpdate={updatedVnum} />
-			<TextField name="Name" value={room.name} onUpdate={updatedName} />
-			<TextArea name="Description" value={room.description} onUpdate={updatedDescription} />
+			<ToolRow>
+				<NumberField name="VNUM" value={room.vnum} min={0} onUpdate={updatedVnum} />
+			</ToolRow>
+			<Row>
+				<TextField name="Name" value={room.name} onUpdate={updatedName} />
+			</Row>
+			<Row>
+				<TextArea name="Description" value={room.description} onUpdate={updatedDescription} />
+			</Row>
 			<BitsField name="Flags" value={room.flags} map={FLAGS} onUpdate={updatedFlags} />
-			<SelectField name="Sector" value={room.sector} map={SECTOR} onUpdate={updatedSector} />
+			<SelectField name="Sector" value={room.sector} options={SECTOR} onUpdate={updatedSector} />
 			<EdescFields edescs={room.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
+			<h2>Exits</h2>
 			<Doors roomId={id} doors={room.doors} rooms={rooms} />
 			<BitsField name="Prevent align from entering" value={room.alignFlags} map={ALIGN_FLAGS} onUpdate={updatedAlignFlags}/>
 			<BitsField name="Prevent class from entering" value={room.classFlags} map={CLASS_FLAGS} onUpdate={updatedClassFlags}/>
@@ -86,12 +93,11 @@ function Doors({ roomId, doors, rooms }: DoorsProps) {
 	const dispatch = useAppDispatch();
 	return (
 		<ol>
-			<p>Exits</p>
 			{doors.map(door => (
 				<li key={door.id}>
-					<SelectField name="Direction" value={door.direction} map={DIRECTIONS} onUpdate={direction => dispatch(Actions.updatedDoor([roomId, {...door, direction}]))} />
+					<SelectField name="Direction" value={door.direction} options={DIRECTIONS} onUpdate={direction => dispatch(Actions.updatedDoor([roomId, {...door, direction}]))} />
 					<Destination roomId={roomId} doorId={door.id} rooms={rooms} value={door.toRoomId} onUpdate={toRoomId => dispatch(Actions.updatedDoor([roomId, {...door, toRoomId}]))} />
-					<SelectField name="Door" value={door.locks} map={LOCKS} onUpdate={locks => dispatch(Actions.updatedDoor([roomId, {...door, locks}]))} />
+					<SelectField name="Door" value={door.locks} options={LOCKS} onUpdate={locks => dispatch(Actions.updatedDoor([roomId, {...door, locks}]))} />
 					{/* key selector */}
 					<KeywordField name="Keywords" value={door.keywords} onUpdate={keywords => dispatch(Actions.updatedDoor([roomId, {...door, keywords}]))} />
 					<TextArea name="Description" value={door.description} onUpdate={description => dispatch(Actions.updatedDoor([roomId, {...door, description}]))} />
@@ -149,21 +155,21 @@ const FLAGS: [number, string, string][] = [
 	[268435456, "No HOG", "Characters cannot enter room if hogged, or hog in room. "],
 ];
 
-const SECTOR: [number, string, string][] = [
-	[0, "Inside", ""],
-	[1, "City", ""],
-	[2, "Field", ""],
-	[3, "Forest", ""],
-	[4, "Hills", ""],
-	[5, "Mountain", ""],
-	[6, "Water (swim)", ""],
-	[7, "Water (noswim)", ""],
-	[8, "House", ""],
-	[9, "Air", ""],
-	[10, "Desert", ""],
-	[11, "Underwater", ""],
-	[12, "On bottom", ""],
-	[13, "Rogue guild", ""],
+const SECTOR: { value: number, label: string }[] = [
+	{ value: 0, label: "Inside" },
+	{ value: 1, label: "City" },
+	{ value: 2, label: "Field" },
+	{ value: 3, label: "Forest" },
+	{ value: 4, label: "Hills" },
+	{ value: 5, label: "Mountain" },
+	{ value: 6, label: "Water (swim)" },
+	{ value: 7, label: "Water (noswim)" },
+	{ value: 8, label: "House" },
+	{ value: 9, label: "Air" },
+	{ value: 10, label: "Desert" },
+	{ value: 11, label: "Underwater" },
+	{ value: 12, label: "On bottom" },
+	{ value: 13, label: "Rogue guild" },
 ];
 
 const ALIGN_FLAGS: [number, string, string][] = [
@@ -200,23 +206,23 @@ const CLASS_FLAGS: [number, string, string][] = [
 	[16777216, "Vizier", ""],
 ];
 
-const DIRECTIONS: [number, string, string][] = [
-	[0, "North", ""],
-	[1, "East", ""],
-	[2, "South", ""],
-	[3, "West", ""],
-	[4, "Up", ""],
-	[5, "Down", ""],
+const DIRECTIONS: { value: number, label: string }[] = [
+	{ value: 0, label: "North" },
+	{ value: 1, label: "East" },
+	{ value: 2, label: "South" },
+	{ value: 3, label: "West" },
+	{ value: 4, label: "Up" },
+	{ value: 5, label: "Down" },
 ];
 
-const LOCKS: [number, string, string][] = [
-	[0, "No door", ""],
-	[1, "Plain door", ""],
-	[2, "Pickproof", ""],
-	[3, "Bashproof", ""],
-	[4, "Passproof", ""],
-	[5, "Pickproof, Passproof", ""],
-	[6, "Bashproof, Passproof", ""],
-	[7, "Pickproof, Bashproof", ""],
-	[8, "Everything-proof", ""],
+const LOCKS: { value: number, label: string }[] = [
+	{ value: 0, label: "No door" },
+	{ value: 1, label: "Plain door" },
+	{ value: 2, label: "Pickproof" },
+	{ value: 3, label: "Bashproof" },
+	{ value: 4, label: "Passproof" },
+	{ value: 5, label: "Pickproof, Passproof" },
+	{ value: 6, label: "Bashproof, Passproof" },
+	{ value: 7, label: "Pickproof, Bashproof" },
+	{ value: 8, label: "Everything-proof" },
 ];
