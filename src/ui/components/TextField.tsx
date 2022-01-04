@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, CSSProperties, useState } from "react";
 import classnames from "classnames";
 import styles from "./inputs.module.css";
 
@@ -7,10 +7,12 @@ interface Props {
 	value: string | null;
 	onUpdate?: (s: string) => void;
 	inline?: boolean;
+	maxLength?: number;
+	style?: CSSProperties;
 }
 
 export default function TextField(props: Props) {
-	const { name, onUpdate, inline = false } = props;
+	const { name, onUpdate, inline = false, maxLength, style } = props;
 
 	const [value, setValue] = useState(props.value || "");
 
@@ -31,6 +33,8 @@ export default function TextField(props: Props) {
 				onChange={onChange}
 				onBlur={onBlur}
 				className={styles.input}
+				maxLength={maxLength}
+				style={style}
 			/>
 		</label>
 	);
