@@ -12,6 +12,7 @@ import {
 import { Help } from "../../app/models";
 import TabsLayout from "./tabs-layout";
 import {
+	AddButton,
 	DeleteButton,
 	KeywordField,
 	NumberField,
@@ -36,7 +37,7 @@ export default function AreaTab() {
 				<TextField name="Name" value={area.name} onUpdate={name => dispatch(updatedName(name))} />
 			</ToolRow>
 
-			<Section header={<><h2>Helps</h2><button onClick={() => dispatch(addedHelp())}>Add help</button></>}>
+			<Section header={<><h2>Helps</h2><AddButton onClick={() => dispatch(addedHelp())}>Add help</AddButton></>}>
 			<ol className={styles.helps}>
 				{area.helps.map(h => <li key={h.id} ><HelpForm help={h} /></li>)}
 			</ol>

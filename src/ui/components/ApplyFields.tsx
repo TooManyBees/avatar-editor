@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import classnames from "classnames";
 import { useAppDispatch } from "../../app/hooks";
 import { Apply } from "../../app/models";
-import { DeleteButton, NumberField, SelectField } from "../components";
+import { AddButton, DeleteButton, NumberField, SelectField } from "../components";
 import BitsField from "./BitsField";
 import { ToolRow } from "./shared";
 import styles from "./ApplyFields.module.css";
+import sharedStyles from "./shared.module.css";
 
 interface Props {
 	id: string;
@@ -24,21 +26,43 @@ export default function ApplyFields({ applies, id, updatedApply, addedApply, rem
 		<ToolRow>
 			<h2>Applies</h2>
 			({applies.length})
-			<button onClick={() => dispatch(addedApply(id))}>Add apply</button>
+			<AddButton onClick={() => dispatch(addedApply(id))}>Add apply</AddButton>
 		</ToolRow>
 		<ol className={styles.applyFields}>
 			{applies.map(apply => (
-				<li key={apply.id}>
-					<ToolRow>
-					<SelectField name="Type" value={apply.type} options={APPLY_TYPE} defaultValue={APPLY_TYPE[0]} onUpdate={type => onUpdate({...apply, type})} />
-					<ApplyFlagField type={apply.type} value={apply.value} onUpdate={(value: number) => onUpdate({...apply, value})} />
-					<em>{APPLY_TYPE.find(a => a.value === apply.type)?.desc}</em>
-					<DeleteButton onClick={() => dispatch(removedApply([id, apply.id]))}>Remove</DeleteButton>
-					</ToolRow>
-				</li>
+				<ApplyItem
+					key={apply.id}
+					apply={apply}
+					id={id}
+					updatedApply={updatedApply}
+					removedApply={removedApply}
+				/>
 			))}
 		</ol>
 	</>;
+}
+
+interface ApplyItemProps {
+	id: string;
+	apply: Apply;
+	updatedApply: ActionCreatorWithPayload<[string, Apply], string>;
+	removedApply: ActionCreatorWithPayload<[string, string], string>;
+}
+
+function ApplyItem({ id, apply, updatedApply, removedApply }: ApplyItemProps) {
+	const dispatch = useAppDispatch();
+	const [danger, setDanger] = useState(false);
+	const onUpdate = (p: Apply) => dispatch(updatedApply([id, p]));
+	return (
+		<li className={classnames(sharedStyles.container, danger && sharedStyles.dangerTarget)}>
+			<ToolRow>
+			<SelectField name="Type" value={apply.type} options={APPLY_TYPE} defaultValue={APPLY_TYPE[0]} onUpdate={type => onUpdate({...apply, type})} />
+			<ApplyFlagField type={apply.type} value={apply.value} onUpdate={(value: number) => onUpdate({...apply, value})} />
+			<em>{APPLY_TYPE.find(a => a.value === apply.type)?.desc}</em>
+			<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedApply([id, apply.id]))}>Remove</DeleteButton>
+			</ToolRow>
+		</li>
+	);
 }
 
 // FIXME

@@ -1,4 +1,5 @@
 import React from "react";
+import classnames from "classnames";
 import styles from "./button.module.css";
 
 interface Props {
@@ -27,7 +28,7 @@ export function LinkButton(props: Props) {
 		<span>
 			<Button
 				{...props}
-				className={`${styles.link} ${props.className || ""}`}
+				className={classnames(styles.link, props.className)}
 			/>
 		</span>
 	);
@@ -38,7 +39,17 @@ export function DeleteButton(props: Props) {
 		<LinkButton
 			{...props}
 			children={props.children || "Delete"}
-			className={`${styles.delete} ${props.className || ""}`}
+			className={classnames(styles.delete, props.className)}
+		/>
+	);
+}
+
+export function AddButton(props: Props) {
+	return (
+		<LinkButton
+			{...props}
+			children={props.children || "Add"}
+			className={classnames(styles.add, props.className)}
 		/>
 	);
 }

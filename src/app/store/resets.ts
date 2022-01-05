@@ -58,7 +58,7 @@ const resetsSlice = createSlice({
 			state.resets.mobile = state.resets.mobile.filter(r => r.mobId !== action.payload);
 		},
 		addedEquipmentReset(state, action: PayloadAction<string>) {
-			const reset = state.resets.mobile.find(r => r.mobId === action.payload);
+			const reset = state.resets.mobile.find(r => r.id === action.payload);
 			if (reset) {
 				const eqReset: EquipmentReset = {
 					id: newId(),

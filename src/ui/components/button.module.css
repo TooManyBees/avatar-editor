@@ -27,5 +27,13 @@
 .delete:before {
 	display: inline;
 	content: "✖ ";
-	text-decoration: none;
+}
+
+.add {
+	white-space: nowrap;
+	color: green;
+}
+.add:before {
+	display: inline;
+	content: "+ ";
 }

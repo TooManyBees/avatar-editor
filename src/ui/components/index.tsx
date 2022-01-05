@@ -1,6 +1,7 @@
 import ApplyFields from "./ApplyFields";
 import BitsField from "./BitsField";
 import {
+	AddButton,
 	Button,
 	DeleteButton,
 	LinkButton,
@@ -16,6 +17,7 @@ import ToggleContainer from "./ToggleContainer";
 import { Section, Row, ToolRow } from "./shared";
 
 export {
+	AddButton,
 	ApplyFields,
 	BitsField,
 	Button,

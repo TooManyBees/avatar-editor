@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/resets";
 import { MobReset as MobResetType, EquipmentReset, Objekt, Room } from "../../app/models";
 import {
+	AddButton,
 	DeleteButton,
 	NumberField,
 	SelectVnum,
@@ -29,7 +30,7 @@ export default function MobResets({ mobId }: Props) {
 		<ToolRow>
 			<h2>Resets</h2>
 			({resets.length})
-			<button onClick={() => dispatch(Actions.addedMobReset(mobId))}>Add reset</button>
+			<AddButton onClick={() => dispatch(Actions.addedMobReset(mobId))}>Add reset</AddButton>
 		</ToolRow>
 		<ol className={styles.list}>
 			{resets.map(reset => (
@@ -47,12 +48,12 @@ function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[
 	return (
 		<div className={classnames(sharedStyles.container, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
-				<NumberField inline name="Limit" value={reset.limit} min={0} onUpdate={l => dispatch(Actions.updatedMobReset({...reset, limit: l}))} />
+				<NumberField inline name="Limit" value={reset.limit} min={0} onUpdate={limit => dispatch(Actions.updatedMobReset({...reset, limit}))} />
 				in
-				<SelectVnum items={rooms} selectedId={reset.roomId} onUpdate={id => dispatch(Actions.updatedMobReset({...reset, roomId: id}))} />
+				<SelectVnum items={rooms} selectedId={reset.roomId} onUpdate={roomId => dispatch(Actions.updatedMobReset({...reset, roomId}))} />
 				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedMobReset(reset.id))}>Remove reset &amp; gear</DeleteButton>
 			</ToolRow>
-			<p>Equipment</p>
+			<p>Equipment <AddButton onClick={() => dispatch(Actions.addedEquipmentReset(reset.id))}>Add equipment</AddButton></p>
 			{reset.equipment.map(eqReset => <EqReset key={eqReset.id} reset={eqReset} mobResetId={reset.id} objects={objects} />)}
 		</div>
 	);
