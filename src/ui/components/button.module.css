@@ -1,13 +1,15 @@
 .button {
-	height: 38px;
+	appearance: button;
 	padding: 2px 8px;
 	background-color: white;
 	border: 1px solid hsl(0, 0%, 80%);
 	border-radius: 4px;
 	margin: 0 0.25rem;
+	font-size: 0.83rem;
+	line-height: 1rem;
 }
 .button:hover {
-	border-color:  hsl(0, 0%, 70%);
+	border-color: hsl(0, 0%, 70%);
 }
 
 .link {

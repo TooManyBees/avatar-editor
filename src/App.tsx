@@ -1,8 +1,10 @@
 import React, { Dispatch, SetStateAction, ChangeEvent } from 'react';
-import './App.css';
 import { Area } from "./app/models";
 import parseAreaFile from "./parser";
+import { Button } from "./ui/components";
 import Tabs from "./ui/tabs";
+
+import styles from './App.module.css';
 
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { loaded } from "./app/store/ui";
@@ -29,15 +31,15 @@ function ReadAreaForm({onRead}: {onRead: (a: Area) => void}) {
 		}
 	}
 	return (
-		<form>
+		<label className={styles.fileInput}>
+			<span className={styles.button} role="button">Load .are file</span>
 			<input type="file" onChange={onChange} />
-		</form>
+		</label>
 	);
 }
 
-function App() {
+function InitForm() {
 	const dispatch = useAppDispatch();
-	const isLoaded = useAppSelector(state => state.ui.loaded);
 
 	function onRead(area: Area) {
 		dispatch(initArea([area.area, area.helps]));
@@ -51,10 +53,24 @@ function App() {
 	}
 
 	return (
-		<div className="App">
+		<div className={styles.setupWrapper}>
+			<div className={styles.setupControls}>
+				<ReadAreaForm onRead={onRead} />
+				or
+				<Button onClick={() => dispatch(loaded())}>Start new area</Button>
+			</div>
+		</div>
+	);
+}
+
+function App() {
+	const isLoaded = useAppSelector(state => state.ui.loaded);
+
+	return (
+		<div className={styles.app}>
 			{ isLoaded ?
 				<Tabs /> :
-				<ReadAreaForm onRead={onRead} />
+				<InitForm />
 			}
 		</div>
 	);

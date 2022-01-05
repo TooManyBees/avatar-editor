@@ -1,0 +1,30 @@
+.app {
+	height: 100vh;
+}
+
+.fileInput input {
+	display: none;
+}
+
+.button {
+	composes: button from "./ui/components/button.module.css";
+	font-family: system-ui;
+	display: inline-flex;
+	align-items: center;
+}
+
+.setupWrapper {
+	composes: app;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.setupControls {
+	/*border: 1px solid hsl(0, 0%, 80%);
+	border-radius: 4px;
+	padding: 2rem;*/
+	display: flex;
+	align-items: baseline;
+	column-gap: 0.5rem;
+}
