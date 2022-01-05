@@ -54,6 +54,7 @@ function HelpForm({ help }: { help: Help }) {
 			<ToolRow>
 				<NumberField name="Level" inline value={help.level} onUpdate={level => dispatch(updatedHelp({...help, level}))} />
 				<KeywordField name="Keywords" value={help.keywords} onUpdate={keywords => dispatch(updatedHelp({...help, keywords}))} />
+				<span className={styles.spacer} />
 				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedHelp(help.id))}>Remove</DeleteButton>
 			</ToolRow>
 			<TextArea name="Body" value={help.body} onUpdate={body => dispatch(updatedHelp({...help, body}))} />
