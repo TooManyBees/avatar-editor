@@ -5,7 +5,7 @@ import styles from "./button.module.css";
 interface Props {
 	children?: React.ReactNode;
 	className?: string;
-	onClick: () => void;
+	onClick?: () => void;
 	onHoverState?: (state: boolean) => void;
 }
 

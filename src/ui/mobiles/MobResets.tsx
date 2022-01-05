@@ -7,6 +7,7 @@ import {
 	AddButton,
 	DeleteButton,
 	NumberField,
+	Section,
 	SelectVnum,
 	ToolRow,
 } from "../components";
@@ -26,37 +27,33 @@ export default function MobResets({ mobId }: Props) {
 	const resets = useAppSelector(state => state.resets.resets.mobile.filter(r => r.mobId === mobId));
 	const objects = useAppSelector(state => state.objects.objects);
 	const rooms = useAppSelector(state => state.rooms.rooms);
-	return <>
-		<ToolRow>
-			<h2>Resets</h2>
-			({resets.length})
-			<AddButton onClick={() => dispatch(Actions.addedMobReset(mobId))}>Add reset</AddButton>
-		</ToolRow>
-		<ol className={styles.list}>
-			{resets.map(reset => (
-				<li key={reset.id} className={styles.listItem}>
-					<MobReset reset={reset} rooms={rooms} objects={objects} />
-				</li>
-			))}
-		</ol>
-	</>;
+	return (
+		<Section header={<><h2>Resets</h2> ({resets.length}) <AddButton onClick={() => dispatch(Actions.addedMobReset(mobId))}>Add reset</AddButton></>}>
+			<ol className={styles.list}>
+				{resets.map(reset => (
+					<MobReset key={reset.id} reset={reset} rooms={rooms} objects={objects} />
+				))}
+			</ol>
+		</Section>
+	);
 }
 
 function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[], objects: Objekt[] }) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
-	return (
-		<div className={classnames(sharedStyles.container, danger && sharedStyles.dangerTarget)}>
+	return <>
+		<li className={classnames(styles.mobReset, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
 				<NumberField inline name="Limit" value={reset.limit} min={0} onUpdate={limit => dispatch(Actions.updatedMobReset({...reset, limit}))} />
 				in
 				<SelectVnum items={rooms} selectedId={reset.roomId} onUpdate={roomId => dispatch(Actions.updatedMobReset({...reset, roomId}))} />
 				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedMobReset(reset.id))}>Remove reset &amp; gear</DeleteButton>
 			</ToolRow>
-			<p>Equipment <AddButton onClick={() => dispatch(Actions.addedEquipmentReset(reset.id))}>Add equipment</AddButton></p>
+			<ToolRow><h3>Equipment</h3> <AddButton onClick={() => dispatch(Actions.addedEquipmentReset(reset.id))}>Add equipment</AddButton></ToolRow>
 			{reset.equipment.map(eqReset => <EqReset key={eqReset.id} reset={eqReset} mobResetId={reset.id} objects={objects} />)}
-		</div>
-	);
+		</li>
+		<hr className={styles.separator} />
+	</>;
 }
 
 function EqReset({ mobResetId, reset, objects }: { mobResetId: string, reset: EquipmentReset, objects: Objekt[] }) {
@@ -64,7 +61,7 @@ function EqReset({ mobResetId, reset, objects }: { mobResetId: string, reset: Eq
 	const [danger, setDanger] = useState(false);
 
 	return (
-		<ToolRow key={reset.id} className={classnames(sharedStyles.container, danger && sharedStyles.dangerTarget)}>
+		<ToolRow key={reset.id} className={classnames(styles.eqReset, danger && sharedStyles.dangerTarget)}>
 			<SelectVnum items={objects} selectedId={reset.objectId} onUpdate={id => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, objectId: id}]))} />
 			on
 			<WearSelector selected={reset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, wearLocation: l}]))} />

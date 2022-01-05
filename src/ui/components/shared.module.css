@@ -9,8 +9,9 @@
 }
 
 .dangerTarget {
-	border-style: dashed;
-	border-color: red;
+	border-style: dashed !important;
+	border-color: red !important;
+	border-radius: 4px;
 	background-color: rgba(255, 0, 0, 0.025);
 }
 
@@ -25,9 +26,15 @@
 	gap: 0.5rem;
 	flex-wrap: wrap;
 }
+.toolRow:first-child {
+	margin-top: 0;
+}
+.toolRow:last-child {
+	margin-bottom: 0;
+}
 
 .section {
-	margin: 1.5rem 0;
+	margin: 1rem 0;
 }
 
 .header {

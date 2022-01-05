@@ -3,13 +3,24 @@
 	padding: 0;
 }
 
-.listItem {
-	padding-bottom: 1rem;
-	margin-bottom: 1rem;
-	border-bottom: 1px solid hsl(0, 0%, 90%);
+.mobReset {
+	border: 1px solid transparent;
+	margin: 0.5rem -0.5rem;
+	padding: 0 0.5rem;
 }
-.listItem:last-child {
-	padding-bottom: 0;
-	margin-bottom: 0;
-	border-bottom: none;
+
+.eqReset {
+	border: 1px solid transparent;
+	margin: 0 -0.5rem;
+	padding: 0.5rem;
+}
+
+.separator {
+	border: none;
+	border-bottom: 1px solid hsl(0, 0%, 90%);
+	margin-left: 0;
+	max-width: 40rem;
+}
+.separator:last-child {
+	display: none;
 }

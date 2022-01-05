@@ -25,9 +25,6 @@ interface Props {
 
 export default function ApplyFields({ applies, id, updatedApply, addedApply, removedApply }: Props) {
 	const dispatch = useAppDispatch();
-
-	const onUpdate = (p: Apply) => dispatch(updatedApply([id, p]));
-
 	return (
 		<Section header={<><h2>Applies</h2>({applies.length})<AddButton onClick={() => dispatch(addedApply(id))}>Add apply</AddButton></>}>
 		<ol className={styles.applyFields}>

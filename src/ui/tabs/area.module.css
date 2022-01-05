@@ -20,7 +20,7 @@
 	list-style: none;
 }
 
-.help {
+/*.help {
 	padding-bottom: 1rem;
 	margin-bottom:  1rem;
 	border-bottom: 1px solid hsl(0, 0%, 90%);
@@ -29,6 +29,12 @@
 	padding-bottom: 0;
 	margin-bottom:  0;
 	border-bottom: none;
+}*/
+
+.help {
+	border: 1px solid transparent;
+	margin: 0 -0.5rem;
+	padding: 0 0.5rem;
 }
 
 .spacer {

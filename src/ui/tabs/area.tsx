@@ -39,7 +39,7 @@ export default function AreaTab() {
 
 			<Section header={<><h2>Helps</h2><AddButton onClick={() => dispatch(addedHelp())}>Add help</AddButton></>}>
 			<ol className={styles.helps}>
-				{area.helps.map(h => <li key={h.id} ><HelpForm help={h} /></li>)}
+				{area.helps.map(h => <HelpForm key={h.id} help={h} />)}
 			</ol>
 			</Section>
 		</TabsLayout>
@@ -50,14 +50,13 @@ function HelpForm({ help }: { help: Help }) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
 	return (
-		<div className={classnames(sharedStyles.container, danger && sharedStyles.dangerTarget)}>
+		<li className={classnames(styles.help, danger && sharedStyles.dangerTarget)}>
+			<ToolRow style={{justifyContent: "flex-end"}}><DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedHelp(help.id))}>Remove</DeleteButton></ToolRow>
 			<ToolRow>
 				<NumberField name="Level" inline value={help.level} onUpdate={level => dispatch(updatedHelp({...help, level}))} />
 				<KeywordField name="Keywords" value={help.keywords} onUpdate={keywords => dispatch(updatedHelp({...help, keywords}))} />
-				<span className={styles.spacer} />
-				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedHelp(help.id))}>Remove</DeleteButton>
 			</ToolRow>
 			<TextArea name="Body" value={help.body} onUpdate={body => dispatch(updatedHelp({...help, body}))} />
-		</div>
+		</li>
 	);
 }

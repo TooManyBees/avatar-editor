@@ -3,10 +3,14 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import classnames from "classnames";
 import { useAppDispatch } from "../../app/hooks";
 import { Edesc } from "../../app/models";
-import TextArea from "./TextArea";
-import { Section } from "./shared";
-import { AddButton, DeleteButton } from "./Button";
-import KeywordField from "./KeywordField";
+import {
+	AddButton,
+	DeleteButton,
+	KeywordField,
+	Section,
+	TextArea,
+	ToolRow,
+} from ".";
 import styles from "./EdescFields.module.css";
 import sharedStyles from "./shared.module.css";
 
@@ -39,11 +43,15 @@ interface EdescItemProps {
 function EdescItem({ id, edesc, updatedEdesc, removedEdesc }: EdescItemProps) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
-	return (
-		<li className={classnames(sharedStyles.container, danger && sharedStyles.dangerTarget)}>
-			<KeywordField name="Keywords" value={edesc.keywords} onUpdate={keywords => dispatch(updatedEdesc([id, {...edesc, keywords}]))} />
+	return <>
+		<li className={classnames(styles.edesc, danger && sharedStyles.dangerTarget)}>
+			<ToolRow>
+				<KeywordField name="Keywords" value={edesc.keywords} onUpdate={keywords => dispatch(updatedEdesc([id, {...edesc, keywords}]))} />
+				<div className={styles.spacer} />
+				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedEdesc([id, edesc.id]))}>Remove</DeleteButton>
+			</ToolRow>
 			<TextArea name="Description" value={edesc.body} onUpdate={body => dispatch(updatedEdesc([id, {...edesc, body}]))} />
-			<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedEdesc([id, edesc.id]))}>Remove</DeleteButton>
 		</li>
-	);
+		<hr className={styles.separator} />
+	</>;
 }
