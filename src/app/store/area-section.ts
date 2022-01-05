@@ -2,12 +2,16 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AreaSection, Help, newId, BLANK_AREA_SECTION } from "../models";
 
 export interface AreaSectionState {
-	line: string;
+	levelRange: string;
+	author: string;
+	name: string;
 	helps: Help[];
 }
 
 const initialState: AreaSectionState = {
-	line: "",
+	levelRange: "",
+	author: "",
+	name: "",
 	helps: [],
 };
 
@@ -17,11 +21,19 @@ const areaSectionSlice = createSlice({
 	reducers: {
 		init(state, action: PayloadAction<[AreaSection, Help[]]>) {
 			const [area, helps] = action.payload;
-			state.line = area.line;
+			state.levelRange = area.levelRange;
+			state.author = area.author;
+			state.name = area.name;
 			state.helps = helps;
 		},
-		updatedLine(state, action: PayloadAction<string>) {
-			state.line = action.payload;
+		updatedLevelRange(state, action: PayloadAction<string>) {
+			state.levelRange = action.payload;
+		},
+		updatedAuthor(state, action: PayloadAction<string>) {
+			state.author = action.payload;
+		},
+		updatedName(state, action: PayloadAction<string>) {
+			state.name = action.payload;
 		},
 		addedHelp(state) {
 			let help = {
@@ -50,7 +62,9 @@ const areaSectionSlice = createSlice({
 
 export const {
 	init,
-	updatedLine,
+	updatedLevelRange,
+	updatedAuthor,
+	updatedName,
 	addedHelp,
 	removedHelp,
 	updatedHelp,
