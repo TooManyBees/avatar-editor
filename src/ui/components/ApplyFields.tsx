@@ -3,8 +3,14 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import classnames from "classnames";
 import { useAppDispatch } from "../../app/hooks";
 import { Apply } from "../../app/models";
-import { AddButton, DeleteButton, NumberField, SelectField } from "../components";
-import BitsField from "./BitsField";
+import {
+	AddButton,
+	BitsField,
+	DeleteButton,
+	NumberField,
+	Section,
+	SelectField,
+} from ".";
 import { ToolRow } from "./shared";
 import styles from "./ApplyFields.module.css";
 import sharedStyles from "./shared.module.css";
@@ -22,12 +28,8 @@ export default function ApplyFields({ applies, id, updatedApply, addedApply, rem
 
 	const onUpdate = (p: Apply) => dispatch(updatedApply([id, p]));
 
-	return <>
-		<ToolRow>
-			<h2>Applies</h2>
-			({applies.length})
-			<AddButton onClick={() => dispatch(addedApply(id))}>Add apply</AddButton>
-		</ToolRow>
+	return (
+		<Section header={<><h2>Applies</h2>({applies.length})<AddButton onClick={() => dispatch(addedApply(id))}>Add apply</AddButton></>}>
 		<ol className={styles.applyFields}>
 			{applies.map(apply => (
 				<ApplyItem
@@ -39,7 +41,8 @@ export default function ApplyFields({ applies, id, updatedApply, addedApply, rem
 				/>
 			))}
 		</ol>
-	</>;
+		</Section>
+	);
 }
 
 interface ApplyItemProps {

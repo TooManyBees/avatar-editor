@@ -106,7 +106,7 @@ const objectSlice = createSlice({
 		addedExtraDesc(state, action: PayloadAction<string>) {
 			const object = state.objects.find(m => m.id === action.payload);
 			if (object) {
-				object.extraDescs.push({ id: newId(), keywords: [], body: "", _error: {} });
+				object.extraDescs.unshift({ id: newId(), keywords: [], body: "", _error: {} });
 			}
 		},
 		removedExtraDesc(state, action: PayloadAction<[string, string]>) {
@@ -130,7 +130,7 @@ const objectSlice = createSlice({
 		addedApply(state, action: PayloadAction<string>) {
 			const object = state.objects.find(m => m.id === action.payload);
 			if (object) {
-				object.applies.push(blankApply());
+				object.applies.unshift(blankApply());
 			}
 		},
 		removedApply(state, action: PayloadAction<[string, string]>) {

@@ -43,7 +43,7 @@ const areaSectionSlice = createSlice({
 				body: "",
 				_error: {},
 			};
-			state.helps.push(help);
+			state.helps.unshift(help);
 		},
 		removedHelp(state, action: PayloadAction<string>) {
 			state.helps = state.helps.filter(h => h.id !== action.payload);

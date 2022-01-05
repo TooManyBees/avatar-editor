@@ -65,7 +65,7 @@ const roomSlice = createSlice({
 		addedExtraDesc(state, action: PayloadAction<string>) {
 			const room = state.rooms.find(m => m.id === action.payload);
 			if (room) {
-				room.extraDescs.push({ id: newId(), keywords: [], body: "", _error: {} });
+				room.extraDescs.unshift({ id: newId(), keywords: [], body: "", _error: {} });
 			}
 		},
 		removedExtraDesc(state, action: PayloadAction<[string, string]>) {
@@ -88,7 +88,7 @@ const roomSlice = createSlice({
 		},
 		addedDoor(state, action: PayloadAction<string>) {
 			const room = state.rooms.find(m => m.id === action.payload);
-			if (room) room.doors.push(blankDoor());
+			if (room) room.doors.unshift(blankDoor());
 		},
 		updatedDoor(state, action: PayloadAction<[string, Door]>) {
 			const [roomId, newDoor] = action.payload;

@@ -98,7 +98,7 @@ const mobileSlice = createSlice({
 		addedApply(state, action: PayloadAction<string>) {
 			const mobile = state.mobiles.find(m => m.id === action.payload);
 			if (mobile) {
-				mobile.applies.push(blankApply());
+				mobile.applies.unshift(blankApply());
 			}
 		},
 		removedApply(state, action: PayloadAction<[string, string]>) {
