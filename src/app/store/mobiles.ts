@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Mobile, Kspawn, blankKspawn, blankMobile } from "../models/mobiles";
 import { SpecialU } from "../models/specials";
-import { Apply, blankApply } from "../models/helpers";
+import { Apply, blankApply, sortByVnum } from "../models/helpers";
 
 interface MobileState {
 	mobiles: Mobile[];
@@ -23,6 +23,7 @@ const mobileSlice = createSlice({
 			const [mobiles, orphanedSpecials] = action.payload;
 			state.mobiles = mobiles;
 			state.orphanedSpecials = orphanedSpecials;
+			sortByVnum(state.mobiles);
 		},
 		selectedId(state, action: PayloadAction<string>) {
 			state.selectedId = action.payload;
@@ -39,6 +40,7 @@ const mobileSlice = createSlice({
 			const [id, payload] = action.payload;
 			const mobile = state.mobiles.find(m => m.id === id);
 			if (mobile) mobile.vnum = payload;
+			sortByVnum(state.mobiles);
 		},
 		updatedKeywords(state, action: PayloadAction<[string, string[]]>) {
 			const [id, payload] = action.payload;

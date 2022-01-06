@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Apply, Edesc, Objekt, newId } from "../models";
 import { blankObject } from "../models/objects";
-import { blankApply } from "../models/helpers";
+import { blankApply, sortByVnum } from "../models/helpers";
 
 interface ObjectState {
 	objects: Objekt[];
@@ -19,6 +19,7 @@ const objectSlice = createSlice({
 	reducers: {
 		init(state, action: PayloadAction<Objekt[]>) {
 			state.objects = action.payload;
+			sortByVnum(state.objects);
 		},
 		selectedId(state, action: PayloadAction<string>) {
 			state.selectedId = action.payload;
@@ -35,6 +36,7 @@ const objectSlice = createSlice({
 			const [id, payload] = action.payload;
 			const object = state.objects.find(m => m.id === id);
 			if (object) object.vnum = payload;
+			sortByVnum(state.objects);
 		},
 		updatedKeywords(state, action: PayloadAction<[string, string[]]>) {
 			const [id, payload] = action.payload;

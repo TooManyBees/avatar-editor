@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Room, Door, Edesc, newId } from "../models";
 import { blankDoor, blankRoom } from "../models/rooms";
+import { sortByVnum } from "../models/helpers";
 
 interface RoomState {
 	rooms: Room[];
@@ -18,6 +19,7 @@ const roomSlice = createSlice({
 	reducers: {
 		init(state, action: PayloadAction<Room[]>) {
 			state.rooms = action.payload;
+			sortByVnum(state.rooms);
 		},
 		selectedId(state, action: PayloadAction<string>) {
 			state.selectedId = action.payload;
@@ -34,6 +36,7 @@ const roomSlice = createSlice({
 			const [id, payload] = action.payload;
 			const room = state.rooms.find(m => m.id === id);
 			if (room) room.vnum = payload;
+			sortByVnum(state.rooms);
 		},
 		updatedName(state, action: PayloadAction<[string, string]>) {
 			const [id, payload] = action.payload;

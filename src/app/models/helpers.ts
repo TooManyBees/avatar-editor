@@ -38,8 +38,8 @@ interface HasVnum {
 	vnum: number | null;
 }
 
-export function sortByVnum<T extends HasVnum>(items: T[]): T[] {
-	return [...items].sort((a, b) => {
+export function sortByVnum<T extends HasVnum>(items: T[]) {
+	items.sort((a, b) => {
 		if (a.vnum == null) return -1;
 		if (b.vnum == null) return 1;
 		return a.vnum - b.vnum;
