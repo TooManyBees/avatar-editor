@@ -53,16 +53,19 @@ function ApplyItem({ id, apply, updatedApply, removedApply }: ApplyItemProps) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
 	const onUpdate = (p: Apply) => dispatch(updatedApply([id, p]));
-	return (
-		<li className={classnames(sharedStyles.container, danger && sharedStyles.dangerTarget)}>
+	const desc = APPLY_TYPE.find(a => a.value === apply.type)?.desc;
+	return <>
+		<li className={classnames(styles.apply, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
-			<SelectField name="Type" value={apply.type} options={APPLY_TYPE} defaultValue={APPLY_TYPE[0]} onUpdate={type => onUpdate({...apply, type})} />
-			<ApplyFlagField type={apply.type} value={apply.value} onUpdate={(value: number) => onUpdate({...apply, value})} />
-			<em>{APPLY_TYPE.find(a => a.value === apply.type)?.desc}</em>
-			<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedApply([id, apply.id]))}>Remove</DeleteButton>
+				<SelectField name="Type" value={apply.type} options={APPLY_TYPE} defaultValue={APPLY_TYPE[0]} onUpdate={type => onUpdate({...apply, type})} />
+				<ApplyFlagField type={apply.type} value={apply.value} onUpdate={(value: number) => onUpdate({...apply, value})} />
+				<div className={styles.spacer} />
+				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedApply([id, apply.id]))}>Remove</DeleteButton>
 			</ToolRow>
+			{desc && <p><em>{desc}</em></p>}
 		</li>
-	);
+		<hr className={styles.separator} />
+	</>;
 }
 
 // FIXME
@@ -106,7 +109,7 @@ function ApplyFlagField({ type, value, onUpdate }: ApplyFlagProps) {
 		case 44:
 			return <label>Enabled: <input type="checkbox" value={value} onChange={e => onUpdate(e.target.checked ? value || 1 : 0)} /></label>;
 		case 50:
-			return <BitsField name="Value" value={factor(value)} map={IMMUNITY_FLAGS} onUpdate={(bs: number[]) => onUpdate(bs.reduce((a, b) => a + b, 0))} />;
+			return <BitsField className={styles.bitsfield} name="Value" value={factor(value)} map={IMMUNITY_FLAGS} onUpdate={(bs: number[]) => onUpdate(bs.reduce((a, b) => a + b, 0))} />;
 		case 93:
 			return <SelectField name="Value" value={value} options={DAMAGE_TYPE} defaultValue={DAMAGE_TYPE[0]} onUpdate={onUpdate} />;
 		case 94:

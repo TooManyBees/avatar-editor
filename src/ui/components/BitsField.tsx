@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, CSSProperties, useState } from "react";
 import classnames from "classnames";
 import styles from "./BitsField.module.css";
 
@@ -40,14 +40,16 @@ export function BitsFieldN(props: BitsFieldNProps) {
 
 interface BitsFieldProps extends BitsFieldNProps {
 	name: string;
+	style?: CSSProperties;
+	className?: string;
 }
 
 export default function BitsField(props: BitsFieldProps) {
 	const [open, setOpen] = useState(false);
-	const { name, map, value } = props;
+	const { name, map, value, className, style } = props;
 	const summary = map.filter(([bit]) => value.includes(bit)).map(([bit, name]) => name).join(", ") || "None";
 	return (
-		<details className={styles.details}>
+		<details className={classnames(styles.details, className)} style={style}>
 			<summary>
 				<span className={styles.label}>{name}:</span>
 				<span className={styles.marker} />
