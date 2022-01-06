@@ -104,7 +104,7 @@ function ApplyFlagField({ type, value, onUpdate }: ApplyFlagProps) {
 		case 42:
 		case 43:
 		case 44:
-			return null; // FIXME: toggle switch
+			return <label>Enabled: <input type="checkbox" value={value} onChange={e => onUpdate(e.target.checked ? value || 1 : 0)} /></label>;
 		case 50:
 			return <BitsField name="Value" value={factor(value)} map={IMMUNITY_FLAGS} onUpdate={(bs: number[]) => onUpdate(bs.reduce((a, b) => a + b, 0))} />;
 		case 93:
