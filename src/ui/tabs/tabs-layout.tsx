@@ -43,7 +43,7 @@ function TabsNav() {
 			<div className={styles.tabsNavItem} data-selected={currentTab === "mobiles"} onClick={() => dispatch(changedTab("mobiles"))}>Moblies</div>
 			<div className={styles.tabsNavItem} data-selected={currentTab === "objects"} onClick={() => dispatch(changedTab("objects"))}>Objects</div>
 			<div className={styles.tabsNavItem} data-selected={currentTab === "rooms"} onClick={() => dispatch(changedTab("rooms"))}>Rooms</div>
-			<Button onClick={save}>Save</Button>
+			<Button onClick={save}>Write .are</Button>
 		</nav>
 	);
 }

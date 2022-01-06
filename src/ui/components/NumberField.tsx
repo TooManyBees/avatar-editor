@@ -37,7 +37,7 @@ export default function NumberField(props: NumberFieldProps) {
 				value={value}
 				onChange={onChange}
 				onBlur={onBlur}
-				className={classnames(styles.input, warning && styles.warning)}
+				className={classnames(styles.input, styles.number, warning && styles.warning)}
 				style={{width: "5rem"}}
 			/>
 		</label>

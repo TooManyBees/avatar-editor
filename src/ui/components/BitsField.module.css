@@ -2,6 +2,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	margin: 0.5rem 0;
+	gap: 0.25rem;
 }
 .bitsField label {
 	width: 8rem;

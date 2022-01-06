@@ -11,6 +11,7 @@
 .keyword {
 	font-family: initial;
 	font-weight: normal;
+	font-size: 0.9rem;
 	background: hsl(0, 0%, 97%);
 	padding: 2px 4px;
 	border-radius: 2px;

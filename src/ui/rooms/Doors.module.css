@@ -9,6 +9,10 @@
 	padding: 0.5rem;
 }
 
+.door textarea {
+	margin-bottom: 0;
+}
+
 .spacer {
 	flex-grow: 1;
 }

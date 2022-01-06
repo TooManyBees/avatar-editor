@@ -31,7 +31,7 @@ export function VnumItemList<T extends HasVnum>({ selected, itemName, items, onA
 			<button onClick={onAdd}>New {itemName}</button>
 			{items.map(({ id, vnum, name, shortDesc }) => (
 				<li key={id} onClick={() => onChange(id)} className={selected === id ? styles.selected : undefined}>
-					<span className="vnum">{vnum || ""}</span> {name || shortDesc || ""}
+					<span className={styles.vnum}>{vnum || ""}</span> {name || shortDesc || ""}
 				</li>
 			))}
 		</ol>
