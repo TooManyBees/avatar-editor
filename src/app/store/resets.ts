@@ -3,6 +3,8 @@ import {
 	Resets,
 	MobReset,
 	EquipmentReset,
+	ObjectReset,
+	RandomExitReset,
 	newId
 } from "../models";
 import type { UncorellatedResets } from "../models/resets";
@@ -39,7 +41,7 @@ const resetsSlice = createSlice({
 				equipment: [],
 				_error: {},
 			};
-			state.resets.mobile.push(reset);
+			state.resets.mobile.unshift(reset);
 		},
 		updatedMobReset(state, action: PayloadAction<MobReset>) {
 			const newReset = action.payload;
@@ -68,7 +70,7 @@ const resetsSlice = createSlice({
 					comment: "",
 					_error: {},
 				};
-				reset.equipment.push(eqReset);
+				reset.equipment.unshift(eqReset);
 			}
 		},
 		updatedEquipmentReset(state, action: PayloadAction<[string, EquipmentReset]>) {
@@ -91,18 +93,49 @@ const resetsSlice = createSlice({
 				mobReset.equipment = mobReset.equipment.filter(r => r.id !== invId);
 			}
 		},
-		// addedObjectReset
-		// updatedObjectReset
-		// removedObjectReset
+		addedObjectReset(state, action: PayloadAction<string>) {
+			const newReset: ObjectReset = {
+				id: newId(),
+				roomId: "",
+				objectId: action.payload,
+				comment: "",
+				orphan: false,
+				_error: {},
+			};
+			state.resets.object.unshift(newReset);
+		},
+		updatedObjectReset(state, action: PayloadAction<[string, ObjectReset]>) {
+			const [resetId, reset] = action.payload;
+			const idx = state.resets.object.findIndex(r => r.id === resetId);
+			if (idx > -1) state.resets.object[idx] = reset;
+		},
+		removedObjectReset(state, action: PayloadAction<string>) {
+			state.resets.object = state.resets.object.filter(r => r.id !== action.payload);
+		},
 		// addedInObjectReset
 		// updatedInObjectReset
 		// removedInObjectReset
 		// addedDoorReset
 		// updatedDoorReset
 		// removedDoorReset
-		// addedRandomExitReset
-		// updatedRandomExitReset
-		// removedRandomExitReset
+		addedRandomExitReset(state, action: PayloadAction<string>) {
+			const newReset: RandomExitReset = {
+				id: newId(),
+				roomId: action.payload,
+				numExits: 0,
+				comment: "",
+				orphan: false,
+				_error: {},
+			};
+			state.resets.randomExit.unshift(newReset);
+		},
+		updatedRandomExitReset(state, action: PayloadAction<RandomExitReset>) {
+			const idx = state.resets.randomExit.findIndex(r => r.id === action.payload.id);
+			if (idx > -1) state.resets.randomExit[idx] = action.payload;
+		},
+		removedRandomExitReset(state, action: PayloadAction<string>) {
+			state.resets.randomExit = state.resets.randomExit.filter(r => r.id !== action.payload);
+		},
 	},
 });
 
@@ -115,17 +148,17 @@ export const {
 	addedEquipmentReset,
 	updatedEquipmentReset,
 	removedEquipmentReset,
-	// addedObjectReset,
-	// updatedObjectReset,
-	// removedObjectReset,
+	addedObjectReset,
+	updatedObjectReset,
+	removedObjectReset,
 	// addedInObjectReset,
 	// updatedInObjectReset,
 	// removedInObjectReset,
 	// addedDoorReset,
 	// updatedDoorReset,
 	// removedDoorReset,
-	// addedRandomExitReset,
-	// updatedRandomExitReset,
-	// removedRandomExitReset,
+	addedRandomExitReset,
+	updatedRandomExitReset,
+	removedRandomExitReset,
 } = resetsSlice.actions;
 export default resetsSlice.reducer;
