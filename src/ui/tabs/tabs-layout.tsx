@@ -37,11 +37,11 @@ function TabsNav() {
 
 	return (
 		<nav className={styles.tabsNav}>
-			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("area"))}>Area</div>
-			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("areadata"))}>Areadata</div>
-			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("mobiles"))}>Moblies</div>
-			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("objects"))}>Objects</div>
-			<div className={styles.tabsNavItem} onClick={() => dispatch(changedTab("rooms"))}>Rooms</div>
+			<div className={styles.tabsNavItem} data-selected={currentTab === "area"} onClick={() => dispatch(changedTab("area"))}>Area</div>
+			<div className={styles.tabsNavItem} data-selected={currentTab === "areadata"} onClick={() => dispatch(changedTab("areadata"))}>Areadata</div>
+			<div className={styles.tabsNavItem} data-selected={currentTab === "mobiles"} onClick={() => dispatch(changedTab("mobiles"))}>Moblies</div>
+			<div className={styles.tabsNavItem} data-selected={currentTab === "objects"} onClick={() => dispatch(changedTab("objects"))}>Objects</div>
+			<div className={styles.tabsNavItem} data-selected={currentTab === "rooms"} onClick={() => dispatch(changedTab("rooms"))}>Rooms</div>
 			<button onClick={save}>Save</button>
 		</nav>
 	);

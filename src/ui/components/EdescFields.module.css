@@ -15,7 +15,7 @@
 
 .separator {
 	border: none;
-	border-bottom: 1px solid hsl(0, 0%, 90%);
+	border-bottom: 1px solid var(--neutral-faint);
 	margin: 0;
 }
 .separator:last-child {

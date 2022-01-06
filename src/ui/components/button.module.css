@@ -19,12 +19,12 @@
 	background-color: transparent;
 	text-decoration: underline;
 	cursor: pointer;
-	color: blue;
+	color: var(--selection);
 }
 
 .delete {
 	white-space: nowrap;
-	color: red;
+	color: var(--danger);
 }
 .delete:before {
 	display: inline;
@@ -33,7 +33,7 @@
 
 .add {
 	white-space: nowrap;
-	color: green;
+	color: var(--good);
 }
 .add:before {
 	display: inline;

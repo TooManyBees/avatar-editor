@@ -1,35 +1,7 @@
-.areaField {
-	font-family: monospace;
-	background: linear-gradient(90deg,
-		transparent,
-		transparent 0.5rem,
-		pink 0.5rem,
-		pink 3.5rem,
-		transparent 3.5rem,
-		transparent 4.5rem,
-		pink 4.5rem,
-		pink 8rem,
-		transparent 8rem,
-		transparent 8.5rem,
-		pink 8.5rem
-	);
-}
-
 .helps {
 	padding: 0;
 	list-style: none;
 }
-
-/*.help {
-	padding-bottom: 1rem;
-	margin-bottom:  1rem;
-	border-bottom: 1px solid hsl(0, 0%, 90%);
-}
-.help:last-child {
-	padding-bottom: 0;
-	margin-bottom:  0;
-	border-bottom: none;
-}*/
 
 .help {
 	border: 1px solid transparent;

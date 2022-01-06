@@ -10,9 +10,9 @@
 
 .dangerTarget {
 	border-style: dashed !important;
-	border-color: red !important;
+	border-color: var(--danger) !important;
 	border-radius: 4px;
-	background-color: rgba(255, 0, 0, 0.025);
+	background-color: var(--danger-faint);
 }
 
 .row {

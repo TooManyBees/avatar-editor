@@ -25,17 +25,24 @@
 	font-family: monospace;
 
 	padding: 4px 8px 2px 8px;
-	color: hsl(0, 0%, 20%);
+	color: var(--foreground);
 
 	flex-grow: 1;
 }
 .input:hover {
 	border-color: hsl(0, 0%, 70%);
 }
-
-.warning:focus {
-	outline: 2px solid red;
+.input:focus {
+	outline: 2px solid var(--selection);
 }
-.warning {
-	background-color: rgba(255, 0, 0, 0.05);
+
+.number {
+	text-align: right;
+}
+
+.input.warning:focus {
+	outline: 2px solid var(--danger);
+}
+.input.warning {
+	background-color: var(--danger-faint);
 }

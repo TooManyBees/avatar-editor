@@ -19,8 +19,12 @@
 	cursor: pointer;
 	white-space: nowrap;
 }
-.VnumItemList li:hover, .VnumItemList li.selected {
-	background: pink;
+.VnumItemList li:hover {
+	background: var(--selection-dim);
+}
+.VnumItemList li.selected {
+	background: var(--selection);
+	color: white;
 }
 .VnumItemList .vnum {
 	font-style: italic;

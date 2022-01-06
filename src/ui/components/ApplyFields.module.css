@@ -15,7 +15,7 @@
 
 .separator {
 	border: none;
-	border-bottom: 1px solid hsl(0, 0%, 90%);
+	border-bottom: 1px solid var(--neutral--faint);
 	margin-left: 0;
 	max-width: 40rem;
 }

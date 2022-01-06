@@ -21,9 +21,6 @@
 }
 
 .setupControls {
-	/*border: 1px solid hsl(0, 0%, 80%);
-	border-radius: 4px;
-	padding: 2rem;*/
 	display: flex;
 	align-items: baseline;
 	column-gap: 0.5rem;

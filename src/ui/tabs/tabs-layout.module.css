@@ -23,7 +23,8 @@
 	top: 0;
 	left: 0;
 	z-index: 1;
-	background-color: cornflowerblue;
+	background-color: var(--background);
+	padding-left: 1rem;
 }
 
 .tabsNavItem {
@@ -34,7 +35,11 @@
 	margin-right: 0;
 }
 .tabsNavItem:hover {
-	background-color: pink;
+	background-color: var(--selection-dim);
+}
+.tabsNavItem[data-selected="true"] {
+	background-color: var(--selection);
+	color: white;
 }
 
 .tabsContents {

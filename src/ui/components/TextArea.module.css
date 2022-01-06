@@ -4,10 +4,13 @@
 .textArea textarea {
 	resize: vertical;
 	max-width: 100%;
-	background: transparent;
+	background: white;
 }
 .textArea textarea:hover {
-	border-color: hsl(0, 0%, 70%);
+	border-color: var(--neutral);
+}
+.textArea textarea:focus {
+	outline: 2px solid var(--selection);
 }
 
 .colorPreview, .textArea textarea {
@@ -16,7 +19,7 @@
 	font-family: monospace;
 	margin: 0.5rem 0;
 	padding: 4px 8px;
-	border: 1px solid hsl(0, 0%, 80%);
+	border: 1px solid var(--neutral-dim);
 	border-radius: 4px;
 	line-height: normal;
 }
@@ -34,8 +37,6 @@
 
 .editor {
 	position: relative;
-	color: black;
-	background-color: white;
 }
 .editor:before, .editor:after {
 	display: block;
