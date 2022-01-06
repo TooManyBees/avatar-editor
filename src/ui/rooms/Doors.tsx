@@ -54,6 +54,8 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
 
+	const noDoor = door.locks <= 0;
+
 	function onDoorUpdate(direction: number, state: number) {
 		if (reset && state < 0) dispatch(removedDoorReset(reset.id));
 		else if (reset) dispatch(updatedDoorReset({...reset, state}));
@@ -75,18 +77,20 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 			</ToolRow>
 			<ToolRow>
 				<SelectField name="Door" value={door.locks} options={LOCKS} onUpdate={locks => dispatch(Actions.updatedDoor([roomId, {...door, locks}]))} />
-				{door.locks > 0 && (
-					<>
-						with key
-						<SelectVnum
-							selectedId={door.keyId}
-							items={objects}
-							onUpdate={keyId => dispatch(Actions.updatedDoor([roomId, {...door, keyId}]))}
-						/>
-						starting
-						<SelectField value={reset?.state || -1} options={RESET_STATE} onUpdate={state => onDoorUpdate(door.direction, state)}  />
-					</>
-				)}
+				<span className={noDoor ? styles.disabled : undefined}>with key</span>
+				<SelectVnum
+					selectedId={door.keyId}
+					items={objects}
+					onUpdate={keyId => dispatch(Actions.updatedDoor([roomId, {...door, keyId}]))}
+					disabled={noDoor}
+				/>
+				<span className={noDoor ? styles.disabled : undefined}>starting</span>
+				<SelectField
+					value={reset?.state || -1}
+					options={RESET_STATE}
+					onUpdate={state => onDoorUpdate(door.direction, state)}
+					disabled={noDoor}
+				/>
 			</ToolRow>
 			<ToolRow>
 				<KeywordField name="Keywords" value={door.keywords} onUpdate={keywords => dispatch(Actions.updatedDoor([roomId, {...door, keywords}]))} />

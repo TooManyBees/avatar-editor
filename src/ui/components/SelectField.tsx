@@ -10,10 +10,11 @@ interface Props<V> {
 	value: V;
 	onUpdate: (v: V) => void;
 	inline?: boolean;
+	disabled?: boolean;
 }
 
 export default function SelectField<V>(props: Props<V>) {
-	const { inline, name, options, defaultValue, onUpdate } = props;
+	const { inline, name, options, defaultValue, onUpdate, disabled } = props;
 	const value = options.find(({ value }) => value === props.value) || options[0];
 	const selectStyles = minWidthStyles(options);
 
@@ -23,6 +24,7 @@ export default function SelectField<V>(props: Props<V>) {
 			value={value}
 			onChange={v => v && onUpdate(v.value)}
 			styles={selectStyles}
+			isDisabled={disabled}
 		/>
 	);
 

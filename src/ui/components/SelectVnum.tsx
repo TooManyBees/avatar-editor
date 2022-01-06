@@ -13,10 +13,11 @@ interface Props<T> {
 	selectedId: string | null;
 	items: readonly T[];
 	onUpdate: (id: string) => void;
+	disabled?: boolean;
 }
 
 export function SelectVnum<T extends HasVnum>(props: Props<T>) {
-	const { items, selectedId } = props;
+	const { items, selectedId, disabled } = props;
 	const options = props.items.map(item => ({
 		value: item.id,
 		vnum: item.vnum,
@@ -48,6 +49,7 @@ export function SelectVnum<T extends HasVnum>(props: Props<T>) {
 			blurInputOnSelect
 			captureMenuScroll
 			styles={styles}
+			isDisabled={disabled}
 		/>
 	);
 }
