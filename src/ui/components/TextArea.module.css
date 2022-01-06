@@ -3,7 +3,7 @@
 }
 .textArea textarea {
 	resize: vertical;
-	width: 100%;
+	max-width: 100%;
 	background: transparent;
 }
 .textArea textarea:hover {
@@ -28,7 +28,7 @@
 
 .description {
 	display: flex;
-	justify-content: space-between;
+	column-gap: 1rem;
 }
 
 .editor {
