@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import classnames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/objects";
 import { Objekt } from "../../app/models";
@@ -18,8 +19,9 @@ import {
 } from "../components";
 import ObjectValues from "../objects/ObjectValues";
 import ObjectResets from "../objects/ObjectResets";
-import "../VnumList.css";
 import TabsLayout from "./tabs-layout";
+import sharedStyles from "../components/shared.module.css";
+import styles from "./tabs-layout.module.css";
 
 export default function ObjectsTab() {
 	const dispatch = useAppDispatch();
@@ -62,6 +64,7 @@ function factor(n: number): number[] {
 
 function ObjectForm({ item: object }: Props) {
 	const dispatch = useAppDispatch();
+	const [danger, setDanger] = useState(false);
 	const id = object.id;
 
 	const wearFlags = object.wearFlags.reduce((sum, b) => sum + b, 0);
@@ -81,10 +84,10 @@ function ObjectForm({ item: object }: Props) {
 	const removedObject = () => dispatch(Actions.removedObject(id));
 
 	return (
-		<>
+		<div className={classnames(styles.tabDangerTarget, danger && sharedStyles.dangerTarget)}>
 			<ToolRow style={{justifyContent: "space-between"}}>
 				<NumberField name="VNUM" inline value={object.vnum} min={0} onUpdate={updatedVnum} />
-				<DeleteButton onClick={removedObject}>Delete object</DeleteButton>
+				<DeleteButton onHoverState={setDanger} onClick={removedObject}>Delete object</DeleteButton>
 			</ToolRow>
 			<KeywordField name="Keywords" value={object.keywords} onUpdate={updatedKeywords} />
 			<Row>
@@ -107,7 +110,7 @@ function ObjectForm({ item: object }: Props) {
 			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 			<ObjectResets objectId={id} />
-		</>
+		</div>
 	);
 }
 

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import classnames from "classnames";
 import { Dispatch } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/mobiles";
@@ -22,10 +23,10 @@ import ShopFields from "../mobiles/ShopFields";
 import { VnumItemList } from "../VnumList";
 import MobResets from "../mobiles/MobResets";
 import KspawnFields from "../mobiles/KspawnFields";
+import sharedStyles from "../components/shared.module.css";
+import styles from "./tabs-layout.module.css";
 
 import TabsLayout from "./tabs-layout";
-
-import "../VnumList.css";
 
 export default function MobilesTab() {
 	const dispatch = useAppDispatch();
@@ -56,6 +57,7 @@ interface Props {
 
 function MobileForm(props: Props) {
 	const dispatch = useAppDispatch();
+	const [danger, setDanger] = useState(false);
 	const { mobile } = props;
 	const id = mobile.id;
 
@@ -79,10 +81,10 @@ function MobileForm(props: Props) {
 	};
 
 	return (
-		<>
+		<div className={classnames(styles.tabDangerTarget, danger && sharedStyles.dangerTarget)}>
 			<ToolRow style={{ justifyContent: "space-between" }}>
 				<NumberField name="VNUM" inline value={mobile.vnum} min={0} onUpdate={updatedVnum} />
-				<DeleteButton onClick={removedMobile}>Delete mob</DeleteButton>
+				<DeleteButton onHoverState={setDanger} onClick={removedMobile}>Delete mob</DeleteButton>
 			</ToolRow>
 			<Row>
 				<KeywordField name="Keywords" value={mobile.keywords} onUpdate={updatedKeywords} />
@@ -111,7 +113,7 @@ function MobileForm(props: Props) {
 			<ShopComponent mobId={id} />
 			<KspawnFields mobId={id} kspawn={mobile.kspawn || null} />
 			<MobResets mobId={id} />
-		</>
+		</div>
 	);
 }
 

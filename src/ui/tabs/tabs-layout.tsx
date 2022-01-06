@@ -2,6 +2,7 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { changedTab } from "../../app/store/ui";
 import serializeArea from "../../serializer";
+import { Button } from "../components";
 import styles from "./tabs-layout.module.css";
 
 interface Props {
@@ -42,7 +43,7 @@ function TabsNav() {
 			<div className={styles.tabsNavItem} data-selected={currentTab === "mobiles"} onClick={() => dispatch(changedTab("mobiles"))}>Moblies</div>
 			<div className={styles.tabsNavItem} data-selected={currentTab === "objects"} onClick={() => dispatch(changedTab("objects"))}>Objects</div>
 			<div className={styles.tabsNavItem} data-selected={currentTab === "rooms"} onClick={() => dispatch(changedTab("rooms"))}>Rooms</div>
-			<button onClick={save}>Save</button>
+			<Button onClick={save}>Save</Button>
 		</nav>
 	);
 }

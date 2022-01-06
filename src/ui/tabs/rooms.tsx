@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import classnames from "classnames";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/rooms";
@@ -20,8 +21,9 @@ import {
 	ToolRow,
 } from "../components";
 import Doors from "../rooms/Doors";
-import "../VnumList.css";
 import TabsLayout from "./tabs-layout";
+import sharedStyles from "../components/shared.module.css";
+import styles from "./tabs-layout.module.css";
 
 export default function RoomsTab() {
 	const dispatch = useAppDispatch();
@@ -53,6 +55,7 @@ interface Props {
 
 function RoomForm(props: Props) {
 	const dispatch = useAppDispatch();
+	const [danger, setDanger] = useState(false);
 	const { room } = props;
 	const id = room.id;
 
@@ -69,10 +72,10 @@ function RoomForm(props: Props) {
 	const removedRoom = () => dispatch(Actions.removedRoom(id));
 
 	return (
-		<>
+		<div className={classnames(styles.tabDangerTarget, danger && sharedStyles.dangerTarget)}>
 			<ToolRow style={{justifyContent: "space-between"}}>
 				<NumberField name="VNUM" value={room.vnum} min={0} onUpdate={updatedVnum} />
-				<DeleteButton onClick={removedRoom}>Delete room</DeleteButton>
+				<DeleteButton onHoverState={setDanger} onClick={removedRoom}>Delete room</DeleteButton>
 			</ToolRow>
 			<Row>
 				<TextField name="Name" value={room.name} onUpdate={updatedName} />
@@ -89,7 +92,7 @@ function RoomForm(props: Props) {
 			<EdescFields edescs={room.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<Doors roomId={id} doors={room.doors} rooms={rooms} objects={objects} />
 			<RandomExits roomId={id} />
-		</>
+		</div>
 	);
 }
 
