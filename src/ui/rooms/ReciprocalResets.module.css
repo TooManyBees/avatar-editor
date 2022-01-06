@@ -1,0 +1,21 @@
+.subhead {
+	margin: 0.5rem 0;
+}
+
+.list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.link {
+	font-family: serif;
+	font-size: 1rem;
+	margin: 0;
+}
+
+.vnum {
+	font-style: italic;
+	font-family: monospace;
+	font-size: 0.8rem;
+}

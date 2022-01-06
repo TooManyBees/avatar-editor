@@ -1,9 +1,7 @@
 .container .children {
-	height: 0px;
-	overflow: hidden;
+	display: none;
 }
 
 .container.open .children {
-	height: unset;
-	overflow: unset;
+	display: initial;
 }

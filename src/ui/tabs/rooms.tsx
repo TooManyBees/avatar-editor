@@ -21,6 +21,7 @@ import {
 	ToolRow,
 } from "../components";
 import Doors from "../rooms/Doors";
+import ReciprocalResets from "../rooms/ReciprocalResets";
 import TabsLayout from "./tabs-layout";
 import sharedStyles from "../components/shared.module.css";
 import styles from "./tabs-layout.module.css";
@@ -92,6 +93,7 @@ function RoomForm(props: Props) {
 			<EdescFields edescs={room.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<Doors roomId={id} doors={room.doors} rooms={rooms} objects={objects} />
 			<RandomExits roomId={id} />
+			<ReciprocalResets roomId={id} />
 		</div>
 	);
 }
