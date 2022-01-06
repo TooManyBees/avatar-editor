@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import classnames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/rooms";
-import { Room, Door, Objekt } from "../../app/models";
+import {
+	addedDoorReset,
+	updatedDoorReset,
+	removedDoorReset,
+} from "../../app/store/resets";
+import { Room, Door, Objekt, DoorReset } from "../../app/models";
 import {
 	AddButton,
 	DeleteButton,
@@ -25,11 +30,12 @@ interface Props {
 
 export default function Doors({ roomId, doors, rooms, objects }: Props) {
 	const dispatch = useAppDispatch();
+	const resets = useAppSelector(state => state.resets.resets.door).filter(r => r.roomId === roomId);
 	return (
 		<Section header={<><h2>Exits</h2><AddButton onClick={() => Actions.addedDoor(roomId)}>Add door</AddButton></>}>
 			<ol className={styles.doors}>
 				{doors.map(door => (
-					<DoorItem key={door.id} roomId={roomId} door={door} rooms={rooms} objects={objects} />
+					<DoorItem key={door.id} roomId={roomId} door={door} rooms={rooms} objects={objects} reset={resets.find(r => r.direction === door.direction) || null} />
 				))}
 			</ol>
 		</Section>
@@ -41,11 +47,19 @@ interface DoorProps {
 	door: Door;
 	rooms: Room[];
 	objects: Objekt[];
+	reset: DoorReset | null;
 }
 
-function DoorItem({ roomId, door, rooms, objects }: DoorProps) {
+function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
+
+	function onDoorUpdate(direction: number, state: number) {
+		if (reset && state < 0) dispatch(removedDoorReset(reset.id));
+		else if (reset) dispatch(updatedDoorReset({...reset, state}));
+		else dispatch(addedDoorReset({ roomId, state, direction }));
+	}
+
 	return <>
 		<li className={classnames(styles.door, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
@@ -63,13 +77,14 @@ function DoorItem({ roomId, door, rooms, objects }: DoorProps) {
 				<SelectField name="Door" value={door.locks} options={LOCKS} onUpdate={locks => dispatch(Actions.updatedDoor([roomId, {...door, locks}]))} />
 				{door.locks > 0 && (
 					<>
-						Key:
+						with key
 						<SelectVnum
 							selectedId={door.keyId}
 							items={objects}
 							onUpdate={keyId => dispatch(Actions.updatedDoor([roomId, {...door, keyId}]))}
 						/>
-						{/* door reset */}
+						starting
+						<SelectField value={reset?.state || -1} options={RESET_STATE} onUpdate={state => onDoorUpdate(door.direction, state)}  />
 					</>
 				)}
 			</ToolRow>
@@ -101,4 +116,11 @@ const LOCKS: { value: number, label: string }[] = [
 	{ value: 6, label: "Bash/Pass-proof" },
 	{ value: 7, label: "Pick/Bash-proof" },
 	{ value: 8, label: "Everything-proof" },
+];
+
+const RESET_STATE: { value: number, label: string }[] = [
+	{ value: -1, label: "None"},
+	{ value: 0, label: "Open" },
+	{ value: 1, label: "Closed" },
+	{ value: 2, label: "Locked" },
 ];

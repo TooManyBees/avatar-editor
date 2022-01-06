@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
 	Resets,
+	DoorReset,
 	MobReset,
 	EquipmentReset,
 	ObjectReset,
@@ -115,9 +116,26 @@ const resetsSlice = createSlice({
 		// addedInObjectReset
 		// updatedInObjectReset
 		// removedInObjectReset
-		// addedDoorReset
-		// updatedDoorReset
-		// removedDoorReset
+		addedDoorReset(state, action: PayloadAction<{ roomId: string, direction: number, state: number }>) {
+			const { roomId, direction, state: doorState } = action.payload;
+			const newReset: DoorReset = {
+				id: newId(),
+				roomId,
+				direction,
+				state: doorState,
+				comment: "",
+				orphan: false,
+				_error: {},
+			};
+			state.resets.door.push(newReset);
+		},
+		updatedDoorReset(state, action: PayloadAction<DoorReset>) {
+			let idx = state.resets.door.findIndex(r => r.id === action.payload.id);
+			if (idx > -1) state.resets.door[idx] = action.payload;
+		},
+		removedDoorReset(state, action: PayloadAction<string>) {
+			state.resets.door = state.resets.door.filter(r => r.id !== action.payload);
+		},
 		addedRandomExitReset(state, action: PayloadAction<string>) {
 			const newReset: RandomExitReset = {
 				id: newId(),
@@ -154,9 +172,9 @@ export const {
 	// addedInObjectReset,
 	// updatedInObjectReset,
 	// removedInObjectReset,
-	// addedDoorReset,
-	// updatedDoorReset,
-	// removedDoorReset,
+	addedDoorReset,
+	updatedDoorReset,
+	removedDoorReset,
 	addedRandomExitReset,
 	updatedRandomExitReset,
 	removedRandomExitReset,
