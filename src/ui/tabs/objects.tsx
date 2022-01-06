@@ -19,6 +19,7 @@ import {
 } from "../components";
 import ObjectValues from "../objects/ObjectValues";
 import ObjectResets from "../objects/ObjectResets";
+import ReciprocalResets from "../objects/ReciprocalResets";
 import TabsLayout from "./tabs-layout";
 import sharedStyles from "../components/shared.module.css";
 import styles from "./tabs-layout.module.css";
@@ -112,6 +113,7 @@ function ObjectForm({ item: object }: Props) {
 			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 			<ObjectResets objectId={id} />
+			<ReciprocalResets containerId={id} />
 		</div>
 	);
 }
