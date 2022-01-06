@@ -3,7 +3,7 @@
 	height: calc(100%);
 }
 
-.VnumItemList {
+.vnumItemList {
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -13,20 +13,20 @@
 	overflow-x: hidden;
 }
 
-.VnumItemList li {
+.vnumItemList li {
 	padding: 0.25rem;
 	margin: -0.15rem 0;
 	cursor: pointer;
 	white-space: nowrap;
 }
-.VnumItemList li:hover {
+.vnumItemList li:hover {
 	background: var(--selection-dim);
 }
-.VnumItemList li.selected {
+.vnumItemList li.selected {
 	background: var(--selection);
 	color: white;
 }
-.VnumItemList .vnum {
+.vnumItemList .vnum {
 	font-style: italic;
 	min-width: 3rem;
 	display: inline-block;

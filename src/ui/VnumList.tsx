@@ -1,5 +1,5 @@
 import React from "react";
-import "./VnumList.css";
+import styles from "./VnumList.module.css";
 
 interface HasVnum {
 	id: string;
@@ -27,10 +27,10 @@ interface ListProps<T> {
 
 export function VnumItemList<T extends HasVnum>({ selected, itemName, items, onAdd, onChange }: ListProps<T>) {
 	return (
-		<ol className="VnumItemList">
+		<ol className={styles.vnumItemList}>
 			<button onClick={onAdd}>New {itemName}</button>
 			{items.map(({ id, vnum, name, shortDesc }) => (
-				<li key={id} onClick={() => onChange(id)} className={selected === id ? "selected" : undefined}>
+				<li key={id} onClick={() => onChange(id)} className={selected === id ? styles.selected : undefined}>
 					<span className="vnum">{vnum || ""}</span> {name || shortDesc || ""}
 				</li>
 			))}
