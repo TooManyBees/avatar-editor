@@ -49,7 +49,7 @@ function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[
 				<SelectVnum items={rooms} selectedId={reset.roomId} onUpdate={roomId => dispatch(Actions.updatedMobReset({...reset, roomId}))} />
 				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedMobReset(reset.id))}>Remove reset &amp; gear</DeleteButton>
 			</ToolRow>
-			<ToolRow><h3>Equipment</h3> <AddButton onClick={() => dispatch(Actions.addedEquipmentReset(reset.id))}>Add equipment</AddButton></ToolRow>
+			<ToolRow><h3>Equipment</h3> ({reset.equipment.length}) <AddButton onClick={() => dispatch(Actions.addedEquipmentReset(reset.id))}>Add equipment</AddButton></ToolRow>
 			{reset.equipment.map(eqReset => <EqReset key={eqReset.id} reset={eqReset} mobResetId={reset.id} objects={objects} />)}
 		</li>
 		<hr className={styles.separator} />

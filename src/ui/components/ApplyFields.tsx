@@ -60,7 +60,7 @@ function ApplyItem({ id, apply, updatedApply, removedApply }: ApplyItemProps) {
 				<SelectField name="Type" value={apply.type} options={APPLY_TYPE} defaultValue={APPLY_TYPE[0]} onUpdate={type => onUpdate({...apply, type})} />
 				<ApplyFlagField type={apply.type} value={apply.value} onUpdate={(value: number) => onUpdate({...apply, value})} />
 				<div className={styles.spacer} />
-				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedApply([id, apply.id]))}>Remove</DeleteButton>
+				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedApply([id, apply.id]))}>Remove apply</DeleteButton>
 			</ToolRow>
 			{desc && <p><em>{desc}</em></p>}
 		</li>
@@ -114,6 +114,8 @@ function ApplyFlagField({ type, value, onUpdate }: ApplyFlagProps) {
 			return <SelectField name="Value" value={value} options={DAMAGE_TYPE} defaultValue={DAMAGE_TYPE[0]} onUpdate={onUpdate} />;
 		case 94:
 			return <SelectField name="Value" value={value} options={OPEN_HAND_DAMAGE_TYPE} defaultValue={OPEN_HAND_DAMAGE_TYPE[0]} onUpdate={onUpdate} />;
+		case 13:
+			return <NumberField name="Value" value={value} min={-32768} max={32767} onUpdate={onUpdate} />;
 		default:
 			return <NumberField name="Value" value={value} onUpdate={onUpdate} />;
 	}

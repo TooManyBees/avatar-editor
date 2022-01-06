@@ -100,13 +100,15 @@ function ObjectForm({ item: object }: Props) {
 			<SelectField name="Type" value={object.itemType} options={ITEM_TYPE} defaultValue={ITEM_TYPE[0]} onUpdate={updatedItemType} />
 			<ObjectValues id={id} type={object.itemType} value0={object.value0} value1={object.value1} value2={object.value2} value3={object.value3} />
 			<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} onUpdate={updatedExtraFlags} />
-			<SelectField name="Wear flags" value={wearFlags} options={WEAR_FLAGS} defaultValue={WEAR_FLAGS[0]} onUpdate={updatedWearFlags} />
+			<ToolRow>
+				<SelectField name="Wear flags" value={wearFlags} options={WEAR_FLAGS} defaultValue={WEAR_FLAGS[0]} onUpdate={updatedWearFlags} />
+			</ToolRow>
+			<BitsField name="Racial wear flags" value={object.racialFlags} map={RACIAL_WEAR_FLAGS} onUpdate={updatedRacialFlags} />
 			<ToolRow>
 				<NumberField name="Weight" value={object.weight} onUpdate={updatedWeight} />
 				<NumberField name="Worth" value={object.worth} onUpdate={updatedWorth} />
 				<NumberField name="Quality" value={object.quality} min={1} onUpdate={updatedQuality} />
 			</ToolRow>
-			<BitsField name="Racial wear flags" value={object.racialFlags} map={RACIAL_WEAR_FLAGS} onUpdate={updatedRacialFlags} />
 			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 			<ObjectResets objectId={id} />

@@ -96,8 +96,12 @@ function MobileForm(props: Props) {
 				<TextField name="Long desc" value={mobile.longDesc} onUpdate={updatedLongDesc} />
 			</Row>
 			<TextArea name="Description" value={mobile.description} onUpdate={updatedDescription} />
-			<BitsField name="Act Flags" value={mobile.act} map={ACT_FLAGS} onUpdate={updatedAct} />
-			<BitsField name="Affected Flags" value={mobile.affected} map={AFF_FLAGS} onUpdate={updatedAffected} />
+			<Row>
+				<BitsField name="Act Flags" value={mobile.act} map={ACT_FLAGS} onUpdate={updatedAct} />
+			</Row>
+			<Row>
+				<BitsField name="Affected Flags" value={mobile.affected} map={AFF_FLAGS} onUpdate={updatedAffected} />
+			</Row>
 			<ToolRow>
 				<NumberField name="Level" inline value={mobile.level} min={0} onUpdate={updatedLevel} />
 				<SelectField name="Race" inline value={mobile.race} options={RACE} defaultValue={RACE[0]} onUpdate={updatedRace} />
