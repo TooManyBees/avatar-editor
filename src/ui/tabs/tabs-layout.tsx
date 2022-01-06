@@ -1,6 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { changedTab } from "../../app/store/ui";
+import { dismissUnsavedChanges } from "../../app/store";
 import serializeArea from "../../serializer";
 import { Button } from "../components";
 import styles from "./tabs-layout.module.css";
@@ -34,6 +35,7 @@ function TabsNav() {
 		if (w) {
 			w.document.write(`<pre><code>${output}</code></pre>`);
 		}
+		dismissUnsavedChanges();
 	}
 
 	return (
