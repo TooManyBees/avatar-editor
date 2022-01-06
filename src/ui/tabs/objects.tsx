@@ -17,6 +17,7 @@ import {
 	ToolRow,
 } from "../components";
 import ObjectValues from "../objects/ObjectValues";
+import ObjectResets from "../objects/ObjectResets";
 import "../VnumList.css";
 import TabsLayout from "./tabs-layout";
 
@@ -105,6 +106,7 @@ function ObjectForm({ item: object }: Props) {
 			<BitsField name="Racial wear flags" value={object.racialFlags} map={RACIAL_WEAR_FLAGS} onUpdate={updatedRacialFlags} />
 			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
+			<ObjectResets objectId={id} />
 		</>
 	);
 }
