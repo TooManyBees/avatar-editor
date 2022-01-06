@@ -11,6 +11,8 @@
 	white-space: nowrap;
 	flex-shrink: 1;
 	margin-right: 0.25rem;
+	font-family: ZillaSlab;
+	font-weight: 500;
 }
 
 .input {

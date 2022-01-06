@@ -4,7 +4,13 @@
 	gap: 0.5rem;
 }
 
+.label {
+	composes: label from "./inputs.module.css";
+}
+
 .keyword {
+	font-family: initial;
+	font-weight: normal;
 	background: hsl(0, 0%, 97%);
 	padding: 2px 4px;
 	border-radius: 2px;

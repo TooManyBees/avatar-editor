@@ -1,5 +1,31 @@
+@import-normalize;
+
+@font-face {
+  font-family: ZillaSlab;
+  src: url("../fonts/ZillaSlab-Regular.ttf");
+}
+@font-face {
+  font-family: ZillaSlab;
+  src: url("../fonts/ZillaSlab-Medium.ttf");
+  font-weight: 500;
+}
+@font-face {
+  font-family: ZillaSlab;
+  src: url("../fonts/ZillaSlab-SemiBold.ttf");
+  font-weight: 600;
+}
+@font-face {
+  font-family: ZillaSlab;
+  src: url("../fonts/ZillaSlab-Bold.ttf");
+  font-weight: 700;
+}
+
 body {
   margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: ZillaSlab;
 }
 
 * {

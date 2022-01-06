@@ -24,13 +24,5 @@
 }
 
 .label {
-
-}
-
-.arrow {
-
-}
-
-.summary {
-
+	composes: label from "./inputs.module.css";
 }

@@ -27,6 +27,7 @@
 }
 
 .description {
+	composes: label from "./inputs.module.css";
 	display: flex;
 	column-gap: 1rem;
 }
