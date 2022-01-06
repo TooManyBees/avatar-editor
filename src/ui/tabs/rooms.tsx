@@ -2,8 +2,9 @@ import React from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/rooms";
+import * as ResetActions from "../../app/store/resets";
 import { VnumItemList } from "../VnumList";
-import { Room } from "../../app/models";
+import { Room, RandomExitReset } from "../../app/models";
 import {
 	BitsField,
 	DeleteButton,
@@ -15,6 +16,7 @@ import {
 	SelectVnum,
 	TextArea,
 	TextField,
+	ToggleContainer,
 	ToolRow,
 } from "../components";
 import Doors from "../rooms/Doors";
@@ -79,12 +81,30 @@ function RoomForm(props: Props) {
 				<TextArea name="Description" value={room.description} onUpdate={updatedDescription} />
 			</Row>
 			<BitsField name="Flags" value={room.flags} map={FLAGS} onUpdate={updatedFlags} />
-			<SelectField name="Sector" value={room.sector} options={SECTOR} onUpdate={updatedSector} />
-			<EdescFields edescs={room.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
-			<Doors roomId={id} doors={room.doors} rooms={rooms} objects={objects} />
+			<Row>
+				<SelectField name="Sector" value={room.sector} options={SECTOR} onUpdate={updatedSector} />
+			</Row>
 			<BitsField name="Prevent align from entering" value={room.alignFlags} map={ALIGN_FLAGS} onUpdate={updatedAlignFlags}/>
 			<BitsField name="Prevent class from entering" value={room.classFlags} map={CLASS_FLAGS} onUpdate={updatedClassFlags}/>
+			<EdescFields edescs={room.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
+			<Doors roomId={id} doors={room.doors} rooms={rooms} objects={objects} />
+			<RandomExits roomId={id} />
 		</>
+	);
+}
+
+function RandomExits({ roomId }: { roomId: string }) {
+	const dispatch = useAppDispatch();
+	const reset = useAppSelector(state => state.resets.resets.randomExit.find(r => r.roomId === roomId)) || null;
+
+	const onEnabled = () => dispatch(ResetActions.addedRandomExitReset(roomId));
+	const onDisabled = () => reset && dispatch(ResetActions.removedRandomExitReset(reset.id));
+	const onUpdate = (numExits: number) => reset && dispatch(ResetActions.updatedRandomExitReset({...reset, numExits}));
+
+	return (
+		<ToggleContainer label="Random exits" opened={!!reset} onEnabled={onEnabled} onDisabled={onDisabled}>
+			<NumberField inline name="Number of exits" value={reset?.numExits || 0} onUpdate={onUpdate}/>
+		</ToggleContainer>
 	);
 }
 
