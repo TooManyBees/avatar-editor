@@ -27,6 +27,9 @@ const roomSlice = createSlice({
 			state.rooms.unshift(newRoom);
 			state.selectedId = newRoom.id;
 		},
+		removedRoom(state, action: PayloadAction<string>) {
+			state.rooms = state.rooms.filter(r => r.id !== action.payload);
+		},
 		updatedVnum(state, action: PayloadAction<[string, number]>) {
 			const [id, payload] = action.payload;
 			const room = state.rooms.find(m => m.id === id);
@@ -117,6 +120,7 @@ export const {
 	init,
 	selectedId,
 	addedRoom,
+	removedRoom,
 	updatedVnum,
 	updatedName,
 	updatedDescription,

@@ -28,6 +28,9 @@ const objectSlice = createSlice({
 			state.objects.unshift(newObject);
 			state.selectedId = newObject.id;
 		},
+		removedObject(state, action: PayloadAction<string>) {
+			state.objects = state.objects.filter(o => o.id !== action.payload);
+		},
 		updatedVnum(state, action: PayloadAction<[string, number]>) {
 			const [id, payload] = action.payload;
 			const object = state.objects.find(m => m.id === id);
@@ -160,6 +163,7 @@ export const {
 	init,
 	selectedId,
 	addedObject,
+	removedObject,
 	updatedVnum,
 	updatedKeywords,
 	updatedShortDesc,

@@ -6,6 +6,7 @@ import { VnumItemList } from "../VnumList";
 import {
 	ApplyFields,
 	BitsField,
+	DeleteButton,
 	KeywordField,
 	EdescFields,
 	NumberField,
@@ -76,11 +77,13 @@ function ObjectForm({ item: object }: Props) {
 	const updatedWorth = (n: number) => dispatch(Actions.updatedWorth([id, n]));
 	const updatedRacialFlags = (bs: number[]) => dispatch(Actions.updatedRacialFlags([id, bs]));
 	const updatedQuality = (n: number) => dispatch(Actions.updatedQuality([id, n]));
+	const removedObject = () => dispatch(Actions.removedObject(id));
 
 	return (
 		<>
-			<ToolRow>
+			<ToolRow style={{justifyContent: "space-between"}}>
 				<NumberField name="VNUM" inline value={object.vnum} min={0} onUpdate={updatedVnum} />
+				<DeleteButton onClick={removedObject}>Delete object</DeleteButton>
 			</ToolRow>
 			<KeywordField name="Keywords" value={object.keywords} onUpdate={updatedKeywords} />
 			<Row>

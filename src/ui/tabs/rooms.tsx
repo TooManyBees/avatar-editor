@@ -6,6 +6,7 @@ import { VnumItemList } from "../VnumList";
 import { Room } from "../../app/models";
 import {
 	BitsField,
+	DeleteButton,
 	KeywordField,
 	EdescFields,
 	NumberField,
@@ -63,11 +64,13 @@ function RoomForm(props: Props) {
 	const updatedSector = (n: number) => dispatch(Actions.updatedSector([id, n]));
 	const updatedAlignFlags = (ns: number[]) => dispatch(Actions.updatedAlignFlags([id, ns]));
 	const updatedClassFlags = (ns: number[]) => dispatch(Actions.updatedClassFlags([id, ns]));
+	const removedRoom = () => dispatch(Actions.removedRoom(id));
 
 	return (
 		<>
-			<ToolRow>
+			<ToolRow style={{justifyContent: "space-between"}}>
 				<NumberField name="VNUM" value={room.vnum} min={0} onUpdate={updatedVnum} />
+				<DeleteButton onClick={removedRoom}>Delete room</DeleteButton>
 			</ToolRow>
 			<Row>
 				<TextField name="Name" value={room.name} onUpdate={updatedName} />
