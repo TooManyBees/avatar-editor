@@ -3,7 +3,7 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/rooms";
 import { VnumItemList } from "../VnumList";
-import { Room, Door } from "../../app/models";
+import { Room } from "../../app/models";
 import {
 	BitsField,
 	KeywordField,
@@ -11,10 +11,12 @@ import {
 	NumberField,
 	Row,
 	SelectField,
+	SelectVnum,
 	TextArea,
 	TextField,
 	ToolRow,
 } from "../components";
+import Doors from "../rooms/Doors";
 import "../VnumList.css";
 import TabsLayout from "./tabs-layout";
 
@@ -52,6 +54,7 @@ function RoomForm(props: Props) {
 	const id = room.id;
 
 	const rooms = useAppSelector(state => state.rooms.rooms);
+	const objects = useAppSelector(state => state.objects.objects);
 
 	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
 	const updatedName = (s: string) => dispatch(Actions.updatedName([id, s]));
@@ -75,51 +78,10 @@ function RoomForm(props: Props) {
 			<BitsField name="Flags" value={room.flags} map={FLAGS} onUpdate={updatedFlags} />
 			<SelectField name="Sector" value={room.sector} options={SECTOR} onUpdate={updatedSector} />
 			<EdescFields edescs={room.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
-			<h2>Exits</h2>
-			<Doors roomId={id} doors={room.doors} rooms={rooms} />
+			<Doors roomId={id} doors={room.doors} rooms={rooms} objects={objects} />
 			<BitsField name="Prevent align from entering" value={room.alignFlags} map={ALIGN_FLAGS} onUpdate={updatedAlignFlags}/>
 			<BitsField name="Prevent class from entering" value={room.classFlags} map={CLASS_FLAGS} onUpdate={updatedClassFlags}/>
 		</>
-	);
-}
-
-interface DoorsProps {
-	roomId: string,
-	doors: Door[],
-	rooms: Room[],
-}
-
-function Doors({ roomId, doors, rooms }: DoorsProps) {
-	const dispatch = useAppDispatch();
-	return (
-		<ol>
-			{doors.map(door => (
-				<li key={door.id}>
-					<SelectField name="Direction" value={door.direction} options={DIRECTIONS} onUpdate={direction => dispatch(Actions.updatedDoor([roomId, {...door, direction}]))} />
-					<Destination roomId={roomId} doorId={door.id} rooms={rooms} value={door.toRoomId} onUpdate={toRoomId => dispatch(Actions.updatedDoor([roomId, {...door, toRoomId}]))} />
-					<SelectField name="Door" value={door.locks} options={LOCKS} onUpdate={locks => dispatch(Actions.updatedDoor([roomId, {...door, locks}]))} />
-					{/* key selector */}
-					<KeywordField name="Keywords" value={door.keywords} onUpdate={keywords => dispatch(Actions.updatedDoor([roomId, {...door, keywords}]))} />
-					<TextArea name="Description" value={door.description} onUpdate={description => dispatch(Actions.updatedDoor([roomId, {...door, description}]))} />
-				</li>
-			))}
-		</ol>
-	);
-}
-
-interface DestinationProps {
-	roomId: string;
-	doorId: string;
-	rooms: Room[];
-	value: string;
-	onUpdate: (s: string) => void;
-}
-
-function Destination(props: DestinationProps) {
-	return (
-		<label>Destination: <select value={props.value} onChange={e => props.onUpdate(e.target.value)}>
-			{props.rooms.map(r => <option key={r.id} value={r.id}>{r.vnum} {r.name}</option>)}
-		</select></label>
 	);
 }
 
@@ -204,25 +166,4 @@ const CLASS_FLAGS: [number, string, string][] = [
 	[4194304, "Ripper", ""],
 	[8388608, "Bladedancer", ""],
 	[16777216, "Vizier", ""],
-];
-
-const DIRECTIONS: { value: number, label: string }[] = [
-	{ value: 0, label: "North" },
-	{ value: 1, label: "East" },
-	{ value: 2, label: "South" },
-	{ value: 3, label: "West" },
-	{ value: 4, label: "Up" },
-	{ value: 5, label: "Down" },
-];
-
-const LOCKS: { value: number, label: string }[] = [
-	{ value: 0, label: "No door" },
-	{ value: 1, label: "Plain door" },
-	{ value: 2, label: "Pickproof" },
-	{ value: 3, label: "Bashproof" },
-	{ value: 4, label: "Passproof" },
-	{ value: 5, label: "Pickproof, Passproof" },
-	{ value: 6, label: "Bashproof, Passproof" },
-	{ value: 7, label: "Pickproof, Bashproof" },
-	{ value: 8, label: "Everything-proof" },
 ];
