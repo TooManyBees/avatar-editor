@@ -49,13 +49,17 @@ export default function BitsField(props: BitsFieldProps) {
 	const { name, map, value, className, style } = props;
 	const summary = map.filter(([bit]) => value.includes(bit)).map(([bit, name]) => name).join(", ") || "None";
 	return (
-		<details className={classnames(styles.details, className)} style={style}>
-			<summary>
-				<span className={styles.label}>{name}:</span>
-				<span className={styles.marker} />
-				<span className={styles.summary}>{summary}</span>
-			</summary>
-			<BitsFieldN {...props} />
-		</details>
+		<div className={classnames(styles.details, className, open && styles.open)} style={style}>
+			<div className={styles.summary}>
+				<div className={styles.clickable} onClick={() => setOpen(!open)}>
+					<span className={styles.label}>{name}:</span>
+					<span className={styles.marker} />
+					<span className={styles.summary}>{summary}</span>
+				</div>
+			</div>
+			<div className={styles.body}>
+				<BitsFieldN {...props} />
+			</div>
+		</div>
 	);
 }

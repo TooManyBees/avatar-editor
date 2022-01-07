@@ -8,20 +8,34 @@
 	width: 8rem;
 }
 
-.details summary {
+.summary {
 	display: flex;
 	height: 38px;
 	align-items: center;
+}
+
+.clickable {
+	display: flex;
+	align-items: center;
 	cursor: pointer;
 }
+
 .marker {
 	display: list-item;
 	list-style-position: inside;
 	list-style-type: disclosure-closed;
 	margin: 0 0.5rem;
 }
-.details[open] .marker {
+.open .marker {
 	list-style-type: disclosure-open;
+}
+
+.body {
+	display: none;
+	margin-bottom: 0.5rem;
+}
+.open .body {
+	display: block;
 }
 
 .label {
