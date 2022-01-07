@@ -40,8 +40,8 @@ export interface Mobile extends MobileFields {
 	_error: ErrorMarkers<MobileFields>;
 }
 
-export const blankMobile = (): Mobile => ({
-	id: newId(),
+export const blankMobile = (id?: string): Mobile => ({
+	id: id || newId(),
 	vnum: null,
 	keywords: [],
 	shortDesc: "",

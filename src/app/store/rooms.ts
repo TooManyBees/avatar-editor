@@ -5,12 +5,10 @@ import { sortByVnum } from "../models/helpers";
 
 interface RoomState {
 	rooms: Room[];
-	selectedId: string | null;
 }
 
 const initialState: RoomState = {
 	rooms: [],
-	selectedId: null,
 };
 
 const roomSlice = createSlice({
@@ -21,13 +19,9 @@ const roomSlice = createSlice({
 			state.rooms = action.payload;
 			sortByVnum(state.rooms);
 		},
-		selectedId(state, action: PayloadAction<string>) {
-			state.selectedId = action.payload;
-		},
-		addedRoom(state) {
-			const newRoom = blankRoom();
+		addedRoom(state, action: PayloadAction<string>) {
+			const newRoom = blankRoom(action.payload);
 			state.rooms.unshift(newRoom);
-			state.selectedId = newRoom.id;
 		},
 		removedRoom(state, action: PayloadAction<string>) {
 			state.rooms = state.rooms.filter(r => r.id !== action.payload);
@@ -121,7 +115,6 @@ const roomSlice = createSlice({
 
 export const {
 	init,
-	selectedId,
 	addedRoom,
 	removedRoom,
 	updatedVnum,

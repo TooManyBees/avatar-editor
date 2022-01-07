@@ -1,8 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { changedTab } from "../../app/store/ui";
-import { selectedId as selectedMobId } from "../../app/store/mobiles";
-import { selectedId as selectedObjectId } from "../../app/store/objects";
+import { selectedMobileId, selectedObjectId } from "../../app/store/ui";
 import { MobReset, ObjectReset } from "../../app/models";
 import {
 	LinkButton,
@@ -33,11 +32,6 @@ function MobResets(props: { resets: MobReset[] }) {
 	const dispatch = useAppDispatch();
 	const mobiles = useAppSelector(state => state.mobiles.mobiles);
 
-	function selectMobile(id: string) {
-		dispatch(selectedMobId(id));
-		dispatch(changedTab("mobiles"));
-	}
-
 	return (
 		<ol className={styles.list}>
 			{props.resets.map(reset => {
@@ -47,7 +41,7 @@ function MobResets(props: { resets: MobReset[] }) {
 				const name = mobile?.shortDesc || "<unnamed mobile>";
 				return (
 					<li key={reset.id}>
-						<LinkButton className={styles.link} onClick={() => selectMobile(reset.mobId)}>
+						<LinkButton className={styles.link} onClick={() => dispatch(selectedMobileId(reset.mobId))}>
 							<span className={styles.annotation}>(Mobile{vnum && <>&nbsp;<span className={styles.vnum}>{vnum}</span></>})</span> {name}
 						</LinkButton>
 					</li>
@@ -61,11 +55,6 @@ function ObjectResets(props: { resets: ObjectReset[] }) {
 	const dispatch = useAppDispatch();
 	const objects = useAppSelector(state => state.objects.objects);
 
-	function selectObject(id: string) {
-		dispatch(selectedObjectId(id));
-		dispatch(changedTab("objects"));
-	}
-
 	return (
 		<ol className={styles.list}>
 			{props.resets.map(reset => {
@@ -75,7 +64,7 @@ function ObjectResets(props: { resets: ObjectReset[] }) {
 				const name = object?.shortDesc || "<unnamed object>";
 				return (
 					<li key={reset.id}>
-						<LinkButton className={styles.link} onClick={() => selectObject(reset.objectId)}>
+						<LinkButton className={styles.link} onClick={() => dispatch(selectedObjectId(reset.objectId))}>
 							<span className={styles.annotation}>(Object{vnum && <>&nbsp;<span className={styles.vnum}>{vnum}</span></>})</span> {name}
 						</LinkButton>
 					</li>

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import classnames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/objects";
-import { Objekt } from "../../app/models";
+import { selectedObjectId } from "../../app/store/ui";
+import { Objekt, newId } from "../../app/models";
 import { VnumItemList } from "../VnumList";
 import {
 	ApplyFields,
@@ -27,15 +28,17 @@ import styles from "./tabs-layout.module.css";
 export default function ObjectsTab() {
 	const dispatch = useAppDispatch();
 	const objects = useAppSelector(state => state.objects.objects);
-	const currentId = useAppSelector(state => state.objects.selectedId);
+	const currentId = useAppSelector(state => state.ui.selectedObjectId);
 	const object = objects.find(m => m.id === currentId);
 
 	function onSelect(id: string) {
-		dispatch(Actions.selectedId(id));
+		dispatch(selectedObjectId(id));
 	}
 
 	function onAdd() {
-		dispatch(Actions.addedObject());
+		const id = newId();
+		dispatch(Actions.addedObject(id));
+		dispatch(selectedObjectId(id));
 	}
 
 	const sideNav = <VnumItemList itemName="Object" items={objects} selected={currentId} onChange={onSelect} onAdd={onAdd} />;

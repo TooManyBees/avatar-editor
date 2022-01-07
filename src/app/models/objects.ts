@@ -27,8 +27,8 @@ export interface Objekt extends ObjectFields {
 	_error: ErrorMarkers<ObjectFields>;
 }
 
-export const blankObject = (): Objekt => ({
-	id: newId(),
+export const blankObject = (id?: string): Objekt => ({
+	id: id || newId(),
 	vnum: null,
 	keywords: [],
 	shortDesc: "",

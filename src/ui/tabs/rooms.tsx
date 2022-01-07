@@ -4,8 +4,9 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/rooms";
 import * as ResetActions from "../../app/store/resets";
+import { selectedRoomId } from "../../app/store/ui";
 import { VnumItemList } from "../VnumList";
-import { Room, RandomExitReset } from "../../app/models";
+import { Room, RandomExitReset, newId } from "../../app/models";
 import {
 	BitsField,
 	DeleteButton,
@@ -29,15 +30,17 @@ import styles from "./tabs-layout.module.css";
 export default function RoomsTab() {
 	const dispatch = useAppDispatch();
 	const rooms = useAppSelector(state => state.rooms.rooms);
-	const currentId = useAppSelector(state => state.rooms.selectedId);
+	const currentId = useAppSelector(state => state.ui.selectedRoomId);
 	const room = rooms.find(m => m.id === currentId);
 
 	function onSelect(id: string) {
-		dispatch(Actions.selectedId(id));
+		dispatch(selectedRoomId(id));
 	}
 
 	function onAdd() {
-		dispatch(Actions.addedRoom());
+		const id = newId();
+		dispatch(Actions.addedRoom(id));
+		dispatch(selectedRoomId(id));
 	}
 
 	const sideNav = <VnumItemList itemName="Room" items={rooms} selected={currentId} onChange={onSelect} onAdd={onAdd} />;

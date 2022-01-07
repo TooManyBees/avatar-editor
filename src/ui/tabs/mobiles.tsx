@@ -5,7 +5,8 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/mobiles";
 import * as ResetsActions from "../../app/store/resets";
 import * as ShopsActions from "../../app/store/shops";
-import { Mobile, Shop } from "../../app/models";
+import { selectedMobileId } from "../../app/store/ui";
+import { Mobile, Shop, newId } from "../../app/models";
 import {
 	ApplyFields,
 	KeywordField,
@@ -31,15 +32,17 @@ import TabsLayout from "./tabs-layout";
 export default function MobilesTab() {
 	const dispatch = useAppDispatch();
 	const mobiles = useAppSelector(state => state.mobiles.mobiles);
-	const currentId = useAppSelector(state => state.mobiles.selectedId);
+	const currentId = useAppSelector(state => state.ui.selectedMobileId);
 	const mobile = mobiles.find(m => m.id === currentId);
 
 	function onSelect(id: string) {
-		dispatch(Actions.selectedId(id));
+		dispatch(selectedMobileId(id));
 	}
 
 	function onAdd() {
-		dispatch(Actions.addedMobile());
+		const id = newId();
+		dispatch(Actions.addedMobile(id));
+		dispatch(selectedMobileId(id));
 	}
 
 	const sideNav = <VnumItemList itemName="Mobile" items={mobiles} selected={currentId} onChange={onSelect} onAdd={onAdd} />;

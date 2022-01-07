@@ -6,13 +6,11 @@ import { Apply, blankApply, sortByVnum } from "../models/helpers";
 interface MobileState {
 	mobiles: Mobile[];
 	orphanedSpecials: SpecialU[];
-	selectedId: string | null;
 }
 
 const initialState: MobileState = {
 	mobiles: [],
 	orphanedSpecials: [],
-	selectedId: null,
 };
 
 const mobileSlice = createSlice({
@@ -25,13 +23,9 @@ const mobileSlice = createSlice({
 			state.orphanedSpecials = orphanedSpecials;
 			sortByVnum(state.mobiles);
 		},
-		selectedId(state, action: PayloadAction<string>) {
-			state.selectedId = action.payload;
-		},
-		addedMobile(state) {
-			const newMob = blankMobile();
+		addedMobile(state, action: PayloadAction<string>) {
+			const newMob = blankMobile(action.payload);
 			state.mobiles.unshift(newMob);
-			state.selectedId = newMob.id;
 		},
 		removedMobile(state, action: PayloadAction<string>) {
 			state.mobiles = state.mobiles.filter(m => m.id !== action.payload);
@@ -152,7 +146,6 @@ const mobileSlice = createSlice({
 
 export const {
 	init,
-	selectedId,
 	addedMobile,
 	removedMobile,
 	updatedVnum,

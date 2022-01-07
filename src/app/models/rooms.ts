@@ -46,8 +46,8 @@ export const blankRoomU = (): RoomU => ({
 	_error: {},
 });
 
-export const blankRoom = (): Room => ({
-	id: newId(),
+export const blankRoom = (id?: string): Room => ({
+	id: id || newId(),
 	vnum: null,
 	name: "",
 	description: "",

@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { changedTab } from "../../app/store/ui";
-import { selectedId as selectedObjectId } from "../../app/store/objects";
+import { selectedObjectId } from "../../app/store/ui";
 import { InObjectReset } from "../../app/models";
 import {
 	LinkButton,
@@ -30,11 +30,6 @@ function ObjectResets(props: { resets: InObjectReset[] }) {
 	const dispatch = useAppDispatch();
 	const objects = useAppSelector(state => state.objects.objects);
 
-	function selectObject(id: string) {
-		dispatch(selectedObjectId(id));
-		dispatch(changedTab("objects"));
-	}
-
 	return (
 		<ol className={styles.list}>
 			{props.resets.map(reset => {
@@ -44,7 +39,7 @@ function ObjectResets(props: { resets: InObjectReset[] }) {
 				const name = object?.shortDesc || "<unnamed object>";
 				return (
 					<li key={reset.id}>
-						<LinkButton className={styles.link} onClick={() => selectObject(reset.objectId)}>
+						<LinkButton className={styles.link} onClick={() => dispatch(selectedObjectId(reset.objectId))}>
 							<span className={styles.vnum}>{vnum} </span>{name}
 						</LinkButton>
 					</li>

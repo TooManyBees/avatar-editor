@@ -5,12 +5,10 @@ import { blankApply, sortByVnum } from "../models/helpers";
 
 interface ObjectState {
 	objects: Objekt[];
-	selectedId: string | null;
 }
 
 const initialState: ObjectState = {
 	objects: [],
-	selectedId: null,
 };
 
 const objectSlice = createSlice({
@@ -21,13 +19,9 @@ const objectSlice = createSlice({
 			state.objects = action.payload;
 			sortByVnum(state.objects);
 		},
-		selectedId(state, action: PayloadAction<string>) {
-			state.selectedId = action.payload;
-		},
-		addedObject(state) {
-			const newObject = blankObject();
+		addedObject(state, action: PayloadAction<string>) {
+			const newObject = blankObject(action.payload);
 			state.objects.unshift(newObject);
-			state.selectedId = newObject.id;
 		},
 		removedObject(state, action: PayloadAction<string>) {
 			state.objects = state.objects.filter(o => o.id !== action.payload);
@@ -163,7 +157,6 @@ const objectSlice = createSlice({
 
 export const {
 	init,
-	selectedId,
 	addedObject,
 	removedObject,
 	updatedVnum,
