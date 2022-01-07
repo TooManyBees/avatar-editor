@@ -51,11 +51,11 @@ export default function BitsField(props: BitsFieldProps) {
 	return (
 		<div className={classnames(styles.details, className, open && styles.open)} style={style}>
 			<div className={styles.summary}>
-				<div className={styles.clickable} onClick={() => setOpen(!open)}>
+				<button className={styles.clickable} onClick={() => setOpen(!open)}>
 					<span className={styles.label}>{name}:</span>
 					<span className={styles.marker} />
 					<span className={styles.summary}>{summary}</span>
-				</div>
+				</button>
 			</div>
 			<div className={styles.body}>
 				<BitsFieldN {...props} />
