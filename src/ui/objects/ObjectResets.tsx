@@ -35,7 +35,7 @@ export default function ObjectResets(props: Props) {
 	const { objectId, vnum } = props;
 	const resets = useAppSelector(state => state.resets.resets.object.filter(r => r.objectId === objectId));
 	const rooms = useAppSelector(state => state.rooms.rooms);
-	const skinMob = vnum ? useAppSelector(state => state.mobiles.mobiles).find(m => m.vnum === vnum) : null;
+	const skinMob = vnum ? useAppSelector(state => state.mobiles.mobiles).find(m => m.vnum === vnum && m.act.includes(262144)) : null;
 	return <>
 		<SectionList
 			header={<><h2>Object resets</h2> ({resets.length}) <AddButton onClick={() => dispatch(addedObjectReset(objectId))}>Add reset</AddButton></>}
