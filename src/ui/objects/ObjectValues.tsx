@@ -115,7 +115,7 @@ function LightValues(props: ObjectValuesProps) {
 	return (
 		<ToolRow>
 			<NumberField name="Duration" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
-			<p>Hours of light available. 0: infinite but provides no light; -1: infinite, does provide light.</p>
+			<em>0: infinite but provides no light; -1: infinite, does provide light.</em>
 		</ToolRow>
 	);
 }
@@ -384,14 +384,14 @@ function ContainerValues(props: ObjectValuesProps) {
 	const { id, value0, value1, value2, value3 } = props;
 	const containerFlags = value2bits(value1);
 	return (
-		<div>
+		<>
 			<ToolRow>
 				<NumberField name="Weight Capacity" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 				<NumberField name="Key Vnum" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
 				<SelectField name="Trap" options={TRAP_TYPE} value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
 			</ToolRow>
 			<BitsField name="Accessibility" map={CONTAINER_FLAGS} value={containerFlags} onUpdate={bits => dispatch(updatedValue1([id, bits2pipedValue(bits)]))} />
-		</div>
+		</>
 	);
 }
 
@@ -687,14 +687,14 @@ function ThrowingWeaponValues(props: ObjectValuesProps) {
 	const { id, value0, value1, value2, value3 } = props;
 	const throwingFlags = value2bits(value0);
 	return (
-		<div>
+		<>
 			<ToolRow>
 				<NumberField name="Min damage" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
 				<NumberField name="Max damage" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
 				<SelectField name="Poison" options={THROWING_WEAPON_POISON} value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
 			</ToolRow>
 			<BitsField name="Weapon effects" map={THROWING_WEAPON_FLAGS} value={throwingFlags} onUpdate={bits => dispatch(updatedValue0([id, bits2pipedValue(bits)]))} />
-		</div>
+		</>
 	);
 }
 
