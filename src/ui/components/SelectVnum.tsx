@@ -74,12 +74,15 @@ function isValidNewOption(input: string): boolean {
 }
 
 function minWidthStyles(options: Option[]) {
-	const minWidth = options.reduce((maxLen, item) =>
-		Math.max(maxLen, (item.vnum?.toString()?.length || 0) + item.label.length), 0);
+	const minWidth = Math.min(
+			400,
+			options.reduce((maxLen, item) =>
+				Math.max(maxLen, (item.vnum?.toString()?.length || 0) * 4.5 + item.label.length * 6.5 + 75), 0)
+	);
 	return {
 		control: (provided: CSSObjectWithLabel) => ({
 			...provided,
-			minWidth: `calc(55px + ${minWidth*8}px)`,
+			minWidth: `${Math.ceil(minWidth)}px`,
 			alignItems: "baseline",
 		}),
 		valueContainer: (provider: CSSObjectWithLabel) => ({

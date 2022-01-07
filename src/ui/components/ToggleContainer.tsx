@@ -27,10 +27,10 @@ export default function ToggleContainer(props: Props) {
 
 	return (
 		<div className={className}>
-			<div className={sharedStyles.header}>
+			<label className={sharedStyles.header}>
 				<input type="checkbox" checked={props.opened} onChange={onChange} />
 				<h2 className={styles.label}>{props.label}</h2>
-			</div>
+			</label>
 			<div className={styles.children}>{props.children}</div>
 		</div>
 	);
