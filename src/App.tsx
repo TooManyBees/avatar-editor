@@ -56,7 +56,7 @@ function InitForm() {
 
 	return (
 		<div className={styles.setupWrapper}>
-			<img src="legendora-desktop.png" />
+			<img src={`${process.env.PUBLIC_URL}/legendora-desktop.png`} />
 			<h1>Midgaard Royal Surveyor's Guild</h1>
 			<div className={styles.setupControls}>
 				<ReadAreaForm onRead={onRead} />
