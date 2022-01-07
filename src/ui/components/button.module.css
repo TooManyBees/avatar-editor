@@ -30,6 +30,41 @@
 	display: inline;
 	content: "✖ ";
 }
+.deleteWrapper {
+	position: relative;
+}
+.prompting .confirmation {
+	visibility: visible;
+	pointer-events: initial;
+}
+.confirmation {
+	position: absolute;
+	display: block;
+	visibility: hidden;
+	pointer-events: none;
+	top: 0;
+	right: 0;
+	background-color: var(--background);
+	color: var(--danger);
+	font-family: system-ui;
+	font-size: 0.83rem;
+	text-align: right;
+}
+.confirmation .buttons {
+	margin-top: 0.25rem;
+	padding: 0.25rem;
+	display: flex;
+	column-gap: 0.5rem;
+}
+.confirmation .button {
+	white-space: nowrap;
+	cursor: pointer;
+	margin: 0;
+}
+.confirmation .button.danger {
+	color:  var(--danger);
+}
+
 
 .add {
 	white-space: nowrap;
