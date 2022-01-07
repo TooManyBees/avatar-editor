@@ -9,6 +9,7 @@ import { VnumItemList } from "../VnumList";
 import { Room, RandomExitReset, newId } from "../../app/models";
 import {
 	BitsField,
+	Button,
 	DeleteButton,
 	KeywordField,
 	EdescFields,
@@ -47,11 +48,21 @@ export default function RoomsTab() {
 
 	return (
 		<TabsLayout sideNav={sideNav}>
-			{room && <RoomForm key={currentId} room={room} />}
+			{room ? <RoomForm key={currentId} room={room} /> : <BlankWorkspace onAdd={onAdd} />}
 		</TabsLayout>
 	);
 }
 
+function BlankWorkspace({ onAdd }: { onAdd: () => void }) {
+	return (
+		<div className={styles.blankWorkspace}>
+			<div>
+				<p>Select a room from the side bar →</p>
+				or <Button onClick={onAdd}>Create a new room</Button>
+			</div>
+		</div>
+	);
+}
 
 interface Props {
 	room: Room;

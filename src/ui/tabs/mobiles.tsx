@@ -11,6 +11,7 @@ import {
 	ApplyFields,
 	KeywordField,
 	BitsField,
+	Button,
 	DeleteButton,
 	NumberField,
 	Row,
@@ -49,8 +50,19 @@ export default function MobilesTab() {
 
 	return (
 		<TabsLayout sideNav={sideNav}>
-			{mobile && <MobileForm key={currentId} mobile={mobile} />}
+			{mobile ? <MobileForm key={currentId} mobile={mobile} /> : <BlankWorkspace onAdd={onAdd} />}
 		</TabsLayout>
+	);
+}
+
+function BlankWorkspace({ onAdd }: { onAdd: () => void }) {
+	return (
+		<div className={styles.blankWorkspace}>
+			<div>
+				<p>Select a mob from the side bar →</p>
+				or <Button onClick={onAdd}>Create a new mobile</Button>
+			</div>
+		</div>
 	);
 }
 

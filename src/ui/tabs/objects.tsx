@@ -8,6 +8,7 @@ import { VnumItemList } from "../VnumList";
 import {
 	ApplyFields,
 	BitsField,
+	Button,
 	DeleteButton,
 	KeywordField,
 	EdescFields,
@@ -45,7 +46,7 @@ export default function ObjectsTab() {
 
 	return (
 		<TabsLayout sideNav={sideNav}>
-			{object && <ObjectForm key={currentId} item={object} />}
+			{object ? <ObjectForm key={currentId} item={object} /> : <BlankWorkspace onAdd={onAdd} />}
 		</TabsLayout>
 	);
 }
@@ -54,6 +55,16 @@ interface Props {
 	item: Objekt;
 }
 
+function BlankWorkspace({ onAdd }: { onAdd: () => void }) {
+	return (
+		<div className={styles.blankWorkspace}>
+			<div>
+				<p>Select an object from the side bar →</p>
+				or <Button onClick={onAdd}>Create a new object</Button>
+			</div>
+		</div>
+	);
+}
 
 // FIXME
 function factor(n: number): number[] {
