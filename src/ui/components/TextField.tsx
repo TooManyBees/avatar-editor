@@ -13,15 +13,15 @@ interface Props {
 
 export default function TextField(props: Props) {
 	const { name, onUpdate, inline = false, maxLength, style } = props;
-
-	const [value, setValue] = useState(props.value || "");
+	const initialValue = props.value || "";
+	const [value, setValue] = useState(initialValue);
 
 	function onChange(event: ChangeEvent<HTMLInputElement>) {
 		setValue(event.target.value);
 	}
 
 	function onBlur() {
-		if (onUpdate) onUpdate(value);
+		if (onUpdate && value !== initialValue) onUpdate(value);
 	}
 
 	return (

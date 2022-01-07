@@ -24,7 +24,7 @@ export default function NumberField(props: NumberFieldProps) {
 
 	function onBlur(event: any) {
 		const validValue = parseValue(value, min, max);
-		if (props.onUpdate && validValue != null) {
+		if (props.onUpdate && validValue != null && validValue !== props.value) {
 			props.onUpdate(validValue);
 		}
 	}

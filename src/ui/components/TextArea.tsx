@@ -21,7 +21,7 @@ export default function TextArea(props: TextFieldProps) {
 	}
 
 	function onBlur(event: any) {
-		props.onUpdate(value);
+		if (value !== props.value) props.onUpdate(value);
 	}
 
 	function togglePreview(event: ChangeEvent<HTMLInputElement>) {
