@@ -7,7 +7,7 @@ import {
 	AddButton,
 	DeleteButton,
 	KeywordField,
-	Section,
+	SectionList,
 	TextArea,
 	ToolRow,
 } from ".";
@@ -25,11 +25,9 @@ interface Props {
 export default function EdescFields({ id, edescs, updatedEdesc, addedEdesc, removedEdesc }: Props) {
 	const dispatch = useAppDispatch();
 	return (
-		<Section header={<><h2>Extra Descs</h2><AddButton onClick={() => dispatch(addedEdesc(id))}>Add extra desc</AddButton></>}>
-			<ol className={styles.edescFields}>
-				{edescs.map(edesc => <EdescItem key={edesc.id} id={id} edesc={edesc} updatedEdesc={updatedEdesc} removedEdesc={removedEdesc} />)}
-			</ol>
-		</Section>
+		<SectionList header={<><h2>Extra Descs</h2><AddButton onClick={() => dispatch(addedEdesc(id))}>Add extra desc</AddButton></>}>
+			{edescs.map(edesc => <EdescItem key={edesc.id} id={id} edesc={edesc} updatedEdesc={updatedEdesc} removedEdesc={removedEdesc} />)}
+		</SectionList>
 	);
 }
 
@@ -43,7 +41,7 @@ interface EdescItemProps {
 function EdescItem({ id, edesc, updatedEdesc, removedEdesc }: EdescItemProps) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
-	return <>
+	return (
 		<li className={classnames(styles.edesc, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
 				<KeywordField name="Keywords" value={edesc.keywords} onUpdate={keywords => dispatch(updatedEdesc([id, {...edesc, keywords}]))} />
@@ -52,6 +50,5 @@ function EdescItem({ id, edesc, updatedEdesc, removedEdesc }: EdescItemProps) {
 			</ToolRow>
 			<TextArea name="Description" value={edesc.body} onUpdate={body => dispatch(updatedEdesc([id, {...edesc, body}]))} />
 		</li>
-		<hr className={styles.separator} />
-	</>;
+	);
 }

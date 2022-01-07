@@ -14,7 +14,7 @@ import { SelectVnum } from "./SelectVnum";
 import TextArea from "./TextArea";
 import TextField from "./TextField";
 import ToggleContainer from "./ToggleContainer";
-import { Section, Row, ToolRow } from "./shared";
+import { Section, SectionList, Row, ToolRow } from "./shared";
 
 export {
 	AddButton,
@@ -28,6 +28,7 @@ export {
 	NumberField,
 	Row,
 	Section,
+	SectionList,
 	SelectField,
 	SelectVnum,
 	TextArea,

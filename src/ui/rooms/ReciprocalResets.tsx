@@ -7,7 +7,7 @@ import {
 	LinkButton,
 	Section,
 } from "../components";
-import styles from "../common/ReciprocalResets.module.css";
+import styles from "../components/ReciprocalResets.module.css";
 
 interface Props {
 	roomId: string;

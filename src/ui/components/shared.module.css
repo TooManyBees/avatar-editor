@@ -46,3 +46,27 @@
 .header h1, .header h2, .header h3, .header h4, .header h5, .header h6 {
 	margin: 0
 }
+
+.list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.list > li {
+	border: 1px solid transparent;
+	margin: 0.5rem -0.5rem;
+	padding: 0.5rem;
+}
+
+.section .list textarea {
+	margin-bottom: 0;
+}
+
+.list hr {
+	border: none;
+	border-bottom: 1px solid var(--neutral-faint);
+}
+.list hr:last-child {
+	display: none;
+}

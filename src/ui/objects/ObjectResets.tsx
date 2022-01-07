@@ -6,40 +6,46 @@ import {
 	updatedObjectReset,
 	removedObjectReset,
 } from "../../app/store/resets";
-import { ObjectReset as ObjectResetType, Objekt, Room } from "../../app/models";
+import { selectedMobileId } from "../../app/store/ui";
+import { ObjectReset as ObjectResetType, Mobile, Objekt, Room } from "../../app/models";
 import {
 	AddButton,
 	DeleteButton,
+	LinkButton,
 	NumberField,
 	Row,
-	Section,
+	SectionList,
 	SelectVnum,
 	TextField,
 	ToolRow,
 } from "../components";
 import styles from "./ObjectResets.module.css";
 import sharedStyles from "../components/shared.module.css";
+import reciprocalStyles from "../components/ReciprocalResets.module.css";
 
 import ReactSelect, { CSSObjectWithLabel } from "react-select";
 
 interface Props {
 	objectId: string;
+	vnum: number | null;
 }
 
 export default function ObjectResets(props: Props) {
 	const dispatch = useAppDispatch();
-	const { objectId } = props;
+	const { objectId, vnum } = props;
 	const resets = useAppSelector(state => state.resets.resets.object.filter(r => r.objectId === objectId));
 	const rooms = useAppSelector(state => state.rooms.rooms);
-	return (
-		<Section header={<><h2>Object resets</h2> ({resets.length}) <AddButton onClick={() => dispatch(addedObjectReset(objectId))}>Add reset</AddButton></>}>
-			<ol className={styles.list}>
-				{resets.map(reset => (
-					<ObjectReset key={reset.id} reset={reset} rooms={rooms} />
-				))}
-			</ol>
-		</Section>
-	);
+	const skinMob = vnum ? useAppSelector(state => state.mobiles.mobiles).find(m => m.vnum === vnum) : null;
+	return <>
+		<SectionList
+			header={<><h2>Object resets</h2> ({resets.length}) <AddButton onClick={() => dispatch(addedObjectReset(objectId))}>Add reset</AddButton></>}
+			footer={skinMob ? <SkinMob mobile={skinMob} /> : null}
+		>
+			{resets.map(reset => (
+				<ObjectReset key={reset.id} reset={reset} rooms={rooms} />
+			))}
+		</SectionList>
+	</>;
 }
 
 interface ResetProps {
@@ -64,4 +70,20 @@ function ObjectReset(props: ResetProps) {
 		</li>
 		<hr className={styles.separator} />
 	</>;
+}
+
+function SkinMob(props: { mobile: Mobile }) {
+	const dispatch = useAppDispatch();
+	const mobile = props.mobile;
+	const name = mobile.shortDesc || "<unnamed mobile>";
+
+	return (
+		<ol className={reciprocalStyles.list}>
+			<li>
+				<LinkButton className={reciprocalStyles.link} onClick={() => dispatch(selectedMobileId(mobile.id))}>
+					Skins from <span className={reciprocalStyles.vnum}>{mobile.vnum} </span>{name}
+				</LinkButton>
+			</li>
+		</ol>
+	);
 }

@@ -12,7 +12,7 @@ import {
 	AddButton,
 	DeleteButton,
 	KeywordField,
-	Section,
+	SectionList,
 	SelectField,
 	SelectVnum,
 	TextArea,
@@ -32,13 +32,11 @@ export default function Doors({ roomId, doors, rooms, objects }: Props) {
 	const dispatch = useAppDispatch();
 	const resets = useAppSelector(state => state.resets.resets.door).filter(r => r.roomId === roomId);
 	return (
-		<Section header={<><h2>Exits</h2><AddButton onClick={() => Actions.addedDoor(roomId)}>Add door</AddButton></>}>
-			<ol className={styles.doors}>
-				{doors.map(door => (
-					<DoorItem key={door.id} roomId={roomId} door={door} rooms={rooms} objects={objects} reset={resets.find(r => r.direction === door.direction) || null} />
-				))}
-			</ol>
-		</Section>
+		<SectionList header={<><h2>Exits</h2><AddButton onClick={() => Actions.addedDoor(roomId)}>Add door</AddButton></>}>
+			{doors.map(door => (
+				<DoorItem key={door.id} roomId={roomId} door={door} rooms={rooms} objects={objects} reset={resets.find(r => r.direction === door.direction) || null} />
+			))}
+		</SectionList>
 	);
 }
 
@@ -63,7 +61,7 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 	}
 
 	return <>
-		<li className={classnames(styles.door, danger && sharedStyles.dangerTarget)}>
+		<li className={classnames(danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
 				<SelectField name="Direction" value={door.direction} options={DIRECTIONS} onUpdate={direction => dispatch(Actions.updatedDoor([roomId, {...door, direction}]))} />
 				to

@@ -7,7 +7,7 @@ import {
 	AddButton,
 	DeleteButton,
 	NumberField,
-	Section,
+	SectionList,
 	SelectVnum,
 	ToolRow,
 } from "../components";
@@ -28,13 +28,11 @@ export default function MobResets({ mobId }: Props) {
 	const objects = useAppSelector(state => state.objects.objects);
 	const rooms = useAppSelector(state => state.rooms.rooms);
 	return (
-		<Section header={<><h2>Resets</h2> ({resets.length}) <AddButton onClick={() => dispatch(Actions.addedMobReset(mobId))}>Add reset</AddButton></>}>
-			<ol className={styles.list}>
-				{resets.map(reset => (
-					<MobReset key={reset.id} reset={reset} rooms={rooms} objects={objects} />
-				))}
-			</ol>
-		</Section>
+		<SectionList header={<><h2>Resets</h2> ({resets.length}) <AddButton onClick={() => dispatch(Actions.addedMobReset(mobId))}>Add reset</AddButton></>}>
+			{resets.map(reset => (
+				<MobReset key={reset.id} reset={reset} rooms={rooms} objects={objects} />
+			))}
+		</SectionList>
 	);
 }
 
@@ -42,15 +40,17 @@ function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
 	return <>
-		<li className={classnames(styles.mobReset, danger && sharedStyles.dangerTarget)}>
+		<li className={classnames(danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
 				<NumberField inline name="Limit" value={reset.limit} min={0} onUpdate={limit => dispatch(Actions.updatedMobReset({...reset, limit}))} />
 				in
 				<SelectVnum items={rooms} selectedId={reset.roomId} onUpdate={roomId => dispatch(Actions.updatedMobReset({...reset, roomId}))} />
+				<div className={styles.spacer} />
 				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedMobReset(reset.id))}>Remove reset &amp; gear</DeleteButton>
 			</ToolRow>
-			<ToolRow><h3>Equipment</h3> ({reset.equipment.length}) <AddButton onClick={() => dispatch(Actions.addedEquipmentReset(reset.id))}>Add equipment</AddButton></ToolRow>
-			{reset.equipment.map(eqReset => <EqReset key={eqReset.id} reset={eqReset} mobResetId={reset.id} objects={objects} />)}
+			<SectionList className={styles.eqList} header={<><h3>Equipment</h3> ({reset.equipment.length}) <AddButton onClick={() => dispatch(Actions.addedEquipmentReset(reset.id))}>Add equipment</AddButton></>}>
+				{reset.equipment.map(eqReset => <EqReset key={eqReset.id} reset={eqReset} mobResetId={reset.id} objects={objects} />)}
+			</SectionList>
 		</li>
 		<hr className={styles.separator} />
 	</>;
@@ -66,7 +66,8 @@ function EqReset({ mobResetId, reset, objects }: { mobResetId: string, reset: Eq
 			on
 			<WearSelector selected={reset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, wearLocation: l}]))} />
 			<NumberField inline name="Limit (0 for none)" value={reset.limit} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, limit: l}]))} />
-			<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedEquipmentReset([mobResetId, reset.id]))}>Remove</DeleteButton>
+			<div className={styles.spacer} />
+			<DeleteButton onHoverState={setDanger} onClick={() => dispatch(Actions.removedEquipmentReset([mobResetId, reset.id]))}>Remove item</DeleteButton>
 		</ToolRow>
 	);
 }

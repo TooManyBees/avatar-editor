@@ -8,7 +8,7 @@ import {
 	BitsField,
 	DeleteButton,
 	NumberField,
-	Section,
+	SectionList,
 	SelectField,
 } from ".";
 import { ToolRow } from "./shared";
@@ -26,8 +26,7 @@ interface Props {
 export default function ApplyFields({ applies, id, updatedApply, addedApply, removedApply }: Props) {
 	const dispatch = useAppDispatch();
 	return (
-		<Section header={<><h2>Applies</h2>({applies.length})<AddButton onClick={() => dispatch(addedApply(id))}>Add apply</AddButton></>}>
-		<ol className={styles.applyFields}>
+		<SectionList header={<><h2>Applies</h2>({applies.length})<AddButton onClick={() => dispatch(addedApply(id))}>Add apply</AddButton></>}>
 			{applies.map(apply => (
 				<ApplyItem
 					key={apply.id}
@@ -37,8 +36,7 @@ export default function ApplyFields({ applies, id, updatedApply, addedApply, rem
 					removedApply={removedApply}
 				/>
 			))}
-		</ol>
-		</Section>
+		</SectionList>
 	);
 }
 
@@ -54,18 +52,17 @@ function ApplyItem({ id, apply, updatedApply, removedApply }: ApplyItemProps) {
 	const [danger, setDanger] = useState(false);
 	const onUpdate = (p: Apply) => dispatch(updatedApply([id, p]));
 	const desc = APPLY_TYPE.find(a => a.value === apply.type)?.desc;
-	return <>
-		<li className={classnames(styles.apply, danger && sharedStyles.dangerTarget)}>
+	return (
+		<li className={classnames(danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
 				<SelectField name="Type" value={apply.type} options={APPLY_TYPE} defaultValue={APPLY_TYPE[0]} onUpdate={type => onUpdate({...apply, type})} />
 				<ApplyFlagField type={apply.type} value={apply.value} onUpdate={(value: number) => onUpdate({...apply, value})} />
 				<div className={styles.spacer} />
 				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedApply([id, apply.id]))}>Remove apply</DeleteButton>
 			</ToolRow>
-			{desc && <p><em>{desc}</em></p>}
+			{desc && <div><em>{desc}</em></div>}
 		</li>
-		<hr className={styles.separator} />
-	</>;
+	);
 }
 
 // FIXME

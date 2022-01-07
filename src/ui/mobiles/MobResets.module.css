@@ -1,12 +1,5 @@
-.list {
-	list-style: none;
-	padding: 0;
-}
-
-.mobReset {
-	border: 1px solid transparent;
-	margin: 0.5rem -0.5rem;
-	padding: 0.5rem;
+.eqList {
+	margin-bottom: -0.5rem;
 }
 
 .eqReset {
@@ -18,9 +11,11 @@
 .separator {
 	border: none;
 	border-bottom: 1px solid var(--neutral-faint);
-	margin-left: 0;
-	max-width: 40rem;
 }
 .separator:last-child {
 	display: none;
+}
+
+.spacer {
+	flex-grow: 1;
 }

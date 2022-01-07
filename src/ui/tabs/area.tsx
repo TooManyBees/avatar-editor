@@ -17,7 +17,7 @@ import {
 	KeywordField,
 	NumberField,
 	Row,
-	Section,
+	SectionList,
 	TextArea,
 	TextField,
 	ToolRow,
@@ -37,11 +37,9 @@ export default function AreaTab() {
 				<TextField name="Name" value={area.name} onUpdate={name => dispatch(updatedName(name))} />
 			</ToolRow>
 
-			<Section header={<><h2>Helps</h2><AddButton onClick={() => dispatch(addedHelp())}>Add help</AddButton></>}>
-			<ol className={styles.helps}>
+			<SectionList header={<><h2>Helps</h2><AddButton onClick={() => dispatch(addedHelp())}>Add help</AddButton></>}>
 				{area.helps.map(h => <HelpForm key={h.id} help={h} />)}
-			</ol>
-			</Section>
+			</SectionList>
 		</TabsLayout>
 	);
 }
@@ -50,11 +48,12 @@ function HelpForm({ help }: { help: Help }) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
 	return (
-		<li className={classnames(styles.help, danger && sharedStyles.dangerTarget)}>
-			<ToolRow style={{justifyContent: "flex-end"}}><DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedHelp(help.id))}>Remove</DeleteButton></ToolRow>
+		<li className={classnames(danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
 				<NumberField name="Level" inline value={help.level} onUpdate={level => dispatch(updatedHelp({...help, level}))} />
 				<KeywordField name="Keywords" value={help.keywords} onUpdate={keywords => dispatch(updatedHelp({...help, keywords}))} />
+				<div className={styles.spacer} />
+				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedHelp(help.id))}>Remove</DeleteButton>
 			</ToolRow>
 			<TextArea name="Body" value={help.body} onUpdate={body => dispatch(updatedHelp({...help, body}))} />
 		</li>

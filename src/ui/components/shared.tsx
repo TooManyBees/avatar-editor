@@ -10,6 +10,7 @@ interface Props {
 
 interface SectionProps extends Props {
 	header?: React.ReactNode;
+	footer?: React.ReactNode;
 }
 
 export function Section(props: SectionProps) {
@@ -17,7 +18,17 @@ export function Section(props: SectionProps) {
 		<div className={classnames(styles.section, props.className)} style={props.style}>
 			{props.header && <div className={styles.header}>{props.header}</div>}
 			{props.children}
+			{props.footer && <div>{props.footer}</div>}
 		</div>
+	);
+}
+
+export function SectionList(props: SectionProps) {
+	const { children, ...rest } = props;
+	return (
+		<Section {...rest}>
+			<ol className={styles.list}>{children}</ol>
+		</Section>
 	);
 }
 

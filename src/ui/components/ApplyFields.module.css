@@ -1,26 +1,5 @@
-.applyFields {
-	padding: 0;
-	list-style: none;
-}
-
-.apply {
-	border: 1px solid transparent;
-	margin: 0.5rem -0.5rem;
-	padding: 0.5rem;
-}
-
 .spacer {
 	flex-grow: 1;
-}
-
-.separator {
-	border: none;
-	border-bottom: 1px solid var(--neutral--faint);
-	margin-left: 0;
-	max-width: 40rem;
-}
-.separator:last-child {
-	display: none;
 }
 
 .bitsfield {

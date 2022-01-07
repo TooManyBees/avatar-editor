@@ -1,18 +1,3 @@
-.doors {
-	padding: 0;
-	list-style: none;
-}
-
-.door {
-	border: 1px solid transparent;
-	margin: 0 -0.5rem;
-	padding: 0.5rem;
-}
-
-.door textarea {
-	margin-bottom: 0;
-}
-
 .spacer {
 	flex-grow: 1;
 }
