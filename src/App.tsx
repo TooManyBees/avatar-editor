@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 import { Area } from "./app/models";
 import parseAreaFile from "./parser";
 import { Button } from "./ui/components";
@@ -7,6 +7,7 @@ import Tabs from "./ui/tabs";
 import styles from './App.module.css';
 
 import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { dismissUnsavedChanges } from "./app/store";
 import { loaded } from "./app/store/ui";
 import { init as initArea } from "./app/store/area-section";
 import { init as initAreadata } from "./app/store/areadata";
@@ -50,6 +51,7 @@ function InitForm() {
 		dispatch(initResets(area.resets));
 		dispatch(initShops([area.shops, area.orphanedShops]));
 		dispatch(loaded());
+		dismissUnsavedChanges();
 	}
 
 	return (

@@ -6,3 +6,4 @@
 * do apply flags allow pipe-separated bits on the immunity type?? apply special parsing if so
 * unify the spacing of all the item lists
 * in-object reset
+* put delete buttons at the back of the tab order
