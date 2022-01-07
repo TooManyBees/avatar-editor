@@ -56,11 +56,27 @@ function InitForm() {
 
 	return (
 		<div className={styles.setupWrapper}>
+			<img src="legendora-desktop.png" />
+			<h1>Midgaard Royal Surveyor's Guild</h1>
 			<div className={styles.setupControls}>
 				<ReadAreaForm onRead={onRead} />
 				or
 				<Button onClick={() => dispatch(loaded())}>Start new area</Button>
 			</div>
+			<p className={styles.disclaimer}>
+				The <em>Royal Surveyors' Guild</em> is provided without warranty, yadda yadda.
+				Listen, it's mostly done, but has rough edges. Scevine doesn't guarantee that
+				you'll never click "back" or smash F5 and lose all your work. Scevine doesn't
+				guarantee that it preserves 100% of an area's fidelity, especially around the
+				really fiddly bits of <code>.are</code> files. Screenreader accessibility and
+				keyboard nav are going to improve.
+			</p>
+			<ul className={styles.disclaimer}>
+				<li><strong>Do</strong> regularly export to <code>.are</code> file and save your work locally.</li>
+				<li><strong>Don't</strong> rely 100% on this (yet!)</li>
+				<li><strong>Do</strong> use your own version control to verify any changes this app makes to an area.</li>
+				<li><strong>Do</strong> contact Scevine with bug reports or feature requests.</li>
+			</ul>
 		</div>
 	);
 }
