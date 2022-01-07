@@ -5,6 +5,7 @@ import {
 	MobReset,
 	EquipmentReset,
 	ObjectReset,
+	InObjectReset,
 	RandomExitReset,
 	newId
 } from "../models";
@@ -105,17 +106,31 @@ const resetsSlice = createSlice({
 			};
 			state.resets.object.unshift(newReset);
 		},
-		updatedObjectReset(state, action: PayloadAction<[string, ObjectReset]>) {
-			const [resetId, reset] = action.payload;
-			const idx = state.resets.object.findIndex(r => r.id === resetId);
-			if (idx > -1) state.resets.object[idx] = reset;
+		updatedObjectReset(state, action: PayloadAction<ObjectReset>) {
+			const idx = state.resets.object.findIndex(r => r.id === action.payload.id);
+			if (idx > -1) state.resets.object[idx] = action.payload;
 		},
 		removedObjectReset(state, action: PayloadAction<string>) {
 			state.resets.object = state.resets.object.filter(r => r.id !== action.payload);
 		},
-		// addedInObjectReset
-		// updatedInObjectReset
-		// removedInObjectReset
+		addedInObjectReset(state, action: PayloadAction<string>) {
+			const newReset: InObjectReset = {
+				id: newId(),
+				containerId: "",
+				objectId: action.payload,
+				comment: "",
+				orphan: false,
+				_error: {},
+			};
+			state.resets.inObject.unshift(newReset);
+		},
+		updatedInObjectReset(state, action: PayloadAction<InObjectReset>) {
+			const idx = state.resets.inObject.findIndex(r => r.id === action.payload.id);
+			if (idx > -1) state.resets.inObject[idx] = action.payload;
+		},
+		removedInObjectReset(state, action: PayloadAction<string>) {
+			state.resets.inObject = state.resets.inObject.filter(r => r.id !== action.payload);
+		},
 		addedDoorReset(state, action: PayloadAction<{ roomId: string, direction: number, state: number }>) {
 			const { roomId, direction, state: doorState } = action.payload;
 			const newReset: DoorReset = {
@@ -169,9 +184,9 @@ export const {
 	addedObjectReset,
 	updatedObjectReset,
 	removedObjectReset,
-	// addedInObjectReset,
-	// updatedInObjectReset,
-	// removedInObjectReset,
+	addedInObjectReset,
+	updatedInObjectReset,
+	removedInObjectReset,
 	addedDoorReset,
 	updatedDoorReset,
 	removedDoorReset,
