@@ -29,7 +29,7 @@ export default function SelectField<V>(props: Props<V>) {
 	);
 
 	return name ? (
-		<label className={classnames(styles.wrapper, inline && styles.inline)}>
+		<label className={classnames(styles.wrapper, inline && styles.inline, disabled && styles.disabled)}>
 			<span className={styles.label}>{name}:</span>
 			{select}
 		</label>

@@ -101,7 +101,9 @@ function ObjectForm({ item: object }: Props) {
 				<TextField name="Long desc" value={object.longDesc} onUpdate={updatedLongDesc} />
 			</Row>
 			<TextArea name="Action desc" value={object.actionDesc} onUpdate={updatedActionDesc} />
-			<SelectField name="Type" value={object.itemType} options={ITEM_TYPE} defaultValue={ITEM_TYPE[0]} onUpdate={updatedItemType} />
+			<Row>
+				<SelectField name="Type" value={object.itemType} options={ITEM_TYPE} defaultValue={ITEM_TYPE[0]} onUpdate={updatedItemType} />
+			</Row>
 			<ObjectValues id={id} type={object.itemType} value0={object.value0} value1={object.value1} value2={object.value2} value3={object.value3} />
 			<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} onUpdate={updatedExtraFlags} />
 			<ToolRow>

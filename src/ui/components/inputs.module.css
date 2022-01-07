@@ -46,3 +46,7 @@
 .input.warning {
 	background-color: var(--danger-faint);
 }
+
+.disabled {
+	color: var(--neutral);
+}

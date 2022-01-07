@@ -449,7 +449,7 @@ function FoodValues(props: ObjectValuesProps) {
 	return (
 		<ToolRow>
 			<NumberField name="Nutritive value" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
-			<label>Poisoned <input type="checkbox" value={Number(value3)} onChange={e => dispatch(updatedValue3([id, e.target.checked ? "1" : "0"]))} /></label>
+			<label>Poisoned <input type="checkbox" checked={Number(value3) > 0} onChange={e => dispatch(updatedValue3([id, e.target.checked ? "1" : "0"]))} /></label>
 		</ToolRow>
 	);
 }
@@ -469,30 +469,39 @@ const FOUNTAIN_FLAGS: [number, string, string][] = [
 	[8, "Loads mob", "Mob vnum is fountain vnum. Mob is aggie to drinker. Fountain disappears after."],
 ];
 
-function value2destination(value: string): number | null {
-	const number = Number(value);
-	if (Number.isNaN(number)) return null;
-	if (Number.isInteger(number) && number < 0) return number * -1;
-	return null;
-}
+const FOUNTAIN_MODE: { value: string, label: string }[] = [
+	{ value: "transfer", label: "Transfer drinker to room" },
+	{ value: "flags", label: "Use fountain flags"},
+];
 
 function FountainValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value0, value1, value2, value3 } = props;
-	// FIXME: allow toggling between transport destination and fountain flags
-	const destinationVnum = value2destination(value3);
+	const rawValue3 = Number(value3);
+	const destinationVnum = Number.isInteger(rawValue3) && rawValue3 < 0 ? rawValue3 * -1 : null;
 	const fountainFlags = value2bits(value3);
-	return (
+	const mode = destinationVnum != null ? "transfer" : "flags";
+
+	function toggleMode(mode: string) {
+		if (mode === "transfer") {
+			dispatch(updatedValue3([id, -1]))
+		} else {
+			dispatch(updatedValue3([id, "0"]))
+		}
+	}
+
+	return <>
 		<ToolRow>
-			<NumberField name='"Good" Spell slot #' value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
-			<NumberField name='"Bad" Spell slot #' value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
+			<NumberField name='"Good" spell slot #' value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
+			<NumberField name='"Bad" spell slot #' value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
 			<SelectField name="Drink" options={DRINKS} value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
-			{destinationVnum != null
-				? <NumberField name="Transport destination" value={destinationVnum} onUpdate={n => dispatch(updatedValue3([id, n * -1]))} />
-				: <BitsField name="Flags" map={FOUNTAIN_FLAGS} value={fountainFlags} onUpdate={bits => dispatch(updatedValue3([id, bits2pipedValue(bits)]))} />
-			}
 		</ToolRow>
-	);
+		<ToolRow>
+			<SelectField name="Mode" options={FOUNTAIN_MODE} value={mode} onUpdate={toggleMode} />
+			{destinationVnum != null && <NumberField name="Transport destination" value={destinationVnum} onUpdate={n => dispatch(updatedValue3([id, n * -1]))} />}
+			{destinationVnum == null && <BitsField name="Flags" map={FOUNTAIN_FLAGS} value={fountainFlags} onUpdate={bits => dispatch(updatedValue3([id, bits2pipedValue(bits)]))} />}
+		</ToolRow>
+	</>;
 }
 
 const PORTAL_DRAIN: { value: number, label: string }[] = [
@@ -567,7 +576,7 @@ function MarkingValues(props: ObjectValuesProps) {
 	const visibility = value2bits(value2);
 	const doorEffects = value2bits(value3);
 	return (
-		<div>
+		<>
 			<BitsField name="Visibility" map={MARKING_VISIBILITY} value={visibility} onUpdate={bits => dispatch(updatedValue2([id, bits2pipedValue(bits)]))} />
 			<BitsField name="Door effects" map={MARKING_DOOR_FLAGS} value={doorEffects} onUpdate={bits => dispatch(updatedValue3([id, bits2pipedValue(bits)]))} />
 			<ToolRow>
@@ -575,7 +584,7 @@ function MarkingValues(props: ObjectValuesProps) {
 				<NumberField name="Direction to affect" value={direction} onUpdate={n => dispatch(updatedValue1([id, markingDir2value(n, roomVnum)]))} />
 				<NumberField name="Room to affect (0 for this room)" value={roomVnum} onUpdate={n => dispatch(updatedValue1([id, markingDir2value(direction, n)]))} />
 			</ToolRow>
-		</div>
+		</>
 	);
 }
 
@@ -648,15 +657,12 @@ function ArrowValues(props: ObjectValuesProps) {
 		<ToolRow>
 			<SelectField name="Warhead" options={ARROW_TYPE} value={warhead} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<SelectField name="Ammo type" options={AMMO_TYPE} value={ammoType} onUpdate={n => dispatch(updatedValue1([id, n]))} />
-			{isPoisonArrow && <SelectField name="Poison" options={POISONS} value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />}
-		</ToolRow>
-		<em>
-			{ammoMessage && ammoMessage.desc}
-			{warheadMessage && warheadMessage.desc}
-		</em>
-		<ToolRow>
+			<SelectField name="Poison" options={POISONS} value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} disabled={!isPoisonArrow} />
 			<NumberField name="Number of arrows" value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
 		</ToolRow>
+		<em>
+			{ammoMessage && ammoMessage.desc} {warheadMessage && warheadMessage.desc}
+		</em>
 	</>;
 }
 
