@@ -115,8 +115,8 @@ function ObjectForm({ item: object }: Props) {
 			</ToolRow>
 			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
-			<ObjectResets objectId={id} vnum={object.vnum} />
-			<ReciprocalResets containerId={id} />
+			<ObjectResets objectId={id} />
+			<ReciprocalResets objectId={id} vnum={object.vnum} />
 		</div>
 	);
 }

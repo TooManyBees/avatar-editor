@@ -7,7 +7,7 @@ import {
 	removedObjectReset,
 } from "../../app/store/resets";
 import { selectedMobileId } from "../../app/store/ui";
-import { ObjectReset as ObjectResetType, Mobile, Objekt, Room } from "../../app/models";
+import { ObjectReset as ObjectResetType, Objekt, Room } from "../../app/models";
 import {
 	AddButton,
 	DeleteButton,
@@ -27,20 +27,15 @@ import ReactSelect, { CSSObjectWithLabel } from "react-select";
 
 interface Props {
 	objectId: string;
-	vnum: number | null;
 }
 
 export default function ObjectResets(props: Props) {
 	const dispatch = useAppDispatch();
-	const { objectId, vnum } = props;
+	const { objectId } = props;
 	const resets = useAppSelector(state => state.resets.resets.object.filter(r => r.objectId === objectId));
 	const rooms = useAppSelector(state => state.rooms.rooms);
-	const skinMob = vnum ? useAppSelector(state => state.mobiles.mobiles).find(m => m.vnum === vnum && m.act.includes(262144)) : null;
 	return <>
-		<SectionList
-			header={<><h2>Object resets</h2> ({resets.length}) <AddButton onClick={() => dispatch(addedObjectReset(objectId))}>Add reset</AddButton></>}
-			footer={skinMob ? <SkinMob mobile={skinMob} /> : null}
-		>
+		<SectionList header={<><h2>Object resets</h2> ({resets.length}) <AddButton onClick={() => dispatch(addedObjectReset(objectId))}>Add reset</AddButton></>}>
 			{resets.map(reset => (
 				<ObjectReset key={reset.id} reset={reset} rooms={rooms} />
 			))}
@@ -70,20 +65,4 @@ function ObjectReset(props: ResetProps) {
 		</li>
 		<hr className={styles.separator} />
 	</>;
-}
-
-function SkinMob(props: { mobile: Mobile }) {
-	const dispatch = useAppDispatch();
-	const mobile = props.mobile;
-	const name = mobile.shortDesc || "<unnamed mobile>";
-
-	return (
-		<ol className={reciprocalStyles.list}>
-			<li>
-				<LinkButton className={reciprocalStyles.link} onClick={() => dispatch(selectedMobileId(mobile.id))}>
-					Skins from <span className={reciprocalStyles.vnum}>{mobile.vnum} </span>{name}
-				</LinkButton>
-			</li>
-		</ol>
-	);
 }
