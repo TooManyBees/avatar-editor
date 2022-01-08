@@ -14,11 +14,14 @@ interface Props {
 
 export function Button(props: Props) {
 	const { children, className, style, onClick, onHoverState, tabIndex, buttonRef } = props;
+
 	return (
 		<button
 			className={classnames(className, styles.button)}
 			style={style}
 			onClick={onClick}
+			onFocus={onHoverState ? () => onHoverState(true) : undefined}
+			onBlur={onHoverState ? () => onHoverState(false) : undefined}
 			onMouseOver={onHoverState ? () => onHoverState(true): undefined}
 			onMouseOut={onHoverState ? () => onHoverState(false): undefined}
 			tabIndex={tabIndex}
@@ -52,6 +55,7 @@ export function DeleteButton(props: Props) {
 	const { onClick, onHoverState, ...rest } = props;
 
 	function onBlur({ relatedTarget }: React.FocusEvent<HTMLSpanElement>) {
+		if (prompt == null) return;
 		if (initialButton.current !== relatedTarget && deleteButton.current !== relatedTarget && cancelButton.current !== relatedTarget) {
 			setPrompt(false);
 		}
