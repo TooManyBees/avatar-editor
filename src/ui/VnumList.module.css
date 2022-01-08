@@ -19,6 +19,7 @@
 	white-space: nowrap;
 	color: var(--foreground);
 	text-decoration: none;
+	outline-offset: -2px;
 }
 .vnumItemList .link:hover, .vnumItemList .link:focus {
 	background: var(--selection-dim);
