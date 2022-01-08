@@ -7,36 +7,71 @@ import {
 	ObjectReset,
 	RandomExitReset,
 } from "../app/models/resets";
-import { findVnum } from "../app/models/helpers";
+import { findVnum, sortByVnum } from "../app/models/helpers";
 
 export default function serializeResets(resets: Resets, mobiles: Mobile[], objects: Objekt[], rooms: Room[]): string {
 	let buffer = "";
 
+	let mobResets: { vnum: number, reset: MobReset }[] = [];
 	for (let reset of resets.mobile) {
-		let mobVnum = findVnum(mobiles, reset.mobId);
-		if (mobVnum == null) continue;
-
-		buffer += serializeMobReset(reset, mobVnum, rooms);
+		let vnum = findVnum(mobiles, reset.mobId);
+		if (vnum == null) continue;
+		mobResets.push({ vnum, reset });
+	};
+	sortByVnum(mobResets);
+	for (let { vnum, reset } of mobResets) {
+		buffer += serializeMobReset(reset, vnum, rooms);
 
 		for (let eqReset of reset.equipment) {
 			buffer += serializeEqReset(eqReset, objects);
 		}
 	}
 
+	let objResets: { vnum: number, reset: ObjectReset }[] = [];
 	for (let reset of resets.object) {
-		buffer += serializeObjReset(reset, objects, rooms);
+		let vnum = findVnum(objects, reset.objectId);
+		if (vnum == null) continue;
+		objResets.push({ vnum, reset });
+	}
+	sortByVnum(objResets);
+	for (let { vnum, reset } of objResets) {
+		buffer += serializeObjReset(reset, vnum, objects, rooms);
 	}
 
+	let inObjResets: { vnum: number, reset: InObjectReset }[] = [];
 	for (let reset of resets.inObject) {
-		buffer += serializeInObjReset(reset, objects);
+		let vnum = findVnum(objects, reset.objectId);
+		if (vnum == null) continue;
+		inObjResets.push({ vnum, reset });
+	}
+	sortByVnum(inObjResets);
+	for (let { vnum, reset } of inObjResets) {
+		buffer += serializeInObjReset(reset, vnum, objects);
 	}
 
+	let doorResets: { vnum: number, reset: DoorReset }[] = [];
 	for (let reset of resets.door) {
-		buffer += serializeDoorReset(reset, rooms);
+		let vnum = findVnum(rooms, reset.roomId);
+		if (vnum == null) continue;
+		doorResets.push({ vnum, reset });
+	}
+	doorResets.sort((a, b) => {
+		if (a.vnum - b.vnum === 0) return a.reset.direction - b.reset.direction;
+		return a.vnum - b.vnum;
+	});
+	for (let { vnum, reset } of doorResets) {
+		buffer += serializeDoorReset(reset, vnum, rooms);
 	}
 
+	let randomResets: { vnum: number, reset: RandomExitReset }[] = [];
 	for (let reset of resets.randomExit) {
-		buffer += serializeRandomReset(reset, rooms);
+		let vnum = findVnum(rooms, reset.roomId);
+		if (vnum == null) continue;
+		randomResets.push({ vnum, reset });
+	}
+	sortByVnum(randomResets);
+	for (let { vnum, reset } of randomResets) {
+		buffer += serializeRandomReset(reset, vnum, rooms);
 	}
 
 	if (buffer !== "") return `#RESETS\n${buffer}S\n`;
@@ -66,8 +101,7 @@ function serializeEqReset(reset: EquipmentReset, objects: Objekt[]): string {
 		return `G ${limit} ${vnum} 0${comment}\n`;
 }
 
-function serializeObjReset(reset: ObjectReset, objects: Objekt[], rooms: Room[]): string {
-	let objectVnum = findVnum(objects, reset.objectId);
+function serializeObjReset(reset: ObjectReset, objectVnum: number, objects: Objekt[], rooms: Room[]): string {
 	let roomVnum = findVnum(rooms, reset.roomId);
 
 	let comment = reset.comment;
@@ -76,8 +110,7 @@ function serializeObjReset(reset: ObjectReset, objects: Objekt[], rooms: Room[])
 	return `O 0 ${objectVnum} 0 ${roomVnum}${comment}\n`;
 }
 
-function serializeInObjReset(reset: InObjectReset, objects: Objekt[]): string {
-	let objectVnum = findVnum(objects, reset.objectId);
+function serializeInObjReset(reset: InObjectReset, objectVnum: number, objects: Objekt[]): string {
 	let containerVnum = findVnum(objects, reset.containerId);
 
 	let comment = reset.comment;
@@ -86,18 +119,14 @@ function serializeInObjReset(reset: InObjectReset, objects: Objekt[]): string {
 	return `P 0 ${objectVnum} 0 ${containerVnum}${comment}\n`;
 }
 
-function serializeDoorReset(reset: DoorReset, rooms: Room[]): string {
-	let roomVnum = findVnum(rooms, reset.roomId);
-
+function serializeDoorReset(reset: DoorReset, roomVnum: number, rooms: Room[]): string {
 	let comment = reset.comment;
 	if (comment && !comment.match(/^\s/)) comment = " " + comment;
 
 	return `D 0 ${roomVnum} ${reset.direction} ${reset.state}${comment}\n`;
 }
 
-function serializeRandomReset(reset: RandomExitReset, rooms: Room[]): string {
-	let roomVnum = findVnum(rooms, reset.roomId);
-
+function serializeRandomReset(reset: RandomExitReset, roomVnum: number, rooms: Room[]): string {
 	let comment = reset.comment;
 	if (comment && !comment.match(/^\s/)) comment = " " + comment;
 
