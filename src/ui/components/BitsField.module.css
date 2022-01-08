@@ -16,7 +16,7 @@
 
 .clickable {
 	display: flex;
-	align-items: center;
+	align-items: baseline;
 	cursor: pointer;
 
 	appearance: none;

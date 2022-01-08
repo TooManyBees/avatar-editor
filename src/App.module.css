@@ -1,5 +1,6 @@
 .app {
 	height: 100vh;
+	background-color: var(--background);
 }
 
 .fileInput input {
@@ -32,9 +33,17 @@
 }
 
 .disclaimer {
-	font-family: ZillaSlab;
 	width: 28rem;
 	padding: 0;
 	list-style: square;
 	line-height: 1.25;
+}
+
+.disclaimer strong {
+	font-family: ZillaSlab;
+}
+
+.credits {
+	width: 28rem;
+	color: var(--neutral);
 }

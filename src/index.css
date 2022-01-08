@@ -1,6 +1,10 @@
 @import-normalize;
 
 @font-face {
+  font-family: Cambo;
+  src: url("../fonts/Cambo-Regular.ttf");
+}
+@font-face {
   font-family: ZillaSlab;
   src: url("../fonts/ZillaSlab-Regular.ttf");
 }
@@ -22,6 +26,7 @@
 
 body {
   margin: 0;
+  font-family: Cambo;
 }
 
 h1, h2, h3, h4, h5, h6 {
