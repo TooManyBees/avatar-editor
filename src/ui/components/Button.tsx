@@ -5,6 +5,7 @@ import styles from "./button.module.css";
 interface Props {
 	children?: React.ReactNode;
 	className?: string;
+	style?: React.CSSProperties;
 	onClick?: () => void;
 	onHoverState?: (state: boolean) => void;
 	tabIndex?: number;
@@ -12,10 +13,11 @@ interface Props {
 }
 
 export function Button(props: Props) {
-	const { children, className = "", onClick, onHoverState, tabIndex, buttonRef } = props;
+	const { children, className, style, onClick, onHoverState, tabIndex, buttonRef } = props;
 	return (
 		<button
-			className={`${className} ${styles.button}`}
+			className={classnames(className, styles.button)}
+			style={style}
 			onClick={onClick}
 			onMouseOver={onHoverState ? () => onHoverState(true): undefined}
 			onMouseOut={onHoverState ? () => onHoverState(false): undefined}

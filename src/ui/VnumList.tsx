@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useRef } from "react";
+import classnames from "classnames";
 import { Button } from "./components";
 import styles from "./VnumList.module.css";
 
@@ -27,15 +28,51 @@ interface ListProps<T> {
 }
 
 export function VnumItemList<T extends HasVnum>({ selected, itemName, items, onAdd, onChange }: ListProps<T>) {
+	const [kbNav, setKbNav] = useState(false);
+	const selectedRef = useRef<HTMLAnchorElement>(null);
+	const firstItemRef = useRef<HTMLAnchorElement>(null);
+	const itemsRef = useRef<HTMLOListElement>(null);
+
+	function onKbNavEnable() {
+		setKbNav(true);
+		if (selectedRef.current) selectedRef.current.focus();
+		else if (firstItemRef.current) firstItemRef.current.focus();
+	}
+
+	function onBlur(e: React.FocusEvent) {
+		if (e.relatedTarget && !itemsRef.current?.contains(e.relatedTarget)) {
+			setKbNav(false);
+		}
+	}
+
 	return (
-		<ol className={styles.vnumItemList}>
-			<div style={{margin: "0.5rem 3rem"}}><Button onClick={onAdd}>Create a new {itemName}</Button></div>
-			{items.map(({ id, vnum, name, shortDesc }) => (
-				<li key={id} onClick={() => onChange(id)} className={selected === id ? styles.selected : undefined}>
-					<span className={styles.vnum}>{vnum || ""}</span> {name || shortDesc || ""}
-				</li>
-			))}
-		</ol>
+		<div className={styles.vnumItemList}>
+			<div className={styles.buttons}>
+				<Button onClick={onAdd} style={{margin: "0.5rem 3rem"}}>
+					Create a new {itemName}
+				</Button>
+				<div className={styles.enableKbNav}>
+					<Button onClick={onKbNavEnable} tabIndex={items.length > 0 ? 0 : -1}>
+						Tab through {items.length} {itemName}s
+					</Button>
+				</div>
+			</div>
+			<ol className={styles.list} ref={itemsRef} onBlur={onBlur}>
+				{items.map(({ id, vnum, name, shortDesc }, n) => (
+					<li key={id}>
+						<a
+							href="#"
+							onClick={() => onChange(id)}
+							className={classnames(selected === id && styles.selected, styles.link)}
+							tabIndex={kbNav ? 0 : -1}
+							ref={selected === id ? selectedRef : (n === 0 ? firstItemRef : undefined)}
+						>
+							<span className={styles.vnum}>{vnum || ""}</span> {name || shortDesc || ""}
+						</a>
+					</li>
+				))}
+			</ol>
+		</div>
 	);
 }
 

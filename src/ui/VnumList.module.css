@@ -1,28 +1,29 @@
-.VnumItemEditor {
-	display: flex;
-	height: calc(100%);
-}
-
 .vnumItemList {
-	list-style: none;
-	padding: 0;
-	margin: 0;
 	flex: 0 0 auto;
 	max-width: 20rem;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
 
-.vnumItemList li {
+.list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.vnumItemList .link {
+	display: block;
 	padding: 0.25rem;
 	margin: -0.15rem 0;
 	cursor: pointer;
 	white-space: nowrap;
+	color: var(--foreground);
+	text-decoration: none;
 }
-.vnumItemList li:hover {
+.vnumItemList .link:hover, .vnumItemList .link:focus {
 	background: var(--selection-dim);
 }
-.vnumItemList li.selected {
+.vnumItemList .link.selected {
 	background: var(--selection);
 	color: white;
 }
@@ -33,6 +34,21 @@
 	font-family: monospace;
 }
 
-.VnumItemEditorPlaceholder {
-	flex: 1 0 auto;
+.buttons {
+	position: relative;
+}
+
+.enableKbNav {
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
+	padding: 0.5rem;
+	margin-left: 2rem;
+	background-color: var(--background);
+	border: 2px solid var(--neutral);
+	border-radius: 8px;
+}
+.enableKbNav:focus-within {
+	opacity: 1;
+	pointer-events: all;
 }
