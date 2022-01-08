@@ -4,9 +4,9 @@ It's an area builder for Avatar MUD, written by Scevine.
 
 ## Todo
 
+* portable build should not include source maps
 * room doors should be keyed by direction, not a list
 * allow "fixing" orphaned resets, specials, shops
-* re-serialize orphaned resets, specials, shops
 * display parse errors
 
 ## Known limitations
