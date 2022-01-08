@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import classnames from "classnames";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -71,8 +71,14 @@ interface Props {
 function RoomForm(props: Props) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
+	const vnumField = useRef<HTMLInputElement>(null);
+	const tab = useAppSelector(state => state.ui.tab);
 	const { room } = props;
 	const id = room.id;
+
+	useEffect(() => {
+		vnumField.current?.focus();
+	}, [id, tab]);
 
 	const rooms = useAppSelector(state => state.rooms.rooms);
 	const objects = useAppSelector(state => state.objects.objects);
@@ -89,7 +95,7 @@ function RoomForm(props: Props) {
 	return (
 		<div className={classnames(styles.tabDangerTarget, danger && sharedStyles.dangerTarget)}>
 			<ToolRow style={{justifyContent: "space-between"}}>
-				<NumberField name="VNUM" value={room.vnum} min={0} onUpdate={updatedVnum} />
+				<NumberField name="VNUM" value={room.vnum} min={0} onUpdate={updatedVnum} inputRef={vnumField} />
 				<DeleteButton onHoverState={setDanger} onClick={removedRoom}>Delete room</DeleteButton>
 			</ToolRow>
 			<Row>

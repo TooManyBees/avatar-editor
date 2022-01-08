@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import classnames from "classnames";
 import { Dispatch } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -73,8 +73,14 @@ interface Props {
 function MobileForm(props: Props) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
+	const vnumField = useRef<HTMLInputElement>(null);
+	const tab = useAppSelector(state => state.ui.tab);
 	const { mobile } = props;
 	const id = mobile.id;
+
+	useEffect(() => {
+		vnumField.current?.focus();
+	}, [id, tab]);
 
 	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
 	const updatedKeywords = (ks: string[]) => dispatch(Actions.updatedKeywords([id, ks]));
@@ -98,7 +104,7 @@ function MobileForm(props: Props) {
 	return (
 		<div className={classnames(styles.tabDangerTarget, danger && sharedStyles.dangerTarget)}>
 			<ToolRow style={{ justifyContent: "space-between" }}>
-				<NumberField name="VNUM" inline value={mobile.vnum} min={0} onUpdate={updatedVnum} />
+				<NumberField name="VNUM" inline value={mobile.vnum} min={0} onUpdate={updatedVnum} inputRef={vnumField} />
 				<DeleteButton onHoverState={setDanger} onClick={removedMobile}>Delete mob</DeleteButton>
 			</ToolRow>
 			<Row>

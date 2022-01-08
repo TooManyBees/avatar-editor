@@ -9,10 +9,11 @@ interface NumberFieldProps {
 	max?: number;
 	onUpdate?: (n: number) => void;
 	inline?: boolean;
+	inputRef?: React.RefObject<HTMLInputElement>;
 }
 
 export default function NumberField(props: NumberFieldProps) {
-	const { inline = false, name, min, max } = props;
+	const { inline = false, name, min, max, inputRef } = props;
 	const [value, setValue] = useState(props.value?.toString() || "");
 	const [warning, setWarning] = useState(parseValue(props.value, min, max) !== props.value);
 
@@ -39,6 +40,7 @@ export default function NumberField(props: NumberFieldProps) {
 				onBlur={onBlur}
 				className={classnames(styles.input, styles.number, warning && styles.warning)}
 				style={{width: "5rem"}}
+				ref={inputRef}
 			/>
 		</label>
 	);

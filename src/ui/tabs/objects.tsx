@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import classnames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/objects";
@@ -80,7 +80,13 @@ function factor(n: number): number[] {
 function ObjectForm({ item: object }: Props) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
+	const vnumField = useRef<HTMLInputElement>(null);
+	const tab = useAppSelector(state => state.ui.tab);
 	const id = object.id;
+
+	useEffect(() => {
+		vnumField.current?.focus();
+	}, [id, tab]);
 
 	const wearFlags = object.wearFlags.reduce((sum, b) => sum + b, 0);
 
@@ -101,7 +107,7 @@ function ObjectForm({ item: object }: Props) {
 	return (
 		<div className={classnames(styles.tabDangerTarget, danger && sharedStyles.dangerTarget)}>
 			<ToolRow style={{justifyContent: "space-between"}}>
-				<NumberField name="VNUM" inline value={object.vnum} min={0} onUpdate={updatedVnum} />
+				<NumberField name="VNUM" inline value={object.vnum} min={0} onUpdate={updatedVnum} inputRef={vnumField} />
 				<DeleteButton onHoverState={setDanger} onClick={removedObject}>Delete object</DeleteButton>
 			</ToolRow>
 			<KeywordField name="Keywords" value={object.keywords} onUpdate={updatedKeywords} />
