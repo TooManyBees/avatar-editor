@@ -1,4 +1,5 @@
 export interface SpecialU {
+	id: string;
 	mobVnum: number;
 	special: string;
 	_error: {

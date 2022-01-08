@@ -16,6 +16,7 @@ import {
 	TextField,
 	ToolRow,
 } from "../components";
+import { SelectSpecial } from "../mobiles";
 import SelectDirection from "../rooms/SelectDirection";
 import styles from "./orphans.module.css";
 
@@ -30,18 +31,21 @@ export default function OrphansTab() {
 
 	return (
 		<TabsContents>
-			<OrphanedSpecials specials={orphanedSpecials} />
+			<OrphanedSpecials specials={orphanedSpecials} mobiles={mobiles} />
 			<OrphanedShops shops={orphanedShops} />
 			<OrphanedResets resets={resets} mobiles={mobiles} objects={objects} rooms={rooms} />
 		</TabsContents>
 	);
 }
 
-function OrphanedSpecials({ specials }: { specials: SpecialU[] }) {
+function OrphanedSpecials({ specials, mobiles }: { specials: SpecialU[], mobiles: Mobile[] }) {
 	if (specials.length === 0) return null;
 	return (
 		<SectionList header={<h2>Orphaned Specials</h2>}>
-
+			{specials.map(special => <li key={special.id}>
+				<SelectVnum name="Mobile" selectedId={special.mobVnum.toString()} items={mobiles} onUpdate={() => {}} />
+				<SelectSpecial value={special.special} onUpdate={() => {}}/>
+			</li>)}
 		</SectionList>
 	);
 }

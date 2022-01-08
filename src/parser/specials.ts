@@ -1,4 +1,4 @@
-import { Mobile } from "../app/models";
+import { Mobile, newId } from "../app/models";
 import { SpecialU } from "../app/models/specials";
 import { parseNumber } from "./helpers";
 
@@ -15,7 +15,7 @@ export function parseSpecials(section: string): SpecialU[] {
 			continue;
 		}
 
-		let special: SpecialU = { mobVnum: 0, special: "none", _error: {} };
+		let special: SpecialU = { id: newId(), mobVnum: 0, special: "none", _error: {} };
 
 		let mobVnum = parseNumber(mobVnumString);
 		if (mobVnum != null) special.mobVnum = mobVnum;
