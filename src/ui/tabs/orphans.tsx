@@ -11,7 +11,6 @@ import {
 import { TabsContents } from "./tabs-layout";
 import {
 	NumberField,
-	Section,
 	SectionList,
 	SelectVnum,
 	TextField,
@@ -41,22 +40,18 @@ export default function OrphansTab() {
 function OrphanedSpecials({ specials }: { specials: SpecialU[] }) {
 	if (specials.length === 0) return null;
 	return (
-		<Section header={<h2>Orphaned Specials</h2>}>
-			<ol>
-				
-			</ol>
-		</Section>
+		<SectionList header={<h2>Orphaned Specials</h2>}>
+
+		</SectionList>
 	);
 }
 
 function OrphanedShops({ shops }: { shops: ShopU[] }) {
 	if (shops.length === 0) return null;
 	return (
-		<Section header={<h2>Orphaned Shops</h2>}>
-			<ol>
-				
-			</ol>
-		</Section>
+		<SectionList header={<h2>Orphaned Shops</h2>}>
+
+		</SectionList>
 	);
 }
 
@@ -80,74 +75,64 @@ function OrphanedResets({ resets, mobiles, objects, rooms }: OrphanedResetsProps
 	return (
 		<>
 			{mobResets.length > 0 && <SectionList header={<h2>Mob resets</h2>}>
-				<ol className={styles.list}>
-					{mobResets.map(reset => <>
-						<li key={reset.id}>
-							<ToolRow>
-								<SelectVnum name="Mobile" selectedId={reset.mobId} items={mobiles} onUpdate={() => {}} />
-								<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
-							</ToolRow>
-							<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
-						</li>
-						<hr />
-					</>)}
-				</ol>
+				{mobResets.map(reset => <React.Fragment key={reset.id}>
+					<li>
+						<ToolRow>
+							<SelectVnum name="Mobile" selectedId={reset.mobId} items={mobiles} onUpdate={() => {}} />
+							<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
+						</ToolRow>
+						<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
+					</li>
+					<hr />
+				</React.Fragment>)}
 			</SectionList>}
 			{objResets.length > 0 && <SectionList header={<h2>Object resets</h2>}>
-				<ol className={styles.list}>
-					{objResets.map(reset => <>
-						<li key={reset.id}>
-							<ToolRow>
-								<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={() => {}} />
-								<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
-							</ToolRow>
-							<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
-						</li>
-						<hr />
-					</>)}
-				</ol>
+				{objResets.map(reset => <React.Fragment key={reset.id}>
+					<li>
+						<ToolRow>
+							<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={() => {}} />
+							<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
+						</ToolRow>
+						<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
+					</li>
+					<hr />
+				</React.Fragment>)}
 			</SectionList>}
 			{inObjResets.length > 0 && <SectionList header={<h2>Container resets</h2>}>
-				<ol className={styles.list}>
-					{inObjResets.map(reset => <>
-						<li key={reset.id}>
-							<ToolRow>
-								<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={() => {}} />
-								<SelectVnum name="Container" selectedId={reset.containerId} items={objects} onUpdate={() => {}} />
-							</ToolRow>
-							<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
-						</li>
-						<hr />
-					</>)}
-				</ol>
+				{inObjResets.map(reset => <React.Fragment key={reset.id}>
+					<li>
+						<ToolRow>
+							<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={() => {}} />
+							<SelectVnum name="Container" selectedId={reset.containerId} items={objects} onUpdate={() => {}} />
+						</ToolRow>
+						<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
+					</li>
+					<hr />
+				</React.Fragment>)}
 				</SectionList>}
 			{doorResets.length > 0 && <SectionList header={<h2>Door resets</h2>}>
-				<ol className={styles.list}>
-					{doorResets.map(reset => <>
-						<li key={reset.id}>
-							<ToolRow>
-								<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
-								<SelectDirection value={reset.direction} onUpdate={() => {}} />
-							</ToolRow>
-							<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
-						</li>
-						<hr />
-					</>)}
-				</ol>
+				{doorResets.map(reset => <React.Fragment key={reset.id}>
+					<li>
+						<ToolRow>
+							<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
+							<SelectDirection value={reset.direction} onUpdate={() => {}} />
+						</ToolRow>
+						<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
+					</li>
+					<hr />
+				</React.Fragment>)}
 			</SectionList>}
 			{randomResets.length > 0 && <SectionList header={<h2>Random exit resets</h2>}>
-				<ol className={styles.list}>
-					{randomResets.map(reset => <>
-						<li key={reset.id}>
-							<ToolRow>
-								<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
-								<NumberField name="Number of exits" value={reset.numExits} onUpdate={() => {}} />
-							</ToolRow>
-							<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
-						</li>
-						<hr />
-					</>)}
-				</ol>
+				{randomResets.map(reset => <React.Fragment key={reset.id}>
+					<li>
+						<ToolRow>
+							<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
+							<NumberField name="Number of exits" value={reset.numExits} onUpdate={() => {}} />
+						</ToolRow>
+						<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
+					</li>
+					<hr />
+				</React.Fragment>)}
 			</SectionList>}
 		</>
 	);

@@ -73,13 +73,12 @@ function RoomForm(props: Props) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
 	const vnumField = useRef<HTMLInputElement>(null);
-	const tab = useAppSelector(state => state.ui.tab);
 	const { room } = props;
 	const id = room.id;
 
 	useEffect(() => {
 		vnumField.current?.focus();
-	}, [id, tab]);
+	}, [id]);
 
 	const rooms = useAppSelector(state => state.rooms.rooms);
 	const objects = useAppSelector(state => state.objects.objects);

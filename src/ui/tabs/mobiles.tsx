@@ -75,13 +75,12 @@ function MobileForm(props: Props) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
 	const vnumField = useRef<HTMLInputElement>(null);
-	const tab = useAppSelector(state => state.ui.tab);
 	const { mobile } = props;
 	const id = mobile.id;
 
 	useEffect(() => {
 		vnumField.current?.focus();
-	}, [id, tab]);
+	}, [id]);
 
 	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
 	const updatedKeywords = (ks: string[]) => dispatch(Actions.updatedKeywords([id, ks]));

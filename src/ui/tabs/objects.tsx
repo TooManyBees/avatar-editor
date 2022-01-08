@@ -82,12 +82,11 @@ function ObjectForm({ item: object }: Props) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
 	const vnumField = useRef<HTMLInputElement>(null);
-	const tab = useAppSelector(state => state.ui.tab);
 	const id = object.id;
 
 	useEffect(() => {
 		vnumField.current?.focus();
-	}, [id, tab]);
+	}, [id]);
 
 	const wearFlags = object.wearFlags.reduce((sum, b) => sum + b, 0);
 
