@@ -1,6 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import { CSSObjectWithLabel } from "react-select";
+import { CSSObjectWithLabel, Theme } from "react-select";
 import ReactSelect from "react-select/creatable";
 import styles from "./inputs.module.css";
 
@@ -28,6 +28,7 @@ export function SelectVnum<T extends HasVnum>(props: Props<T>) {
 	}));
 
 	let selected = options.find(item => item.value === selectedId);
+	let warning = false;
 	if (!selected && selectedId) {
 		if (isValidNewOption(selectedId)) {
 			selected = {
@@ -36,10 +37,12 @@ export function SelectVnum<T extends HasVnum>(props: Props<T>) {
 				label: "(outside area?)",
 			};
 			options.unshift(selected);
+			warning = true;
 		}
 	}
 
-	const selectStyles = minWidthStyles(options);
+	const selectStyles = minWidthStyles(options, warning);
+	const selectTheme = warningTheme(warning);
 
 	const select = (
 		<ReactSelect
@@ -52,6 +55,7 @@ export function SelectVnum<T extends HasVnum>(props: Props<T>) {
 			blurInputOnSelect
 			captureMenuScroll
 			styles={selectStyles}
+			theme={selectTheme}
 			isDisabled={disabled}
 		/>
 	);
@@ -83,7 +87,7 @@ function isValidNewOption(input: string): boolean {
 	return Number.isInteger(number);
 }
 
-function minWidthStyles(options: Option[]) {
+function minWidthStyles(options: Option[], warning: boolean) {
 	const minWidth = Math.min(
 			400,
 			options.reduce((maxLen, item) =>
@@ -94,12 +98,26 @@ function minWidthStyles(options: Option[]) {
 			...provided,
 			minWidth: `${Math.ceil(minWidth)}px`,
 			alignItems: "baseline",
+			backgroundColor: warning ? "var(--warning-faint)" : undefined,
 		}),
-		valueContainer: (provider: CSSObjectWithLabel) => ({
-			...provider,
+		valueContainer: (provided: CSSObjectWithLabel) => ({
+			...provided,
 			alignItems: "baseline",
 			top: "2px",
 		}),
 		// singleValue: ({ maxWidth, position, top, transform, ...rest}: CSSObjectWithLabel) => ({...rest}),
 	};
+}
+
+function warningTheme(warning: boolean) {
+	return (theme: Theme) => ({
+		...theme,
+		colors: {
+			...theme.colors,
+			primary: warning ? "var(--warning)" : theme.colors.primary,
+			neutral20: warning ? "var(--warning-dim)" : theme.colors.neutral20,
+			neutral30: warning ? "var(--warning)" : theme.colors.neutral30,
+			neutral40: warning ? "var(--warning)" : theme.colors.neutral40,
+		},
+	});
 }
