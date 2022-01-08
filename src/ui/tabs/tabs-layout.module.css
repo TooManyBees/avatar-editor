@@ -31,20 +31,22 @@
 
 .tabsNavItem {
 	cursor: pointer;
-	padding: 0 0.25rem;
 	border: unset;
-	border-bottom: 2px solid transparent;
 	font-family: ZillaSlab;
 	font-weight: 700;
 	font-size: 1.25rem;
-
 	margin: 0;
+	border-radius: 4px;
 	background-color: unset;
 }
-.tabsNavItem:hover {
+.tabsNavText {
+	padding: 0 0.25rem;
+	border-bottom: 2px solid transparent;
+}
+.tabsNavItem:hover .tabsNavText {
 	border-color: var(--selection-dim);
 }
-.tabsNavItem[data-selected="true"] {
+.tabsNavItem[data-selected="true"] .tabsNavText {
 	border-color: var(--selection);
 }
 
