@@ -27,10 +27,10 @@ export type RootState = ReturnType<typeof store.getState>;
 let unsavedChanges = false;
 
 function warnOnUnload(event: BeforeUnloadEvent) {
-	event.preventDefault();
-	const result = confirm("There's no edit history on this app. Really leave?");
-	if (result) dismissUnsavedChanges();
-	return result;
+	if (process.env.NODE_ENV === "production") {
+		event.preventDefault();
+		return confirm("There's no edit history on this app. Really leave?");
+	}
 }
 
 let previousState: RootState = store.getState();
