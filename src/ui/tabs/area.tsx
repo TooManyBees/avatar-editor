@@ -10,7 +10,7 @@ import {
 	removedHelp,
 } from "../../app/store/area-section";
 import { Help } from "../../app/models";
-import TabsLayout from "./tabs-layout";
+import { TabsContents } from "./tabs-layout";
 import {
 	AddButton,
 	DeleteButton,
@@ -30,7 +30,7 @@ export default function AreaTab() {
 	const area = useAppSelector(state => state.area);
 
 	return (
-		<TabsLayout>
+		<TabsContents>
 			<ToolRow>
 				<TextField name="Level Range" maxLength={6} style={{width: "5rem"}} value={area.levelRange} onUpdate={levelRange => dispatch(updatedLevelRange(levelRange))} />
 				<TextField name="Author" maxLength={7} style={{width: "6rem"}} value={area.author} onUpdate={author => dispatch(updatedAuthor(author))} />
@@ -40,7 +40,7 @@ export default function AreaTab() {
 			<SectionList header={<><h2>Helps</h2><AddButton onClick={() => dispatch(addedHelp())}>Add help</AddButton></>}>
 				{area.helps.map(h => <HelpForm key={h.id} help={h} />)}
 			</SectionList>
-		</TabsLayout>
+		</TabsContents>
 	);
 }
 

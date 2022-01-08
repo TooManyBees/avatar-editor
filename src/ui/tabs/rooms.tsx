@@ -24,7 +24,7 @@ import {
 } from "../components";
 import Doors from "../rooms/Doors";
 import ReciprocalResets from "../rooms/ReciprocalResets";
-import TabsLayout from "./tabs-layout";
+import { TabsContents } from "./tabs-layout";
 import sharedStyles from "../components/shared.module.css";
 import styles from "./tabs-layout.module.css";
 
@@ -44,12 +44,13 @@ export default function RoomsTab() {
 		dispatch(selectedRoomId(id));
 	}
 
-	const sideNav = <VnumItemList itemName="Room" items={rooms} selected={currentId} onChange={onSelect} onAdd={onAdd} />;
-
 	return (
-		<TabsLayout sideNav={sideNav}>
-			{room ? <RoomForm key={currentId} room={room} /> : <BlankWorkspace onAdd={onAdd} />}
-		</TabsLayout>
+		<>
+			<TabsContents>
+				{room ? <RoomForm key={currentId} room={room} /> : <BlankWorkspace onAdd={onAdd} />}
+			</TabsContents>
+			<VnumItemList itemName="Room" items={rooms} selected={currentId} onChange={onSelect} onAdd={onAdd} />
+		</>
 	);
 }
 

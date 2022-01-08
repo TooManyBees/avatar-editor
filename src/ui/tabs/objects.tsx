@@ -22,7 +22,7 @@ import {
 import ObjectValues from "../objects/ObjectValues";
 import ObjectResets from "../objects/ObjectResets";
 import ReciprocalResets from "../objects/ReciprocalResets";
-import TabsLayout from "./tabs-layout";
+import { TabsContents } from "./tabs-layout";
 import sharedStyles from "../components/shared.module.css";
 import styles from "./tabs-layout.module.css";
 
@@ -42,12 +42,13 @@ export default function ObjectsTab() {
 		dispatch(selectedObjectId(id));
 	}
 
-	const sideNav = <VnumItemList itemName="Object" items={objects} selected={currentId} onChange={onSelect} onAdd={onAdd} />;
-
 	return (
-		<TabsLayout sideNav={sideNav}>
-			{object ? <ObjectForm key={currentId} item={object} /> : <BlankWorkspace onAdd={onAdd} />}
-		</TabsLayout>
+		<>
+			<TabsContents>
+				{object ? <ObjectForm key={currentId} item={object} /> : <BlankWorkspace onAdd={onAdd} />}
+			</TabsContents>
+			<VnumItemList itemName="Object" items={objects} selected={currentId} onChange={onSelect} onAdd={onAdd} />
+		</>
 	);
 }
 

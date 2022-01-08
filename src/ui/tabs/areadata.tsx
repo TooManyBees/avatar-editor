@@ -28,7 +28,7 @@ import {
 	toggleVnumRange,
 	toggleScaling,
 } from "../../app/store/areadata";
-import TabsLayout from "./tabs-layout";
+import { TabsContents } from "./tabs-layout";
 import { BitsFieldN } from "../components/BitsField";
 import {
 	NumberField,
@@ -44,7 +44,7 @@ export default function AreadataTab() {
 	const enabled = useAppSelector(state => state.areadata.areadataBits);
 
 	return (
-		<TabsLayout>
+		<TabsContents>
 			<VnumRange vnumRange={areadata.vnumRange} opened={enabled.vnumRange} />
 			<AreaFlags flags={areadata.flags} opened={enabled.flags} />
 			<Plane plane={areadata.plane} opened={enabled.plane} />
@@ -53,7 +53,7 @@ export default function AreadataTab() {
 			<Modifier modifier={areadata.modifier} opened={enabled.modifier} />
 			<GroupSize groupSize={areadata.groupSize} opened={enabled.groupSize} />
 			<Scaling scaling={areadata.scaling} opened={enabled.scaling} />
-		</TabsLayout>
+		</TabsContents>
 	);
 }
 

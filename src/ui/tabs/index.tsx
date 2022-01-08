@@ -5,8 +5,9 @@ import AreadataTab from "./areadata";
 import MobilesTab from "./mobiles";
 import ObjectsTab from "./objects";
 import RoomsTab from "./rooms";
+import { TabsLayout } from "./tabs-layout";
 
-export default function Tabs() {
+function Tab() {
 	const tab = useAppSelector(state => state.ui.tab);
 	switch (tab) {
 		case "area":
@@ -22,4 +23,8 @@ export default function Tabs() {
 		case "shops":
 			return null;
 	}
+}
+
+export default function Tabs() {
+	return <TabsLayout><Tab /></TabsLayout>;
 }

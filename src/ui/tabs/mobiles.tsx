@@ -28,7 +28,7 @@ import KspawnFields from "../mobiles/KspawnFields";
 import sharedStyles from "../components/shared.module.css";
 import styles from "./tabs-layout.module.css";
 
-import TabsLayout from "./tabs-layout";
+import { TabsContents } from "./tabs-layout";
 
 export default function MobilesTab() {
 	const dispatch = useAppDispatch();
@@ -46,12 +46,13 @@ export default function MobilesTab() {
 		dispatch(selectedMobileId(id));
 	}
 
-	const sideNav = <VnumItemList itemName="Mobile" items={mobiles} selected={currentId} onChange={onSelect} onAdd={onAdd} />;
-
 	return (
-		<TabsLayout sideNav={sideNav}>
-			{mobile ? <MobileForm key={currentId} mobile={mobile} /> : <BlankWorkspace onAdd={onAdd} />}
-		</TabsLayout>
+		<>
+			<TabsContents>
+				{mobile ? <MobileForm key={currentId} mobile={mobile} /> : <BlankWorkspace onAdd={onAdd} />}
+			</TabsContents>
+			<VnumItemList itemName="Mobile" items={mobiles} selected={currentId} onChange={onSelect} onAdd={onAdd} />
+		</>
 	);
 }
 

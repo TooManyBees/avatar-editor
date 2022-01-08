@@ -8,20 +8,27 @@ import styles from "./tabs-layout.module.css";
 
 interface Props {
 	children: React.ReactNode;
-	sideNav?: React.ReactNode;
 }
 
-export default function TabsLayout(props: Props) {
-	const { children, sideNav = null } = props;
+export function TabsLayout(props: Props) {
 	return (
 		<div className={styles.tabs}>
 			<TabsNav />
 			<div className={styles.tabsContentsContainer}>
-				<div className={styles.tabsContents}>{children}</div>
-				{sideNav}
+				{props.children}
 			</div>
 		</div>
 	);
+}
+
+interface ContentsProps {
+	children: React.ReactNode;
+	scrollRef?: React.RefObject<HTMLDivElement>;
+}
+
+export function TabsContents(props: ContentsProps) {
+	const { children, scrollRef } = props;
+	return <div className={styles.tabsContents} ref={scrollRef}>{children}</div>;
 }
 
 function TabsNav() {
