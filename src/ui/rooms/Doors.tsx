@@ -18,6 +18,7 @@ import {
 	TextArea,
 	ToolRow,
 } from "../components";
+import SelectDirection from "./SelectDirection"
 import styles from "./Doors.module.css";
 import sharedStyles from "../components/shared.module.css";
 
@@ -63,7 +64,7 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 	return <>
 		<li className={classnames(danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
-				<SelectField name="Direction" value={door.direction} options={DIRECTIONS} onUpdate={direction => dispatch(Actions.updatedDoor([roomId, {...door, direction}]))} />
+				<SelectDirection value={door.direction} onUpdate={direction => dispatch(Actions.updatedDoor([roomId, {...door, direction}]))} />
 				to
 				<SelectVnum
 					selectedId={door.toRoomId}
@@ -98,15 +99,6 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 		<hr className={styles.separator} />
 	</>;
 }
-
-const DIRECTIONS: { value: number, label: string }[] = [
-	{ value: 0, label: "North" },
-	{ value: 1, label: "East" },
-	{ value: 2, label: "South" },
-	{ value: 3, label: "West" },
-	{ value: 4, label: "Up" },
-	{ value: 5, label: "Down" },
-];
 
 const LOCKS: { value: number, label: string }[] = [
 	{ value: 0, label: "No door" },

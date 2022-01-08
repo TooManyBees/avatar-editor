@@ -1,6 +1,8 @@
 import React from "react";
+import classnames from "classnames";
 import { CSSObjectWithLabel } from "react-select";
 import ReactSelect from "react-select/creatable";
+import styles from "./inputs.module.css";
 
 interface HasVnum {
 	id: string;
@@ -10,6 +12,7 @@ interface HasVnum {
 }
 
 interface Props<T> {
+	name?: string;
 	selectedId: string | null;
 	items: readonly T[];
 	onUpdate: (id: string) => void;
@@ -17,7 +20,7 @@ interface Props<T> {
 }
 
 export function SelectVnum<T extends HasVnum>(props: Props<T>) {
-	const { items, selectedId, disabled } = props;
+	const { items, selectedId, disabled, name } = props;
 	const options = props.items.map(item => ({
 		value: item.id,
 		vnum: item.vnum,
@@ -36,9 +39,9 @@ export function SelectVnum<T extends HasVnum>(props: Props<T>) {
 		}
 	}
 
-	const styles = minWidthStyles(options);
+	const selectStyles = minWidthStyles(options);
 
-	return (
+	const select = (
 		<ReactSelect
 			value={selected}
 			options={options}
@@ -48,10 +51,17 @@ export function SelectVnum<T extends HasVnum>(props: Props<T>) {
 			onChange={v => props.onUpdate(v ? v.value : "")}
 			blurInputOnSelect
 			captureMenuScroll
-			styles={styles}
+			styles={selectStyles}
 			isDisabled={disabled}
 		/>
 	);
+
+	return name ? (
+		<label className={classnames(styles.wrapper, disabled && styles.disabled)}>
+			<span className={styles.label}>{name}:</span>
+			{select}
+		</label>
+	) : select;
 }
 
 type Option = {

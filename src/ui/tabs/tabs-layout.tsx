@@ -62,6 +62,9 @@ function TabsNav() {
 			<button className={styles.tabsNavItem} data-selected={currentTab === "rooms"} onClick={() => dispatch(changedTab("rooms"))}>
 				<span className={styles.tabsNavText}>Rooms</span>
 			</button>
+			<button className={styles.tabsNavItem} data-selected={currentTab === "orphans"} onClick={() => dispatch(changedTab("orphans"))}>
+				<span className={styles.tabsNavText}>Orphans</span>
+			</button>
 			<span style={{marginRight: "0.5rem"}} />
 			<Button onClick={save}>Write .are</Button> <span style={{color: "var(--neutral)"}}>← (do this often!)</span>
 		</nav>

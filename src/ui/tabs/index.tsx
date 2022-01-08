@@ -6,6 +6,7 @@ import MobilesTab from "./mobiles";
 import ObjectsTab from "./objects";
 import RoomsTab from "./rooms";
 import { TabsLayout } from "./tabs-layout";
+import OrphansTab from "./orphans";
 
 function Tab() {
 	const tab = useAppSelector(state => state.ui.tab);
@@ -20,8 +21,8 @@ function Tab() {
 			return <ObjectsTab />;
 		case "rooms":
 			return <RoomsTab />;
-		case "shops":
-			return null;
+		case "orphans":
+			return <OrphansTab />;
 	}
 }
 
