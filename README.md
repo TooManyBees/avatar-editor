@@ -1,6 +1,6 @@
 # Midgaard Royal Surveyors' Guild
 
-It's an area builder for Avatar MUD.
+It's an area builder for Avatar MUD, written by Scevine.
 
 ## Todo
 
