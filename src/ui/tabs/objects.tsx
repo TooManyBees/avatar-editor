@@ -44,10 +44,10 @@ export default function ObjectsTab() {
 
 	return (
 		<>
+			<VnumItemList itemName="Object" items={objects} selected={currentId} onChange={onSelect} onAdd={onAdd} />
 			<TabsContents>
 				{object ? <ObjectForm key={currentId} item={object} /> : <BlankWorkspace onAdd={onAdd} />}
 			</TabsContents>
-			<VnumItemList itemName="Object" items={objects} selected={currentId} onChange={onSelect} onAdd={onAdd} />
 		</>
 	);
 }

@@ -46,10 +46,10 @@ export default function RoomsTab() {
 
 	return (
 		<>
+			<VnumItemList itemName="Room" items={rooms} selected={currentId} onChange={onSelect} onAdd={onAdd} />
 			<TabsContents>
 				{room ? <RoomForm key={currentId} room={room} /> : <BlankWorkspace onAdd={onAdd} />}
 			</TabsContents>
-			<VnumItemList itemName="Room" items={rooms} selected={currentId} onChange={onSelect} onAdd={onAdd} />
 		</>
 	);
 }
