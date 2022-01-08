@@ -39,14 +39,14 @@ export function LinkButton(props: Props) {
 }
 
 export function DeleteButton(props: Props) {
-	const [prompt, setPrompt] = useState(false);
+	const [prompt, setPrompt] = useState<boolean | null>(null);
 	const initialButton = useRef<HTMLButtonElement>(null);
 	const deleteButton = useRef<HTMLButtonElement>(null);
 	const cancelButton = useRef<HTMLButtonElement>(null);
 
 	useEffect(() => {
 		if (prompt) cancelButton.current?.focus();
-		else initialButton.current?.focus();
+		else if (prompt == false) initialButton.current?.focus();
 	}, [prompt])
 
 	const { onClick, onHoverState, ...rest } = props;
