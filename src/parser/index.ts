@@ -51,7 +51,6 @@ export default function parseFile(file: string): Area {
 		objects: [],
 		rooms: [],
 		resets: BLANK_RESETS_SECTION,
-		shops: [],
 		orphanedShops: [],
 		orphanedSpecials: [],
 	};
@@ -115,8 +114,7 @@ export default function parseFile(file: string): Area {
 
 	let orphanedSpecials = corellateSpecials(parsedSections.mobiles, uncorellatedSpecials);
 	parsedSections.orphanedSpecials = orphanedSpecials;
-	let [shops, orphanedShops] = corellateShops(parsedSections.mobiles, uncorellatedShops);
-	parsedSections.shops = shops;
+	let orphanedShops = corellateShops(parsedSections.mobiles, uncorellatedShops);
 	parsedSections.orphanedShops = orphanedShops;
 
 	return parsedSections;

@@ -1,30 +1,31 @@
 import React from "react";
 import { useAppDispatch } from "../../app/hooks";
-import { updatedShop } from "../../app/store/shops";
+import { updatedShop } from "../../app/store/mobiles";
 import { Shop } from "../../app/models/shops";
 import { NumberField, SelectField, ToolRow } from "../components";
 
 interface Props {
+	mobId: string;
 	shop: Shop;
 }
 
 export default function ShopFields(props: Props) {
-	const { shop } = props;
+	const { mobId, shop } = props;
 	const dispatch = useAppDispatch();
 	return (
 		<div>
 			<ToolRow>
-				<SelectField value={shop.oType1} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType1 => dispatch(updatedShop({...shop, oType1}))} />
-				<SelectField value={shop.oType2} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType2 => dispatch(updatedShop({...shop, oType2}))} />
-				<SelectField value={shop.oType3} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType3 => dispatch(updatedShop({...shop, oType3}))} />
-				<SelectField value={shop.oType4} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType4 => dispatch(updatedShop({...shop, oType4}))} />
-				<SelectField value={shop.oType5} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType5 => dispatch(updatedShop({...shop, oType5}))} />
+				<SelectField value={shop.oType1} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType1 => dispatch(updatedShop([mobId, {...shop, oType1}]))} />
+				<SelectField value={shop.oType2} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType2 => dispatch(updatedShop([mobId, {...shop, oType2}]))} />
+				<SelectField value={shop.oType3} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType3 => dispatch(updatedShop([mobId, {...shop, oType3}]))} />
+				<SelectField value={shop.oType4} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType4 => dispatch(updatedShop([mobId, {...shop, oType4}]))} />
+				<SelectField value={shop.oType5} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType5 => dispatch(updatedShop([mobId, {...shop, oType5}]))} />
 			</ToolRow>
 			<ToolRow>
-				<NumberField name="Profit Buy" inline value={shop.profitBuy} onUpdate={profitBuy => dispatch(updatedShop({...shop, profitBuy}))} />
-				<NumberField name="Profit Sell" inline value={shop.profitSell} onUpdate={profitSell => dispatch(updatedShop({...shop, profitSell}))} />
-				<NumberField name="Opening hour" inline value={shop.firstHour} onUpdate={firstHour => dispatch(updatedShop({...shop, firstHour}))} />
-				<NumberField name="Closing hour" inline value={shop.lastHour} onUpdate={lastHour => dispatch(updatedShop({...shop, lastHour}))} />
+				<NumberField name="Profit Buy" inline value={shop.profitBuy} onUpdate={profitBuy => dispatch(updatedShop([mobId, {...shop, profitBuy}]))} />
+				<NumberField name="Profit Sell" inline value={shop.profitSell} onUpdate={profitSell => dispatch(updatedShop([mobId, {...shop, profitSell}]))} />
+				<NumberField name="Opening hour" inline value={shop.firstHour} onUpdate={firstHour => dispatch(updatedShop([mobId, {...shop, firstHour}]))} />
+				<NumberField name="Closing hour" inline value={shop.lastHour} onUpdate={lastHour => dispatch(updatedShop([mobId, {...shop, lastHour}]))} />
 			</ToolRow>
 		</div>
 	);

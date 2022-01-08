@@ -22,7 +22,7 @@ import styles from "./orphans.module.css";
 
 export default function OrphansTab() {
 	const orphanedSpecials = useAppSelector(state => state.mobiles.orphanedSpecials);
-	const orphanedShops = useAppSelector(state => state.shops.orphaned);
+	const orphanedShops = useAppSelector(state => state.mobiles.orphanedShops);
 	const resets = useAppSelector(state => state.resets.resets);
 
 	const mobiles = useAppSelector(state => state.mobiles.mobiles);

@@ -98,16 +98,13 @@ export function parseShops(section: string): ShopU[] {
 	return shops;
 }
 
-export function corellateShops(mobiles: Mobile[], shopsU: ShopU[]): [Shop[], ShopU[]] {
-	let shops: Shop[] = [];
+export function corellateShops(mobiles: Mobile[], shopsU: ShopU[]): ShopU[] {
 	let orphaned: ShopU[] = [];
 
 	for (let shopU of shopsU) {
 		let mobile = mobiles.find(m => m.vnum === shopU.mobVnum);
 		if (mobile) {
 			let shop: Shop = {
-				id: shopU.id,
-				mobId: mobile.id,
 				oType1: shopU.oType1,
 				oType2: shopU.oType2,
 				oType3: shopU.oType3,
@@ -119,12 +116,12 @@ export function corellateShops(mobiles: Mobile[], shopsU: ShopU[]): [Shop[], Sho
 				lastHour: shopU.lastHour,
 				_error: shopU._error,
 			};
-			shops.push(shop);
+			mobile.shop = shop;
 		} else {
 			shopU._error.mobVnum = true;
 			orphaned.push(shopU);
 		}
 	}
 
-	return [shops, orphaned];
+	return orphaned;
 }

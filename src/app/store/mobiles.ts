@@ -1,26 +1,30 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Mobile, Kspawn, blankKspawn, blankMobile } from "../models/mobiles";
+import { Shop, ShopU, newShop } from "../models/shops";
 import { SpecialU } from "../models/specials";
 import { Apply, blankApply, sortByVnum } from "../models/helpers";
 
 interface MobileState {
 	mobiles: Mobile[];
 	orphanedSpecials: SpecialU[];
+	orphanedShops: ShopU[];
 }
 
 const initialState: MobileState = {
 	mobiles: [],
 	orphanedSpecials: [],
+	orphanedShops: [],
 };
 
 const mobileSlice = createSlice({
 	name: 'mobiles',
 	initialState,
 	reducers: {
-		init(state, action: PayloadAction<[Mobile[], SpecialU[]]>) {
-			const [mobiles, orphanedSpecials] = action.payload;
+		init(state, action: PayloadAction<[Mobile[], SpecialU[], ShopU[]]>) {
+			const [mobiles, orphanedSpecials, orphanedShops] = action.payload;
 			state.mobiles = mobiles;
 			state.orphanedSpecials = orphanedSpecials;
+			state.orphanedShops = orphanedShops;
 			sortByVnum(state.mobiles);
 		},
 		addedMobile(state, action: PayloadAction<string>) {
@@ -141,6 +145,15 @@ const mobileSlice = createSlice({
 			const mobile = state.mobiles.find(m => m.id === id);
 			if (mobile) mobile.specFun = specFun;
 		},
+		addedShop(state, action: PayloadAction<string>) {
+			const mobile = state.mobiles.find(m => m.id === action.payload);
+			if (mobile) mobile.shop = newShop();
+		},
+		updatedShop(state, action: PayloadAction<[string, Shop | null]>) {
+			const [mobId, shop] = action.payload;
+			const mobile = state.mobiles.find(m => m.id === mobId);
+			if (mobile) mobile.shop = shop;
+		},
 	},
 });
 
@@ -168,5 +181,7 @@ export const {
 	removedKspawn,
 	updatedKspawn,
 	updatedSpecial,
+	addedShop,
+	updatedShop,
 } = mobileSlice.actions;
 export default mobileSlice.reducer;

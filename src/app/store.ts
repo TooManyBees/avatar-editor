@@ -6,7 +6,6 @@ import mobilesReducer from "./store/mobiles";
 import objectsReducer from "./store/objects";
 import roomsReducer from "./store/rooms";
 import resetsReducer from "./store/resets";
-import shopsReducer from "./store/shops";
 
 export const store = configureStore({
 	reducer: {
@@ -17,7 +16,6 @@ export const store = configureStore({
 		objects: objectsReducer,
 		rooms: roomsReducer,
 		resets: resetsReducer,
-		shops: shopsReducer,
 	},
 });
 
@@ -35,7 +33,7 @@ function warnOnUnload(event: BeforeUnloadEvent) {
 
 let previousState: RootState = store.getState();
 let RELEVANT_STATE_KEYS: (keyof RootState)[] = [
-	"area", "areadata", "mobiles", "objects", "rooms", "resets", "shops",
+	"area", "areadata", "mobiles", "objects", "rooms", "resets",
 ];
 
 store.subscribe(() => {

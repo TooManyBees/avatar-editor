@@ -4,7 +4,6 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/mobiles";
 import * as ResetsActions from "../../app/store/resets";
-import * as ShopsActions from "../../app/store/shops";
 import { selectedMobileId } from "../../app/store/ui";
 import { Mobile, Shop, newId } from "../../app/models";
 import {
@@ -138,7 +137,7 @@ function MobileForm(props: Props) {
 			</ToolRow>
 			<SelectSpecial value={mobile.specFun} onUpdate={updatedSpecial} />
 			<ApplyFields applies={mobile.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
-			<ShopComponent mobId={id} />
+			<ShopComponent mobId={id} shop={mobile.shop} />
 			<KspawnFields mobId={id} kspawn={mobile.kspawn || null} />
 			<MobResets mobId={id} />
 		</div>
@@ -147,19 +146,20 @@ function MobileForm(props: Props) {
 
 interface ShopProps {
 	mobId: string;
+	shop: Shop | null;
 }
 
 function ShopComponent(props: ShopProps) {
 	const dispatch = useAppDispatch();
-	const shop = useAppSelector(state => state.shops.shops[props.mobId]);
+	const { shop, mobId } = props;
 
 	return (
 		<ToggleContainer
 			label="Shop"
 			opened={!!shop}
-			onEnabled={() => dispatch(ShopsActions.addedShop(props.mobId))}
-			onDisabled={() => dispatch(ShopsActions.removedShop(props.mobId))}>
-			{shop && <ShopFields shop={shop} />}
+			onEnabled={() => dispatch(Actions.addedShop(mobId))}
+			onDisabled={() => dispatch(Actions.updatedShop([mobId, null]))}>
+			{shop && <ShopFields mobId={mobId} shop={shop} />}
 		</ToggleContainer>
 	);
 }

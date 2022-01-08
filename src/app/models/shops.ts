@@ -43,7 +43,6 @@ export const newShopU = (): ShopU => ({
 });
 
 interface ShopFields {
-	mobId: string;
 	oType1: number;
 	oType2: number;
 	oType3: number;
@@ -56,13 +55,10 @@ interface ShopFields {
 }
 
 export interface Shop extends ShopFields {
-	readonly id: string;
 	_error: ErrorMarkers<ShopFields>;
 }
 
-export const newShop = (mobId: string): Shop => ({
-	id: newId(),
-	mobId,
+export const newShop = (): Shop => ({
 	oType1: 0,
 	oType2: 0,
 	oType3: 0,
