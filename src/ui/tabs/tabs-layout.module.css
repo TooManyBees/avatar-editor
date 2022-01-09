@@ -49,6 +49,12 @@
 .tabsNavItem[data-selected="true"] .tabsNavText {
 	border-color: var(--selection);
 }
+.tabsNavItem[disabled] {
+	cursor: initial;
+}
+.tabsNavItem[disabled]:not([data-selected="true"]) .tabsNavText {
+	border-color: transparent;
+}
 
 .tabsContents {
 	height: 100%;

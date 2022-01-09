@@ -13,6 +13,7 @@ import type { UncorellatedResets } from "../models/resets";
 
 interface ResetsSlice {
 	resets: Resets;
+	orphans: boolean;
 }
 
 const initialState: ResetsSlice = {
@@ -23,7 +24,16 @@ const initialState: ResetsSlice = {
 		door: [],
 		randomExit: [],
 	},
+	orphans: false,
 };
+
+function hasOrphans(resets: Resets): boolean {
+	return resets.mobile.some(r => r.orphan)
+		|| resets.object.some(r => r.orphan)
+		|| resets.inObject.some(r => r.orphan)
+		|| resets.door.some(r => r.orphan)
+		|| resets.randomExit.some(r => r.orphan);
+}
 
 const resetsSlice = createSlice({
 	name: "resets",
@@ -31,6 +41,7 @@ const resetsSlice = createSlice({
 	reducers: {
 		init(state, action: PayloadAction<Resets>) {
 			state.resets = action.payload;
+			state.orphans = hasOrphans(action.payload);
 		},
 		addedMobReset(state, action: PayloadAction<string>) {
 			const reset: MobReset = {
@@ -64,6 +75,7 @@ const resetsSlice = createSlice({
 			if (reset) {
 				reset.mobId = mobId;
 				reset.orphan = false;
+				state.orphans = hasOrphans(state.resets);
 			}
 		},
 		removedAllMobResets(state, action: PayloadAction<string>) {
@@ -127,6 +139,7 @@ const resetsSlice = createSlice({
 			if (reset) {
 				reset.objectId = objectId;
 				reset.orphan = false;
+				state.orphans = hasOrphans(state.resets);
 			}
 		},
 		addedInObjectReset(state, action: PayloadAction<string>) {
@@ -153,6 +166,7 @@ const resetsSlice = createSlice({
 			if (reset) {
 				reset.containerId = containerId;
 				reset.orphan = false;
+				state.orphans = hasOrphans(state.resets);
 			}
 		},
 		addedDoorReset(state, action: PayloadAction<{ roomId: string, direction: number, state: number }>) {
@@ -181,6 +195,7 @@ const resetsSlice = createSlice({
 			if (reset) {
 				reset.roomId = roomId;
 				reset.orphan = false;
+				state.orphans = hasOrphans(state.resets);
 			}
 		},
 		addedRandomExitReset(state, action: PayloadAction<string>) {
@@ -207,6 +222,7 @@ const resetsSlice = createSlice({
 			if (reset) {
 				reset.roomId = roomId;
 				reset.orphan = false;
+				state.orphans = hasOrphans(state.resets);
 			}
 		},
 	},

@@ -35,6 +35,11 @@ function TabsNav() {
 	const dispatch = useAppDispatch();
 	const currentTab = useAppSelector(state => state.ui.tab);
 	const rootState = useAppSelector(state => state);
+	const hasOrphans = useAppSelector(state => (
+		state.mobiles.orphanedSpecials.length > 0 ||
+		state.mobiles.orphanedShops.length > 0 ||
+		state.resets.orphans
+	));
 
 	function save() {
 		const output = serializeArea(rootState);
@@ -62,7 +67,7 @@ function TabsNav() {
 			<button className={styles.tabsNavItem} data-selected={currentTab === "rooms"} onClick={() => dispatch(changedTab("rooms"))}>
 				<span className={styles.tabsNavText}>Rooms</span>
 			</button>
-			<button className={styles.tabsNavItem} data-selected={currentTab === "orphans"} onClick={() => dispatch(changedTab("orphans"))}>
+			<button className={styles.tabsNavItem} disabled={!hasOrphans} data-selected={currentTab === "orphans"} onClick={() => dispatch(changedTab("orphans"))}>
 				<span className={styles.tabsNavText}>Orphans</span>
 			</button>
 			<span style={{marginRight: "0.5rem"}} />
