@@ -15,11 +15,11 @@ export default function ShopFields(props: Props) {
 	return (
 		<div>
 			<ToolRow>
-				<SelectField value={shop.oType1} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType1 => dispatch(updatedShop([mobId, {...shop, oType1}]))} />
-				<SelectField value={shop.oType2} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType2 => dispatch(updatedShop([mobId, {...shop, oType2}]))} />
-				<SelectField value={shop.oType3} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType3 => dispatch(updatedShop([mobId, {...shop, oType3}]))} />
-				<SelectField value={shop.oType4} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType4 => dispatch(updatedShop([mobId, {...shop, oType4}]))} />
-				<SelectField value={shop.oType5} options={ITEM_TYPE} defaultValue={{value: 0, label: "None"}} onUpdate={oType5 => dispatch(updatedShop([mobId, {...shop, oType5}]))} />
+				<SelectObjectType value={shop.oType1} onUpdate={oType1 => dispatch(updatedShop([mobId, {...shop, oType1}]))} />
+				<SelectObjectType value={shop.oType2} onUpdate={oType2 => dispatch(updatedShop([mobId, {...shop, oType2}]))} />
+				<SelectObjectType value={shop.oType3} onUpdate={oType3 => dispatch(updatedShop([mobId, {...shop, oType3}]))} />
+				<SelectObjectType value={shop.oType4} onUpdate={oType4 => dispatch(updatedShop([mobId, {...shop, oType4}]))} />
+				<SelectObjectType value={shop.oType5} onUpdate={oType5 => dispatch(updatedShop([mobId, {...shop, oType5}]))} />
 			</ToolRow>
 			<ToolRow>
 				<NumberField name="Profit Buy" inline value={shop.profitBuy} onUpdate={profitBuy => dispatch(updatedShop([mobId, {...shop, profitBuy}]))} />
@@ -30,6 +30,17 @@ export default function ShopFields(props: Props) {
 		</div>
 	);
 }
+
+interface SelectObjectTypeProps {
+	value: number;
+	onUpdate: (n: number) => void;
+	disabled?: boolean;
+}
+
+export function SelectObjectType({ value, onUpdate, disabled }: SelectObjectTypeProps) {
+	return <SelectField disabled={disabled} value={value} options={ITEM_TYPE} onUpdate={onUpdate} />;
+}
+
 const ITEM_TYPE: { value: number, label: string }[] = [
 	{ value: 0, label: "none" },
 	{ value: 1, label: "Light" },

@@ -17,6 +17,7 @@ import {
 	ToolRow,
 } from "../components";
 import { SelectSpecial } from "../mobiles";
+import { SelectObjectType } from "../mobiles/ShopFields";
 import SelectDirection from "../rooms/SelectDirection";
 import styles from "./orphans.module.css";
 
@@ -32,7 +33,7 @@ export default function OrphansTab() {
 	return (
 		<TabsContents>
 			<OrphanedSpecials specials={orphanedSpecials} mobiles={mobiles} />
-			<OrphanedShops shops={orphanedShops} />
+			<OrphanedShops shops={orphanedShops} mobiles={mobiles} />
 			<OrphanedResets resets={resets} mobiles={mobiles} objects={objects} rooms={rooms} />
 		</TabsContents>
 	);
@@ -50,11 +51,25 @@ function OrphanedSpecials({ specials, mobiles }: { specials: SpecialU[], mobiles
 	);
 }
 
-function OrphanedShops({ shops }: { shops: ShopU[] }) {
+function OrphanedShops({ shops, mobiles }: { shops: ShopU[], mobiles: Mobile[] }) {
 	if (shops.length === 0) return null;
 	return (
 		<SectionList header={<h2>Orphaned Shops</h2>}>
-
+			{shops.map(shop => <React.Fragment key={shop.id}>
+				<li>
+					<ToolRow>
+						<SelectVnum name="Mobile" selectedId={shop.mobVnum.toString()} items={mobiles} onUpdate={() => {}} />
+					</ToolRow>
+					<ToolRow>
+						<SelectObjectType disabled value={shop.oType1} onUpdate={() => {}} />
+						<SelectObjectType disabled value={shop.oType2} onUpdate={() => {}} />
+						<SelectObjectType disabled value={shop.oType3} onUpdate={() => {}} />
+						<SelectObjectType disabled value={shop.oType4} onUpdate={() => {}} />
+						<SelectObjectType disabled value={shop.oType5} onUpdate={() => {}} />
+					</ToolRow>
+				</li>
+				<hr />
+			</React.Fragment>)}
 		</SectionList>
 	);
 }
