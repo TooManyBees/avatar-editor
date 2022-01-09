@@ -54,7 +54,7 @@ function InitForm() {
 
 	return (
 		<div className={styles.setupWrapper}>
-			<img src={`${process.env.PUBLIC_URL}/legendora-desktop.png`} />
+			<img className={styles.logo} src={`${process.env.PUBLIC_URL}/legendora-desktop.png`} />
 			<h1>Midgaard Royal Surveyor's Guild</h1>
 			<div className={styles.setupControls}>
 				<ReadAreaForm onRead={onRead} />
@@ -77,7 +77,7 @@ function InitForm() {
 				<li><strong>Do</strong> contact Scevine with bug reports or feature requests.</li>
 			</ul>
 			<p className={styles.credits}>
-				This whole shebang is ©42069 Jess Bees (Scevine). Icons by <a href="https://iconarchive.com/show/legendora-icons-by-raindropmemory/Desktop-icon.html">Teekatas Suwannakrua</a>.
+				This whole shebang is ©42069 Jess Bees (Scevine). Source hosted on <a href="https://github.com/TooManyBees/avatar-editor">GitHub</a>. Icons by <a href="https://iconarchive.com/show/legendora-icons-by-raindropmemory/Desktop-icon.html">Teekatas Suwannakrua</a>.
 			</p>
 		</div>
 	);
