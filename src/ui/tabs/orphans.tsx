@@ -85,7 +85,7 @@ function OrphanedSpecials({ specials, mobiles }: { specials: SpecialU[], mobiles
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
 					<a href="#" className={styles.link} onClick={() => dispatch(selectedMobileId(id))}>
-						Shop assigned to <code>{vnum}</code> {name}
+						Special assigned to mobile <code>{vnum}</code> {name}
 					</a>
 				</li>
 			))}
@@ -117,7 +117,7 @@ function OrphanedShops({ shops, mobiles }: { shops: ShopU[], mobiles: Mobile[] }
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
 					<a href="#" className={styles.link} onClick={() => dispatch(selectedMobileId(id))}>
-						Shop assigned to <code>{vnum}</code> {name}
+						Shop assigned to mobile <code>{vnum}</code> {name}
 					</a>
 				</li>
 			))}
@@ -184,7 +184,7 @@ function MobResets({ resets, mobiles, rooms }: { resets: MobReset[], mobiles: Mo
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
 					<a href="#" className={styles.link} onClick={() => dispatch(selectedMobileId(id))}>
-						Shop assigned to <code>{vnum}</code> {name}
+						Mob reset assigned to mobile <code>{vnum}</code> {name}
 					</a>
 				</li>
 			))}
@@ -220,7 +220,7 @@ function ObjResets({ resets, objects, rooms }: { resets: ObjectReset[], objects:
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
 					<a href="#" className={styles.link} onClick={() => dispatch(selectedObjectId(id))}>
-						Shop assigned to <code>{vnum}</code> {name}
+						Object reset assigned to object <code>{vnum}</code> {name}
 					</a>
 				</li>
 			))}
@@ -256,7 +256,7 @@ function InObjResets({ resets, objects }: { resets: InObjectReset[], objects: Ob
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
 					<a href="#" className={styles.link} onClick={() => dispatch(selectedObjectId(id))}>
-						Shop assigned to <code>{vnum}</code> {name}
+						Container reset assigned to object <code>{vnum}</code> {name}
 					</a>
 				</li>
 			))}
@@ -292,7 +292,7 @@ function DoorResets({ resets, rooms }: { resets: DoorReset[], rooms: Room[] }) {
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
 					<a href="#" className={styles.link} onClick={() => dispatch(selectedRoomId(id))}>
-						Shop assigned to <code>{vnum}</code> {name}
+						Door reset assigned to room <code>{vnum}</code> {name}
 					</a>
 				</li>
 			))}
@@ -325,6 +325,13 @@ function RandomExitResets({ resets, rooms }: { resets: RandomExitReset[], rooms:
 
 	return (
 		<SectionList header={<h2>Random exit resets</h2>}>
+			{fixed.map(({ id, vnum, name }) => (
+				<li key={id}>
+					<a href="#" className={styles.link} onClick={() => dispatch(selectedRoomId(id))}>
+						Random exit reset assigned to room <code>{vnum}</code> {name}
+					</a>
+				</li>
+			))}
 			{resets.map(reset => <React.Fragment key={reset.id}>
 				<li>
 					<ToolRow>
