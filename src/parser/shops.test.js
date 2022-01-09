@@ -35,32 +35,33 @@ describe("parseShops", () => {
 });
 
 describe("corellateShops", () => {
-	const MOBILES = [
-		{
-			id: "mobile-id",
-			vnum: 12657,
-			keywords: [],
-			shortDesc: "",
-			longDesc: "",
-			description: "",
-			act: [1],
-			affected: [],
-			align: 10,
-			level: 10,
-			sex: 0,
-			applies: [],
-		}
-	];
-
 	test("links shops to mobiles by id", () => {
-		const _shops = parseShops(SHOP);
-		const [shops, _] = corellateShops(MOBILES, _shops);
-		expect(shops[0].mobId).toBe("mobile-id");
+		const mobiles = [
+			{
+				id: "mobile-id",
+				vnum: 12657,
+				keywords: [],
+				shortDesc: "",
+				longDesc: "",
+				description: "",
+				act: [1],
+				affected: [],
+				align: 10,
+				level: 10,
+				sex: 0,
+				applies: [],
+				shop: null,
+				special: null,
+			}
+		];
+		const shops = parseShops(SHOP);
+		const _ = corellateShops(mobiles, shops);
+		expect(mobiles[0].shop).toBeTruthy();
 	});
 
 	test("marks error on missing mob vnum", () => {
 		const _shops = parseShops(SHOP);
-		const [_, orphaned] = corellateShops([], _shops);
+		const orphaned = corellateShops([], _shops);
 		expectSingleError(orphaned[0], "mobVnum");
 	});
 });
