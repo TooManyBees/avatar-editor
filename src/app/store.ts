@@ -22,8 +22,6 @@ export const store = configureStore({
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
-let unsavedChanges = false;
-
 function warnOnUnload(event: BeforeUnloadEvent) {
 	if (process.env.NODE_ENV === "production") {
 		event.preventDefault();
@@ -32,9 +30,9 @@ function warnOnUnload(event: BeforeUnloadEvent) {
 }
 
 let previousState: RootState = store.getState();
-let RELEVANT_STATE_KEYS: (keyof RootState)[] = [
-	"area", "areadata", "mobiles", "objects", "rooms", "resets",
-];
+const IRRELEVANT_STATE_KEYS: (keyof RootState)[] = ["ui"];
+const RELEVANT_STATE_KEYS = (Object.keys(previousState) as (keyof RootState)[])
+	.filter(k => !IRRELEVANT_STATE_KEYS.includes(k));
 
 store.subscribe(() => {
 	const newState = store.getState();
