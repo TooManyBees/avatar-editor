@@ -21,13 +21,13 @@
 	text-decoration: none;
 	outline-offset: -2px;
 }
+.vnumItemList .link:hover, .vnumItemList .link[tabindex="0"]:focus {
+	background: var(--selection-dim);
+	color: var(--foreground);
+}
 .vnumItemList .link.selected {
 	background: var(--selection);
 	color: white;
-}
-.vnumItemList .link:hover, .vnumItemList .link:focus {
-	background: var(--selection-dim);
-
 }
 .vnumItemList .vnum {
 	font-style: italic;
