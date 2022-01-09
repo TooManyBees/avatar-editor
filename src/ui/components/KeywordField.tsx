@@ -10,6 +10,7 @@ interface Props {
 
 export default function KeywordField(props: Props) {
 	const [currentKeyword, setCurrentKeyword] = useState("");
+	const [holdingDownBackspace, setHoldingDownBackspace] = useState(false);
 
 	function onChange(e: ChangeEvent<HTMLInputElement>) {
 		const value = e.target.value;
@@ -26,9 +27,16 @@ export default function KeywordField(props: Props) {
 	}
 
 	function onKeyDown(event: KeyboardEvent<HTMLInputElement>) {
-		if (currentKeyword === "" && event.key === "Backspace") {
-			props.onUpdate(props.value.slice(0, props.value.length - 1));
+		if (event.key === "Backspace") {
+			if (!holdingDownBackspace && currentKeyword === "") {
+				props.onUpdate(props.value.slice(0, props.value.length - 1));
+			}
+			setHoldingDownBackspace(true);
 		}
+	}
+
+	function onKeyUp() {
+		setHoldingDownBackspace(false);
 	}
 
 	function onBlur(event: FocusEvent<HTMLInputElement>) {
@@ -49,6 +57,7 @@ export default function KeywordField(props: Props) {
 				value={currentKeyword}
 				onChange={onChange}
 				onKeyDown={onKeyDown}
+				onKeyUp={onKeyUp}
 				onBlur={onBlur}
 			/>
 		</label>

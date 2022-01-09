@@ -7,6 +7,8 @@ It's an area builder for Avatar MUD, written by Scevine. See https://www.toomany
 * portable build should not include source maps
 * room doors should be keyed by direction, not a list
 * display parse errors
+* keyword inputs have delete buttons on keywords, rather than listening for backspace
+* Undo/redo history????
 
 ## Known limitations
 
