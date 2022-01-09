@@ -53,7 +53,7 @@ export function VnumItemList<T extends HasVnum>({ selected, itemName, items, onA
 					<li key={id}>
 						<a
 							href="#"
-							onClick={() => onChange(id, kbNav)}
+							onClick={e => (e.preventDefault(), onChange(id, kbNav))}
 							className={classnames(selected === id && styles.selected, styles.link)}
 							tabIndex={kbNav ? 0 : -1}
 							ref={selected === id ? selectedRef : (n === 0 ? firstItemRef : undefined)}

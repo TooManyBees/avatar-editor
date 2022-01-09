@@ -84,7 +84,7 @@ function OrphanedSpecials({ specials, mobiles }: { specials: SpecialU[], mobiles
 		<SectionList header={<h2>Specials</h2>}>
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
-					<a href="#" className={styles.link} onClick={() => dispatch(selectedMobileId(id))}>
+					<a href="#" className={styles.link} onClick={e => (e.preventDefault(), dispatch(selectedMobileId(id)))}>
 						Special assigned to mobile <code>{vnum}</code> {name}
 					</a>
 				</li>
@@ -116,7 +116,7 @@ function OrphanedShops({ shops, mobiles }: { shops: ShopU[], mobiles: Mobile[] }
 		<SectionList header={<h2>Shops</h2>}>
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
-					<a href="#" className={styles.link} onClick={() => dispatch(selectedMobileId(id))}>
+					<a href="#" className={styles.link} onClick={e => (e.preventDefault(), dispatch(selectedMobileId(id)))}>
 						Shop assigned to mobile <code>{vnum}</code> {name}
 					</a>
 				</li>
@@ -183,7 +183,7 @@ function MobResets({ resets, mobiles, rooms }: { resets: MobReset[], mobiles: Mo
 		<SectionList header={<h2>Mob resets</h2>}>
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
-					<a href="#" className={styles.link} onClick={() => dispatch(selectedMobileId(id))}>
+					<a href="#" className={styles.link} onClick={e => (e.preventDefault(), dispatch(selectedMobileId(id)))}>
 						Mob reset assigned to mobile <code>{vnum}</code> {name}
 					</a>
 				</li>
@@ -219,7 +219,7 @@ function ObjResets({ resets, objects, rooms }: { resets: ObjectReset[], objects:
 		<SectionList header={<h2>Object resets</h2>}>
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
-					<a href="#" className={styles.link} onClick={() => dispatch(selectedObjectId(id))}>
+					<a href="#" className={styles.link} onClick={e => (e.preventDefault(), dispatch(selectedObjectId(id)))}>
 						Object reset assigned to object <code>{vnum}</code> {name}
 					</a>
 				</li>
@@ -255,7 +255,7 @@ function InObjResets({ resets, objects }: { resets: InObjectReset[], objects: Ob
 		<SectionList header={<h2>Container resets</h2>}>
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
-					<a href="#" className={styles.link} onClick={() => dispatch(selectedObjectId(id))}>
+					<a href="#" className={styles.link} onClick={e => (e.preventDefault(), dispatch(selectedObjectId(id)))}>
 						Container reset assigned to object <code>{vnum}</code> {name}
 					</a>
 				</li>
@@ -291,7 +291,7 @@ function DoorResets({ resets, rooms }: { resets: DoorReset[], rooms: Room[] }) {
 		<SectionList header={<h2>Door resets</h2>}>
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
-					<a href="#" className={styles.link} onClick={() => dispatch(selectedRoomId(id))}>
+					<a href="#" className={styles.link} onClick={e => (e.preventDefault(), dispatch(selectedRoomId(id)))}>
 						Door reset assigned to room <code>{vnum}</code> {name}
 					</a>
 				</li>
@@ -327,7 +327,7 @@ function RandomExitResets({ resets, rooms }: { resets: RandomExitReset[], rooms:
 		<SectionList header={<h2>Random exit resets</h2>}>
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
-					<a href="#" className={styles.link} onClick={() => dispatch(selectedRoomId(id))}>
+					<a href="#" className={styles.link} onClick={e => (e.preventDefault(), dispatch(selectedRoomId(id)))}>
 						Random exit reset assigned to room <code>{vnum}</code> {name}
 					</a>
 				</li>
