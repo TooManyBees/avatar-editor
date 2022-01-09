@@ -58,7 +58,7 @@ export function VnumItemList<T extends HasVnum>({ selected, itemName, items, onA
 							tabIndex={kbNav ? 0 : -1}
 							ref={selected === id ? selectedRef : (n === 0 ? firstItemRef : undefined)}
 						>
-							<span className={styles.vnum}>{vnum || ""}</span> {name || shortDesc || ""}
+							<span className={styles.vnum}>{vnum || ""}</span> {name || shortDesc || `< unnamed ${itemName.toLowerCase()} >`}
 						</a>
 					</li>
 				))}
