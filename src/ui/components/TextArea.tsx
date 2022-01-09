@@ -1,12 +1,16 @@
 import React, { ChangeEvent, useRef, useState } from "react";
+import classnames from "classnames";
 import elementsFromColorCodes from "./elementsFromColorCodes";
 import styles from "./TextArea.module.css";
+
+type ColorScheme = "help" | "adesc" | "mobile" | "door";
 
 interface TextFieldProps {
 	name: string;
 	value: string;
 	onUpdate: (s: string) => void;
 	className?: string;
+	colors?: ColorScheme;
 }
 
 export default function TextArea(props: TextFieldProps) {
@@ -43,7 +47,7 @@ export default function TextArea(props: TextFieldProps) {
 			</span>
 			<div className={styles.editor}>
 				{ preview
-					? <div className={styles.colorPreview} style={{height, width}}>{elementsFromColorCodes(value)}</div>
+					? <div className={classnames(styles.colorPreview, props.colors && styles[props.colors])} style={{height, width}}>{elementsFromColorCodes(value)}</div>
 					: <textarea rows={rows} cols={90} style={{height, width}} value={value} onChange={onChange} onBlur={onBlur} ref={textArea} />
 				}
 			</div>

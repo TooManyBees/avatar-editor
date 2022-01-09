@@ -41,7 +41,7 @@ export default function KspawnFields(props: Props) {
 				<Row>
 					<BitsField name="Type" value={kspawn.spawnType} map={KSPAWN_TYPE} onUpdate={spawnType => dispatch(updatedKspawn([mobId, {...kspawn, spawnType}]))} />
 				</Row>
-				<TextArea name={textAreaName} value={kspawn.message} onUpdate={message => dispatch(updatedKspawn([mobId, {...kspawn, message}]))} />
+				<TextArea name={textAreaName} value={kspawn.message} colors="adesc" onUpdate={message => dispatch(updatedKspawn([mobId, {...kspawn, message}]))} />
 			</>}
 		</ToggleContainer>
 	);

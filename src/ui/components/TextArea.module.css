@@ -29,6 +29,15 @@
 	background-color: black;
 	font-weight: bold;
 }
+.colorPreview.door {
+	color: #800000;
+}
+.colorPreview.help, .colorPreview.adesc {
+	color: #008000;
+}
+.colorPreview.mobile {
+	color: #808000;
+}
 
 .description {
 	composes: label from "./inputs.module.css";

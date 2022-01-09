@@ -55,7 +55,7 @@ function HelpForm({ help }: { help: Help }) {
 				<div className={styles.spacer} />
 				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedHelp(help.id))}>Remove</DeleteButton>
 			</ToolRow>
-			<TextArea name="Body" value={help.body} onUpdate={body => dispatch(updatedHelp({...help, body}))} />
+			<TextArea name="Body" value={help.body} colors="help" onUpdate={body => dispatch(updatedHelp({...help, body}))} />
 		</li>
 	);
 }

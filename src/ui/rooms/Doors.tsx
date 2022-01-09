@@ -94,7 +94,7 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 			<ToolRow>
 				<KeywordField name="Keywords" value={door.keywords} onUpdate={keywords => dispatch(Actions.updatedDoor([roomId, {...door, keywords}]))} />
 			</ToolRow>
-			<TextArea name="Description" value={door.description} onUpdate={description => dispatch(Actions.updatedDoor([roomId, {...door, description}]))} />
+			<TextArea name="Description" value={door.description} colors="door" onUpdate={description => dispatch(Actions.updatedDoor([roomId, {...door, description}]))} />
 		</li>
 		<hr className={styles.separator} />
 	</>;

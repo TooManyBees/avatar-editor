@@ -118,7 +118,7 @@ function MobileForm(props: Props) {
 			<Row>
 				<TextField name="Long desc" value={mobile.longDesc} onUpdate={updatedLongDesc} />
 			</Row>
-			<TextArea name="Description" value={mobile.description} onUpdate={updatedDescription} />
+			<TextArea name="Description" value={mobile.description} colors="mobile" onUpdate={updatedDescription} />
 			<Row>
 				<BitsField name="Act Flags" value={mobile.act} map={ACT_FLAGS} onUpdate={updatedAct} />
 			</Row>

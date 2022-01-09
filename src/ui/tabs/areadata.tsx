@@ -220,7 +220,7 @@ function Kspawn(props: { opened: boolean, kspawn: KspawnData | null }) {
 				<NumberField name="Mob Vnum" value={kspawn.mobVnum} min={1} onUpdate={onUpdateMobVnum} />
 				<NumberField name="Room Vnum" value={kspawn.roomVnum} min={-1} onUpdate={onUpdateRoomVnum} />
 			</ToolRow>
-			<TextArea name="Text" value={kspawn.text} onUpdate={onUpdateText} />
+			<TextArea name="Text" value={kspawn.text} colors="adesc" onUpdate={onUpdateText} />
 		</ToggleContainer>
 	);
 }
