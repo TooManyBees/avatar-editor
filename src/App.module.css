@@ -47,3 +47,7 @@
 	width: 28rem;
 	color: var(--neutral);
 }
+
+.credits a {
+	color: inherit;
+}

@@ -76,7 +76,7 @@ function InitForm() {
 				<li><strong>Do</strong> contact Scevine with bug reports or feature requests.</li>
 			</ul>
 			<p className={styles.credits}>
-				This whole shebang is ©42069 Jess Bees. Imagery by <a href="https://iconarchive.com/show/legendora-icons-by-raindropmemory/Desktop-icon.html">Teekatas Suwannakrua</a>.
+				This whole shebang is ©42069 Jess Bees (Scevine). Icons by <a href="https://iconarchive.com/show/legendora-icons-by-raindropmemory/Desktop-icon.html">Teekatas Suwannakrua</a>.
 			</p>
 		</div>
 	);
