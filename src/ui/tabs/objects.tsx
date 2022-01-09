@@ -19,9 +19,11 @@ import {
 	TextField,
 	ToolRow,
 } from "../components";
-import ObjectValues from "../objects/ObjectValues";
-import ObjectResets from "../objects/ObjectResets";
-import ReciprocalResets from "../objects/ReciprocalResets";
+import {
+	ObjectResets,
+	ObjectValues,
+	ReciprocalResets,
+} from "../objects";
 import { TabsContents } from "./tabs-layout";
 import sharedStyles from "../components/shared.module.css";
 import styles from "./tabs-layout.module.css";

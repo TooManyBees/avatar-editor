@@ -22,8 +22,10 @@ import {
 	ToggleContainer,
 	ToolRow,
 } from "../components";
-import Doors from "../rooms/Doors";
-import ReciprocalResets from "../rooms/ReciprocalResets";
+import {
+	Doors,
+	ReciprocalResets,
+} from "../rooms";
 import { TabsContents } from "./tabs-layout";
 import sharedStyles from "../components/shared.module.css";
 import styles from "./tabs-layout.module.css";

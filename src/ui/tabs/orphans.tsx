@@ -32,7 +32,7 @@ import {
 } from "../components";
 import { SelectSpecial } from "../mobiles";
 import { SelectObjectType } from "../mobiles/ShopFields";
-import SelectDirection from "../rooms/SelectDirection";
+import { SelectDirection } from "../rooms";
 import styles from "./orphans.module.css";
 
 export default function OrphansTab() {
