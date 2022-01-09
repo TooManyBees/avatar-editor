@@ -30,13 +30,13 @@
 	font-weight: bold;
 }
 .colorPreview.door {
-	color: #800000;
+	color: var(--r);
 }
 .colorPreview.help, .colorPreview.adesc {
-	color: #008000;
+	color: var(--g);
 }
 .colorPreview.mobile {
-	color: #808000;
+	color: var(--y);
 }
 
 .description {

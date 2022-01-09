@@ -56,4 +56,21 @@ html {
   --warning-dim: #fbe84f;
   --warning-faint: #fffcdf;
   --good: green;
+
+  --k:  #0c0c0c;
+  --bk: #767676;
+  --b:  #000080;
+  --bb: #0000FF;
+  --c:  #008080;
+  --bc: #00FFFF;
+  --g:  #008000;
+  --bg: #00FF00;
+  --r:  #a21010;
+  --br: #FF0000;
+  --y:  #808000;
+  --by: #FFFF00;
+  --w:  #808080;
+  --bw: #FFFFFF;
+  --p:  #C0C0C0;
+  --bp: #FF00FF;
 }
