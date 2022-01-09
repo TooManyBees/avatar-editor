@@ -39,10 +39,6 @@
 	line-height: 1.25;
 }
 
-.disclaimer strong {
-	font-family: ZillaSlab;
-}
-
 .credits {
 	width: 28rem;
 	color: var(--neutral);
