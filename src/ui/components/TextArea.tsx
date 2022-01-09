@@ -3,7 +3,7 @@ import classnames from "classnames";
 import elementsFromColorCodes from "./elementsFromColorCodes";
 import styles from "./TextArea.module.css";
 
-type ColorScheme = "help" | "adesc" | "mobile" | "door";
+type ColorScheme = "help" | "adesc" | "mobile" | "door" | "water";
 
 interface TextFieldProps {
 	name: string;

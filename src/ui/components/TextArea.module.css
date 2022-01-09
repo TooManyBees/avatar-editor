@@ -38,6 +38,9 @@
 .colorPreview.mobile {
 	color: var(--y);
 }
+.colorPreview.water {
+	color:  var(--c);
+}
 
 .description {
 	composes: label from "./inputs.module.css";

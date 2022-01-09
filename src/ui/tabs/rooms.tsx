@@ -92,6 +92,8 @@ function RoomForm(props: Props) {
 	const updatedClassFlags = (ns: number[]) => dispatch(Actions.updatedClassFlags([id, ns]));
 	const removedRoom = () => dispatch(Actions.removedRoom(id));
 
+	const isWater = WATER.includes(room.sector);
+
 	return (
 		<div className={classnames(styles.tabDangerTarget, danger && sharedStyles.dangerTarget)}>
 			<ToolRow style={{justifyContent: "space-between"}}>
@@ -102,7 +104,7 @@ function RoomForm(props: Props) {
 				<TextField name="Name" value={room.name} onUpdate={updatedName} />
 			</Row>
 			<Row>
-				<TextArea name="Description" value={room.description} onUpdate={updatedDescription} />
+				<TextArea name="Description" value={room.description} colors={isWater ? "water" : undefined} onUpdate={updatedDescription} />
 			</Row>
 			<BitsField name="Flags" value={room.flags} map={FLAGS} onUpdate={updatedFlags} />
 			<Row>
@@ -164,6 +166,8 @@ const FLAGS: [number, string, string][] = [
 	[134217728, "No regen", "Characters will not regenerate hit points, mana points or movement in this room."],
 	[268435456, "No HOG", "Characters cannot enter room if hogged, or hog in room. "],
 ];
+
+const WATER = [6, 7, 11, 12];
 
 const SECTOR: { value: number, label: string }[] = [
 	{ value: 0, label: "Inside" },
