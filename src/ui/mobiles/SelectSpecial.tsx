@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function SelectSpecial({ value, onUpdate, disabled }: Props) {
-	return <SelectField name="Spec" inline disabled value={value} options={SPEC_FUNS} onUpdate={onUpdate} />;
+	return <SelectField name="Spec" inline disabled={disabled} value={value} options={SPEC_FUNS} onUpdate={onUpdate} />;
 }
 
 const SPEC_FUNS: { value: string | null, label: string }[] = [

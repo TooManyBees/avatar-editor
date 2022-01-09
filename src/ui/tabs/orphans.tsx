@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { SpecialU } from "../../app/models/specials";
 import { ShopU } from "../../app/models/shops";
+import { restoredShop, restoredSpecial } from "../../app/store/mobiles";
+import { selectedMobileId, selectedObjectId, selectedRoomId } from "../../app/store/ui";
 import {
 	Mobile,
 	Objekt,
@@ -32,9 +34,10 @@ export default function OrphansTab() {
 
 	return (
 		<TabsContents>
-			<aside>
+			<aside className={styles.description}>
 				Orphaned content are vnum references that don't link to any mobiles, objects, or
-				rooms in this area. They will still be written into the final <code>.are</code> file.
+				rooms in this area. You can reassign them to any mob/object/room in the area. They
+				will still be written into the final <code>.are</code> file even if they stay orphaned.
 			</aside>
 			<OrphanedSpecials specials={orphanedSpecials} mobiles={mobiles} />
 			<OrphanedShops shops={orphanedShops} mobiles={mobiles} />
@@ -45,26 +48,70 @@ export default function OrphansTab() {
 
 const NO_OP = () => {};
 
+interface FixedVnum {
+	id: string;
+	vnum: number | null;
+	name: string;
+}
+
 function OrphanedSpecials({ specials, mobiles }: { specials: SpecialU[], mobiles: Mobile[] }) {
-	if (specials.length === 0) return null;
+	const dispatch = useAppDispatch();
+	const [fixed, setFixed] = useState<FixedVnum[]>([]);
+	if (specials.length === 0 && fixed.length === 0) return null;
+
+	function onUpdate(mobId: string, special: SpecialU) {
+		const mobile = mobiles.find(m => m.id === mobId);
+		if (mobile) {
+			dispatch(restoredSpecial([mobId, special]));
+			setFixed([...fixed, { vnum: mobile.vnum, name: mobile.shortDesc, id: mobile.id }]);
+		}
+	}
+
 	return (
 		<SectionList header={<h2>Orphaned Specials</h2>}>
+			{fixed.map(({ id, vnum, name }) => (
+				<li key={id}>
+					<a href="#" className={styles.link} onClick={() => dispatch(selectedMobileId(id))}>
+						Shop assigned to <code>{vnum}</code> {name}
+					</a>
+				</li>
+			))}
 			{specials.map(special => <li key={special.id}>
-				<SelectVnum name="Mobile" selectedId={special.mobVnum.toString()} items={mobiles} onUpdate={() => {}} />
-				<SelectSpecial disabled value={special.special} onUpdate={NO_OP}/>
+				<ToolRow>
+					<SelectVnum name="Mobile" selectedId={special.mobVnum.toString()} items={mobiles} onUpdate={mobId => onUpdate(mobId, special)} />
+					<SelectSpecial disabled value={special.special} onUpdate={NO_OP}/>
+				</ToolRow>
 			</li>)}
 		</SectionList>
 	);
 }
 
 function OrphanedShops({ shops, mobiles }: { shops: ShopU[], mobiles: Mobile[] }) {
-	if (shops.length === 0) return null;
+	const dispatch = useAppDispatch();
+	const [fixed, setFixed] = useState<FixedVnum[]>([]);
+	if (shops.length === 0 && fixed.length === 0) return null;
+
+	function onUpdate(mobId: string, shop: ShopU) {
+		const mobile = mobiles.find(m => m.id === mobId);
+		if (mobile) {
+			dispatch(restoredShop([mobId, shop]));
+			setFixed([...fixed, { vnum: mobile.vnum, name: mobile.shortDesc, id: mobile.id }]);
+		}
+	}
+
 	return (
 		<SectionList header={<h2>Orphaned Shops</h2>}>
+			{fixed.map(({ id, vnum, name }) => (
+				<li key={id}>
+					<a href="#" className={styles.link} onClick={() => dispatch(selectedMobileId(id))}>
+						Shop assigned to <code>{vnum}</code> {name}
+					</a>
+				</li>
+			))}
 			{shops.map(shop => <React.Fragment key={shop.id}>
 				<li>
 					<ToolRow>
-						<SelectVnum name="Mobile" selectedId={shop.mobVnum.toString()} items={mobiles} onUpdate={() => {}} />
+						<SelectVnum name="Mobile" selectedId={shop.mobVnum.toString()} items={mobiles} onUpdate={mobId => onUpdate(mobId, shop)} />
 					</ToolRow>
 					<ToolRow>
 						<SelectObjectType disabled value={shop.oType1} onUpdate={NO_OP} />

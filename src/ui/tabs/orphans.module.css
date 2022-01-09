@@ -1,5 +1,13 @@
+.description {
+	max-width: 50rem;
+}
+
 .list {
 	list-style: none;
 	margin: 0;
 	padding: 0;
+}
+
+.link {
+	color: var(--selection);
 }

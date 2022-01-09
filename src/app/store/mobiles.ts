@@ -145,6 +145,17 @@ const mobileSlice = createSlice({
 			const mobile = state.mobiles.find(m => m.id === id);
 			if (mobile) mobile.specFun = specFun;
 		},
+		restoredSpecial(state, action: PayloadAction<[string, SpecialU]>) {
+			const [mobId, special] = action.payload;
+			const mobile = state.mobiles.find(m => m.id === mobId);
+			if (mobile) {
+				mobile.specFun = special.special;
+				state.orphanedSpecials = state.orphanedSpecials.filter(s => s.id !== special.id);
+			} else {
+				const idx = state.orphanedSpecials.findIndex(s => s.id === special.id);
+				state.orphanedSpecials[idx] = special;
+			}
+		},
 		addedShop(state, action: PayloadAction<string>) {
 			const mobile = state.mobiles.find(m => m.id === action.payload);
 			if (mobile) mobile.shop = newShop();
@@ -153,6 +164,18 @@ const mobileSlice = createSlice({
 			const [mobId, shop] = action.payload;
 			const mobile = state.mobiles.find(m => m.id === mobId);
 			if (mobile) mobile.shop = shop;
+		},
+		restoredShop(state, action: PayloadAction<[string, ShopU]>) {
+			const [mobId, shop] = action.payload;
+			const mobile = state.mobiles.find(m => m.id === mobId);
+			const { id, mobVnum, ...rest } = shop;
+			if (mobile) {
+				mobile.shop = { ...rest };
+				state.orphanedShops = state.orphanedShops.filter(s => s.id !== shop.id);
+			} else {
+				const idx = state.orphanedShops.findIndex(s => s.id === shop.id);
+				state.orphanedShops[idx] = shop;
+			}
 		},
 	},
 });
@@ -181,7 +204,9 @@ export const {
 	removedKspawn,
 	updatedKspawn,
 	updatedSpecial,
+	restoredSpecial,
 	addedShop,
 	updatedShop,
+	restoredShop,
 } = mobileSlice.actions;
 export default mobileSlice.reducer;
