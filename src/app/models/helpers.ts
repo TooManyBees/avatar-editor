@@ -1,18 +1,21 @@
-declare global {
-	interface Crypto {
-		randomUUID: () => string;
-	}
-}
+import { nanoid as newId } from "@reduxjs/toolkit";
+export { newId }
 
-export function newId(): string {
-	try {
-		return crypto.randomUUID();
-	} catch (_) {
-		let rand = Math.floor(Math.random() * 1000000);
-		let time = Date.now();
-		return `id-${rand}${time}`;
-	}
-}
+// declare global {
+// 	interface Crypto {
+// 		randomUUID: () => string;
+// 	}
+// }
+
+// export function newId(): string {
+// 	try {
+// 		return crypto.randomUUID();
+// 	} catch (_) {
+// 		let rand = Math.floor(Math.random() * 1000000);
+// 		let time = Date.now();
+// 		return `id-${rand}${time}`;
+// 	}
+// }
 
 type ErrorMarkers2<T> = {
 	[Field in keyof T]?: boolean;
