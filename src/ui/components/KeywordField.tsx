@@ -1,4 +1,4 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from "react";
+import React, { ChangeEvent, FocusEvent, KeyboardEvent, useState } from "react";
 import styles from "./KeywordField.module.css";
 import inputStyles from "./inputs.module.css";
 
@@ -31,12 +31,26 @@ export default function KeywordField(props: Props) {
 		}
 	}
 
+	function onBlur(event: FocusEvent<HTMLInputElement>) {
+		if (event.target.value) {
+			props.onUpdate([...props.value, event.target.value]);
+			setCurrentKeyword("");
+		}
+	}
+
 	return (
 		<label className={styles.keywordField}>
 			<span className={styles.label}>{props.name}:</span> {props.value.map((k, n) => (
 				<span key={`${n} ${k}`} className={styles.keyword}>{k}</span>
 			))}
-			<input type="text" className={inputStyles.input} value={currentKeyword} onChange={onChange} onKeyDown={onKeyDown} />
+			<input
+				type="text"
+				className={inputStyles.input}
+				value={currentKeyword}
+				onChange={onChange}
+				onKeyDown={onKeyDown}
+				onBlur={onBlur}
+			/>
 		</label>
 	);
 }
