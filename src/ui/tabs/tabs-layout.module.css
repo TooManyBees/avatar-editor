@@ -40,6 +40,8 @@
 	background-color: unset;
 }
 .tabsNavText {
+	display: flex;
+	align-items: center;
 	padding: 0 0.25rem;
 	border-bottom: 2px solid transparent;
 }
@@ -54,6 +56,20 @@
 }
 .tabsNavItem[disabled]:not([data-selected="true"]) .tabsNavText {
 	border-color: transparent;
+}
+
+.icon {
+	width: 24px;
+	height: 24px;
+	margin-right: 0.25rem;
+}
+[disabled] .icon {
+	opacity: 0.5;
+}
+@media(max-width: 64rem) {
+	.icon {
+		display: none;
+	}
 }
 
 .tabsContents {

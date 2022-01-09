@@ -4,6 +4,13 @@ import { changedTab } from "../../app/store/ui";
 import { dismissUnsavedChanges } from "../../app/store";
 import serializeArea from "../../serializer";
 import { Button } from "../components";
+
+import areaIcon from "../../icons/area.png";
+import areadataIcon from "../../icons/areadata.png";
+import mobilesIcon from "../../icons/mobiles.png";
+import objectsIcon from "../../icons/objects.png";
+import roomsIcon from "../../icons/rooms.png";
+import orphansIcon from "../../icons/orphans.png";
 import styles from "./tabs-layout.module.css";
 
 interface Props {
@@ -53,22 +60,40 @@ function TabsNav() {
 	return (
 		<nav className={styles.tabsNav}>
 			<button className={styles.tabsNavItem} data-selected={currentTab === "area"} onClick={() => dispatch(changedTab("area"))}>
-				<span className={styles.tabsNavText}>Area</span>
+				<span className={styles.tabsNavText}>
+					<img className={styles.icon} src={areaIcon} />
+					Area
+				</span>
 			</button>
 			<button className={styles.tabsNavItem} data-selected={currentTab === "areadata"} onClick={() => dispatch(changedTab("areadata"))}>
-				<span className={styles.tabsNavText}>Areadata</span>
+				<span className={styles.tabsNavText}>
+					<img className={styles.icon} src={areadataIcon} />
+					Areadata
+				</span>
 			</button>
 			<button className={styles.tabsNavItem} data-selected={currentTab === "mobiles"} onClick={() => dispatch(changedTab("mobiles"))}>
-				<span className={styles.tabsNavText}>Moblies</span>
+				<span className={styles.tabsNavText}>
+					<img className={styles.icon} src={mobilesIcon} />
+					Moblies
+				</span>
 			</button>
 			<button className={styles.tabsNavItem} data-selected={currentTab === "objects"} onClick={() => dispatch(changedTab("objects"))}>
-				<span className={styles.tabsNavText}>Objects</span>
+				<span className={styles.tabsNavText}>
+					<img className={styles.icon} src={objectsIcon} />
+					Objects
+				</span>
 			</button>
 			<button className={styles.tabsNavItem} data-selected={currentTab === "rooms"} onClick={() => dispatch(changedTab("rooms"))}>
-				<span className={styles.tabsNavText}>Rooms</span>
+				<span className={styles.tabsNavText}>
+					<img className={styles.icon} src={roomsIcon} />
+					Rooms
+				</span>
 			</button>
 			<button className={styles.tabsNavItem} disabled={!hasOrphans} data-selected={currentTab === "orphans"} onClick={() => dispatch(changedTab("orphans"))}>
-				<span className={styles.tabsNavText}>Orphans</span>
+				<span className={styles.tabsNavText}>
+					<img className={styles.icon} src={orphansIcon} />
+					Orphans
+				</span>
 			</button>
 			<span style={{marginRight: "0.5rem"}} />
 			<Button onClick={save}>Write .are</Button> <span style={{color: "var(--neutral)"}}>← (do this often!)</span>
