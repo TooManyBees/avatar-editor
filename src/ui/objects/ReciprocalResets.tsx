@@ -17,7 +17,7 @@ interface Props {
 
 export default function ReciprocalResets(props: Props) {
 	const { objectId, vnum } = props;
-	const inObjectResets = useAppSelector(state => state.resets.resets.inObject).filter(r => r.containerId === objectId);
+	const inObjectResets = useAppSelector(state => state.resets.resets.inObject).filter(r => r.objectId === objectId);
 	const mobResets = useAppSelector(state => state.resets.resets.mobile).filter(r => r.equipment.some(e => e.objectId === objectId));
 	const skinMob = vnum ? useAppSelector(state => state.mobiles.mobiles).find(m => m.vnum === vnum && m.act.includes(262144)) : null;
 
@@ -28,8 +28,10 @@ export default function ReciprocalResets(props: Props) {
 
 	return <>
 		{inObjectResets.length > 0 &&
-			<Section header={<h2>Loading in this container</h2>}>
-				<ObjectResets resets={inObjectResets} />
+			<Section header={<h2>Loads in container</h2>}>
+				<ol className={styles.list}>
+					<ObjectResets resets={inObjectResets} />
+				</ol>
 			</Section>
 		}
 		{numMobs > 0 &&
@@ -49,17 +51,26 @@ function ObjectResets(props: { resets: InObjectReset[] }) {
 
 	return <>
 		{props.resets.map(reset => {
-			const object = objects.find(o => o.id === reset.objectId);
-			if (!object) return null;
-			const vnum = object.vnum?.toString() || "";
-			const name = object.shortDesc || "<unnamed object>";
-			return (
-				<li key={reset.id}>
-					<LinkButton className={styles.link} onClick={() => dispatch(selectedObjectId(reset.objectId))}>
-						<span className={styles.vnum}>{vnum} </span>{name}
-					</LinkButton>
-				</li>
-			);
+			const object = objects.find(o => o.id === reset.containerId);
+			if (object) {
+				const vnum = object.vnum?.toString() || "";
+				const name = object.shortDesc || "<unnamed object>";
+				return (
+					<li key={reset.id}>
+						<LinkButton className={styles.link} onClick={() => dispatch(selectedObjectId(reset.containerId))}>
+							<span className={styles.vnum}>{vnum} </span>{name}
+						</LinkButton>
+					</li>
+				);
+			} else {
+				return (
+					<li key={reset.id}>
+						<LinkButton className={styles.link} onClick={() => dispatch(changedTab("orphans"))}>
+							&lt;an object that wasn't found in this area&gt;
+						</LinkButton>
+					</li>
+				);
+			}
 		})}
 	</>
 }

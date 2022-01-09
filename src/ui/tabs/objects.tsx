@@ -118,9 +118,9 @@ function ObjectForm({ item: object }: Props) {
 				<TextField name="Long desc" value={object.longDesc} onUpdate={updatedLongDesc} />
 			</Row>
 			<TextArea name="Action desc" value={object.actionDesc} onUpdate={updatedActionDesc} />
-			<Row>
+			<ToolRow>
 				<SelectField name="Type" value={object.itemType} options={ITEM_TYPE} defaultValue={ITEM_TYPE[0]} onUpdate={updatedItemType} />
-			</Row>
+			</ToolRow>
 			<ObjectValues id={id} type={object.itemType} value0={object.value0} value1={object.value1} value2={object.value2} value3={object.value3} />
 			<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} onUpdate={updatedExtraFlags} />
 			<ToolRow>
@@ -134,7 +134,7 @@ function ObjectForm({ item: object }: Props) {
 			</ToolRow>
 			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
-			<ObjectResets objectId={id} />
+			<ObjectResets objectId={id} itemType={object.itemType} />
 			<ReciprocalResets objectId={id} vnum={object.vnum} />
 		</div>
 	);

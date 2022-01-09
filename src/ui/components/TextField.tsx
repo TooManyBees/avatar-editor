@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function TextField(props: Props) {
-	const { name, onUpdate, inline = false } = props;
+	const { name, onUpdate, inline = false, disabled } = props;
 	const initialValue = props.value || "";
 	const [value, setValue] = useState(initialValue);
 
@@ -26,7 +26,7 @@ export default function TextField(props: Props) {
 	}
 
 	return (
-		<label className={classnames(styles.wrapper, inline && styles.inline)}>
+		<label className={classnames(styles.wrapper, inline && styles.inline, disabled && styles.disabled)}>
 			{name && <span className={styles.label}>{name}:</span>}
 			<input
 				type="text"
@@ -36,7 +36,7 @@ export default function TextField(props: Props) {
 				className={styles.input}
 				maxLength={props.maxLength}
 				style={props.style}
-				disabled={props.disabled}
+				disabled={disabled}
 			/>
 		</label>
 	);

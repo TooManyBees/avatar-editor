@@ -14,7 +14,7 @@ interface NumberFieldProps {
 }
 
 export default function NumberField(props: NumberFieldProps) {
-	const { inline = false, name, min, max } = props;
+	const { inline = false, name, min, max, disabled } = props;
 	const [value, setValue] = useState(props.value?.toString() || "");
 	const [warning, setWarning] = useState(parseValue(props.value, min, max) !== props.value);
 
@@ -32,7 +32,7 @@ export default function NumberField(props: NumberFieldProps) {
 	}
 
 	return (
-		<label className={classnames(styles.wrapper, inline && styles.inline)}>
+		<label className={classnames(styles.wrapper, inline && styles.inline, disabled && styles.disabled)}>
 			{name && <span className={styles.label}>{name}:</span>}
 			<input
 				type="text"
@@ -42,7 +42,7 @@ export default function NumberField(props: NumberFieldProps) {
 				className={classnames(styles.input, styles.number, warning && styles.warning)}
 				style={{width: "5rem"}}
 				ref={props.inputRef}
-				disabled={props.disabled}
+				disabled={disabled}
 			/>
 		</label>
 	);

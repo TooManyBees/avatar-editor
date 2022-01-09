@@ -35,24 +35,27 @@ import ReactSelect, { CSSObjectWithLabel } from "react-select";
 
 interface Props {
 	objectId: string;
+	itemType: number;
 }
 
 export default function ObjectResets(props: Props) {
 	const dispatch = useAppDispatch();
-	const { objectId } = props;
+	const { objectId, itemType } = props;
 	const objectResets = useAppSelector(state => state.resets.resets.object.filter(r => r.objectId === objectId));
-	const inObjectResets = useAppSelector(state => state.resets.resets.inObject.filter(r => r.objectId === objectId));
+	const inObjectResets = useAppSelector(state => state.resets.resets.inObject.filter(r => r.containerId === objectId));
 	const rooms = useAppSelector(state => state.rooms.rooms);
 	const objects = useAppSelector(state => state.objects.objects);
 	return <>
-		<SectionList header={<><h2>In-room resets</h2> ({objectResets.length}) <AddButton onClick={() => dispatch(addedObjectReset(objectId))}>Add reset</AddButton></>}>
+		<SectionList header={<><h2>Resets</h2> ({objectResets.length}) <AddButton onClick={() => dispatch(addedObjectReset(objectId))}>Add reset</AddButton></>}>
 			{objectResets.map(reset => (
 				<ObjectReset key={reset.id} reset={reset} rooms={rooms} />
 			))}
 		</SectionList>
-		<SectionList header={<><h2>In-container resets</h2> ({inObjectResets.length}) <AddButton onClick={() => dispatch(addedInObjectReset(objectId))}>Add reset</AddButton></>}>
-			{inObjectResets.map(reset => <InObjectReset reset={reset} objects={objects} />)}
-		</SectionList>
+		{itemType === 15 && (
+			<SectionList header={<><h2>Container Contents</h2> ({inObjectResets.length}) <AddButton onClick={() => dispatch(addedInObjectReset(objectId))}>Add reset</AddButton></>}>
+				{inObjectResets.map(reset => <InObjectReset reset={reset} objects={objects} />)}
+			</SectionList>
+		)}
 	</>;
 }
 
@@ -86,7 +89,7 @@ function InObjectReset({ reset, objects }: { reset: InObjectResetType, objects: 
 	return <>
 		<li className={classnames(styles.reset, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
-			Container: <SelectVnum selectedId={reset.containerId} items={objects} onUpdate={containerId => dispatch(updatedInObjectReset({...reset, containerId}))} />
+			Object: <SelectVnum selectedId={reset.objectId} items={objects} onUpdate={objectId => dispatch(updatedInObjectReset({...reset, objectId}))} />
 			<div className={styles.spacer}/>
 			<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedInObjectReset(reset.id))} >Remove</DeleteButton>
 			</ToolRow>

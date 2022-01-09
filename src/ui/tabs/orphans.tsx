@@ -46,6 +46,7 @@ export default function OrphansTab() {
 
 	return (
 		<TabsContents>
+			<h1 style={{marginTop: "0.5rem"}}>Orphaned items</h1>
 			<aside className={styles.description}>
 				Orphaned content are vnum references that don't link to any mobiles, objects, or
 				rooms in this area. You can reassign them to any mob/object/room in the area. They
@@ -80,7 +81,7 @@ function OrphanedSpecials({ specials, mobiles }: { specials: SpecialU[], mobiles
 	}
 
 	return (
-		<SectionList header={<h2>Orphaned Specials</h2>}>
+		<SectionList header={<h2>Specials</h2>}>
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
 					<a href="#" className={styles.link} onClick={() => dispatch(selectedMobileId(id))}>
@@ -112,7 +113,7 @@ function OrphanedShops({ shops, mobiles }: { shops: ShopU[], mobiles: Mobile[] }
 	}
 
 	return (
-		<SectionList header={<h2>Orphaned Shops</h2>}>
+		<SectionList header={<h2>Shops</h2>}>
 			{fixed.map(({ id, vnum, name }) => (
 				<li key={id}>
 					<a href="#" className={styles.link} onClick={() => dispatch(selectedMobileId(id))}>
@@ -262,8 +263,8 @@ function InObjResets({ resets, objects }: { resets: InObjectReset[], objects: Ob
 			{resets.map(reset => <React.Fragment key={reset.id}>
 				<li>
 					<ToolRow>
-						<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={containerId => onUpdate(containerId, reset)} />
-						<SelectVnum name="Container" selectedId={reset.containerId} items={objects} onUpdate={() => {}} />
+						<SelectVnum name="Container" selectedId={reset.containerId} items={objects} onUpdate={containerId => onUpdate(containerId, reset)} />
+						<SelectVnum name="Contents" disabled selectedId={reset.objectId} items={objects} onUpdate={NO_OP} />
 					</ToolRow>
 					<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
 				</li>

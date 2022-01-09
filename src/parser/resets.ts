@@ -158,10 +158,10 @@ export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles:
 			objectId: object?.id || uReset.objectVnum.toString(),
 			containerId: container?.id || uReset.containerVnum.toString(),
 			comment: uReset.comment,
-			orphan: !object,
+			orphan: !container,
 			_error: {},
 		};
-		if (!container) reset._error.containerId = true;
+		if (!object) reset._error.objectId = true;
 		resets.inObject.push(reset);
 	}
 
