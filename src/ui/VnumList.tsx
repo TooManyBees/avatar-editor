@@ -10,21 +10,12 @@ interface HasVnum {
 	shortDesc?: string;
 }
 
-interface Props<T> {
-	items: T[];
-	FormComponent: React.ComponentType<{ item: T }>;
-}
-
-interface State {
-	selected: string | null;
-}
-
 interface ListProps<T> {
 	selected: string | null;
 	itemName: string;
 	items: T[];
 	onAdd: () => void;
-	onChange: (selected: string) => void;
+	onChange: (selected: string, kbInteraction: boolean) => void;
 }
 
 export function VnumItemList<T extends HasVnum>({ selected, itemName, items, onAdd, onChange }: ListProps<T>) {
@@ -62,7 +53,7 @@ export function VnumItemList<T extends HasVnum>({ selected, itemName, items, onA
 					<li key={id}>
 						<a
 							href="#"
-							onClick={() => onChange(id)}
+							onClick={() => onChange(id, kbNav)}
 							className={classnames(selected === id && styles.selected, styles.link)}
 							tabIndex={kbNav ? 0 : -1}
 							ref={selected === id ? selectedRef : (n === 0 ? firstItemRef : undefined)}
@@ -75,6 +66,15 @@ export function VnumItemList<T extends HasVnum>({ selected, itemName, items, onA
 		</div>
 	);
 }
+
+// interface Props<T> {
+// 	items: T[];
+// 	FormComponent: React.ComponentType<{ item: T }>;
+// }
+
+// interface State {
+// 	selected: string | null;
+// }
 
 // export default class VnumItemEditor<T extends HasVnum> extends React.Component<Props<T>, State> {
 // 	constructor(props: Props<T>) {

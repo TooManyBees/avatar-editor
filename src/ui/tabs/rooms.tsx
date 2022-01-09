@@ -32,10 +32,12 @@ export default function RoomsTab() {
 	const dispatch = useAppDispatch();
 	const rooms = useAppSelector(state => state.rooms.rooms);
 	const currentId = useAppSelector(state => state.ui.selectedRoomId);
+	const [kb, setKb] = useState(false);
 	const room = rooms.find(m => m.id === currentId);
 
-	function onSelect(id: string) {
+	function onSelect(id: string, kbInteraction: boolean) {
 		dispatch(selectedRoomId(id));
+		setKb(kbInteraction);
 	}
 
 	function onAdd() {
@@ -48,7 +50,7 @@ export default function RoomsTab() {
 		<>
 			<VnumItemList itemName="Room" items={rooms} selected={currentId} onChange={onSelect} onAdd={onAdd} />
 			<TabsContents>
-				{room ? <RoomForm key={currentId} room={room} /> : <BlankWorkspace onAdd={onAdd} />}
+				{room ? <RoomForm key={currentId} kbInteraction={kb} room={room} /> : <BlankWorkspace onAdd={onAdd} />}
 			</TabsContents>
 		</>
 	);
@@ -67,6 +69,7 @@ function BlankWorkspace({ onAdd }: { onAdd: () => void }) {
 
 interface Props {
 	room: Room;
+	kbInteraction: boolean;
 }
 
 function RoomForm(props: Props) {
@@ -77,7 +80,7 @@ function RoomForm(props: Props) {
 	const id = room.id;
 
 	useEffect(() => {
-		vnumField.current?.focus();
+		if (props.kbInteraction) vnumField.current?.focus();
 	}, [id]);
 
 	const rooms = useAppSelector(state => state.rooms.rooms);

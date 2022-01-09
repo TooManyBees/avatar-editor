@@ -30,10 +30,12 @@ export default function ObjectsTab() {
 	const dispatch = useAppDispatch();
 	const objects = useAppSelector(state => state.objects.objects);
 	const currentId = useAppSelector(state => state.ui.selectedObjectId);
+	const [kb, setKb] = useState(false);
 	const object = objects.find(m => m.id === currentId);
 
-	function onSelect(id: string) {
+	function onSelect(id: string, kbInteraction: boolean) {
 		dispatch(selectedObjectId(id));
+		setKb(kbInteraction);
 	}
 
 	function onAdd() {
@@ -46,14 +48,15 @@ export default function ObjectsTab() {
 		<>
 			<VnumItemList itemName="Object" items={objects} selected={currentId} onChange={onSelect} onAdd={onAdd} />
 			<TabsContents>
-				{object ? <ObjectForm key={currentId} item={object} /> : <BlankWorkspace onAdd={onAdd} />}
+				{object ? <ObjectForm key={currentId} kbInteraction={kb} object={object} /> : <BlankWorkspace onAdd={onAdd} />}
 			</TabsContents>
 		</>
 	);
 }
 
 interface Props {
-	item: Objekt;
+	object: Objekt;
+	kbInteraction: boolean;
 }
 
 function BlankWorkspace({ onAdd }: { onAdd: () => void }) {
@@ -78,14 +81,14 @@ function factor(n: number): number[] {
 	return factors;
 }
 
-function ObjectForm({ item: object }: Props) {
+function ObjectForm({ object, kbInteraction }: Props) {
 	const dispatch = useAppDispatch();
 	const [danger, setDanger] = useState(false);
 	const vnumField = useRef<HTMLInputElement>(null);
 	const id = object.id;
 
 	useEffect(() => {
-		vnumField.current?.focus();
+		if (kbInteraction) vnumField.current?.focus();
 	}, [id]);
 
 	const wearFlags = object.wearFlags.reduce((sum, b) => sum + b, 0);

@@ -36,10 +36,12 @@ export default function MobilesTab() {
 	const dispatch = useAppDispatch();
 	const mobiles = useAppSelector(state => state.mobiles.mobiles);
 	const currentId = useAppSelector(state => state.ui.selectedMobileId);
+	const [kb, setKb] = useState(false);
 	const mobile = mobiles.find(m => m.id === currentId);
 
-	function onSelect(id: string) {
+	function onSelect(id: string, kbInteraction: boolean) {
 		dispatch(selectedMobileId(id));
+		setKb(kbInteraction);
 	}
 
 	function onAdd() {
@@ -52,7 +54,7 @@ export default function MobilesTab() {
 		<>
 			<VnumItemList itemName="Mobile" items={mobiles} selected={currentId} onChange={onSelect} onAdd={onAdd} />
 			<TabsContents>
-				{mobile ? <MobileForm key={currentId} mobile={mobile} /> : <BlankWorkspace onAdd={onAdd} />}
+				{mobile ? <MobileForm key={currentId} kbInteraction={kb} mobile={mobile} /> : <BlankWorkspace onAdd={onAdd} />}
 			</TabsContents>
 		</>
 	);
@@ -71,6 +73,7 @@ function BlankWorkspace({ onAdd }: { onAdd: () => void }) {
 
 interface Props {
 	mobile: Mobile;
+	kbInteraction: boolean;
 }
 
 function MobileForm(props: Props) {
@@ -81,7 +84,7 @@ function MobileForm(props: Props) {
 	const id = mobile.id;
 
 	useEffect(() => {
-		vnumField.current?.focus();
+		if (props.kbInteraction) vnumField.current?.focus();
 	}, [id]);
 
 	const updatedVnum = (n: number) => dispatch(Actions.updatedVnum([id, n]));
