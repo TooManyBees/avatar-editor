@@ -71,6 +71,7 @@ function InitForm() {
 			</p>
 			<ul className={styles.disclaimer}>
 				<li><strong>Do</strong> regularly export to <code>.are</code> file and save your work locally.</li>
+				<li><strong>Don't</strong> stop using an area file syntax checker.</li>
 				<li><strong>Don't</strong> rely 100% on this (yet!)</li>
 				<li><strong>Do</strong> use your own version control to verify any changes this app makes to an area.</li>
 				<li><strong>Do</strong> contact Scevine with bug reports or feature requests.</li>

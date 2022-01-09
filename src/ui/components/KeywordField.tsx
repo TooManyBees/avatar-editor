@@ -48,7 +48,8 @@ export default function KeywordField(props: Props) {
 
 	return (
 		<label className={styles.keywordField}>
-			<span className={styles.label}>{props.name}:</span> {props.value.map((k, n) => (
+			<span className={styles.label}>{props.name}:</span>
+			{props.value.map((k, n) => (
 				<span key={`${n} ${k}`} className={styles.keyword}>{k}</span>
 			))}
 			<input
