@@ -6,6 +6,7 @@ import {
 	DeleteButton,
 	LinkButton,
 } from "./Button";
+import CheckBox from "./CheckBox";
 import EdescFields from "./EdescFields";
 import KeywordField from "./KeywordField";
 import NumberField from "./NumberField";
@@ -21,6 +22,7 @@ export {
 	ApplyFields,
 	BitsField,
 	Button,
+	CheckBox,
 	DeleteButton,
 	LinkButton,
 	EdescFields,

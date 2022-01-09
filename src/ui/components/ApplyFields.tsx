@@ -6,6 +6,7 @@ import { Apply } from "../../app/models";
 import {
 	AddButton,
 	BitsField,
+	CheckBox,
 	DeleteButton,
 	NumberField,
 	SectionList,
@@ -104,7 +105,7 @@ function ApplyFlagField({ type, value, onUpdate }: ApplyFlagProps) {
 		case 42:
 		case 43:
 		case 44:
-			return <label>Enabled: <input type="checkbox" value={value} onChange={e => onUpdate(e.target.checked ? value || 1 : 0)} /></label>;
+			return <CheckBox name="Enabled" value={value} onUpdate={checked => onUpdate(checked ? value || 1 : 0)} />;
 		case 50:
 			return <BitsField className={styles.bitsfield} name="Value" value={factor(value)} map={IMMUNITY_FLAGS} onUpdate={(bs: number[]) => onUpdate(bs.reduce((a, b) => a + b, 0))} />;
 		case 93:

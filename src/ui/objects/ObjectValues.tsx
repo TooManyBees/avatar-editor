@@ -8,6 +8,7 @@ import {
 } from "../../app/store/objects";
 import {
 	BitsField,
+	CheckBox,
 	NumberField,
 	SelectField,
 	ToolRow,
@@ -426,7 +427,7 @@ function DrinkContainerValues(props: ObjectValuesProps) {
 			<NumberField name="Capacity" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<NumberField name="Current quantity" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
 			<SelectField name="Drink" options={DRINKS} value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
-			<label>Poisoned <input type="checkbox" checked={Number(value3) != 0} onChange={e => dispatch(updatedValue3([id, e.target.checked ? "1" : "0"]))} /></label>
+			<CheckBox name="Poisoned" value={Number(value3)} onUpdate={checked => dispatch(updatedValue3([id, checked ? "1" : "0"]))} />
 		</ToolRow>
 	);
 }
@@ -438,7 +439,7 @@ function KeyValues(props: ObjectValuesProps) {
 		<ToolRow>
 			<NumberField name="Uses" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<NumberField name="Failure rate" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
-			<label>Forgery <input type="checkbox" checked={Number(value2) != 0} onChange={e => dispatch(updatedValue2([id, e.target.checked ? "1" : "0"]))} /></label>
+			<CheckBox name="Forgery" value={Number(value2)} onUpdate={checked => dispatch(updatedValue2([id, checked ? "1" : "0"]))} />
 		</ToolRow>
 	);
 }
@@ -449,7 +450,7 @@ function FoodValues(props: ObjectValuesProps) {
 	return (
 		<ToolRow>
 			<NumberField name="Nutritive value" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
-			<label>Poisoned <input type="checkbox" checked={Number(value3) > 0} onChange={e => dispatch(updatedValue3([id, e.target.checked ? "1" : "0"]))} /></label>
+			<CheckBox name="Poisoned" value={Number(value3)} onUpdate={checked => dispatch(updatedValue3([id, checked ? "1" : "0"]))} />
 		</ToolRow>
 	);
 }
