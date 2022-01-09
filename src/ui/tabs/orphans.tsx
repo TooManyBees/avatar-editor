@@ -3,10 +3,22 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { SpecialU } from "../../app/models/specials";
 import { ShopU } from "../../app/models/shops";
 import { restoredShop, restoredSpecial } from "../../app/store/mobiles";
+import {
+	restoredMobReset,
+	restoredObjectReset,
+	restoredInObjectReset,
+	restoredDoorReset,
+	restoredRandomExitReset,
+} from "../../app/store/resets";
 import { selectedMobileId, selectedObjectId, selectedRoomId } from "../../app/store/ui";
 import {
+	DoorReset,
+	InObjectReset,
 	Mobile,
+	MobReset,
+	ObjectReset,
 	Objekt,
+	RandomExitReset,
 	Resets,
 	Room,
 } from "../../app/models";
@@ -141,71 +153,187 @@ function OrphanedResets({ resets, mobiles, objects, rooms }: OrphanedResetsProps
 	const doorResets = resets.door.filter(r => r.orphan);
 	const randomResets = resets.randomExit.filter(r => r.orphan);
 
-	const numResets = mobResets.length + objResets.length + inObjResets.length + doorResets.length + randomResets.length;
-	if (numResets === 0) return null;
-
 	return (
 		<>
-			{mobResets.length > 0 && <SectionList header={<h2>Mob resets</h2>}>
-				{mobResets.map(reset => <React.Fragment key={reset.id}>
-					<li>
-						<ToolRow>
-							<SelectVnum name="Mobile" selectedId={reset.mobId} items={mobiles} onUpdate={() => {}} />
-							<SelectVnum name="Room" disabled selectedId={reset.roomId} items={rooms} onUpdate={NO_OP} />
-						</ToolRow>
-						<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
-					</li>
-					<hr />
-				</React.Fragment>)}
-			</SectionList>}
-			{objResets.length > 0 && <SectionList header={<h2>Object resets</h2>}>
-				{objResets.map(reset => <React.Fragment key={reset.id}>
-					<li>
-						<ToolRow>
-							<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={() => {}} />
-							<SelectVnum name="Room" disabled selectedId={reset.roomId} items={rooms} onUpdate={NO_OP} />
-						</ToolRow>
-						<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
-					</li>
-					<hr />
-				</React.Fragment>)}
-			</SectionList>}
-			{inObjResets.length > 0 && <SectionList header={<h2>Container resets</h2>}>
-				{inObjResets.map(reset => <React.Fragment key={reset.id}>
-					<li>
-						<ToolRow>
-							<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={() => {}} />
-							<SelectVnum name="Container" selectedId={reset.containerId} items={objects} onUpdate={() => {}} />
-						</ToolRow>
-						<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
-					</li>
-					<hr />
-				</React.Fragment>)}
-				</SectionList>}
-			{doorResets.length > 0 && <SectionList header={<h2>Door resets</h2>}>
-				{doorResets.map(reset => <React.Fragment key={reset.id}>
-					<li>
-						<ToolRow>
-							<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
-							<SelectDirection disabled value={reset.direction} onUpdate={NO_OP} />
-						</ToolRow>
-						<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
-					</li>
-					<hr />
-				</React.Fragment>)}
-			</SectionList>}
-			{randomResets.length > 0 && <SectionList header={<h2>Random exit resets</h2>}>
-				{randomResets.map(reset => <React.Fragment key={reset.id}>
-					<li>
-						<ToolRow>
-							<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
-							<NumberField name="Number of exits" disabled value={reset.numExits} onUpdate={NO_OP} />
-						</ToolRow>
-						<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
-					</li>
-					<hr />
-				</React.Fragment>)}
-			</SectionList>}
+			<MobResets resets={mobResets} mobiles={mobiles} rooms={rooms} />
+			<ObjResets resets={objResets} objects={objects} rooms={rooms} />
+			<InObjResets resets={inObjResets} objects={objects} />
+			<DoorResets resets={doorResets} rooms={rooms} />
+			<RandomExitResets resets={randomResets} rooms={rooms} />
 		</>
+	);
+}
+
+
+function MobResets({ resets, mobiles, rooms }: { resets: MobReset[], mobiles: Mobile[], rooms: Room[] }) {
+	const dispatch = useAppDispatch();
+	const [fixed, setFixed] = useState<FixedVnum[]>([]);
+	if (resets.length === 0 && fixed.length === 0) return null;
+
+	function onUpdate(mobId: string, reset: MobReset) {
+		const mobile = mobiles.find(m => m.id === mobId);
+		if (mobile) {
+			dispatch(restoredMobReset([mobId, reset]));
+			setFixed([...fixed, { id: mobId, name: mobile.shortDesc, vnum: mobile.vnum }]);
+		}
+	}
+
+	return (
+		<SectionList header={<h2>Mob resets</h2>}>
+			{fixed.map(({ id, vnum, name }) => (
+				<li key={id}>
+					<a href="#" className={styles.link} onClick={() => dispatch(selectedMobileId(id))}>
+						Shop assigned to <code>{vnum}</code> {name}
+					</a>
+				</li>
+			))}
+			{resets.map(reset => <React.Fragment key={reset.id}>
+				<li>
+					<ToolRow>
+						<SelectVnum name="Mobile" selectedId={reset.mobId} items={mobiles} onUpdate={mobId => onUpdate(mobId, reset)} />
+						<SelectVnum name="Room" disabled selectedId={reset.roomId} items={rooms} onUpdate={NO_OP} />
+					</ToolRow>
+					<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
+				</li>
+				<hr />
+			</React.Fragment>)}
+		</SectionList>
+	);
+}
+
+function ObjResets({ resets, objects, rooms }: { resets: ObjectReset[], objects: Objekt[], rooms: Room[]}) {
+	const dispatch = useAppDispatch();
+	const [fixed, setFixed] = useState<FixedVnum[]>([]);
+	if (resets.length === 0 && fixed.length === 0) return null;
+
+	function onUpdate(objectId: string, reset: ObjectReset) {
+		const object = objects.find(o => o.id === objectId);
+		if (object) {
+			dispatch(restoredObjectReset([objectId, reset]));
+			setFixed([...fixed, { id: objectId, name: object.shortDesc, vnum: object.vnum }]);
+		}
+	}
+
+	return (
+		<SectionList header={<h2>Object resets</h2>}>
+			{fixed.map(({ id, vnum, name }) => (
+				<li key={id}>
+					<a href="#" className={styles.link} onClick={() => dispatch(selectedObjectId(id))}>
+						Shop assigned to <code>{vnum}</code> {name}
+					</a>
+				</li>
+			))}
+			{resets.map(reset => <React.Fragment key={reset.id}>
+				<li>
+					<ToolRow>
+						<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={objectId => onUpdate(objectId, reset)} />
+						<SelectVnum name="Room" disabled selectedId={reset.roomId} items={rooms} onUpdate={NO_OP} />
+					</ToolRow>
+					<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
+				</li>
+				<hr />
+			</React.Fragment>)}
+		</SectionList>
+	);
+}
+
+function InObjResets({ resets, objects }: { resets: InObjectReset[], objects: Objekt[] }) {
+	const dispatch = useAppDispatch();
+	const [fixed, setFixed] = useState<FixedVnum[]>([]);
+	if (resets.length === 0 && fixed.length === 0) return null;
+
+	function onUpdate(containerId: string, reset: InObjectReset) {
+		const container = objects.find(o => o.id === containerId);
+		if (container) {
+			dispatch(restoredInObjectReset([containerId, reset]));
+			setFixed([...fixed, { id: containerId, name: container.shortDesc, vnum: container.vnum }]);
+		}
+	}
+
+	return (
+		<SectionList header={<h2>Container resets</h2>}>
+			{fixed.map(({ id, vnum, name }) => (
+				<li key={id}>
+					<a href="#" className={styles.link} onClick={() => dispatch(selectedObjectId(id))}>
+						Shop assigned to <code>{vnum}</code> {name}
+					</a>
+				</li>
+			))}
+			{resets.map(reset => <React.Fragment key={reset.id}>
+				<li>
+					<ToolRow>
+						<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={containerId => onUpdate(containerId, reset)} />
+						<SelectVnum name="Container" selectedId={reset.containerId} items={objects} onUpdate={() => {}} />
+					</ToolRow>
+					<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
+				</li>
+				<hr />
+			</React.Fragment>)}
+		</SectionList>
+	);
+}
+
+function DoorResets({ resets, rooms }: { resets: DoorReset[], rooms: Room[] }) {
+	const dispatch = useAppDispatch();
+	const [fixed, setFixed] = useState<FixedVnum[]>([]);
+	if (resets.length === 0 && fixed.length === 0) return null;
+
+	function onUpdate(roomId: string, reset: DoorReset) {
+		const room = rooms.find(r => r.id === roomId);
+		if (room) {
+			dispatch(restoredDoorReset([roomId, reset]));
+			setFixed([...fixed, { id: roomId, name: room.name, vnum: room.vnum }]);
+		}
+	}
+
+	return (
+		<SectionList header={<h2>Door resets</h2>}>
+			{fixed.map(({ id, vnum, name }) => (
+				<li key={id}>
+					<a href="#" className={styles.link} onClick={() => dispatch(selectedRoomId(id))}>
+						Shop assigned to <code>{vnum}</code> {name}
+					</a>
+				</li>
+			))}
+			{resets.map(reset => <React.Fragment key={reset.id}>
+				<li>
+					<ToolRow>
+						<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={roomId => onUpdate(roomId, reset)} />
+						<SelectDirection disabled value={reset.direction} onUpdate={NO_OP} />
+					</ToolRow>
+					<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
+				</li>
+				<hr />
+			</React.Fragment>)}
+		</SectionList>
+	);
+}
+
+function RandomExitResets({ resets, rooms }: { resets: RandomExitReset[], rooms: Room[] }) {
+	const dispatch = useAppDispatch();
+	const [fixed, setFixed] = useState<FixedVnum[]>([]);
+	if (resets.length === 0 && fixed.length === 0) return null;
+
+	function onUpdate(roomId: string, reset: RandomExitReset) {
+		const room = rooms.find(r => r.id === roomId);
+		if (room) {
+			dispatch(restoredRandomExitReset([roomId, reset]));
+			setFixed([...fixed, { id: roomId, name: room.name, vnum: room.vnum }]);
+		}
+	}
+
+	return (
+		<SectionList header={<h2>Random exit resets</h2>}>
+			{resets.map(reset => <React.Fragment key={reset.id}>
+				<li>
+					<ToolRow>
+						<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={roomid => onUpdate(roomid, reset)} />
+						<NumberField name="Number of exits" disabled value={reset.numExits} onUpdate={NO_OP} />
+					</ToolRow>
+					<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
+				</li>
+				<hr />
+			</React.Fragment>)}
+		</SectionList>
 	);
 }

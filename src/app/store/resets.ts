@@ -58,6 +58,14 @@ const resetsSlice = createSlice({
 		removedMobReset(state, action: PayloadAction<string>) {
 			state.resets.mobile = state.resets.mobile.filter(r => r.id !== action.payload);
 		},
+		restoredMobReset(state, action: PayloadAction<[string, MobReset]>) {
+			const [mobId, _reset] = action.payload;
+			const reset = state.resets.mobile.find(r => r.id === _reset.id);
+			if (reset) {
+				reset.mobId = mobId;
+				reset.orphan = false;
+			}
+		},
 		removedAllMobResets(state, action: PayloadAction<string>) {
 			state.resets.mobile = state.resets.mobile.filter(r => r.mobId !== action.payload);
 		},
@@ -113,6 +121,14 @@ const resetsSlice = createSlice({
 		removedObjectReset(state, action: PayloadAction<string>) {
 			state.resets.object = state.resets.object.filter(r => r.id !== action.payload);
 		},
+		restoredObjectReset(state, action: PayloadAction<[string, ObjectReset]>) {
+			const [objectId, _reset] = action.payload;
+			const reset = state.resets.object.find(r => r.id === _reset.id);
+			if (reset) {
+				reset.objectId = objectId;
+				reset.orphan = false;
+			}
+		},
 		addedInObjectReset(state, action: PayloadAction<string>) {
 			const newReset: InObjectReset = {
 				id: newId(),
@@ -130,6 +146,14 @@ const resetsSlice = createSlice({
 		},
 		removedInObjectReset(state, action: PayloadAction<string>) {
 			state.resets.inObject = state.resets.inObject.filter(r => r.id !== action.payload);
+		},
+		restoredInObjectReset(state, action: PayloadAction<[string, InObjectReset]>) {
+			const [containerId, _reset] = action.payload;
+			const reset = state.resets.inObject.find(r => r.id === _reset.id);
+			if (reset) {
+				reset.containerId = containerId;
+				reset.orphan = false;
+			}
 		},
 		addedDoorReset(state, action: PayloadAction<{ roomId: string, direction: number, state: number }>) {
 			const { roomId, direction, state: doorState } = action.payload;
@@ -151,6 +175,14 @@ const resetsSlice = createSlice({
 		removedDoorReset(state, action: PayloadAction<string>) {
 			state.resets.door = state.resets.door.filter(r => r.id !== action.payload);
 		},
+		restoredDoorReset(state, action: PayloadAction<[string, DoorReset]>) {
+			const [roomId, _reset] = action.payload;
+			const reset = state.resets.door.find(r => r.id === _reset.id);
+			if (reset) {
+				reset.roomId = roomId;
+				reset.orphan = false;
+			}
+		},
 		addedRandomExitReset(state, action: PayloadAction<string>) {
 			const newReset: RandomExitReset = {
 				id: newId(),
@@ -169,6 +201,14 @@ const resetsSlice = createSlice({
 		removedRandomExitReset(state, action: PayloadAction<string>) {
 			state.resets.randomExit = state.resets.randomExit.filter(r => r.id !== action.payload);
 		},
+		restoredRandomExitReset(state, action: PayloadAction<[string, RandomExitReset]>) {
+			const [roomId, _reset] = action.payload;
+			const reset = state.resets.randomExit.find(r => r.id === _reset.id);
+			if (reset) {
+				reset.roomId = roomId;
+				reset.orphan = false;
+			}
+		},
 	},
 });
 
@@ -177,6 +217,7 @@ export const {
 	addedMobReset,
 	updatedMobReset,
 	removedMobReset,
+	restoredMobReset,
 	removedAllMobResets,
 	addedEquipmentReset,
 	updatedEquipmentReset,
@@ -184,14 +225,18 @@ export const {
 	addedObjectReset,
 	updatedObjectReset,
 	removedObjectReset,
+	restoredObjectReset,
 	addedInObjectReset,
 	updatedInObjectReset,
 	removedInObjectReset,
+	restoredInObjectReset,
 	addedDoorReset,
 	updatedDoorReset,
 	removedDoorReset,
+	restoredDoorReset,
 	addedRandomExitReset,
 	updatedRandomExitReset,
 	removedRandomExitReset,
+	restoredRandomExitReset,
 } = resetsSlice.actions;
 export default resetsSlice.reducer;
