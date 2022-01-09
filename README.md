@@ -13,6 +13,7 @@ It's an area builder for Avatar MUD, written by Scevine. See https://www.toomany
 The Midgaard Royal Surveyors' Guild does not guarantee that it will parse and serialize an area file with 100% fidelity. The following limitations are known and probably will not be fixed.
 
 * Ordering of resets is not preserved. They are always sorted by vnum, except for inv/eq resets which are grouped with their associated mob reset.
+* On multi-line strings (descriptions, edescs, door descs, adescs, kspawns) trailing whitespace will be trimmed a single newline.
 
 ## Building
 
