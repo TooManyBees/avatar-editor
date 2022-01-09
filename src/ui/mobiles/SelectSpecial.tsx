@@ -4,10 +4,11 @@ import { SelectField } from "../components";
 interface Props {
 	value: string | null;
 	onUpdate: (s: string | null) => void;
+	disabled?: boolean;
 }
 
-export default function SelectSpecial({ value, onUpdate}: Props) {
-	return <SelectField name="Spec" inline value={value} options={SPEC_FUNS} onUpdate={onUpdate} />;
+export default function SelectSpecial({ value, onUpdate, disabled }: Props) {
+	return <SelectField name="Spec" inline disabled value={value} options={SPEC_FUNS} onUpdate={onUpdate} />;
 }
 
 const SPEC_FUNS: { value: string | null, label: string }[] = [

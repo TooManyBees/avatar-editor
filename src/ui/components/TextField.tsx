@@ -9,10 +9,11 @@ interface Props {
 	inline?: boolean;
 	maxLength?: number;
 	style?: CSSProperties;
+	disabled?: boolean;
 }
 
 export default function TextField(props: Props) {
-	const { name, onUpdate, inline = false, maxLength, style } = props;
+	const { name, onUpdate, inline = false } = props;
 	const initialValue = props.value || "";
 	const [value, setValue] = useState(initialValue);
 
@@ -33,8 +34,9 @@ export default function TextField(props: Props) {
 				onChange={onChange}
 				onBlur={onBlur}
 				className={styles.input}
-				maxLength={maxLength}
-				style={style}
+				maxLength={props.maxLength}
+				style={props.style}
+				disabled={props.disabled}
 			/>
 		</label>
 	);

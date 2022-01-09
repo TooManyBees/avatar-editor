@@ -32,6 +32,10 @@ export default function OrphansTab() {
 
 	return (
 		<TabsContents>
+			<aside>
+				Orphaned content are vnum references that don't link to any mobiles, objects, or
+				rooms in this area. They will still be written into the final <code>.are</code> file.
+			</aside>
 			<OrphanedSpecials specials={orphanedSpecials} mobiles={mobiles} />
 			<OrphanedShops shops={orphanedShops} mobiles={mobiles} />
 			<OrphanedResets resets={resets} mobiles={mobiles} objects={objects} rooms={rooms} />
@@ -39,13 +43,15 @@ export default function OrphansTab() {
 	);
 }
 
+const NO_OP = () => {};
+
 function OrphanedSpecials({ specials, mobiles }: { specials: SpecialU[], mobiles: Mobile[] }) {
 	if (specials.length === 0) return null;
 	return (
 		<SectionList header={<h2>Orphaned Specials</h2>}>
 			{specials.map(special => <li key={special.id}>
 				<SelectVnum name="Mobile" selectedId={special.mobVnum.toString()} items={mobiles} onUpdate={() => {}} />
-				<SelectSpecial value={special.special} onUpdate={() => {}}/>
+				<SelectSpecial disabled value={special.special} onUpdate={NO_OP}/>
 			</li>)}
 		</SectionList>
 	);
@@ -61,11 +67,11 @@ function OrphanedShops({ shops, mobiles }: { shops: ShopU[], mobiles: Mobile[] }
 						<SelectVnum name="Mobile" selectedId={shop.mobVnum.toString()} items={mobiles} onUpdate={() => {}} />
 					</ToolRow>
 					<ToolRow>
-						<SelectObjectType disabled value={shop.oType1} onUpdate={() => {}} />
-						<SelectObjectType disabled value={shop.oType2} onUpdate={() => {}} />
-						<SelectObjectType disabled value={shop.oType3} onUpdate={() => {}} />
-						<SelectObjectType disabled value={shop.oType4} onUpdate={() => {}} />
-						<SelectObjectType disabled value={shop.oType5} onUpdate={() => {}} />
+						<SelectObjectType disabled value={shop.oType1} onUpdate={NO_OP} />
+						<SelectObjectType disabled value={shop.oType2} onUpdate={NO_OP} />
+						<SelectObjectType disabled value={shop.oType3} onUpdate={NO_OP} />
+						<SelectObjectType disabled value={shop.oType4} onUpdate={NO_OP} />
+						<SelectObjectType disabled value={shop.oType5} onUpdate={NO_OP} />
 					</ToolRow>
 				</li>
 				<hr />
@@ -98,9 +104,9 @@ function OrphanedResets({ resets, mobiles, objects, rooms }: OrphanedResetsProps
 					<li>
 						<ToolRow>
 							<SelectVnum name="Mobile" selectedId={reset.mobId} items={mobiles} onUpdate={() => {}} />
-							<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
+							<SelectVnum name="Room" disabled selectedId={reset.roomId} items={rooms} onUpdate={NO_OP} />
 						</ToolRow>
-						<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
+						<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
 					</li>
 					<hr />
 				</React.Fragment>)}
@@ -110,9 +116,9 @@ function OrphanedResets({ resets, mobiles, objects, rooms }: OrphanedResetsProps
 					<li>
 						<ToolRow>
 							<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={() => {}} />
-							<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
+							<SelectVnum name="Room" disabled selectedId={reset.roomId} items={rooms} onUpdate={NO_OP} />
 						</ToolRow>
-						<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
+						<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
 					</li>
 					<hr />
 				</React.Fragment>)}
@@ -124,7 +130,7 @@ function OrphanedResets({ resets, mobiles, objects, rooms }: OrphanedResetsProps
 							<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={() => {}} />
 							<SelectVnum name="Container" selectedId={reset.containerId} items={objects} onUpdate={() => {}} />
 						</ToolRow>
-						<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
+						<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
 					</li>
 					<hr />
 				</React.Fragment>)}
@@ -134,9 +140,9 @@ function OrphanedResets({ resets, mobiles, objects, rooms }: OrphanedResetsProps
 					<li>
 						<ToolRow>
 							<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
-							<SelectDirection value={reset.direction} onUpdate={() => {}} />
+							<SelectDirection disabled value={reset.direction} onUpdate={NO_OP} />
 						</ToolRow>
-						<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
+						<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
 					</li>
 					<hr />
 				</React.Fragment>)}
@@ -146,9 +152,9 @@ function OrphanedResets({ resets, mobiles, objects, rooms }: OrphanedResetsProps
 					<li>
 						<ToolRow>
 							<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={() => {}} />
-							<NumberField name="Number of exits" value={reset.numExits} onUpdate={() => {}} />
+							<NumberField name="Number of exits" disabled value={reset.numExits} onUpdate={NO_OP} />
 						</ToolRow>
-						<TextField name="Comment" value={reset.comment} onUpdate={() => {}} />
+						<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
 					</li>
 					<hr />
 				</React.Fragment>)}

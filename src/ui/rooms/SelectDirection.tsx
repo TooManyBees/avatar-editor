@@ -4,15 +4,17 @@ import { SelectField } from "../components";
 interface Props {
 	value: number;
 	onUpdate: (n: number) => void;
+	disabled?: boolean;
 }
 
-export default function SelectDirection({ value, onUpdate }: Props) {
+export default function SelectDirection({ value, onUpdate, disabled }: Props) {
 	return (
 		<SelectField
 			name="Direction"
 			value={value}
 			options={DIRECTIONS}
 			onUpdate={onUpdate}
+			disabled={disabled}
 		/>
 	);
 }

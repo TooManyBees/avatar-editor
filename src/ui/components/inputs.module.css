@@ -35,6 +35,10 @@
 .input:focus {
 	outline: 2px solid var(--selection);
 }
+.input[disabled] {
+	color: var(--neutral);
+	border-color: var(--neutral-faint);
+}
 
 .number {
 	text-align: right;
