@@ -59,7 +59,7 @@
 	padding: 0.5rem;
 }
 
-.section .list textarea {
+.section .list textarea, .section .list pre {
 	margin-bottom: 0;
 }
 

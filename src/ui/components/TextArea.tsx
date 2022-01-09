@@ -47,7 +47,7 @@ export default function TextArea(props: TextFieldProps) {
 			</span>
 			<div className={styles.editor}>
 				{ preview
-					? <div className={classnames(styles.colorPreview, props.colors && styles[props.colors])} style={{height, width}}>{elementsFromColorCodes(value)}</div>
+					? <pre className={classnames(styles.colorPreview, props.colors && styles[props.colors])} style={{height, width}}>{elementsFromColorCodes(value)}</pre>
 					: <textarea rows={rows} cols={90} style={{height, width}} value={value} onChange={onChange} onBlur={onBlur} ref={textArea} />
 				}
 			</div>
