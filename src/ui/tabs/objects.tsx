@@ -48,7 +48,7 @@ export default function ObjectsTab() {
 
 	return (
 		<>
-			<VnumItemList itemName="Object" items={objects} selected={currentId} onChange={onSelect} onAdd={onAdd} />
+			{objects.length > 0 && <VnumItemList itemName="Object" items={objects} selected={currentId} onChange={onSelect} onAdd={onAdd} />}
 			<TabsContents>
 				{object ? <ObjectForm key={currentId} kbInteraction={kb} object={object} /> : <BlankWorkspace onAdd={onAdd} />}
 			</TabsContents>

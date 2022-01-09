@@ -52,7 +52,7 @@ export default function MobilesTab() {
 
 	return (
 		<>
-			<VnumItemList itemName="Mobile" items={mobiles} selected={currentId} onChange={onSelect} onAdd={onAdd} />
+			{mobiles.length > 0 && <VnumItemList itemName="Mobile" items={mobiles} selected={currentId} onChange={onSelect} onAdd={onAdd} />}
 			<TabsContents>
 				{mobile ? <MobileForm key={currentId} kbInteraction={kb} mobile={mobile} /> : <BlankWorkspace onAdd={onAdd} />}
 			</TabsContents>
