@@ -36,9 +36,9 @@ ${room.description}
 	base += serializeEdescs(room.extraDescs);
 
 	if (room.alignFlags.length > 0)
-		base += joinBits(room.alignFlags) + "\n";
+		base += `A ${joinBits(room.alignFlags)}\n`;
 	if (room.classFlags.length > 0)
-		base += joinBits(room.classFlags) + "\n";
+		base += `C ${joinBits(room.classFlags)}\n`;
 
 	base += "S\n";
 
