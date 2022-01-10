@@ -16,7 +16,7 @@ interface TextFieldProps {
 let iteration = 0;
 
 export default function TextArea(props: TextFieldProps) {
-	const [value, setState] = useState(props.value);
+	const [value, setValue] = useState(props.value);
 	const [preview, setPreview] = useState(false);
 	const [height, setHeight] = useState<number | undefined>(undefined);
 	const [width, setWidth] = useState<number | undefined>(undefined);
@@ -24,11 +24,16 @@ export default function TextArea(props: TextFieldProps) {
 	const nthTextArea = useRef<number>(iteration++);
 
 	function onChange(event: ChangeEvent<HTMLTextAreaElement>) {
-		setState(event.currentTarget.value);
+		setValue(event.currentTarget.value);
 	}
 
 	function onBlur(event: any) {
-		if (value !== props.value) props.onUpdate(value);
+		if (value !== props.value) {
+			let trimmed = value.trim();
+			if (trimmed) trimmed += "\n";
+			if (trimmed !== value) setValue(trimmed);
+			props.onUpdate(trimmed);
+		}
 	}
 
 	function togglePreview(event: ChangeEvent<HTMLInputElement>) {
