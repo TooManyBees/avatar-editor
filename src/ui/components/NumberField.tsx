@@ -40,6 +40,7 @@ export default function NumberField(props: NumberFieldProps) {
 				onChange={onChange}
 				onBlur={onBlur}
 				className={classnames(styles.input, styles.number, warning && styles.warning)}
+				aria-invalid={warning}
 				style={{width: "5rem"}}
 				ref={props.inputRef}
 				disabled={disabled}

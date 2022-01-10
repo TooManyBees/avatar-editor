@@ -96,7 +96,8 @@ function TabsNav() {
 				</span>
 			</button>
 			<span style={{marginRight: "0.5rem"}} />
-			<Button onClick={save}>Write .are</Button> <span style={{color: "var(--neutral)"}}>← (do this often!)</span>
+			<Button ariaLabel="Write area file (do this often)" onClick={save}>Write .are</Button>
+			<span aria-hidden="true" style={{color: "var(--neutral)"}}>← (do this often!)</span>
 		</nav>
 	);
 }

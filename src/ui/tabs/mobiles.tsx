@@ -103,7 +103,7 @@ function MobileForm(props: Props) {
 	const updatedSpecial = (s: string | null) => dispatch(Actions.updatedSpecial([id, s]));
 	const removedMobile = () => {
 		dispatch(Actions.removedMobile(id));
-		dispatch(ResetsActions.removedAllMobResets(id)); // FIXME: we *could* leave them orphaned, nbd
+		dispatch(ResetsActions.removedAllMobResets(id));
 	};
 
 	return (

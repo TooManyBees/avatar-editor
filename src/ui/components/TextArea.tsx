@@ -45,11 +45,12 @@ export default function TextArea(props: TextFieldProps) {
 	return (
 		<div className={styles.textArea}>
 			<span className={styles.description}>
-				{/* FIXME: apply htmlFor pointing to the textarea */}
 				<label htmlFor={textAreaId}>{name}:</label>
 				<label><input type="checkbox" checked={preview} onChange={togglePreview} /> Preview colors</label>
 			</span>
 			<div className={styles.editor}>
+				<span className={styles.guide} aria-hidden="true">................................................................................</span>
+				<span className={styles.guide} aria-hidden="true">........................................................................</span>
 				{ preview
 					? <pre className={classnames(styles.colorPreview, props.colors && styles[props.colors])} style={{height, width}}>{elementsFromColorCodes(value)}</pre>
 					: <textarea id={textAreaId} rows={rows} cols={90} style={{height, width}} value={value} onChange={onChange} onBlur={onBlur} ref={textArea} />

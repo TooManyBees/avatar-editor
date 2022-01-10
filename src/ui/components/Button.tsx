@@ -10,10 +10,12 @@ interface Props {
 	onHoverState?: (state: boolean) => void;
 	tabIndex?: number;
 	buttonRef?: React.RefObject<HTMLButtonElement>
+	decoration?: string;
+	ariaLabel?: string;
 }
 
 export function Button(props: Props) {
-	const { children, className, style, onClick, onHoverState, tabIndex, buttonRef } = props;
+	const { children, className, style, onClick, onHoverState, tabIndex, buttonRef, ariaLabel, decoration } = props;
 
 	return (
 		<button
@@ -25,9 +27,10 @@ export function Button(props: Props) {
 			onMouseOver={onHoverState ? () => onHoverState(true): undefined}
 			onMouseOut={onHoverState ? () => onHoverState(false): undefined}
 			tabIndex={tabIndex}
+			aria-label={ariaLabel}
 			ref={buttonRef}
 		>
-			{children}
+			{decoration && <><span aria-hidden="true">{decoration}</span> </>}{children}
 		</button>
 	);
 }
@@ -71,8 +74,9 @@ export function DeleteButton(props: Props) {
 				tabIndex={prompt ? -1 : 0}
 				onHoverState={onHoverState}
 				buttonRef={initialButton}
+				decoration="✖"
 			/>
-			<span className={styles.confirmation}>
+			<span className={styles.confirmation} aria-live={prompt ? "assertive" : undefined}>
 				Confirm delete?
 				<div className={styles.buttons}>
 					<Button tabIndex={prompt ? 0 : -1} buttonRef={cancelButton} onClick={() => setPrompt(false)}>Cancel</Button>
@@ -89,6 +93,7 @@ export function AddButton(props: Props) {
 			{...props}
 			children={props.children || "Add"}
 			className={classnames(styles.add, props.className)}
+			decoration="+"
 		/>
 	);
 }

@@ -1,12 +1,17 @@
+.button-text {
+	font-size: 0.83rem;
+	font-family: system-ui;
+	line-height: 1rem;
+}
+
 .button {
+	composes: button-text;
 	appearance: button;
 	padding: 2px 8px;
 	background-color: white;
 	border: 1px solid hsl(0, 0%, 80%);
 	border-radius: 4px;
 	margin: 0 0.25rem;
-	font-size: 0.83rem;
-	line-height: 1rem;
 }
 .button:hover {
 	border-color: hsl(0, 0%, 70%);
@@ -26,10 +31,6 @@
 	white-space: nowrap;
 	color: var(--danger);
 }
-.delete:before {
-	display: inline;
-	content: "✖ ";
-}
 .deleteWrapper {
 	position: relative;
 }
@@ -38,6 +39,7 @@
 	pointer-events: initial;
 }
 .confirmation {
+	composes: button-text;
 	position: absolute;
 	display: block;
 	visibility: hidden;
@@ -46,8 +48,6 @@
 	right: 0;
 	background-color: var(--background);
 	color: var(--danger);
-	font-family: system-ui;
-	font-size: 0.83rem;
 	text-align: right;
 }
 .confirmation .buttons {
@@ -62,15 +62,11 @@
 	margin: 0;
 }
 .confirmation .button.danger {
-	color:  var(--danger);
+	color: var(--danger);
 }
 
 
 .add {
 	white-space: nowrap;
 	color: var(--good);
-}
-.add:before {
-	display: inline;
-	content: "+ ";
 }

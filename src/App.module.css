@@ -4,12 +4,17 @@
 }
 
 .fileInput input {
-	display: none;
+	height: 0;
+	padding: 0;
+	opacity: 0;
+	width: 0;
+}
+.fileInput:focus-within .button {
+	outline: 2px solid var(--selection);
 }
 
 .button {
 	composes: button from "./ui/components/button.module.css";
-	font-family: system-ui;
 	display: inline-flex;
 	align-items: center;
 }
@@ -40,7 +45,7 @@
 }
 
 .credits {
-	width: 28rem;
+	composes: disclaimer;
 	color: var(--neutral);
 }
 

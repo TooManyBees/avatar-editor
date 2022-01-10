@@ -48,10 +48,13 @@ export default function BitsField(props: BitsFieldProps) {
 	const [open, setOpen] = useState(false);
 	const { name, map, value, className, style } = props;
 	const summary = map.filter(([bit]) => value.includes(bit)).map(([bit, name]) => name).join(", ") || "None";
+	const ariaLabel = open
+		? `Collapse ${name}, currently ${summary}`
+		: `Expand ${name}, currently ${summary}`;
 	return (
 		<div className={classnames(styles.details, className, open && styles.open)} style={style}>
 			<div className={styles.summary}>
-				<button className={styles.clickable} onClick={() => setOpen(!open)}>
+				<button className={styles.clickable} onClick={() => setOpen(!open)} aria-label={ariaLabel}>
 					<span className={styles.label}>{name}:</span>
 					<span className={styles.marker} />
 					<span className={styles.summary}>{summary}</span>

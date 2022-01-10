@@ -51,7 +51,7 @@
 .editor {
 	position: relative;
 }
-.editor:before, .editor:after {
+.guide {
 	display: block;
 	position: absolute;
 	top: 5px;
@@ -61,10 +61,4 @@
 	color: transparent;
 	border-right: 1px dashed red;
 	pointer-events: none;
-}
-.editor:before {
-	content: "........................................................................";
-}
-.editor:after {
-	content: "................................................................................";
 }

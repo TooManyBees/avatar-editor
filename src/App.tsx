@@ -54,7 +54,7 @@ function InitForm() {
 
 	return (
 		<div className={styles.setupWrapper}>
-			<img className={styles.logo} src={`${process.env.PUBLIC_URL}/legendora-desktop.png`} />
+			<img className={styles.logo} src={`${process.env.PUBLIC_URL}/legendora-desktop.png`} aria-hidden="true" />
 			<h1>Midgaard Royal Surveyor's Guild</h1>
 			<div className={styles.setupControls}>
 				<ReadAreaForm onRead={onRead} />
@@ -87,7 +87,7 @@ function App() {
 	const isLoaded = useAppSelector(state => state.ui.loaded);
 
 	return (
-		<div className={styles.app}>
+		<div className={styles.app} aria-live="polite">
 			{ isLoaded ?
 				<Tabs /> :
 				<InitForm />
