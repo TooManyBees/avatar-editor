@@ -54,8 +54,8 @@ export default function TextArea(props: TextFieldProps) {
 				<label><input type="checkbox" checked={preview} onChange={togglePreview} /> Preview colors</label>
 			</span>
 			<div className={styles.editor}>
-				<span className={styles.guide} aria-hidden="true">................................................................................</span>
-				<span className={styles.guide} aria-hidden="true">........................................................................</span>
+				<span className={styles.guide} aria-hidden="true">................................................................................<span className={styles.guideLabel}>80</span></span>
+				<span className={styles.guide} aria-hidden="true">........................................................................<span className={styles.guideLabel}>72</span></span>
 				{ preview
 					? <pre className={classnames(styles.colorPreview, props.colors && styles[props.colors])} style={{height, width}}>{elementsFromColorCodes(value)}</pre>
 					: <textarea id={textAreaId} rows={rows} cols={90} style={{height, width}} value={value} onChange={onChange} onBlur={onBlur} ref={textArea} />

@@ -62,3 +62,9 @@
 	border-right: 1px dashed red;
 	pointer-events: none;
 }
+.guideLabel {
+	position: absolute;
+	top: -20px;
+	color: var(--foreground);
+	transform: translateX(-50%);
+}
