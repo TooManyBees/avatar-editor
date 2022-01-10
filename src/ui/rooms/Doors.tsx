@@ -70,6 +70,7 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 					selectedId={door.toRoomId}
 					items={rooms}
 					onUpdate={toRoomId => dispatch(Actions.updatedDoor([roomId, {...door, toRoomId}]))}
+					nothing="Nowhere (door desc, but no connection)"
 				/>
 				<div className={styles.spacer}/>
 				<DeleteButton onHoverState={setDanger} onClick={() => Actions.removedDoor([roomId, door.id])}>Remove</DeleteButton>

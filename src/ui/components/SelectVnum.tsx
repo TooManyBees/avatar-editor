@@ -17,6 +17,7 @@ interface Props<T> {
 	items: readonly T[];
 	onUpdate: (id: string) => void;
 	disabled?: boolean;
+	nothing?: string;
 }
 
 export function SelectVnum<T extends HasVnum>(props: Props<T>) {
@@ -31,13 +32,15 @@ export function SelectVnum<T extends HasVnum>(props: Props<T>) {
 	let warning = false;
 	if (!selected && selectedId) {
 		if (isValidNewOption(selectedId)) {
+			const vnum = Number(selectedId);
 			selected = {
 				value: selectedId,
-				vnum: Number(selectedId),
+				vnum,
 				label: "(outside area?)",
 			};
+			if (props.nothing && vnum < 1) selected.label = props.nothing;
+			else warning = true;
 			options.unshift(selected);
-			warning = true;
 		}
 	}
 
