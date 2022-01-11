@@ -18,12 +18,22 @@ describe("parseSpecials", () => {
 		let specials = parseSpecials(line);
 		expect(specials[0].comment).toBe(" ferromancer sturmiet (slag herder)");
 	});
+
+	test("ignores the ending S line", () => {
+		let specialsSection = `
+M 11403 SPEC_CAST_WIZARD
+S
+`;
+		let specials = parseSpecials(specialsSection);
+		expect(specials).toHaveLength(1);
+	});
 });
 
 describe("corellateSpecials", () => {
 	const SPECIALS = `
 M 2222 SPEC_WARLORD 
 M 3333 SPEC_BREATH_FIRE
+S
 `;
 
 	test("assigns spec funs to mobiles", () => {

@@ -8,7 +8,7 @@ export function parseSpecials(section: string): SpecialU[] {
 	let lines = section.split(/\r?\n/).map(l => l.trim());
 
 	for (let line of lines) {
-		if (!line) continue;
+		if (!line || line.match(/^S\b/)) continue;
 		let [mobVnumString, specWord, comment] = parseNumTokens(line, 2);
 
 		let special: SpecialU = { id: newId(), mobVnum: 0, special: null, comment: comment || "", _error: {} };
