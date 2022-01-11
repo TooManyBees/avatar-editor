@@ -102,6 +102,10 @@ export default function ObjectValues(props: ObjectValuesComponentProps) {
 	}
 }
 
+function VnumWarning() {
+	return <span>⚠ <em>Any VNUMs in these fields will <u>not</u> auto-update if you modify the mob/object/room that they point to.</em></span>;
+}
+
 interface ObjectValuesProps {
 	id: string;
 	value0: string;
@@ -250,6 +254,7 @@ function TicketValues(props: ObjectValuesProps) {
 			<NumberField name="Mob Vnum" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<SelectField name="Ticket type" options={TICKET_TYPE} value={ticketType} onUpdate={n => dispatch(updatedValue3([id, n]))} />
 			{ticketFields}
+			<VnumWarning />
 		</ToolRow>
 	);
 }
@@ -391,6 +396,7 @@ function ContainerValues(props: ObjectValuesProps) {
 				<NumberField name="Key Vnum" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
 				<SelectField name="Trap" options={TRAP_TYPE} value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
 			</ToolRow>
+			<VnumWarning />
 			<BitsField name="Accessibility" map={CONTAINER_FLAGS} value={containerFlags} onUpdate={bits => dispatch(updatedValue1([id, bits2pipedValue(bits)]))} />
 		</>
 	);
@@ -501,6 +507,7 @@ function FountainValues(props: ObjectValuesProps) {
 			<SelectField name="Mode" options={FOUNTAIN_MODE} value={mode} onUpdate={toggleMode} />
 			{destinationVnum != null && <NumberField name="Transport destination" value={destinationVnum} onUpdate={n => dispatch(updatedValue3([id, n * -1]))} />}
 			{destinationVnum == null && <BitsField name="Flags" map={FOUNTAIN_FLAGS} value={fountainFlags} onUpdate={bits => dispatch(updatedValue3([id, bits2pipedValue(bits)]))} />}
+			<VnumWarning />
 		</ToolRow>
 	</>;
 }
@@ -518,6 +525,7 @@ function PortalValues(props: ObjectValuesProps) {
 		<ToolRow>
 			<NumberField name="Destination Vnum" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<SelectField name="Portal drain" options={PORTAL_DRAIN} value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
+			<VnumWarning />
 		</ToolRow>
 	);
 }
@@ -584,6 +592,7 @@ function MarkingValues(props: ObjectValuesProps) {
 				<NumberField name="Min level to see" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 				<NumberField name="Direction to affect" value={direction} onUpdate={n => dispatch(updatedValue1([id, markingDir2value(n, roomVnum)]))} />
 				<NumberField name="Room to affect (0 for this room)" value={roomVnum} onUpdate={n => dispatch(updatedValue1([id, markingDir2value(direction, n)]))} />
+				<VnumWarning />
 			</ToolRow>
 		</>
 	);
