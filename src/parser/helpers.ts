@@ -131,3 +131,27 @@ export function parseApply(typeString: string, valueString: string): { error: bo
 	apply.value = applyValue;
 	return { error, apply };
 }
+
+export function parseNumTokens(line: string, n: number): string[] {
+	let result: string[] = [];
+	let pos = line.search(/\s/);
+	if (pos < 0) return result;
+
+	for (let i = pos; i <= line.length && result.length < n; i++) {
+		if (line[i] === undefined || line[i].match(/\s/)) {
+			if (i - pos > 0) {
+				result.push(line.substring(pos, i));
+			}
+			pos = i;
+		}
+	}
+
+	let rest = line.substring(pos).trimRight();
+	if (rest.match(/\S/)) {
+		result.push(rest);
+	} else {
+		result.push("");
+	}
+
+	return result;
+}

@@ -1,6 +1,6 @@
 import { Mobile, newId } from "../app/models";
-import { SpecialU } from "../app/models/specials";
-import { parseNumber } from "./helpers";
+import { Special, SpecialU } from "../app/models/specials";
+import { parseNumber, parseNumTokens } from "./helpers";
 
 export function parseSpecials(section: string): SpecialU[] {
 	let specials: SpecialU[] = [];
@@ -9,24 +9,19 @@ export function parseSpecials(section: string): SpecialU[] {
 
 	for (let line of lines) {
 		if (!line) continue;
-		let [m, mobVnumString, specWord] = line.split(/\s+/);
-		if (!m || m.toUpperCase() !== "M") {
-			// FIXME: some sort of error marking here
-			continue;
-		}
+		let [mobVnumString, specWord, comment] = parseNumTokens(line, 2);
 
-		let special: SpecialU = { id: newId(), mobVnum: 0, special: "none", _error: {} };
+		let special: SpecialU = { id: newId(), mobVnum: 0, special: null, comment: comment || "", _error: {} };
 
 		let mobVnum = parseNumber(mobVnumString);
 		if (mobVnum != null) special.mobVnum = mobVnum;
 		else special._error.mobVnum = true;
 
-		if (specWord) special.special = specWord.toUpperCase();
-		else special._error.special = true;
+		specWord = specWord?.trimStart();
+		if (specWord && specWord.toUpperCase() !== "NONE") special.special = specWord.toUpperCase();
+		else if (!specWord) special._error.special = true;
 
-		if (special.mobVnum > 0 && special.special !== "none") {
-			specials.push(special);
-		}
+		specials.push(special);
 	}
 
 	return specials;
@@ -38,7 +33,8 @@ export function corellateSpecials(mobiles: Mobile[], specialsU: SpecialU[]): Spe
 		if (specialU.special === "none") continue;
 		let mobile = mobiles.find(m => m.vnum === specialU.mobVnum);
 		if (mobile) {
-			mobile.specFun = specialU.special;
+			let special = { special: specialU.special, comment: specialU.comment };
+			mobile.specFun = special;
 		} else {
 			orphans.push(specialU);
 		}

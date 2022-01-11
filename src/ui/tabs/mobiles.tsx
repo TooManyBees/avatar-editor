@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Actions from "../../app/store/mobiles";
 import * as ResetsActions from "../../app/store/resets";
 import { selectedMobileId } from "../../app/store/ui";
-import { Mobile, Shop, newId } from "../../app/models";
+import { Mobile, Shop, Special, newId } from "../../app/models";
 import {
 	ApplyFields,
 	KeywordField,
@@ -100,7 +100,7 @@ function MobileForm(props: Props) {
 	const updatedRace = (n: number | null) => dispatch(Actions.updatedRace([id, n]));
 	const updatedClass = (n: number | null) => dispatch(Actions.updatedClass([id, n]));
 	const updatedTeam = (n: number | null) => dispatch(Actions.updatedTeam([id, n]));
-	const updatedSpecial = (s: string | null) => dispatch(Actions.updatedSpecial([id, s]));
+	const updatedSpecial = (s: Special) => dispatch(Actions.updatedSpecial([id, s]));
 	const removedMobile = () => {
 		dispatch(Actions.removedMobile(id));
 		dispatch(ResetsActions.removedAllMobResets(id));

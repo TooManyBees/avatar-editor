@@ -5,7 +5,7 @@ export default function serializeSpecials(mobiles: Mobile[], orphans: SpecialU[]
 	let buffer = "";
 
 	for (let mob of mobiles) {
-		if (mob.specFun != null) buffer += `M ${mob.vnum} ${mob.specFun}\n`;
+		if (mob.specFun != null) buffer += `M ${mob.vnum} ${mob.specFun.special}${mob.specFun.comment}\n`;
 	}
 
 	for (let special of orphans) {

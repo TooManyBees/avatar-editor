@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Mobile, Kspawn, blankKspawn, blankMobile } from "../models/mobiles";
 import { Shop, ShopU, newShop } from "../models/shops";
-import { SpecialU } from "../models/specials";
+import { Special, SpecialU } from "../models/specials";
 import { Apply, blankApply, sortByVnum } from "../models/helpers";
 
 interface MobileState {
@@ -140,7 +140,7 @@ const mobileSlice = createSlice({
 				mobile.kspawn = kspawn;
 			}
 		},
-		updatedSpecial(state, action: PayloadAction<[string, string | null]>) {
+		updatedSpecial(state, action: PayloadAction<[string, Special]>) {
 			const [id, specFun] = action.payload;
 			const mobile = state.mobiles.find(m => m.id === id);
 			if (mobile) mobile.specFun = specFun;
@@ -149,7 +149,7 @@ const mobileSlice = createSlice({
 			const [mobId, special] = action.payload;
 			const mobile = state.mobiles.find(m => m.id === mobId);
 			if (mobile) {
-				mobile.specFun = special.special;
+				mobile.specFun = { special: special.special, comment: special.comment };
 				state.orphanedSpecials = state.orphanedSpecials.filter(s => s.id !== special.id);
 			} else {
 				const idx = state.orphanedSpecials.findIndex(s => s.id === special.id);

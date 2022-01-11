@@ -92,7 +92,7 @@ function OrphanedSpecials({ specials, mobiles }: { specials: SpecialU[], mobiles
 			{specials.map(special => <li key={special.id}>
 				<ToolRow>
 					<SelectVnum name="Mobile" selectedId={special.mobVnum.toString()} items={mobiles} onUpdate={mobId => onUpdate(mobId, special)} />
-					<SelectSpecial disabled value={special.special} onUpdate={NO_OP}/>
+					<SelectSpecial disabled value={special} onUpdate={NO_OP}/>
 				</ToolRow>
 			</li>)}
 		</SectionList>

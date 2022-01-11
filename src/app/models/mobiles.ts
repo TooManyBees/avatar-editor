@@ -1,4 +1,5 @@
 import { Shop } from "./shops";
+import { Special } from "./specials";
 import { newId, Apply, ErrorMarkers } from "./helpers";
 
 export interface MobileFields {
@@ -18,7 +19,7 @@ export interface MobileFields {
 	team: number | null;
 	kspawn?: Kspawn;
 	shop: Shop | null;
-	specFun: string | null;
+	specFun: Special;
 }
 
 export interface Kspawn {
@@ -59,6 +60,9 @@ export const blankMobile = (id?: string): Mobile => ({
 	applies: [],
 	team: null,
 	shop: null,
-	specFun: null,
+	specFun: {
+		special: null,
+		comment: "",
+	},
 	_error: {},
 });

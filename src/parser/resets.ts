@@ -19,7 +19,7 @@ import {
 	DoorResetU,
 	RandomExitResetU,
 } from "../app/models/resets";
-import { parseNumber } from "./helpers";
+import { parseNumber, parseNumTokens } from "./helpers";
 import { newId } from "../app/models/helpers";
 
 function newMobReset(): MobResetU {
@@ -200,7 +200,7 @@ export function corellateResets(uncorellatedResets: UncorellatedResets, mobiles:
 }
 
 export function parseMobReset(line: string): MobResetU {
-	let tokens = parseResetTokens(line, 4);
+	let tokens = parseNumTokens(line, 4);
 	let reset: MobResetU = {
 		mobVnum: 0,
 		roomVnum: 0,
@@ -230,7 +230,7 @@ export function parseMobReset(line: string): MobResetU {
 }
 
 export function parseInventoryReset(line: string): EquipmentResetU {
-	let tokens = parseResetTokens(line, 3);
+	let tokens = parseNumTokens(line, 3);
 	let reset: EquipmentResetU = {
 		objectVnum: 0,
 		limit: 0,
@@ -257,7 +257,7 @@ export function parseInventoryReset(line: string): EquipmentResetU {
 }
 
 export function parseEquipmentReset(line: string): EquipmentResetU {
-	let tokens = parseResetTokens(line, 4);
+	let tokens = parseNumTokens(line, 4);
 	let reset: EquipmentResetU = {
 		objectVnum: 0,
 		limit: 0,
@@ -288,7 +288,7 @@ export function parseEquipmentReset(line: string): EquipmentResetU {
 }
 
 export function parseObjectReset(line: string): ObjectResetU {
-	let tokens = parseResetTokens(line, 4);
+	let tokens = parseNumTokens(line, 4);
 	let reset: ObjectResetU = {
 		objectVnum: 0,
 		roomVnum: 0,
@@ -312,7 +312,7 @@ export function parseObjectReset(line: string): ObjectResetU {
 }
 
 export function parseInObjectReset(line: string): InObjectResetU {
-	let tokens = parseResetTokens(line, 4);
+	let tokens = parseNumTokens(line, 4);
 	let reset: InObjectResetU = {
 		objectVnum: 0,
 		containerVnum: 0,
@@ -336,7 +336,7 @@ export function parseInObjectReset(line: string): InObjectResetU {
 }
 
 export function parseDoorReset(line: string): DoorResetU {
-	let tokens = parseResetTokens(line, 4);
+	let tokens = parseNumTokens(line, 4);
 	let reset: DoorResetU = {
 		roomVnum: 0,
 		direction: 0,
@@ -375,7 +375,7 @@ export function parseDoorReset(line: string): DoorResetU {
 }
 
 export function parseRandomExitReset(line: string): RandomExitResetU {
-	let tokens = parseResetTokens(line, 3);
+	let tokens = parseNumTokens(line, 3);
 	let reset: RandomExitResetU = {
 		roomVnum: 0,
 		numExits: 0,
@@ -396,28 +396,4 @@ export function parseRandomExitReset(line: string): RandomExitResetU {
 	reset.comment = comment;
 
 	return reset;
-}
-
-function parseResetTokens(line: string, n: number): string[] {
-	let result: string[] = [];
-	let pos = line.search(/\s/);
-	if (pos < 0) return result;
-
-	for (let i = 0; i <= line.length && result.length < n; i++) {
-		if (line[i] === undefined || line[i].match(/\s/)) {
-			if (i - pos > 0) {
-				result.push(line.substring(pos, i));
-			}
-			pos = i;
-		}
-	}
-
-	let rest = line.substring(pos).trimRight();
-	if (rest.match(/\S/)) {
-		result.push(rest);
-	} else {
-		result.push("");
-	}
-
-	return result;
 }

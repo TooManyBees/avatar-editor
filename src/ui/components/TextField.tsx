@@ -8,6 +8,7 @@ interface Props {
 	onUpdate?: (s: string) => void;
 	inline?: boolean;
 	maxLength?: number;
+	wrapperStyle?: CSSProperties;
 	style?: CSSProperties;
 	disabled?: boolean;
 }
@@ -26,7 +27,7 @@ export default function TextField(props: Props) {
 	}
 
 	return (
-		<label className={classnames(styles.wrapper, inline && styles.inline, disabled && styles.disabled)}>
+		<label className={classnames(styles.wrapper, inline && styles.inline, disabled && styles.disabled)} style={props.wrapperStyle}>
 			{name && <span className={styles.label}>{name}:</span>}
 			<input
 				type="text"

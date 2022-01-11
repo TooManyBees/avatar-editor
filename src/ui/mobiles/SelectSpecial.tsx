@@ -1,14 +1,36 @@
 import React from "react";
-import { SelectField } from "../components";
+import { SelectField, TextField, ToolRow } from "../components";
+
+interface IsSpecial {
+	special: string | null;
+	comment: string;
+}
 
 interface Props {
-	value: string | null;
-	onUpdate: (s: string | null) => void;
+	value: IsSpecial;
+	onUpdate: (s: IsSpecial) => void;
 	disabled?: boolean;
 }
 
 export default function SelectSpecial({ value, onUpdate, disabled }: Props) {
-	return <SelectField name="Spec" inline disabled={disabled} value={value} options={SPEC_FUNS} onUpdate={onUpdate} />;
+	return (
+		<ToolRow>
+			<SelectField
+				name="Spec"
+				inline
+				disabled={disabled}
+				value={value.special}
+				options={SPEC_FUNS}
+				onUpdate={special => onUpdate({...value, special })}
+			/>
+			<TextField
+				name="Comment"
+				value={value.comment}
+				onUpdate={comment => onUpdate({...value, comment })}
+				wrapperStyle={{flexGrow: 1}}
+			/>
+		</ToolRow>
+	);
 }
 
 const SPEC_FUNS: { value: string | null, label: string }[] = [

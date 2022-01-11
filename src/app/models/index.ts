@@ -8,6 +8,7 @@ export type { Mobile, Kspawn } from "./mobiles";
 export type { Objekt } from "./objects";
 export type { Room, Door } from "./rooms";
 export type { Shop } from "./shops";
+export type { Special } from "./specials";
 export type {
 	Resets,
 	MobReset,
