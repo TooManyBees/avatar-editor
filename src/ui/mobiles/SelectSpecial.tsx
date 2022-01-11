@@ -25,6 +25,7 @@ export default function SelectSpecial({ value, onUpdate, disabled }: Props) {
 			/>
 			<TextField
 				name="Comment"
+				disabled={disabled || value.special == null}
 				value={value.comment}
 				onUpdate={comment => onUpdate({...value, comment })}
 				wrapperStyle={{flexGrow: 1}}
