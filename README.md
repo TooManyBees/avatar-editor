@@ -9,7 +9,6 @@ It's an area builder for Avatar MUD, written by Scevine. See https://www.toomany
 * display parse errors
 * keyword inputs have delete buttons on keywords, rather than listening for backspace
 * Undo/redo history????
-* specials comments!
 
 ## Known limitations
 
@@ -19,7 +18,6 @@ The Midgaard Royal Surveyors' Guild does not guarantee that it will parse and se
 * Ordering of resets is not preserved. They are always sorted by vnum, except for inv/eq resets which are grouped with their associated mob reset.
 * On multi-line strings (descriptions, edescs, door descs, adescs, kspawns) trailing whitespace will be trimmed a single newline.
 * You can make wonky areas by giving 2 mobiles/objects/rooms the same vnum, or giving 2 room doors the same direction. Just™ don't do that.
-* Specials comments get stripped (this will be fixed)
 
 ## Building
 
