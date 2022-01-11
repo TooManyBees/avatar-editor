@@ -15,15 +15,15 @@ A pale green light bursts from the sceptre's eye!~
 1 1|64 1
 0 0 -1 0
 3 0 0 0
-A 14 150
-A 19 2
-A 18 2
-Q 40
 E
 Eria sceptre silver glowing eye~
 The eye of the sceptre lights your way, and its piercing gaze
 punishes those who stand against you.
 ~
+A 14 150
+A 19 2
+A 18 2
+Q 40
 `;
 });
 
@@ -48,12 +48,12 @@ A tunic is here, made of silvery mail links and large silver plates.~
 9 64|1024 1|8
 0 0 0 0
 8 0 0 0
-A 17 -15
 E
 armor silvermail mail silver~
 Upon close inspection, the links of this gleaming mail seem to look
 more like scales.
 ~
+A 17 -15
 
 #17322
 sleeves silvermail mail silver~
@@ -63,13 +63,13 @@ Made of intricate silver links, a pair of armored sleeves lie here.~
 9 64|1024 1|256
 0 0 0 0
 8 0 0 0
-A 2 1
-A 17 -5
 E
 sleeves silvermail mail silver~
 The tiny links look almost like the scaly skin of a fish, or a
 Dragon.
 ~
+A 2 1
+A 17 -5
 
 #0
 `;
