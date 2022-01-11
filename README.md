@@ -4,11 +4,11 @@ It's an area builder for Avatar MUD, written by Scevine. See https://www.toomany
 
 ## Todo
 
-* portable build should not include source maps
-* room doors should be keyed by direction, not a list
-* display parse errors
-* keyword inputs have delete buttons on keywords, rather than listening for backspace
-* Undo/redo history????
+* \[*low priority*\] portable build should not include source maps
+* \[*low priority*\] room doors should be keyed by direction, not a list
+* \[*high priority*\] display parse errors
+* \[*low priority*\] keyword inputs have delete buttons on keywords, rather than listening for backspace
+* \[*medium priority*\] Undo/redo history????
 
 ## Known limitations
 
