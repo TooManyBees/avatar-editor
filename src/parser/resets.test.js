@@ -501,14 +501,15 @@ R 0 3334 4
 	test("marks error on in-object reset when object vnum doesn't exist", () => {
 		let resets = parseResets("P 0 9999 0 2224");
 		let orphaned = corellateResets(resets, MOBILES, OBJECTS, ROOMS);
+		expectSingleError(orphaned.inObject[0], "objectId");
 		expect(orphaned.inObject[0].objectId).toBe("9999");
-		expect(orphaned.inObject[0].orphan).toBe(true);
 	});
 
 	test("marks error on in-object reset when container vnum doesn't exist", () => {
 		let parsed = parseResets("P 0 2225 0 9999");
 		let resets = corellateResets(parsed, MOBILES, OBJECTS, ROOMS);
-		expectSingleError(resets.inObject[0], "containerId");
+		expect(resets.inObject[0].containerId).toBe("9999");
+		expect(resets.inObject[0].orphan).toBe(true);
 	});
 
 	test("links door resets to already-parsed room", () => {
