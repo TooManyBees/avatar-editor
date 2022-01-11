@@ -89,14 +89,13 @@ function TabsNav() {
 					Rooms
 				</span>
 			</button>
-			<button className={styles.tabsNavItem} disabled={!hasOrphans} data-selected={currentTab === "orphans"} onClick={() => dispatch(changedTab("orphans"))}>
+			<button title="Orphaned content that isn't linked to any vnums in the area" className={styles.tabsNavItem} disabled={!hasOrphans} data-selected={currentTab === "orphans"} onClick={() => dispatch(changedTab("orphans"))}>
 				<span className={styles.tabsNavText}>
 					<img className={styles.icon} src={orphansIcon} />
 					Orphans
 				</span>
 			</button>
-			<span style={{marginRight: "0.5rem"}} />
-			<Button ariaLabel="Write area file (do this often)" onClick={save}>Write .are</Button>
+			<Button ariaLabel="Write area file (do this often)" style={{marginLeft: "1rem"}} onClick={save}>Write .are</Button>
 			<span aria-hidden="true" style={{color: "var(--neutral)"}}>← (do this often!)</span>
 		</nav>
 	);
