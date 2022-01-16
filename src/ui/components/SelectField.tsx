@@ -20,11 +20,14 @@ export default function SelectField<V>(props: Props<V>) {
 
 	const select = (
 		<ReactSelect
-			options={options}
 			value={value}
+			options={options}
 			onChange={v => v && onUpdate(v.value)}
 			styles={selectStyles}
 			isDisabled={disabled}
+			blurInputOnSelect
+			captureMenuScroll
+			menuPlacement="auto"
 		/>
 	);
 
@@ -51,6 +54,6 @@ function minWidthStyles(options: { label: string }[]) {
 			alignItems: "baseline",
 			top: "2px",
 		}),
-		singleValue: ({ maxWidth, position, top, transform, ...rest}: CSSObjectWithLabel) => ({...rest}),
+		// singleValue: ({ maxWidth, position, top, transform, ...rest}: CSSObjectWithLabel) => ({...rest}),
 	};
 }

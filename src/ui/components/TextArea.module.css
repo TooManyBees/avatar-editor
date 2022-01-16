@@ -50,7 +50,7 @@
 
 .editor {
 	position: relative;
-	overflow-x: clip;
+	/*overflow-x: clip;*/
 }
 .guide {
 	display: block;

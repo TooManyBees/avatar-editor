@@ -104,6 +104,7 @@ function WearSelector({ selected, onUpdate }: { selected: number, onUpdate: (n: 
 			value={value}
 			onChange={v => onUpdate(v ? v.value : -1)}
 			styles={WEAR_OPTION_STYLES}
+			menuPlacement="auto"
 		/>
 	);
 }

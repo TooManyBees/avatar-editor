@@ -55,11 +55,12 @@ export function SelectVnum<T extends HasVnum>(props: Props<T>) {
 			formatCreateLabel={formatCreateLabel}
 			isValidNewOption={isValidNewOption}
 			onChange={v => props.onUpdate(v ? v.value : "")}
-			blurInputOnSelect
-			captureMenuScroll
 			styles={selectStyles}
 			theme={selectTheme}
 			isDisabled={disabled}
+			blurInputOnSelect
+			captureMenuScroll
+			menuPlacement="auto"
 		/>
 	);
 
