@@ -10,6 +10,7 @@
 
 .keyword {
 	font-weight: normal;
+	font-family: monospace;
 	background: hsl(0, 0%, 97%);
 	padding: 2px 4px;
 	border-radius: 2px;

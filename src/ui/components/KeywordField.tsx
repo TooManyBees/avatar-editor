@@ -8,18 +8,23 @@ interface Props {
 	onUpdate: (ks: string[]) => void;
 }
 
+function getKeyword(value: string): string | null {
+	let match =
+		value.match(/^'([^']+)'\s*$/) ||
+		value.match(/^"([^"]+)"\s*$/) ||
+		value.match(/^(?!'|")(\S+)\s/);
+	return match ? match[1] : null;
+}
+
 export default function KeywordField(props: Props) {
 	const [currentKeyword, setCurrentKeyword] = useState("");
 	const [holdingDownBackspace, setHoldingDownBackspace] = useState(false);
 
 	function onChange(e: ChangeEvent<HTMLInputElement>) {
 		const value = e.target.value;
-		let match =
-			value.match(/^'([^']+)'$/) ||
-			value.match(/^"([^"]+)"$/) ||
-			value.match(/^(?!'|")(\S+)\s/);
-		if (match) {
-			props.onUpdate([...props.value, match[1]]);
+		let keyword = getKeyword(value);
+		if (keyword) {
+			props.onUpdate([...props.value, keyword]);
 			setCurrentKeyword("");
 		} else {
 			setCurrentKeyword(value);
@@ -27,6 +32,14 @@ export default function KeywordField(props: Props) {
 	}
 
 	function onKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+		if (event.key === "Enter") {
+			let keyword = getKeyword(currentKeyword + " ");
+			if (keyword) {
+				event.preventDefault();
+				props.onUpdate([...props.value, keyword]);
+				setCurrentKeyword("");
+			}
+		}
 		if (event.key === "Backspace") {
 			if (!holdingDownBackspace && currentKeyword === "") {
 				props.onUpdate(props.value.slice(0, props.value.length - 1));
@@ -37,13 +50,6 @@ export default function KeywordField(props: Props) {
 
 	function onKeyUp() {
 		setHoldingDownBackspace(false);
-	}
-
-	function onBlur(event: FocusEvent<HTMLInputElement>) {
-		if (event.target.value) {
-			props.onUpdate([...props.value, event.target.value]);
-			setCurrentKeyword("");
-		}
 	}
 
 	return (
@@ -59,7 +65,6 @@ export default function KeywordField(props: Props) {
 				onChange={onChange}
 				onKeyDown={onKeyDown}
 				onKeyUp={onKeyUp}
-				onBlur={onBlur}
 			/>
 		</label>
 	);
