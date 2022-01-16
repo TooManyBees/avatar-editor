@@ -5,3 +5,9 @@
 .container.open .children {
 	display: initial;
 }
+
+.header {
+	display: flex;
+	align-items: baseline;
+	column-gap: 0.25rem;
+}

@@ -26,7 +26,7 @@ export function BitsFieldN(props: BitsFieldNProps) {
 	return (
 		<div className={styles.bitsField}>
 			{map.map(([bit, desc, help, isEnabled]) => (
-				<label key={bit} title={help}><input
+				<label key={bit} title={help} data-checkbox><input
 					type="checkbox"
 					value={bit}
 					checked={value.includes(bit)}

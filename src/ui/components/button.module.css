@@ -20,7 +20,8 @@
 .link {
 	height: unset;
 	border: 0;
-	padding: 0;
+	padding: 2px;
+	margin: -2px;
 	background-color: transparent;
 	text-decoration: underline;
 	cursor: pointer;

@@ -51,7 +51,7 @@ export default function TextArea(props: TextFieldProps) {
 		<div className={styles.textArea}>
 			<span className={styles.description}>
 				<label htmlFor={textAreaId}>{name}:</label>
-				<label><input type="checkbox" checked={preview} onChange={togglePreview} /> Preview colors</label>
+				<label data-checkbox><input type="checkbox" checked={preview} onChange={togglePreview} /> Preview colors</label>
 			</span>
 			<div className={styles.editor}>
 				<span className={styles.guide} aria-hidden="true">................................................................................<span className={styles.guideLabel}>80</span></span>

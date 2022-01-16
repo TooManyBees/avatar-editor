@@ -33,8 +33,10 @@ export default function ToggleContainer(props: Props) {
 	return (
 		<div className={className}>
 			<div className={sharedStyles.header}>
-				<input id={checkboxId} type="checkbox" checked={props.opened} onChange={onChange} aria-expanded={props.opened} aria-controls={checkboxId} />
-				<label htmlFor={checkboxId}><h2 className={styles.label}>{props.label}</h2></label>
+				<label className={styles.header} data-checkbox>
+					<input type="checkbox" checked={props.opened} onChange={onChange} aria-expanded={props.opened} aria-controls={checkboxId} />
+					<h2 className={styles.label}>{props.label}</h2>
+				</label>
 			</div>
 			<div className={styles.children}>{props.children}</div>
 		</div>

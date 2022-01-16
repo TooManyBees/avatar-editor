@@ -46,8 +46,17 @@ h1, h2, h3, h4, h5, h6, strong {
   box-sizing: border-box;
 }
 
-input:focus, button:focus, a:focus {
+input:focus, label[data-checkbox]:focus-within, button:focus, a:focus {
   outline: 2px solid var(--selection);
+  border-radius: 2px;
+}
+label[data-checkbox] input[type="checkbox"] {
+  outline: none;
+}
+label[data-checkbox] {
+  padding-left: 2px;
+  padding-right: 2px;
+  margin-left: -2px;
 }
 
 html {
