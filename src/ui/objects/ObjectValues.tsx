@@ -118,10 +118,10 @@ function LightValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value2 } = props;
 	return (
-		<ToolRow>
+		<>
 			<NumberField name="Duration" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
-			<em>0: infinite but provides no light; -1: infinite, does provide light.</em>
-		</ToolRow>
+			<em style={{width: "100%"}}>0: infinite but provides no light; -1: infinite, does provide light.</em>
+		</>
 	);
 }
 
@@ -129,12 +129,12 @@ function ConsumableValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value0, value1, value2, value3 } = props;
 	return (
-		<ToolRow>
+		<>
 			<NumberField name="Spell Level" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<NumberField name="Spell Slot #" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
 			<NumberField name="Spell Slot #" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
 			<NumberField name="Spell Slot #" value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
-		</ToolRow>
+		</>
 	);
 }
 
@@ -142,12 +142,12 @@ function BrandishValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value0, value1, value2, value3 } = props;
 	return (
-		<ToolRow>
+		<>
 			<NumberField name="Spell Level" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<NumberField name="Max Charges" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
 			<NumberField name="Current Charges" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
 			<NumberField name="Spell Slot #" value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
-		</ToolRow>
+		</>
 	);
 }
 
@@ -201,10 +201,10 @@ function WeaponValues(props: ObjectValuesProps) {
 	const { id, value3 } = props;
 	const [weaponType, damageType] = value2wtypes(value3);
 	return (
-		<ToolRow>
+		<>
 			<SelectField name="Weapon Type" options={WEAPON_TYPE} value={weaponType} onUpdate={n => dispatch(updatedValue3([id, wtypes2value(n, damageType)]))} />
 			<SelectField name="Damage Type" options={WEAPON_DAMAGE} value={damageType} onUpdate={n => dispatch(updatedValue3([id, wtypes2value(weaponType, n)]))} />
-		</ToolRow>
+		</>
 	);
 }
 
@@ -250,12 +250,12 @@ function TicketValues(props: ObjectValuesProps) {
 	}
 
 	return (
-		<ToolRow>
+		<>
 			<NumberField name="Mob Vnum" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<SelectField name="Ticket type" options={TICKET_TYPE} value={ticketType} onUpdate={n => dispatch(updatedValue3([id, n]))} />
 			{ticketFields}
 			<VnumWarning />
-		</ToolRow>
+		</>
 	);
 }
 
@@ -282,26 +282,24 @@ function RogueToolValues(props: ObjectValuesProps) {
 	const { id, value0, value1, value2 } = props;
 	const usageBits = value2bits(value0);
 	return (
-		<div>
-			<BitsField name="Usage" map={ROGUE_TOOL_USAGE} value={usageBits} onUpdate={bits => dispatch(updatedValue0([id, bits2pipedValue(bits)]))} />
-			<ToolRow>
-				<NumberField name="Number of uses" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
-				<NumberField name="Quality" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
-			</ToolRow>
-		</div>
+		<>
+			<NumberField name="Number of uses" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
+			<NumberField name="Quality" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
+			<BitsField style={{width: "100%"}} name="Rogue tool usage" map={ROGUE_TOOL_USAGE} value={usageBits} onUpdate={bits => dispatch(updatedValue0([id, bits2pipedValue(bits)]))} />
+		</>
 	);
 }
 
 const CHARGE_SHIELD: { value: number, label: string }[] = [
-	{ value: 0, label: "none" },
-	{ value: 1, label: "venom (poison)" },
-	{ value: 2, label: "flash (blindness)" },
-	{ value: 3, label: "jolt" },
-	{ value: 4, label: "frostbite" },
-	{ value: 5, label: "flametongue" },
-	{ value: 6, label: "retribution (imm only)" },
-	{ value: 7, label: "pulse (lord+)" },
-	{ value: 8, label: "arc lightning" },
+	{ value: 0, label: "None" },
+	{ value: 1, label: "Venom (poison)" },
+	{ value: 2, label: "Flash (blindness)" },
+	{ value: 3, label: "Jolt" },
+	{ value: 4, label: "Frostbite" },
+	{ value: 5, label: "Flametongue" },
+	{ value: 6, label: "Retribution (Imm only)" },
+	{ value: 7, label: "Pulse (lord+)" },
+	{ value: 8, label: "Arc lightning" },
 ];
 
 const ARCHERY_MODS: [number, string, string][] = [
@@ -321,10 +319,10 @@ function ArmorValues(props: ObjectValuesProps) {
 	const { id, value1, value2, value3 } = props;
 	const archeryMods = value2bits(value3);
 	return (
-		<ToolRow>
+		<>
 			<SelectField name="Charge shield type" options={CHARGE_SHIELD} value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
-			<BitsField name="Archery modifiers" map={ARCHERY_MODS} value={archeryMods} onUpdate={bits => dispatch(updatedValue3([id, bits2pipedValue(bits)]))} />
-		</ToolRow>
+			<BitsField style={{width: "100%"}} name="Archery modifiers" map={ARCHERY_MODS} value={archeryMods} onUpdate={bits => dispatch(updatedValue3([id, bits2pipedValue(bits)]))} />
+		</>
 	);
 }
 
@@ -347,10 +345,10 @@ function PoisonedWeaponValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value0, value3 } = props;
 	return (
-		<ToolRow>
+		<>
 			<SelectField name="Poison" options={POISONS} value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<NumberField name="Number of doses" value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
-		</ToolRow>
+		</>
 	);
 }
 
@@ -358,15 +356,15 @@ function PoisonValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value0, value3 } = props;
 	return (
-		<ToolRow>
+		<>
 			<SelectField name="Poison" options={POISONS} value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<NumberField name="Number of doses" value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
-		</ToolRow>
+		</>
 	);
 }
 
 const CONTAINER_FLAGS: [number, string, string][] = [
-	[1, "Openable/closeable", ""],
+	[1, "Openable, closeable", ""],
 	[2, "Pickproof", ""],
 	[4, "Closed", ""],
 	[8, "Locked", ""],
@@ -391,13 +389,11 @@ function ContainerValues(props: ObjectValuesProps) {
 	const containerFlags = value2bits(value1);
 	return (
 		<>
-			<ToolRow>
-				<NumberField name="Weight Capacity" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
-				<NumberField name="Key Vnum" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
-				<SelectField name="Trap" options={TRAP_TYPE} value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
-			</ToolRow>
+			<NumberField name="Weight Capacity" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
+			<NumberField name="Key Vnum" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
+			<SelectField name="Trap" options={TRAP_TYPE} value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
+			<BitsField style={{width: "100%"}} name="Container accessibility" map={CONTAINER_FLAGS} value={containerFlags} onUpdate={bits => dispatch(updatedValue1([id, bits2pipedValue(bits)]))} />
 			<VnumWarning />
-			<BitsField name="Accessibility" map={CONTAINER_FLAGS} value={containerFlags} onUpdate={bits => dispatch(updatedValue1([id, bits2pipedValue(bits)]))} />
 		</>
 	);
 }
@@ -429,12 +425,12 @@ function DrinkContainerValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value0, value1, value2, value3 } = props;
 	return (
-		<ToolRow>
+		<>
 			<NumberField name="Capacity" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<NumberField name="Current quantity" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
 			<SelectField name="Drink" options={DRINKS} value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
 			<CheckBox name="Poisoned" value={Number(value3)} onUpdate={checked => dispatch(updatedValue3([id, checked ? "1" : "0"]))} />
-		</ToolRow>
+		</>
 	);
 }
 
@@ -442,11 +438,11 @@ function KeyValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value0, value1, value2 } = props;
 	return (
-		<ToolRow>
+		<>
 			<NumberField name="Uses" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<NumberField name="Failure rate" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
 			<CheckBox name="Forgery" value={Number(value2)} onUpdate={checked => dispatch(updatedValue2([id, checked ? "1" : "0"]))} />
-		</ToolRow>
+		</>
 	);
 }
 
@@ -454,19 +450,19 @@ function FoodValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value0, value3 } = props;
 	return (
-		<ToolRow>
+		<>
 			<NumberField name="Nutritive value" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<CheckBox name="Poisoned" value={Number(value3)} onUpdate={checked => dispatch(updatedValue3([id, checked ? "1" : "0"]))} />
-		</ToolRow>
+		</>
 	);
 }
 
 function MoneyValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	return (
-		<ToolRow>
+		<>
 			<NumberField name="Value" value={Number(props.value0)} onUpdate={n => dispatch(updatedValue0([props.id, n]))} />
-		</ToolRow>
+		</>
 	);
 }
 
@@ -498,16 +494,18 @@ function FountainValues(props: ObjectValuesProps) {
 	}
 
 	return <>
-		<ToolRow>
-			<NumberField name='"Good" spell slot #' value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
-			<NumberField name='"Bad" spell slot #' value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
-			<SelectField name="Drink" options={DRINKS} value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
-		</ToolRow>
-		<ToolRow>
-			<SelectField name="Mode" options={FOUNTAIN_MODE} value={mode} onUpdate={toggleMode} />
-			{destinationVnum != null && <NumberField name="Transport destination" value={destinationVnum} onUpdate={n => dispatch(updatedValue3([id, n * -1]))} />}
-			{destinationVnum == null && <BitsField name="Flags" map={FOUNTAIN_FLAGS} value={fountainFlags} onUpdate={bits => dispatch(updatedValue3([id, bits2pipedValue(bits)]))} />}
-			<VnumWarning />
+		<NumberField name='"Good" spell slot #' value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
+		<NumberField name='"Bad" spell slot #' value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
+		<SelectField name="Drink" options={DRINKS} value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
+
+		<ToolRow style={{width: "100%"}}>
+			<SelectField name="Fountain mode" options={FOUNTAIN_MODE} value={mode} onUpdate={toggleMode} />
+			{destinationVnum != null
+				? <>
+					<NumberField name="Transport destination" value={destinationVnum} onUpdate={n => dispatch(updatedValue3([id, n * -1]))} />
+					<VnumWarning />
+				</>
+				: <BitsField name="Flags" map={FOUNTAIN_FLAGS} value={fountainFlags} onUpdate={bits => dispatch(updatedValue3([id, bits2pipedValue(bits)]))} />}
 		</ToolRow>
 	</>;
 }
@@ -522,11 +520,11 @@ function PortalValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value0, value1 } = props;
 	return (
-		<ToolRow>
+		<>
 			<NumberField name="Destination Vnum" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<SelectField name="Portal drain" options={PORTAL_DRAIN} value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
 			<VnumWarning />
-		</ToolRow>
+		</>
 	);
 }
 
@@ -586,14 +584,12 @@ function MarkingValues(props: ObjectValuesProps) {
 	const doorEffects = value2bits(value3);
 	return (
 		<>
-			<BitsField name="Visibility" map={MARKING_VISIBILITY} value={visibility} onUpdate={bits => dispatch(updatedValue2([id, bits2pipedValue(bits)]))} />
-			<BitsField name="Door effects" map={MARKING_DOOR_FLAGS} value={doorEffects} onUpdate={bits => dispatch(updatedValue3([id, bits2pipedValue(bits)]))} />
-			<ToolRow>
-				<NumberField name="Min level to see" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
-				<NumberField name="Direction to affect" value={direction} onUpdate={n => dispatch(updatedValue1([id, markingDir2value(n, roomVnum)]))} />
-				<NumberField name="Room to affect (0 for this room)" value={roomVnum} onUpdate={n => dispatch(updatedValue1([id, markingDir2value(direction, n)]))} />
-				<VnumWarning />
-			</ToolRow>
+			<NumberField name="Min level to see" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
+			<NumberField name="Direction to affect" value={direction} onUpdate={n => dispatch(updatedValue1([id, markingDir2value(n, roomVnum)]))} />
+			<NumberField name="Room to affect (0 for this room)" value={roomVnum} onUpdate={n => dispatch(updatedValue1([id, markingDir2value(direction, n)]))} />
+			<VnumWarning />
+			<BitsField style={{width: "100%"}} name="Visibility" map={MARKING_VISIBILITY} value={visibility} onUpdate={bits => dispatch(updatedValue2([id, bits2pipedValue(bits)]))} />
+			<BitsField style={{width: "100%"}} name="Door effects" map={MARKING_DOOR_FLAGS} value={doorEffects} onUpdate={bits => dispatch(updatedValue3([id, bits2pipedValue(bits)]))} />
 		</>
 	);
 }
@@ -614,9 +610,9 @@ function BowValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value0 } = props;
 	return (
-		<ToolRow>
+		<>
 			<SelectField name="Bow type" options={BOW_TYPE} value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
-		</ToolRow>
+		</>
 	);
 }
 
@@ -664,13 +660,11 @@ function ArrowValues(props: ObjectValuesProps) {
 	const ammoMessage = AMMO_TYPE.find((ammo) => ammo.value === ammoType);
 	const isPoisonArrow = warhead === 7 || warhead === 17;
 	return <>
-		<ToolRow>
-			<SelectField name="Warhead" options={ARROW_TYPE} value={warhead} onUpdate={n => dispatch(updatedValue0([id, n]))} />
-			<SelectField name="Ammo type" options={AMMO_TYPE} value={ammoType} onUpdate={n => dispatch(updatedValue1([id, n]))} />
-			<SelectField name="Poison" options={POISONS} value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} disabled={!isPoisonArrow} />
-			<NumberField name="Number of arrows" value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
-		</ToolRow>
-		<em>
+		<SelectField name="Warhead" options={ARROW_TYPE} value={warhead} onUpdate={n => dispatch(updatedValue0([id, n]))} />
+		<SelectField name="Ammo type" options={AMMO_TYPE} value={ammoType} onUpdate={n => dispatch(updatedValue1([id, n]))} />
+		<SelectField name="Poison" options={POISONS} value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} disabled={!isPoisonArrow} />
+		<NumberField name="Number of arrows" value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
+		<em style={{width: "100%"}}>
 			{ammoMessage && ammoMessage.desc} {warheadMessage && warheadMessage.desc}
 		</em>
 	</>;
@@ -704,12 +698,10 @@ function ThrowingWeaponValues(props: ObjectValuesProps) {
 	const throwingFlags = value2bits(value0);
 	return (
 		<>
-			<ToolRow>
-				<NumberField name="Min damage" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
-				<NumberField name="Max damage" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
-				<SelectField name="Poison" options={THROWING_WEAPON_POISON} value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
-			</ToolRow>
-			<BitsField name="Weapon effects" map={THROWING_WEAPON_FLAGS} value={throwingFlags} onUpdate={bits => dispatch(updatedValue0([id, bits2pipedValue(bits)]))} />
+			<NumberField name="Min damage" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
+			<NumberField name="Max damage" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
+			<SelectField name="Poison" options={THROWING_WEAPON_POISON} value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
+			<BitsField style={{width: "100%"}} name="Weapon effects" map={THROWING_WEAPON_FLAGS} value={throwingFlags} onUpdate={bits => dispatch(updatedValue0([id, bits2pipedValue(bits)]))} />
 		</>
 	);
 }
@@ -718,11 +710,11 @@ function SpellbookValues(props: ObjectValuesProps) {
 	const dispatch = useAppDispatch();
 	const { id, value0, value1, value2, value3 } = props;
 	return (
-		<ToolRow>
+		<>
 			<NumberField name="Spell SN" value={Number(value0)} onUpdate={n => dispatch(updatedValue0([id, n]))} />
 			<NumberField name="Min level to read" value={Number(value1)} onUpdate={n => dispatch(updatedValue1([id, n]))} />
 			<NumberField name="% gain" value={Number(value2)} onUpdate={n => dispatch(updatedValue2([id, n]))} />
 			<NumberField name="Max % teachable" value={Number(value3)} onUpdate={n => dispatch(updatedValue3([id, n]))} />
-		</ToolRow>
+		</>
 	);
 }

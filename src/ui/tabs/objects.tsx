@@ -26,7 +26,8 @@ import {
 } from "../objects";
 import { TabsContents } from "./tabs-layout";
 import sharedStyles from "../components/shared.module.css";
-import styles from "./tabs-layout.module.css";
+import tabStyles from "./tabs-layout.module.css";
+import styles from "./objects.module.css";
 
 export default function ObjectsTab() {
 	const dispatch = useAppDispatch();
@@ -63,7 +64,7 @@ interface Props {
 
 function BlankWorkspace({ onAdd }: { onAdd: () => void }) {
 	return (
-		<div className={styles.blankWorkspace}>
+		<div className={tabStyles.blankWorkspace}>
 			<div>
 				<p>Select an object from the side bar →</p>
 				or <Button onClick={onAdd}>Create a new object</Button>
@@ -110,7 +111,7 @@ function ObjectForm({ object, kbInteraction }: Props) {
 	const removedObject = () => dispatch(Actions.removedObject(id));
 
 	return (
-		<div className={classnames(styles.tabDangerTarget, danger && sharedStyles.dangerTarget)}>
+		<div className={classnames(tabStyles.tabDangerTarget, danger && sharedStyles.dangerTarget)}>
 			<ToolRow style={{justifyContent: "space-between"}}>
 				<NumberField name="VNUM" inline value={object.vnum} min={0} onUpdate={updatedVnum} inputRef={vnumField} />
 				<DeleteButton onHoverState={setDanger} onClick={removedObject}>Delete object</DeleteButton>
@@ -123,10 +124,10 @@ function ObjectForm({ object, kbInteraction }: Props) {
 				<TextField name="Long desc" value={object.longDesc} onUpdate={updatedLongDesc} />
 			</Row>
 			<TextArea name="Action desc" value={object.actionDesc} onUpdate={updatedActionDesc} />
-			<ToolRow>
+			<fieldset className={styles.itemType}>
 				<SelectField name="Type" value={object.itemType} options={ITEM_TYPE} defaultValue={ITEM_TYPE[0]} onUpdate={updatedItemType} />
-			</ToolRow>
-			<ObjectValues id={id} type={object.itemType} value0={object.value0} value1={object.value1} value2={object.value2} value3={object.value3} />
+				<ObjectValues id={id} type={object.itemType} value0={object.value0} value1={object.value1} value2={object.value2} value3={object.value3} />
+			</fieldset>
 			<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} onUpdate={updatedExtraFlags} />
 			<ToolRow>
 				<SelectField name="Wear flags" value={wearFlags} options={WEAR_FLAGS} defaultValue={WEAR_FLAGS[0]} onUpdate={updatedWearFlags} />

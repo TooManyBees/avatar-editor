@@ -12,8 +12,8 @@
 .keyword {
 	font-weight: normal;
 	font-family: monospace;
-	background: hsl(0, 0%, 97%);
+	background: var(--neutral-hint);
 	padding: 2px 4px;
 	border-radius: 2px;
-	border: 1px dashed hsl(0, 0%, 80%);
+	border: 1px dashed var(--neutral-dim);
 }

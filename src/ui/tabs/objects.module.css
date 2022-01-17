@@ -1,0 +1,14 @@
+.itemType {
+	display: flex;
+	flex-wrap: wrap;
+	border: 1px dashed transparent;
+	padding: 0.5rem;
+	margin: 0 -0.5rem;
+	gap: 1rem;
+	border-radius: 4px;
+}
+
+.itemType:hover, .itemType:focus-within {
+	border-color:  var(--neutral-dim);
+	background-color: var(--neutral-hint);
+}
