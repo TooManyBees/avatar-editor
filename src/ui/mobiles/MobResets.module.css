@@ -1,3 +1,7 @@
+.reset {
+	position: relative;
+}
+
 .eqList {
 	margin-bottom: -0.5rem;
 }
@@ -6,6 +10,7 @@
 	border: 1px solid transparent;
 	margin: 0 -0.5rem;
 	padding: 0.5rem;
+	position: relative;
 }
 
 .separator {
@@ -14,8 +19,4 @@
 }
 .separator:last-child {
 	display: none;
-}
-
-.spacer {
-	flex-grow: 1;
 }

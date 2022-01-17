@@ -62,7 +62,7 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 	}
 
 	return <>
-		<li className={classnames(danger && sharedStyles.dangerTarget)}>
+		<li className={classnames(styles.door, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
 				<SelectDirection value={door.direction} onUpdate={direction => dispatch(Actions.updatedDoor([roomId, {...door, direction}]))} />
 				to
@@ -72,8 +72,6 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 					onUpdate={toRoomId => dispatch(Actions.updatedDoor([roomId, {...door, toRoomId}]))}
 					nothing="Nowhere (door desc, but no connection)"
 				/>
-				<div className={styles.spacer}/>
-				<DeleteButton onHoverState={setDanger} onClick={() => Actions.removedDoor([roomId, door.id])}>Remove</DeleteButton>
 			</ToolRow>
 			<ToolRow>
 				<SelectField name="Door" value={door.locks} options={LOCKS} onUpdate={locks => dispatch(Actions.updatedDoor([roomId, {...door, locks}]))} />
@@ -96,6 +94,7 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 				<KeywordField name="Keywords" value={door.keywords} onUpdate={keywords => dispatch(Actions.updatedDoor([roomId, {...door, keywords}]))} />
 			</ToolRow>
 			<TextArea name="Description" value={door.description} colors="door" onUpdate={description => dispatch(Actions.updatedDoor([roomId, {...door, description}]))} />
+			<DeleteButton absolute onHoverState={setDanger} onClick={() => Actions.removedDoor([roomId, door.id])}>Remove</DeleteButton>
 		</li>
 		<hr className={styles.separator} />
 	</>;

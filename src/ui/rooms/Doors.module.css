@@ -1,5 +1,5 @@
-.spacer {
-	flex-grow: 1;
+.door {
+	position: relative;
 }
 
 .separator {

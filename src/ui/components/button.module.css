@@ -35,6 +35,11 @@
 .deleteWrapper {
 	position: relative;
 }
+.deleteWrapper.absolute {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+}
 .prompting .confirmation {
 	visibility: visible;
 	pointer-events: initial;
@@ -65,7 +70,6 @@
 .confirmation .button.danger {
 	color: var(--danger);
 }
-
 
 .add {
 	white-space: nowrap;

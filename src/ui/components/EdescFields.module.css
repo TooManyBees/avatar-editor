@@ -7,14 +7,11 @@
 	border: 1px solid transparent;
 	margin: 0 -0.5rem;
 	padding: 0.5rem;
+	position: relative;
 }
 
 .edesc textarea {
 	margin-bottom: 0 !important;
-}
-
-.spacer {
-	flex-grow: 1;
 }
 
 .separator {

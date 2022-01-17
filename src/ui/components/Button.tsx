@@ -44,7 +44,11 @@ export function LinkButton(props: Props) {
 	);
 }
 
-export function DeleteButton(props: Props) {
+interface DeleteButtonProps extends Props {
+	absolute?: boolean;
+}
+
+export function DeleteButton(props: DeleteButtonProps) {
 	const [prompt, setPrompt] = useState<boolean | null>(null);
 	const initialButton = useRef<HTMLButtonElement>(null);
 	const deleteButton = useRef<HTMLButtonElement>(null);
@@ -55,7 +59,7 @@ export function DeleteButton(props: Props) {
 		else if (prompt == false) initialButton.current?.focus();
 	}, [prompt])
 
-	const { onClick, onHoverState, ...rest } = props;
+	const { onClick, onHoverState, absolute, ...rest } = props;
 
 	function onBlur({ relatedTarget }: React.FocusEvent<HTMLSpanElement>) {
 		if (prompt == null) return;
@@ -65,7 +69,7 @@ export function DeleteButton(props: Props) {
 	}
 
 	return (
-		<span className={classnames(styles.deleteWrapper, prompt && styles.prompting)} onBlur={onBlur}>
+		<span className={classnames(styles.deleteWrapper, prompt && styles.prompting, absolute && styles.absolute)} onBlur={onBlur}>
 			<LinkButton
 				{...rest}
 				onClick={() => setPrompt(true)}

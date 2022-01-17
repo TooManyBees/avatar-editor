@@ -45,10 +45,9 @@ function EdescItem({ id, edesc, updatedEdesc, removedEdesc }: EdescItemProps) {
 		<li className={classnames(styles.edesc, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
 				<KeywordField name="Keywords" value={edesc.keywords} onUpdate={keywords => dispatch(updatedEdesc([id, {...edesc, keywords}]))} />
-				<div className={styles.spacer} />
-				<DeleteButton onHoverState={setDanger} onClick={() => dispatch(removedEdesc([id, edesc.id]))}>Remove extra desc</DeleteButton>
 			</ToolRow>
 			<TextArea name="Description" value={edesc.body} onUpdate={body => dispatch(updatedEdesc([id, {...edesc, body}]))} />
+			<DeleteButton onHoverState={setDanger} absolute onClick={() => dispatch(removedEdesc([id, edesc.id]))}>Remove extra desc</DeleteButton>
 		</li>
 	);
 }
