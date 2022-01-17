@@ -62,7 +62,6 @@ export function SelectVnum<T extends HasVnum>(props: Props<T>) {
 			styles={selectStyles}
 			theme={selectTheme}
 			isDisabled={disabled}
-			blurInputOnSelect
 			captureMenuScroll
 			menuPlacement="auto"
 		/>

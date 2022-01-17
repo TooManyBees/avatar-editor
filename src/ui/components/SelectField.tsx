@@ -25,7 +25,6 @@ export default function SelectField<V>(props: Props<V>) {
 			onChange={v => v && onUpdate(v.value)}
 			styles={selectStyles}
 			isDisabled={disabled}
-			blurInputOnSelect
 			captureMenuScroll
 			menuPlacement="auto"
 		/>
