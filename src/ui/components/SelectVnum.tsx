@@ -15,17 +15,19 @@ interface Props<T> {
 	name?: string;
 	selectedId: string | null;
 	items: readonly T[];
+	isItemDisabled?: (t: T) => boolean;
 	onUpdate: (id: string) => void;
 	disabled?: boolean;
 	nothing?: string;
 }
 
 export function SelectVnum<T extends HasVnum>(props: Props<T>) {
-	const { items, selectedId, disabled, name } = props;
+	const { items, isItemDisabled, selectedId, disabled, name } = props;
 	const options = props.items.map(item => ({
 		value: item.id,
 		vnum: item.vnum,
 		label: item.name || item.shortDesc || "",
+		disabled: isItemDisabled ? isItemDisabled(item) : false,
 	}));
 
 	let selected = options.find(item => item.value === selectedId);
@@ -37,6 +39,7 @@ export function SelectVnum<T extends HasVnum>(props: Props<T>) {
 				value: selectedId,
 				vnum,
 				label: "(outside area?)",
+				disabled: false,
 			};
 			if (props.nothing && vnum < 1) selected.label = props.nothing;
 			else warning = true;
@@ -51,6 +54,7 @@ export function SelectVnum<T extends HasVnum>(props: Props<T>) {
 		<ReactSelect
 			value={selected}
 			options={options}
+			isOptionDisabled={o => o.disabled}
 			formatOptionLabel={formatOptionLabel}
 			formatCreateLabel={formatCreateLabel}
 			isValidNewOption={isValidNewOption}
@@ -76,6 +80,7 @@ type Option = {
 	value: string;
 	vnum: number | null;
 	label: string;
+	disabled: boolean;
 };
 
 function formatOptionLabel(data: Option): React.ReactNode {
@@ -103,13 +108,21 @@ function minWidthStyles(options: Option[], warning: boolean) {
 			minWidth: `${Math.ceil(minWidth)}px`,
 			alignItems: "baseline",
 			backgroundColor: warning ? "var(--warning-faint)" : "var(--background)",
+			// borderColor: warning ? "var(--warning-dim)" : provided.borderColor,
 		}),
 		valueContainer: (provided: CSSObjectWithLabel) => ({
 			...provided,
 			alignItems: "baseline",
 			top: "2px",
 		}),
-		// singleValue: ({ maxWidth, position, top, transform, ...rest}: CSSObjectWithLabel) => ({...rest}),
+		// indicatorSeparator: (provided: CSSObjectWithLabel) => ({
+		// 	...provided,
+		// 	backgroundColor: warning ? "var(--warning-dim)" : provided.backgroundColor,
+		// }),
+		// indicatorsContainer: (provided: CSSObjectWithLabel) => ({
+		// 	...provided,
+		// 	color: warning ? "var(--warning-dim)" : provided.color,
+		// }),
 	};
 }
 
@@ -118,10 +131,10 @@ function warningTheme(warning: boolean) {
 		...theme,
 		colors: {
 			...theme.colors,
-			primary: warning ? "var(--warning)" : theme.colors.primary,
-			neutral20: warning ? "var(--warning-dim)" : theme.colors.neutral20,
-			neutral30: warning ? "var(--warning)" : theme.colors.neutral30,
-			neutral40: warning ? "var(--warning)" : theme.colors.neutral40,
+			// primary: warning ? "var(--warning)" : theme.colors.primary,
+			// neutral20: warning ? "var(--warning-dim)" : theme.colors.neutral20,
+			// neutral30: warning ? "var(--warning)" : theme.colors.neutral30,
+			// neutral40: warning ? "var(--warning)" : theme.colors.neutral40,
 		},
 	});
 }

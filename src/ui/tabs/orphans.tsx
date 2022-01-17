@@ -124,7 +124,13 @@ function OrphanedShops({ shops, mobiles }: { shops: ShopU[], mobiles: Mobile[] }
 			{shops.map(shop => <React.Fragment key={shop.id}>
 				<li>
 					<ToolRow>
-						<SelectVnum name="Mobile" selectedId={shop.mobVnum.toString()} items={mobiles} onUpdate={mobId => onUpdate(mobId, shop)} />
+						<SelectVnum
+							name="Mobile"
+							selectedId={shop.mobVnum.toString()}
+							items={mobiles}
+							isItemDisabled={mobile => !!mobile.shop}
+							onUpdate={mobId => onUpdate(mobId, shop)}
+						/>
 					</ToolRow>
 					<label className={styles.label}>Object types:</label>
 					<ToolRow>
