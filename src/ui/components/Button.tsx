@@ -12,10 +12,22 @@ interface Props {
 	buttonRef?: React.RefObject<HTMLButtonElement>
 	decoration?: string;
 	ariaLabel?: string;
+	title?: string;
 }
 
 export function Button(props: Props) {
-	const { children, className, style, onClick, onHoverState, tabIndex, buttonRef, ariaLabel, decoration } = props;
+	const {
+		children,
+		className,
+		style,
+		onClick,
+		onHoverState,
+		tabIndex,
+		buttonRef,
+		ariaLabel,
+		decoration,
+		title,
+	} = props;
 
 	return (
 		<button
@@ -28,6 +40,7 @@ export function Button(props: Props) {
 			onMouseOut={onHoverState ? () => onHoverState(false): undefined}
 			tabIndex={tabIndex}
 			aria-label={ariaLabel}
+			title={title}
 			ref={buttonRef}
 		>
 			{decoration && <><span aria-hidden="true">{decoration}</span> </>}{children}
@@ -41,6 +54,37 @@ export function LinkButton(props: Props) {
 			{...props}
 			className={classnames(styles.link, props.className)}
 		/>
+	);
+}
+
+interface HasVnum {
+	vnum: number | null;
+	shortDesc?: string;
+	name?: string;
+}
+
+interface VnumLinkProps {
+	item: HasVnum;
+	itemName: string;
+	annotation?: string;
+	className?: string;
+	style?: React.CSSProperties;
+	onClick?: () => void;
+	tabIndex?: number;
+}
+
+export function VnumLink(props: VnumLinkProps) {
+	const { item, itemName, annotation, ...rest} = props;
+	const vnum = item.vnum?.toString() || "";
+	const name = item.shortDesc || item.name;
+	const title = name
+		? `Jump to to ${itemName.toLowerCase()} ${vnum || ""} ${name}`
+		: `Jump to to unnamed ${itemName.toLowerCase()} ${vnum || ""}`;
+	return (
+		<LinkButton {...rest} title={title} className={styles.vnumLink}>
+			<em>({annotation || itemName}{vnum && <>&nbsp;<span className={styles.vnum}>{vnum}</span></>})</em>
+			&nbsp;{name || `<unnamed ${itemName.toLowerCase()}>`}
+		</LinkButton>
 	);
 }
 

@@ -7,19 +7,3 @@
 	margin: 0;
 	padding: 0;
 }
-
-.list .link {
-	font-family: serif;
-	font-size: 1rem;
-	margin: 0.25rem 0;
-}
-
-.annotation {
-	font-style: italic;
-}
-
-.vnum {
-	font-style: italic;
-	font-family: monospace;
-	font-size: 0.8rem;
-}

@@ -7,6 +7,7 @@ import { sortByVnum } from "../../app/models/helpers";
 import {
 	LinkButton,
 	Section,
+	VnumLink,
 } from "../components";
 import styles from "../components/ReciprocalResets.module.css";
 
@@ -53,13 +54,9 @@ function ObjectResets(props: { resets: InObjectReset[] }) {
 		{props.resets.map(reset => {
 			const object = objects.find(o => o.id === reset.containerId);
 			if (object) {
-				const vnum = object.vnum?.toString() || "";
-				const name = object.shortDesc || "<unnamed object>";
 				return (
 					<li key={reset.id}>
-						<LinkButton className={styles.link} onClick={() => dispatch(selectedObjectId(reset.containerId))}>
-							<span className={styles.vnum}>{vnum} </span>{name}
-						</LinkButton>
+						<VnumLink item={object} itemName="Object" onClick={() => dispatch(selectedObjectId(reset.containerId))} />
 					</li>
 				);
 			} else {
@@ -88,13 +85,9 @@ function EqResets(props: {resets: MobReset[] }) {
 	return (
 		<ol className={styles.list}>
 			{mobiles.map(mobile => {
-				const vnum = mobile.vnum?.toString() || "";
-				const name = mobile.shortDesc || "<unnamed mobile>";
 				return (
 					<li key={mobile.id}>
-						<LinkButton className={styles.link} onClick={() => dispatch(selectedMobileId(mobile.id))}>
-							<span className={styles.vnum}>{vnum} </span>{name}
-						</LinkButton>
+						<VnumLink item={mobile} itemName="Mobile" onClick={() => dispatch(selectedMobileId(mobile.id))} />
 					</li>
 				);
 			})}
@@ -107,9 +100,7 @@ function SkinMob({ mobile }: { mobile: Mobile }) {
 	const name = mobile.shortDesc || "<unnamed mobile>";
 	return (
 		<li>
-			<LinkButton className={styles.link} onClick={() => dispatch(selectedMobileId(mobile.id))}>
-				Skins from <span className={styles.vnum}>{mobile.vnum} </span>{name}
-			</LinkButton>
+			<VnumLink item={mobile} itemName="Mobile" annotation="Skins from mobile" onClick={() => dispatch(selectedMobileId(mobile.id))} />
 		</li>
 	)
 }

@@ -5,6 +5,7 @@ import {
 	Button,
 	DeleteButton,
 	LinkButton,
+	VnumLink,
 } from "./Button";
 import CheckBox from "./CheckBox";
 import EdescFields from "./EdescFields";
@@ -37,4 +38,5 @@ export {
 	TextField,
 	ToggleContainer,
 	ToolRow,
+	VnumLink,
 }

@@ -4,8 +4,8 @@ import { changedTab } from "../../app/store/ui";
 import { selectedMobileId, selectedObjectId } from "../../app/store/ui";
 import { MobReset, ObjectReset } from "../../app/models";
 import {
-	LinkButton,
 	Section,
+	VnumLink,
 } from "../components";
 import styles from "../components/ReciprocalResets.module.css";
 
@@ -37,13 +37,9 @@ function MobResets(props: { resets: MobReset[] }) {
 			{props.resets.map(reset => {
 				const mobile = mobiles.find(m => m.id === reset.mobId);
 				if (!mobile) return null;
-				const vnum = mobile?.vnum?.toString() || "";
-				const name = mobile?.shortDesc || "<unnamed mobile>";
 				return (
 					<li key={reset.id}>
-						<LinkButton className={styles.link} onClick={() => dispatch(selectedMobileId(reset.mobId))}>
-							<span className={styles.annotation}>(Mobile{vnum && <>&nbsp;<span className={styles.vnum}>{vnum}</span></>})</span> {name}
-						</LinkButton>
+						<VnumLink item={mobile} itemName="Mobile" onClick={() => dispatch(selectedMobileId(reset.mobId))} />
 					</li>
 				);
 			})}
@@ -60,13 +56,9 @@ function ObjectResets(props: { resets: ObjectReset[] }) {
 			{props.resets.map(reset => {
 				const object = objects.find(o => o.id === reset.objectId);
 				if (!object) return null;
-				const vnum = object?.vnum?.toString() || "";
-				const name = object?.shortDesc || "<unnamed object>";
 				return (
 					<li key={reset.id}>
-						<LinkButton className={styles.link} onClick={() => dispatch(selectedObjectId(reset.objectId))}>
-							<span className={styles.annotation}>(Object{vnum && <>&nbsp;<span className={styles.vnum}>{vnum}</span></>})</span> {name}
-						</LinkButton>
+						<VnumLink item={object} itemName="Object" onClick={() => dispatch(selectedObjectId(reset.objectId))} />
 					</li>
 				);
 			})}
