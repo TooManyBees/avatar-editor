@@ -27,7 +27,6 @@ import {
 import { TabsContents } from "./tabs-layout";
 import sharedStyles from "../components/shared.module.css";
 import tabStyles from "./tabs-layout.module.css";
-import styles from "./objects.module.css";
 
 export default function ObjectsTab() {
 	const dispatch = useAppDispatch();
@@ -101,7 +100,6 @@ function ObjectForm({ object, kbInteraction }: Props) {
 	const updatedShortDesc = (s: string) => dispatch(Actions.updatedShortDesc([id, s]));
 	const updatedLongDesc = (s: string) => dispatch(Actions.updatedLongDesc([id, s]));
 	const updatedActionDesc = (s: string) => dispatch(Actions.updatedActionDesc([id, s]));
-	const updatedItemType = (n: number) => dispatch(Actions.updatedItemType([id, n]));
 	const updatedExtraFlags = (bs: number[]) => dispatch(Actions.updatedExtraFlags([id, bs]));
 	const updatedWearFlags = (n: number) => dispatch(Actions.updatedWearFlags([id, factor(n)]));
 	const updatedWeight = (n: number) => dispatch(Actions.updatedWeight([id, n]));
@@ -124,10 +122,7 @@ function ObjectForm({ object, kbInteraction }: Props) {
 				<TextField name="Long desc" value={object.longDesc} onUpdate={updatedLongDesc} />
 			</Row>
 			<TextArea name="Action desc" value={object.actionDesc} onUpdate={updatedActionDesc} />
-			<fieldset className={styles.itemType}>
-				<SelectField name="Type" value={object.itemType} options={ITEM_TYPE} defaultValue={ITEM_TYPE[0]} onUpdate={updatedItemType} />
-				<ObjectValues id={id} type={object.itemType} value0={object.value0} value1={object.value1} value2={object.value2} value3={object.value3} />
-			</fieldset>
+			<ObjectValues object={object} />
 			<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} onUpdate={updatedExtraFlags} />
 			<ToolRow>
 				<SelectField name="Wear flags" value={wearFlags} options={WEAR_FLAGS} defaultValue={WEAR_FLAGS[0]} onUpdate={updatedWearFlags} />
@@ -143,48 +138,6 @@ function ObjectForm({ object, kbInteraction }: Props) {
 		</div>
 	);
 }
-
-const ITEM_TYPE: { value: number, label: string }[] = [
-	{ value: 1, label: "Light", },
-	{ value: 2, label: "Scroll", },
-	{ value: 3, label: "Wand", },
-	{ value: 4, label: "Staff", },
-	{ value: 5, label: "Weapon", },
-	{ value: 6, label: "Ticket", },
-	{ value: 7, label: "Rogue Tool", },
-	{ value: 8, label: "Treasure", },
-	{ value: 9, label: "Armor", },
-	{ value: 10, label: "Potion", },
-	{ value: 11, label: "Poisoned Weapon", },
-	{ value: 12, label: "Furniture", },
-	{ value: 13, label: "Trash", },
-	{ value: 14, label: "Poison", },
-	{ value: 15, label: "Container", },
-	// { value: 16, label: "", },
-	{ value: 17, label: "Drink container", },
-	{ value: 18, label: "Key", },
-	{ value: 19, label: "Food", },
-	{ value: 20, label: "Money", },
-	// { value: 21, label: "", },
-	{ value: 22, label: "Boat", },
-	// { value: 23, label: "NPC Corpse", },
-	// { value: 24, label: "PC Corpse", },
-	{ value: 25, label: "Fountain", },
-	{ value: 26, label: "Pill", },
-	// { value: 27, label: "Sign_type_one", },
-	{ value: 28, label: "Portal", },
-	{ value: 29, label: "Nexus", },
-	{ value: 30, label: "Marking", },
-	{ value: 31, label: "Bow", },
-	{ value: 32, label: "Arrow", },
-	// { value: 33, label: "Gemstone", },
-	// { value: 34, label: "Perfect gemstone", },
-	{ value: 35, label: "Throwing weapon", },
-	// { value: 36, label: "Perfect metal", },
-	{ value: 37, label: "Spellbook", },
-	// { value: 38, label: "", },
-	{ value: 39, label: "Trap kit", },
-];
 
 const EXTRA_FLAGS: [number, string, string][] = [
 	[1, "Glow", "Makes item glow; no effect, but can be altered by enchanting, illuminate, or conceal object"],

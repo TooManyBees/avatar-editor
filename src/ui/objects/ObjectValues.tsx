@@ -1,6 +1,9 @@
 import React from "react";
+import classnames from "classnames";
 import { useAppDispatch } from "../../app/hooks";
+import { Objekt } from "../../app/models";
 import {
+	updatedItemType,
 	updatedValue0,
 	updatedValue1,
 	updatedValue2,
@@ -13,8 +16,82 @@ import {
 	SelectField,
 	ToolRow,
 } from "../components";
-
+import styles from "./ObjectValues.module.css";
 import { parseBits } from "../../parser/helpers";
+
+interface Props {
+	object: Objekt;
+}
+
+export default function ObjectTypeAndValues({ object }: Props) {
+	const dispatch = useAppDispatch();
+	const multiple = hasMultipleFields(object.itemType);
+	return (
+		<fieldset className={classnames(styles.itemType, multiple && styles.multipleFields)}>
+			<SelectField name="Type" value={object.itemType} options={ITEM_TYPE} onUpdate={itemType => dispatch(updatedItemType([object.id, itemType]))} />
+			<ObjectValues id={object.id} type={object.itemType} value0={object.value0} value1={object.value1} value2={object.value2} value3={object.value3} />
+		</fieldset>
+	);
+}
+
+function hasMultipleFields(type: number): boolean {
+	switch (type) {
+		case 8:
+		case 12:
+		case 13:
+		case 16:
+		case 24:
+		case 27:
+		case 34:
+		case 36:
+		case 38:
+			return false;
+		default:
+			return true;
+	}
+}
+
+const ITEM_TYPE: { value: number, label: string }[] = [
+	{ value: 1, label: "Light", },
+	{ value: 2, label: "Scroll", },
+	{ value: 3, label: "Wand", },
+	{ value: 4, label: "Staff", },
+	{ value: 5, label: "Weapon", },
+	{ value: 6, label: "Ticket", },
+	{ value: 7, label: "Rogue Tool", },
+	{ value: 8, label: "Treasure", },
+	{ value: 9, label: "Armor", },
+	{ value: 10, label: "Potion", },
+	{ value: 11, label: "Poisoned Weapon", },
+	{ value: 12, label: "Furniture", },
+	{ value: 13, label: "Trash", },
+	{ value: 14, label: "Poison", },
+	{ value: 15, label: "Container", },
+	// { value: 16, label: "", },
+	{ value: 17, label: "Drink container", },
+	{ value: 18, label: "Key", },
+	{ value: 19, label: "Food", },
+	{ value: 20, label: "Money", },
+	// { value: 21, label: "", },
+	{ value: 22, label: "Boat", },
+	// { value: 23, label: "NPC Corpse", },
+	// { value: 24, label: "PC Corpse", },
+	{ value: 25, label: "Fountain", },
+	{ value: 26, label: "Pill", },
+	// { value: 27, label: "Sign_type_one", },
+	{ value: 28, label: "Portal", },
+	{ value: 29, label: "Nexus", },
+	{ value: 30, label: "Marking", },
+	{ value: 31, label: "Bow", },
+	{ value: 32, label: "Arrow", },
+	// { value: 33, label: "Gemstone", },
+	// { value: 34, label: "Perfect gemstone", },
+	{ value: 35, label: "Throwing weapon", },
+	// { value: 36, label: "Perfect metal", },
+	{ value: 37, label: "Spellbook", },
+	// { value: 38, label: "", },
+	{ value: 39, label: "Trap kit", },
+];
 
 interface ObjectValuesComponentProps {
 	id: string;
@@ -25,7 +102,7 @@ interface ObjectValuesComponentProps {
 	value3: string;
 }
 
-export default function ObjectValues(props: ObjectValuesComponentProps) {
+export function ObjectValues(props: ObjectValuesComponentProps) {
 	const { type, ...values } = props;
 	switch (type) {
 		case 1:

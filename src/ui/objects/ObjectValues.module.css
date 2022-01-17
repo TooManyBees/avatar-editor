@@ -2,13 +2,13 @@
 	display: flex;
 	flex-wrap: wrap;
 	border: 1px dashed transparent;
-	padding: 0.5rem;
-	margin: 0 -0.5rem;
+	padding: 0.25rem 0.5rem;
+	margin: -0.25rem -0.5rem;
 	gap: 1rem;
 	border-radius: 4px;
 }
 
-.itemType:hover, .itemType:focus-within {
+.itemType.multipleFields:hover, .itemType.multipleFields:focus-within {
 	border-color:  var(--neutral-dim);
 	background-color: var(--neutral-hint);
 }
