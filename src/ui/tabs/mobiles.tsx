@@ -129,14 +129,14 @@ function MobileForm(props: Props) {
 				<BitsField name="Affected Flags" value={mobile.affected} map={AFF_FLAGS} onUpdate={updatedAffected} />
 			</Row>
 			<ToolRow>
-				<NumberField name="Level" inline value={mobile.level} min={0} onUpdate={updatedLevel} />
-				<SelectField name="Race" inline value={mobile.race} options={RACE} defaultValue={RACE[0]} onUpdate={updatedRace} />
-				<SelectField name="Class" inline value={mobile.klass} options={CLASS} defaultValue={CLASS[0]} onUpdate={updatedClass} />
+				<NumberField name="Level" value={mobile.level} min={0} onUpdate={updatedLevel} />
+				<SelectField name="Race" value={mobile.race} options={RACE} defaultValue={RACE[0]} onUpdate={updatedRace} />
+				<SelectField name="Class" value={mobile.klass} options={CLASS} defaultValue={CLASS[0]} onUpdate={updatedClass} />
 			</ToolRow>
 			<ToolRow>
-				<NumberField name="Alignment" inline value={mobile.align} min={-1000} max={1000} onUpdate={updatedAlign} />
-				<SelectField name="Sex" inline value={mobile.sex} options={SEX} defaultValue={SEX[0]} onUpdate={updatedSex} />
-				<SelectField name="Team" inline value={mobile.team} options={TEAM} defaultValue={TEAM[0]} onUpdate={updatedTeam} />
+				<NumberField name="Alignment" value={mobile.align} min={-1000} max={1000} onUpdate={updatedAlign} />
+				<SelectField name="Sex" value={mobile.sex} options={SEX} defaultValue={SEX[0]} onUpdate={updatedSex} />
+				<SelectField name="Team" value={mobile.team} options={TEAM} defaultValue={TEAM[0]} onUpdate={updatedTeam} />
 			</ToolRow>
 			<SelectSpecial value={mobile.specFun} onUpdate={updatedSpecial} />
 			<ApplyFields applies={mobile.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />

@@ -8,6 +8,7 @@ import {
 	DeleteButton,
 	NumberField,
 	SectionList,
+	SelectField,
 	SelectVnum,
 	ToolRow,
 } from "../components";
@@ -42,9 +43,8 @@ function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[
 	return <>
 		<li className={classnames(styles.reset, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
-				<NumberField inline name="Limit" value={reset.limit} min={0} onUpdate={limit => dispatch(Actions.updatedMobReset({...reset, limit}))} />
-				in
-				<SelectVnum items={rooms} selectedId={reset.roomId} onUpdate={roomId => dispatch(Actions.updatedMobReset({...reset, roomId}))} />
+				<NumberField name="Limit" value={reset.limit} min={0} onUpdate={limit => dispatch(Actions.updatedMobReset({...reset, limit}))} />
+				<SelectVnum name="Room" items={rooms} selectedId={reset.roomId} onUpdate={roomId => dispatch(Actions.updatedMobReset({...reset, roomId}))} />
 			</ToolRow>
 			<SectionList className={styles.eqList} header={<><h3>Equipment</h3> ({reset.equipment.length}) <AddButton onClick={() => dispatch(Actions.addedEquipmentReset(reset.id))}>Add equipment</AddButton></>}>
 				{reset.equipment.map(eqReset => <EqReset key={eqReset.id} reset={eqReset} mobResetId={reset.id} objects={objects} />)}
@@ -60,13 +60,14 @@ function EqReset({ mobResetId, reset, objects }: { mobResetId: string, reset: Eq
 	const [danger, setDanger] = useState(false);
 
 	return (
-		<ToolRow key={reset.id} className={classnames(styles.eqReset, danger && sharedStyles.dangerTarget)}>
-			<SelectVnum items={objects} selectedId={reset.objectId} onUpdate={id => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, objectId: id}]))} />
-			on
-			<WearSelector selected={reset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, wearLocation: l}]))} />
-			<NumberField inline name="Limit (0 for none)" value={reset.limit} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, limit: l}]))} />
-			<DeleteButton absolute onHoverState={setDanger} onClick={() => dispatch(Actions.removedEquipmentReset([mobResetId, reset.id]))}>Remove item</DeleteButton>
-		</ToolRow>
+		<li className={classnames(styles.eqReset, danger && sharedStyles.dangerTarget)}>
+			<ToolRow>
+				<SelectVnum name="Item" items={objects} selectedId={reset.objectId} onUpdate={id => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, objectId: id}]))} />
+				<SelectField name="Wear location" options={WEAR_OPTIONS} value={reset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, wearLocation: l}]))} />
+				<NumberField name="Limit (0 for ∞)" value={reset.limit} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, limit: l}]))} />
+				<DeleteButton absolute onHoverState={setDanger} onClick={() => dispatch(Actions.removedEquipmentReset([mobResetId, reset.id]))}>Remove item</DeleteButton>
+			</ToolRow>
+		</li>
 	);
 }
 
@@ -92,35 +93,3 @@ const WEAR_OPTIONS = [
 	{ value: 17, label: "Held" },
 	{ value: 19, label: "Floating" },
 ];
-const WEAR_OPTION_STYLES = minWidthStyles(WEAR_OPTIONS);
-
-function WearSelector({ selected, onUpdate }: { selected: number, onUpdate: (n: number) => void }) {
-	const value = WEAR_OPTIONS.find(({ value }) => value === selected) || { value: -1, label: "Inventory"};
-	return (
-		<ReactSelect
-			options={WEAR_OPTIONS}
-			value={value}
-			onChange={v => onUpdate(v ? v.value : -1)}
-			styles={WEAR_OPTION_STYLES}
-			menuPlacement="auto"
-		/>
-	);
-}
-
-function minWidthStyles(options: { label: string }[]) {
-	const minWidth = options.reduce((maxLen, item) =>
-		Math.max(maxLen, item.label.length), 0);
-	return {
-		control: (provided: CSSObjectWithLabel) => ({
-			...provided,
-			minWidth: `calc(55px + ${minWidth/2}rem)`,
-			alignItems: "baseline",
-		}),
-		valueContainer: (provider: CSSObjectWithLabel) => ({
-			...provider,
-			alignItems: "baseline",
-			top: "2px",
-		}),
-		// singleValue: ({ maxWidth, position, top, transform, ...rest}: CSSObjectWithLabel) => ({...rest}),
-	};
-}

@@ -5,9 +5,10 @@ interface Props {
 	value: number;
 	onUpdate: (n: number) => void;
 	disabled?: boolean;
+	inline?: boolean;
 }
 
-export default function SelectDirection({ value, onUpdate, disabled }: Props) {
+export default function SelectDirection({ value, onUpdate, disabled, inline }: Props) {
 	return (
 		<SelectField
 			name="Direction"
@@ -15,6 +16,7 @@ export default function SelectDirection({ value, onUpdate, disabled }: Props) {
 			options={DIRECTIONS}
 			onUpdate={onUpdate}
 			disabled={disabled}
+			inline={inline}
 		/>
 	);
 }

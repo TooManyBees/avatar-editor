@@ -102,7 +102,7 @@ function RoomForm(props: Props) {
 	return (
 		<div className={classnames(styles.tabDangerTarget, danger && sharedStyles.dangerTarget)}>
 			<ToolRow style={{justifyContent: "space-between"}}>
-				<NumberField name="VNUM" value={room.vnum} min={0} onUpdate={updatedVnum} inputRef={vnumField} />
+				<NumberField name="VNUM" inline value={room.vnum} min={0} onUpdate={updatedVnum} inputRef={vnumField} />
 				<DeleteButton onHoverState={setDanger} onClick={removedRoom}>Delete room</DeleteButton>
 			</ToolRow>
 			<Row>
@@ -113,7 +113,7 @@ function RoomForm(props: Props) {
 			</Row>
 			<BitsField name="Flags" value={room.flags} map={FLAGS} onUpdate={updatedFlags} />
 			<Row>
-				<SelectField name="Sector" value={room.sector} options={SECTOR} onUpdate={updatedSector} />
+				<SelectField name="Sector" inline value={room.sector} options={SECTOR} onUpdate={updatedSector} />
 			</Row>
 			<BitsField name="Prevent align from entering" value={room.alignFlags} map={ALIGN_FLAGS} onUpdate={updatedAlignFlags}/>
 			<BitsField name="Prevent class from entering" value={room.classFlags} map={CLASS_FLAGS} onUpdate={updatedClassFlags}/>

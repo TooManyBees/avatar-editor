@@ -50,7 +50,7 @@ function HelpForm({ help }: { help: Help }) {
 	return (
 		<li className={classnames(styles.help, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
-				<NumberField name="Level" inline value={help.level} onUpdate={level => dispatch(updatedHelp({...help, level}))} />
+				<NumberField name="Level" value={help.level} onUpdate={level => dispatch(updatedHelp({...help, level}))} />
 				<KeywordField name="Keywords" value={help.keywords} onUpdate={keywords => dispatch(updatedHelp({...help, keywords}))} />
 			</ToolRow>
 			<TextArea name="Body" value={help.body} colors="help" onUpdate={body => dispatch(updatedHelp({...help, body}))} />

@@ -126,6 +126,7 @@ function OrphanedShops({ shops, mobiles }: { shops: ShopU[], mobiles: Mobile[] }
 					<ToolRow>
 						<SelectVnum name="Mobile" selectedId={shop.mobVnum.toString()} items={mobiles} onUpdate={mobId => onUpdate(mobId, shop)} />
 					</ToolRow>
+					<label className={styles.label}>Object types:</label>
 					<ToolRow>
 						<SelectObjectType disabled value={shop.oType1} onUpdate={NO_OP} />
 						<SelectObjectType disabled value={shop.oType2} onUpdate={NO_OP} />

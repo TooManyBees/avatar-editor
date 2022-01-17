@@ -16,15 +16,14 @@ export default function SelectSpecial({ value, onUpdate, disabled }: Props) {
 	return (
 		<ToolRow>
 			<SelectField
-				name="Spec"
-				inline
+				name="Special"
 				disabled={disabled}
 				value={value.special}
 				options={SPEC_FUNS}
 				onUpdate={special => onUpdate({...value, special })}
 			/>
 			<TextField
-				name="Comment"
+				name="Special comment"
 				disabled={disabled || value.special == null}
 				value={value.comment}
 				onUpdate={comment => onUpdate({...value, comment })}

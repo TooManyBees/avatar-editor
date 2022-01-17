@@ -130,13 +130,11 @@ function ObjectForm({ object, kbInteraction }: Props) {
 			<BitsField name="Extra flags" value={object.extraFlags} map={EXTRA_FLAGS} onUpdate={updatedExtraFlags} />
 			<ToolRow>
 				<SelectField name="Wear flags" value={wearFlags} options={WEAR_FLAGS} defaultValue={WEAR_FLAGS[0]} onUpdate={updatedWearFlags} />
-			</ToolRow>
-			<BitsField name="Racial wear flags" value={object.racialFlags} map={RACIAL_WEAR_FLAGS} onUpdate={updatedRacialFlags} />
-			<ToolRow>
 				<NumberField name="Weight" value={object.weight} onUpdate={updatedWeight} />
 				<NumberField name="Worth" value={object.worth} onUpdate={updatedWorth} />
 				<NumberField name="Quality" value={object.quality} min={1} onUpdate={updatedQuality} />
 			</ToolRow>
+			<BitsField name="Racial wear flags" value={object.racialFlags} map={RACIAL_WEAR_FLAGS} onUpdate={updatedRacialFlags} />
 			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 			<ObjectResets objectId={id} itemType={object.itemType} />

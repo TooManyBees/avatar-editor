@@ -53,8 +53,9 @@ export default function KeywordField(props: Props) {
 	}
 
 	return (
-		<label className={styles.keywordField}>
+		<label className={inputStyles.wrapper}>
 			<span className={styles.label}>{props.name}:</span>
+			<div className={styles.keywordField}>
 			{props.value.map((k, n) => (
 				<span key={`${n} ${k}`} className={styles.keyword}>{k}</span>
 			))}
@@ -66,6 +67,7 @@ export default function KeywordField(props: Props) {
 				onKeyDown={onKeyDown}
 				onKeyUp={onKeyUp}
 			/>
+			</div>
 		</label>
 	);
 }

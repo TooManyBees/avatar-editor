@@ -34,7 +34,7 @@ export default function KspawnFields(props: Props) {
 		>
 			{kspawn && <>
 				<ToolRow>
-					<SelectField name="Condition" value={kspawn.condition} options={KSPAWN_CONDITION} defaultValue={KSPAWN_CONDITION[0]} onUpdate={condition => dispatch(updatedKspawn([mobId, {...kspawn, condition}]))} />
+					<SelectField name="Condition" inline value={kspawn.condition} options={KSPAWN_CONDITION} defaultValue={KSPAWN_CONDITION[0]} onUpdate={condition => dispatch(updatedKspawn([mobId, {...kspawn, condition}]))} />
 					<NumberField name="Spawn VNUM" inline value={kspawn.spawnVnum} min={-1} onUpdate={spawnVnum => dispatch(updatedKspawn([mobId, {...kspawn, spawnVnum}]))} />
 					<NumberField name="Room VNUM" inline value={kspawn.roomVnum} min={-1} onUpdate={roomVnum => dispatch(updatedKspawn([mobId, {...kspawn, roomVnum}]))} />
 				</ToolRow>

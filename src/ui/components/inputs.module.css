@@ -1,10 +1,13 @@
 .wrapper {
 	display: flex;
-	align-items: baseline;
+	/*align-items: baseline;*/
+	flex-direction: column;
 }
 
 .inline {
 	display: inline-flex;
+	align-items: baseline;
+	flex-direction: row;
 }
 
 .label {
@@ -13,6 +16,10 @@
 	margin-right: 0.25rem;
 	font-family: ZillaSlab, emoji;
 	font-weight: 500;
+	margin-bottom: 0.5rem;
+}
+.inline .label {
+	margin-bottom: 0;
 }
 
 .input {

@@ -11,3 +11,7 @@
 .link {
 	color: var(--selection);
 }
+
+.label {
+	composes: label from "../components/inputs.module.css";
+}

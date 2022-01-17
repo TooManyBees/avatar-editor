@@ -22,10 +22,10 @@ export default function ShopFields(props: Props) {
 				<SelectObjectType value={shop.oType5} onUpdate={oType5 => dispatch(updatedShop([mobId, {...shop, oType5}]))} />
 			</ToolRow>
 			<ToolRow>
-				<NumberField name="Profit Buy" inline value={shop.profitBuy} onUpdate={profitBuy => dispatch(updatedShop([mobId, {...shop, profitBuy}]))} />
-				<NumberField name="Profit Sell" inline value={shop.profitSell} onUpdate={profitSell => dispatch(updatedShop([mobId, {...shop, profitSell}]))} />
-				<NumberField name="Opening hour" inline value={shop.firstHour} onUpdate={firstHour => dispatch(updatedShop([mobId, {...shop, firstHour}]))} />
-				<NumberField name="Closing hour" inline value={shop.lastHour} onUpdate={lastHour => dispatch(updatedShop([mobId, {...shop, lastHour}]))} />
+				<NumberField name="Profit Buy" value={shop.profitBuy} onUpdate={profitBuy => dispatch(updatedShop([mobId, {...shop, profitBuy}]))} />
+				<NumberField name="Profit Sell" value={shop.profitSell} onUpdate={profitSell => dispatch(updatedShop([mobId, {...shop, profitSell}]))} />
+				<NumberField name="Opening hour" value={shop.firstHour} min={0} max={23} onUpdate={firstHour => dispatch(updatedShop([mobId, {...shop, firstHour}]))} />
+				<NumberField name="Closing hour" value={shop.lastHour} min={0} max={23} onUpdate={lastHour => dispatch(updatedShop([mobId, {...shop, lastHour}]))} />
 			</ToolRow>
 		</div>
 	);
@@ -42,7 +42,7 @@ export function SelectObjectType({ value, onUpdate, disabled }: SelectObjectType
 }
 
 const ITEM_TYPE: { value: number, label: string }[] = [
-	{ value: 0, label: "none" },
+	{ value: 0, label: "None" },
 	{ value: 1, label: "Light" },
 	{ value: 2, label: "Scroll" },
 	{ value: 3, label: "Wand" },

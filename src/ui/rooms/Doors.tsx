@@ -61,12 +61,14 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 		else dispatch(addedDoorReset({ roomId, state, direction }));
 	}
 
+	const keywordsLabel = door.locks !== 0 ? "Keywords (must include \"door\" to be visible)" : "Keywords";
+
 	return <>
 		<li className={classnames(styles.door, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
 				<SelectDirection value={door.direction} onUpdate={direction => dispatch(Actions.updatedDoor([roomId, {...door, direction}]))} />
-				to
 				<SelectVnum
+					name="Destination"
 					selectedId={door.toRoomId}
 					items={rooms}
 					onUpdate={toRoomId => dispatch(Actions.updatedDoor([roomId, {...door, toRoomId}]))}
@@ -74,16 +76,16 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 				/>
 			</ToolRow>
 			<ToolRow>
-				<SelectField name="Door" value={door.locks} options={LOCKS} onUpdate={locks => dispatch(Actions.updatedDoor([roomId, {...door, locks}]))} />
-				<span className={noDoor ? styles.disabled : undefined}>with key</span>
+				<SelectField name="Door type" value={door.locks} options={LOCKS} onUpdate={locks => dispatch(Actions.updatedDoor([roomId, {...door, locks}]))} />
 				<SelectVnum
+					name="Key"
 					selectedId={door.keyId}
 					items={objects}
 					onUpdate={keyId => dispatch(Actions.updatedDoor([roomId, {...door, keyId}]))}
 					disabled={noDoor}
 				/>
-				<span className={noDoor ? styles.disabled : undefined}>starting</span>
 				<SelectField
+					name="Reset"
 					value={reset?.state || -1}
 					options={RESET_STATE}
 					onUpdate={state => onDoorUpdate(door.direction, state)}
@@ -91,7 +93,7 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 				/>
 			</ToolRow>
 			<ToolRow>
-				<KeywordField name="Keywords" value={door.keywords} onUpdate={keywords => dispatch(Actions.updatedDoor([roomId, {...door, keywords}]))} />
+				<KeywordField name={keywordsLabel} value={door.keywords} onUpdate={keywords => dispatch(Actions.updatedDoor([roomId, {...door, keywords}]))} />
 			</ToolRow>
 			<TextArea name="Description" value={door.description} colors="door" onUpdate={description => dispatch(Actions.updatedDoor([roomId, {...door, description}]))} />
 			<DeleteButton absolute onHoverState={setDanger} onClick={() => Actions.removedDoor([roomId, door.id])}>Remove</DeleteButton>
