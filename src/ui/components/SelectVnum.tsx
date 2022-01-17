@@ -102,7 +102,7 @@ function minWidthStyles(options: Option[], warning: boolean) {
 			...provided,
 			minWidth: `${Math.ceil(minWidth)}px`,
 			alignItems: "baseline",
-			backgroundColor: warning ? "var(--warning-faint)" : undefined,
+			backgroundColor: warning ? "var(--warning-faint)" : "var(--background)",
 		}),
 		valueContainer: (provided: CSSObjectWithLabel) => ({
 			...provided,

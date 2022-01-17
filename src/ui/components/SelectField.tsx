@@ -47,7 +47,7 @@ function minWidthStyles(options: { label: string }[]) {
 			...provided,
 			minWidth: `calc(55px + ${minWidth/2}rem)`,
 			alignItems: "baseline",
-			backgroundColor: undefined,
+			backgroundColor: "var(--background)",
 		}),
 		valueContainer: (provider: CSSObjectWithLabel) => ({
 			...provider,
