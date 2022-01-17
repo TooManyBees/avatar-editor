@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import classnames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import * as Actions from "../../app/store/resets";
+import {
+	addedMobReset,
+	updatedMobReset,
+	removedMobReset,
+	addedEquipmentReset,
+	updatedEquipmentReset,
+	removedEquipmentReset,
+} from "../../app/store/resets";
 import { MobReset as MobResetType, EquipmentReset, Objekt, Room } from "../../app/models";
 import {
 	AddButton,
@@ -29,7 +36,7 @@ export default function MobResets({ mobId }: Props) {
 	const objects = useAppSelector(state => state.objects.objects);
 	const rooms = useAppSelector(state => state.rooms.rooms);
 	return (
-		<SectionList header={<><h2>Resets</h2> ({resets.length}) <AddButton onClick={() => dispatch(Actions.addedMobReset(mobId))}>Add reset</AddButton></>}>
+		<SectionList header={<><h2>Resets</h2> ({resets.length}) <AddButton onClick={() => dispatch(addedMobReset(mobId))}>Add reset</AddButton></>}>
 			{resets.map(reset => (
 				<MobReset key={reset.id} reset={reset} rooms={rooms} objects={objects} />
 			))}
@@ -43,13 +50,13 @@ function MobReset({ reset, rooms, objects }: { reset: MobResetType, rooms: Room[
 	return <>
 		<li className={classnames(styles.reset, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
-				<NumberField name="Limit" value={reset.limit} min={0} onUpdate={limit => dispatch(Actions.updatedMobReset({...reset, limit}))} />
-				<SelectVnum name="Room" items={rooms} selectedId={reset.roomId} onUpdate={roomId => dispatch(Actions.updatedMobReset({...reset, roomId}))} />
+				<NumberField name="Limit" value={reset.limit} min={0} onUpdate={limit => dispatch(updatedMobReset({...reset, limit}))} />
+				<SelectVnum name="Room" items={rooms} selectedId={reset.roomId} onUpdate={roomId => dispatch(updatedMobReset({...reset, roomId}))} />
 			</ToolRow>
-			<SectionList className={styles.eqList} header={<><h3>Equipment</h3> ({reset.equipment.length}) <AddButton onClick={() => dispatch(Actions.addedEquipmentReset(reset.id))}>Add equipment</AddButton></>}>
+			<SectionList className={styles.eqList} header={<><h3>Equipment</h3> ({reset.equipment.length}) <AddButton onClick={() => dispatch(addedEquipmentReset(reset.id))}>Add equipment</AddButton></>}>
 				{reset.equipment.map(eqReset => <EqReset key={eqReset.id} reset={eqReset} mobResetId={reset.id} objects={objects} />)}
 			</SectionList>
-			<DeleteButton absolute onHoverState={setDanger} onClick={() => dispatch(Actions.removedMobReset(reset.id))}>Remove reset &amp; gear</DeleteButton>
+			<DeleteButton absolute onHoverState={setDanger} onClick={() => dispatch(removedMobReset(reset.id))}>Remove reset &amp; gear</DeleteButton>
 		</li>
 		<hr className={styles.separator} />
 	</>;
@@ -62,10 +69,10 @@ function EqReset({ mobResetId, reset, objects }: { mobResetId: string, reset: Eq
 	return (
 		<li className={classnames(styles.eqReset, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
-				<SelectVnum name="Item" items={objects} selectedId={reset.objectId} onUpdate={id => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, objectId: id}]))} />
-				<SelectField name="Wear location" options={WEAR_OPTIONS} value={reset.wearLocation} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, wearLocation: l}]))} />
-				<NumberField name="Limit (0 for ∞)" value={reset.limit} onUpdate={l => dispatch(Actions.updatedEquipmentReset([reset.id, {...reset, limit: l}]))} />
-				<DeleteButton absolute onHoverState={setDanger} onClick={() => dispatch(Actions.removedEquipmentReset([mobResetId, reset.id]))}>Remove item</DeleteButton>
+				<SelectVnum name="Item" items={objects} selectedId={reset.objectId} onUpdate={id => dispatch(updatedEquipmentReset([mobResetId, {...reset, objectId: id}]))} />
+				<SelectField name="Wear location" options={WEAR_OPTIONS} value={reset.wearLocation} onUpdate={l => dispatch(updatedEquipmentReset([mobResetId, {...reset, wearLocation: l}]))} />
+				<NumberField name="Limit (0 for ∞)" value={reset.limit} onUpdate={l => dispatch(updatedEquipmentReset([mobResetId, {...reset, limit: l}]))} />
+				<DeleteButton absolute onHoverState={setDanger} onClick={() => dispatch(removedEquipmentReset([mobResetId, reset.id]))}>Remove item</DeleteButton>
 			</ToolRow>
 		</li>
 	);
