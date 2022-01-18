@@ -4,20 +4,20 @@
   font-family: Cambo;
   src: url("../fonts/Cambo-Regular.ttf");
 }
-@font-face {
+/*@font-face {
   font-family: ZillaSlab;
   src: url("../fonts/ZillaSlab-Regular.ttf");
-}
+}*/
 @font-face {
   font-family: ZillaSlab;
   src: url("../fonts/ZillaSlab-Medium.ttf");
   font-weight: 500;
 }
-@font-face {
+/*@font-face {
   font-family: ZillaSlab;
   src: url("../fonts/ZillaSlab-SemiBold.ttf");
   font-weight: 600;
-}
+}*/
 @font-face {
   font-family: ZillaSlab;
   src: url("../fonts/ZillaSlab-Bold.ttf");
