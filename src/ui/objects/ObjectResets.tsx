@@ -51,7 +51,7 @@ export default function ObjectResets(props: Props) {
 		</SectionList>
 		{itemType === 15 && (
 			<SectionList header={<><h2>Container Contents</h2> ({inObjectResets.length}) <AddButton onClick={() => dispatch(addedInObjectReset(objectId))}>Add reset</AddButton></>}>
-				{inObjectResets.map(reset => <InObjectReset reset={reset} objects={objects} />)}
+				{inObjectResets.map(reset => <InObjectReset key={reset.id} reset={reset} objects={objects} />)}
 			</SectionList>
 		)}
 	</>;
