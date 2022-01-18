@@ -69,7 +69,7 @@ function ObjectReset(props: ResetProps) {
 	return <>
 		<li className={classnames(styles.reset, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
-				Room: <SelectVnum selectedId={reset.roomId} items={rooms} onUpdate={roomId => dispatch(updatedObjectReset({...reset, roomId}))} />
+				<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={roomId => dispatch(updatedObjectReset({...reset, roomId}))} />
 			</ToolRow>
 			<Row>
 				<TextField name="Comment" value={reset.comment} onUpdate={comment => dispatch(updatedObjectReset({...reset, comment}))} />
@@ -86,7 +86,7 @@ function InObjectReset({ reset, objects }: { reset: InObjectResetType, objects: 
 	return <>
 		<li className={classnames(styles.reset, danger && sharedStyles.dangerTarget)}>
 			<ToolRow>
-			Object: <SelectVnum selectedId={reset.objectId} items={objects} onUpdate={objectId => dispatch(updatedInObjectReset({...reset, objectId}))} />
+			<SelectVnum name="Object" selectedId={reset.objectId} items={objects} onUpdate={objectId => dispatch(updatedInObjectReset({...reset, objectId}))} />
 			</ToolRow>
 			<Row>
 				<TextField name="Comment" value={reset.comment} onUpdate={comment => dispatch(updatedInObjectReset({...reset, comment}))} />
