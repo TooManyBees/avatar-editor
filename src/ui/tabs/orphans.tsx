@@ -32,7 +32,7 @@ import {
 } from "../components";
 import { SelectSpecial } from "../mobiles";
 import { SelectObjectType } from "../mobiles/ShopFields";
-import { SelectDirection } from "../rooms";
+import { SelectDirection, SelectDoorState } from "../rooms";
 import styles from "./orphans.module.css";
 
 export default function OrphansTab() {
@@ -308,6 +308,7 @@ function DoorResets({ resets, rooms }: { resets: DoorReset[], rooms: Room[] }) {
 					<ToolRow>
 						<SelectVnum name="Room" selectedId={reset.roomId} items={rooms} onUpdate={roomId => onUpdate(roomId, reset)} />
 						<SelectDirection disabled value={reset.direction} onUpdate={NO_OP} />
+						<SelectDoorState disabled reset={reset} onUpdate={NO_OP} />
 					</ToolRow>
 					<TextField name="Comment" disabled value={reset.comment} onUpdate={NO_OP} />
 				</li>

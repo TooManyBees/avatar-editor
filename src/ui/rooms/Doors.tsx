@@ -19,6 +19,7 @@ import {
 	ToolRow,
 } from "../components";
 import SelectDirection from "./SelectDirection"
+import SelectDoorState from "./SelectDoorState"
 import styles from "./Doors.module.css";
 import sharedStyles from "../components/shared.module.css";
 
@@ -84,12 +85,10 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 					onUpdate={keyId => dispatch(Actions.updatedDoor([roomId, {...door, keyId}]))}
 					disabled={noDoor}
 				/>
-				<SelectField
-					name="Reset"
-					value={reset?.state || -1}
-					options={RESET_STATE}
-					onUpdate={state => onDoorUpdate(door.direction, state)}
-					disabled={noDoor}
+				<SelectDoorState
+					reset={reset}
+					noDoor={noDoor}
+					onUpdate={onDoorUpdate}
 				/>
 			</ToolRow>
 			<ToolRow>
@@ -114,9 +113,3 @@ const LOCKS: { value: number, label: string }[] = [
 	{ value: 8, label: "Everything-proof" },
 ];
 
-const RESET_STATE: { value: number, label: string }[] = [
-	{ value: -1, label: "None"},
-	{ value: 0, label: "Open" },
-	{ value: 1, label: "Closed" },
-	{ value: 2, label: "Locked" },
-];
