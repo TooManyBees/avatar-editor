@@ -230,7 +230,7 @@ const AFF_FLAGS: [number, string, string][] = [
 ];
 
 const SEX: { value: number, label: string }[] = [
-	{ value: 0, label: "Neither" },
+	{ value: 0, label: "None" },
 	{ value: 1, label: "Male" },
 	{ value: 2, label: "Female" },
 ];
@@ -341,7 +341,7 @@ const CLASS: { value: number, label: string }[] = [
 	{ value: 15, label: "Shadowfist" },
 	{ value: 16, label: "Mindbender" },
 	{ value: 17, label: "Druid" },
-	{ value: 18, label: "Black Circle Assassin" },
+	{ value: 18, label: "Black Circle Initiate" },
 	{ value: 19, label: "Bodyguard" },
 	{ value: 20, label: "Fusilier" },
 	{ value: 21, label: "Stormlord" },
