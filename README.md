@@ -8,6 +8,7 @@ It's an area builder for Avatar MUD, written by Scevine. See https://www.toomany
 * \[*high priority*\] display parse errors
 * \[*low priority*\] keyword inputs have delete buttons on keywords, rather than listening for backspace
 * \[*medium priority*\] Undo/redo history????
+* \[*medium priority*\] Selector components on areadata tab
 
 ## Known limitations
 
