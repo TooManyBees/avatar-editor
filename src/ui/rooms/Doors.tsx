@@ -34,7 +34,7 @@ export default function Doors({ roomId, doors, rooms, objects }: Props) {
 	const dispatch = useAppDispatch();
 	const resets = useAppSelector(state => state.resets.resets.door).filter(r => r.roomId === roomId);
 	return (
-		<SectionList header={<><h2>Exits</h2><AddButton onClick={() => Actions.addedDoor(roomId)}>Add door</AddButton></>}>
+		<SectionList header={<><h2>Exits</h2><AddButton onClick={() => dispatch(Actions.addedDoor(roomId))}>Add door</AddButton></>}>
 			{doors.map(door => (
 				<DoorItem key={door.id} roomId={roomId} door={door} rooms={rooms} objects={objects} reset={resets.find(r => r.direction === door.direction) || null} />
 			))}
@@ -95,7 +95,7 @@ function DoorItem({ roomId, door, rooms, objects, reset }: DoorProps) {
 				<KeywordField name={keywordsLabel} value={door.keywords} onUpdate={keywords => dispatch(Actions.updatedDoor([roomId, {...door, keywords}]))} />
 			</ToolRow>
 			<TextArea name="Description" value={door.description} colors="door" onUpdate={description => dispatch(Actions.updatedDoor([roomId, {...door, description}]))} />
-			<DeleteButton absolute onHoverState={setDanger} onClick={() => Actions.removedDoor([roomId, door.id])}>Remove</DeleteButton>
+			<DeleteButton absolute onHoverState={setDanger} onClick={() => dispatch(Actions.removedDoor([roomId, door.id]))}>Remove</DeleteButton>
 		</li>
 		<hr className={styles.separator} />
 	</>;
