@@ -319,7 +319,7 @@ const RACE: { value: number | null, label: string }[] = [
 	{ value: 79, label: "Blue Dragon" },
 	{ value: 80, label: "Green Dragon" },
 	{ value: 81, label: "White Dragon" },
-	{ value: 82, label: "Ignatur " },
+	{ value: 82, label: "Ignatur" },
 ];
 
 const CLASS: { value: number, label: string }[] = [
