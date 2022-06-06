@@ -137,12 +137,22 @@ export function parseNumTokens(line: string, n: number): string[] {
 	let pos = line.search(/\s/);
 	if (pos < 0) return result;
 
+	let insideWord = false;
+
 	for (let i = pos; i <= line.length && result.length < n; i++) {
-		if (line[i] === undefined || line[i].match(/\s/)) {
-			if (i - pos > 0) {
-				result.push(line.substring(pos, i));
+		if (insideWord) {
+			if (line[i] === undefined || line[i].match(/\s/)) {
+				if (i - pos > 0) {
+					result.push(line.substring(pos, i));
+					insideWord = false;
+				}
+				pos = i;
 			}
-			pos = i;
+		} else {
+			if (line[i].match(/\S/)) {
+				insideWord = true;
+				pos = i;
+			}
 		}
 	}
 

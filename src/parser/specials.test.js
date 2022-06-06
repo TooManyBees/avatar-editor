@@ -27,6 +27,12 @@ S
 		let specials = parseSpecials(specialsSection);
 		expect(specials).toHaveLength(1);
 	});
+
+	test("parses this weird line from abishai.are", () => {
+		let line = "M  13200 spec_cast_cleric			young acolyte";
+		let specials = parseSpecials(line);
+		expect(specials[0]).toMatchObject({ mobVnum: 13200, special: "SPEC_CAST_CLERIC", comment: "\t\t\tyoung acolyte" })
+	});
 });
 
 describe("corellateSpecials", () => {

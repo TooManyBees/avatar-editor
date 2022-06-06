@@ -163,12 +163,12 @@ D2
 S
 `;
 
-	describe("splits on the pattern #\\d+", () => {
+	test("splits on the pattern #\\d+", () => {
 		let rooms = splitOnVnums(ROOMS);
 		expect(rooms).toHaveLength(3);
 	});
 
-	describe("discards the #0 that ends a section of vnums", () => {
+	test("discards the #0 that ends a section of vnums", () => {
 		let rooms = `
 #123
 #456

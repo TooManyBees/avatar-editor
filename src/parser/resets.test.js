@@ -60,6 +60,12 @@ describe("parseMobReset", () => {
 		expect(reset.comment).toBe("");
 		expectSingleError(reset, "roomVnum");;
 	});
+
+	test("parses this weird line from abishai.are", () => {
+		let line = "M  1 13200 1 13200                    acolyte";
+		let reset = parseMobReset(line);
+		expect(reset).toMatchObject({ mobVnum: 13200, limit: 1, roomVnum: 13200, comment: "                    acolyte" });
+	})
 });
 
 describe("parseInventoryReset", () => {
