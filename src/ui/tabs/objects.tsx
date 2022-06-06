@@ -134,7 +134,7 @@ function ObjectForm({ object, kbInteraction }: Props) {
 			<EdescFields edescs={object.extraDescs} id={id} updatedEdesc={Actions.updatedExtraDesc} addedEdesc={Actions.addedExtraDesc} removedEdesc={Actions.removedExtraDesc} />
 			<ApplyFields applies={object.applies} id={id} updatedApply={Actions.updatedApply} addedApply={Actions.addedApply} removedApply={Actions.removedApply} />
 			<ObjectResets objectId={id} itemType={object.itemType} />
-			{/*<ReciprocalResets objectId={id} vnum={object.vnum} />*/}
+			<ReciprocalResets objectId={id} vnum={object.vnum} />
 		</div>
 	);
 }

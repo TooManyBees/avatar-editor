@@ -20,7 +20,7 @@ export default function ReciprocalResets(props: Props) {
 	const { objectId, vnum } = props;
 	const inObjectResets = useAppSelector(state => state.resets.resets.inObject).filter(r => r.objectId === objectId);
 	const mobResets = useAppSelector(state => state.resets.resets.mobile).filter(r => r.equipment.some(e => e.objectId === objectId));
-	const skinMob = vnum ? useAppSelector(state => state.mobiles.mobiles).find(m => m.vnum === vnum && m.act.includes(262144)) : null;
+	const skinMob = useAppSelector(state => state.mobiles.mobiles).find(m => m.vnum === vnum && m.act.includes(262144));
 
 	let numMobs = mobResets.length;
 	if (skinMob) numMobs += 1;
