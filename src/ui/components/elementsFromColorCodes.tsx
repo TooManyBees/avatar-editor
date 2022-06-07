@@ -26,7 +26,7 @@ export default function elementsFromColorCodes(input: string, showColorCodes: bo
 	let output = [];
 
 	// Typescript won't let me iterate over the iterator, eh?
-	for (let match of Array.from(input.matchAll(/\|(B?(?:K|B|C|G|R|Y|W|P)|N)\|/g))) {
+	for (let match of Array.from(input.matchAll(/\|(B?(?:K|B|C|G|R|Y|W|P)|N)\|/ig))) {
 		let text = input.slice(currentPos, match.index);
 		if (currentPos !== match.index) {
 			if (currentColor === null) {
@@ -37,7 +37,7 @@ export default function elementsFromColorCodes(input: string, showColorCodes: bo
 		}
 
 		if (match[1] === "N") currentColor = null;
-		else currentColor = match[1];
+		else currentColor = match[1].toUpperCase();
 		currentPos = (match.index || 0) + match[0].length;
 	}
 
