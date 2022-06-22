@@ -109,7 +109,16 @@ const roomSlice = createSlice({
 			const [roomId, doorId] = action.payload;
 			const room = state.rooms.find(m => m.id === roomId);
 			if (room) room.doors = room.doors.filter(d => d.id !== doorId)
-		}
+		},
+		shiftVnums(state, action: PayloadAction<{ min: number, max: number, newMin: number }>) {
+			const { min, max, newMin } = action.payload;
+			const delta = newMin - min;
+			state.rooms.forEach(e => {
+				if (e.vnum != null && e.vnum >= min && e.vnum <= max) {
+					e.vnum += delta;
+				}
+			});
+		},
 	},
 });
 
@@ -130,5 +139,6 @@ export const {
 	addedDoor,
 	updatedDoor,
 	removedDoor,
+	shiftVnums,
 } = roomSlice.actions;
 export default roomSlice.reducer;

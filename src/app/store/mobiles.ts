@@ -177,6 +177,15 @@ const mobileSlice = createSlice({
 				state.orphanedShops[idx] = shop;
 			}
 		},
+		shiftVnums(state, action: PayloadAction<{ min: number, max: number, newMin: number }>) {
+			const { min, max, newMin } = action.payload;
+			const delta = newMin - min;
+			state.mobiles.forEach(e => {
+				if (e.vnum != null && e.vnum >= min && e.vnum <= max) {
+					e.vnum += delta;
+				}
+			});
+		},
 	},
 });
 
@@ -208,5 +217,6 @@ export const {
 	addedShop,
 	updatedShop,
 	restoredShop,
+	shiftVnums,
 } = mobileSlice.actions;
 export default mobileSlice.reducer;
