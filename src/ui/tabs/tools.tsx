@@ -33,9 +33,9 @@ import {
 import { SelectSpecial } from "../mobiles";
 import { SelectObjectType } from "../mobiles/ShopFields";
 import { SelectDirection, SelectDoorState } from "../rooms";
-import styles from "./orphans.module.css";
+import styles from "./tools.module.css";
 
-export default function OrphansTab() {
+export default function ToolsTab() {
 	const orphanedSpecials = useAppSelector(state => state.mobiles.orphanedSpecials);
 	const orphanedShops = useAppSelector(state => state.mobiles.orphanedShops);
 	const resets = useAppSelector(state => state.resets.resets);
@@ -46,6 +46,7 @@ export default function OrphansTab() {
 
 	return (
 		<TabsContents>
+			<h1>Shift VNUMs</h1>
 			<h1 style={{marginTop: "0.5rem"}}>Orphaned items</h1>
 			<aside className={styles.description}>
 				Orphaned content are vnum references that don't link to any mobiles, objects, or

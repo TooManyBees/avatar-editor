@@ -62,7 +62,7 @@ function ObjectResets(props: { resets: InObjectReset[] }) {
 			} else {
 				return (
 					<li key={reset.id}>
-						<LinkButton className={styles.link} onClick={() => dispatch(changedTab("orphans"))}>
+						<LinkButton className={styles.link} onClick={() => dispatch(changedTab("tools"))}>
 							&lt;an object that wasn't found in this area&gt;
 						</LinkButton>
 					</li>
