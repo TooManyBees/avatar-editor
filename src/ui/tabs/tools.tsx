@@ -74,7 +74,7 @@ export default function ToolsTab() {
 				<OrphanedSpecials specials={orphanedSpecials} mobiles={mobiles} />
 				<OrphanedShops shops={orphanedShops} mobiles={mobiles} />
 				<OrphanedResets resets={resets} mobiles={mobiles} objects={objects} rooms={rooms} />
-			</> : <p>(There are no orphaned items in the area. 🎉)</p>}
+			</> : <p>There are no orphaned items in the area. 🎉</p>}
 		</TabsContents>
 	);
 }
@@ -135,6 +135,8 @@ function ShiftVnums(props: ShiftVnumsProps) {
 			dispatch(shiftObjectVnums({ min: currentMin, max: currentMax, newMin }));
 			dispatch(shiftRoomVnums({ min: currentMin, max: currentMax, newMin }));
 			dispatch(updatedVnumRange({ min: newMin, max: newMax, _error: {}}));
+			setCurrentMin(newMin);
+			setCurrentMax(newMax);
 		}
 	};
 
@@ -147,12 +149,12 @@ function ShiftVnums(props: ShiftVnumsProps) {
 				</p>
 				{showActual ? <p>(But uses VNUMs {actualVnumRange.min} through {actualVnumRange.max}.)</p> : null}
 			</> : actualVnumRange ? <p>The area uses VNUMs {actualVnumRange.min} through {actualVnumRange.max}.</p> : <p>There are no mobiles, objects, or rooms in the area to shift.</p>}
-			<ToolRow style={{alignItems: "center"}}>
+			<ToolRow style={{alignItems: "center"}} key={`${prefilledMin} ${prefilledMax}`}>
 				<div>
 					<span className={classnames(inputStyles.label, noVnums && inputStyles.disabled)}>Map current VNUM range</span>
-					<NumberField value={currentMin} onUpdate={setCurrentMin} key={`currentMin_${prefilledMin}`} disabled={noVnums} name="Current VNUM range start" nolabel />
+					<NumberField value={currentMin} onUpdate={setCurrentMin} disabled={noVnums} name="Current VNUM range start" nolabel />
 					&nbsp;−&nbsp;
-					<NumberField value={currentMax} onUpdate={setCurrentMax} key={`currentMax_${prefilledMax}`} disabled={noVnums} name="Current VNUM range end" nolabel />
+					<NumberField value={currentMax} onUpdate={setCurrentMax} disabled={noVnums} name="Current VNUM range end" nolabel />
 				</div>
 				<div>
 					<span className={classnames(inputStyles.label, noVnums && inputStyles.disabled)}>To new VNUM range</span>
@@ -162,6 +164,7 @@ function ShiftVnums(props: ShiftVnumsProps) {
 				</div>
 				<Button onClick={shiftVnums} disabled={noVnums}>Shift VNUMs!</Button>
 			</ToolRow>
+			<p className={styles.description}>⚠ <em>Be careful of references to VNUMs in object values, e.g. tickets, containers, fountains, portals, or markings. These VNUMs must be manually updated. Sorry!</em></p>
 		</>
 	);
 }
