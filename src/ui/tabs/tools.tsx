@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import classnames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { SpecialU } from "../../app/models/specials";
 import { ShopU } from "../../app/models/shops";
@@ -95,64 +96,66 @@ function findVnumRange<T extends HasVnum>(es: T[]): [number, number] {
 	return [min, max];
 }
 
-function findActualVnumRange(mobiles: Mobile[], objects: Objekt[], rooms: Room[]): { min: number, max: number } {
+function findActualVnumRange(mobiles: Mobile[], objects: Objekt[], rooms: Room[]): { min: number, max: number } | null {
 	const [mobMin, mobMax] = findVnumRange(mobiles);
 	const [objMin, objMax] = findVnumRange(objects);
 	const [roomMin, roomMax] = findVnumRange(rooms);
-	return {
-		min: Math.min(Math.min(mobMin, objMin), roomMin),
-		max: Math.max(Math.max(mobMax, objMax), roomMax),
-	};
+
+	const min = Math.min(Math.min(mobMin, objMin), roomMin);
+	const max = Math.max(Math.max(mobMax, objMax), roomMax);
+
+	if (min === Infinity || max === -Infinity) return null;
+	return { min, max };
 }
 
 function ShiftVnums(props: ShiftVnumsProps) {
-	const vnumRange = useAppSelector(state => state.areadata.areadataBits.vnumRange ? state.areadata.vnumRange : null);
 	const actualVnumRange = findActualVnumRange(props.mobiles, props.objects, props.rooms);
-	const showActual = !vnumRange || actualVnumRange.min < vnumRange.min || actualVnumRange.max > vnumRange.max;
+	const noVnums = !actualVnumRange;
+	const vnumRange = useAppSelector(state => state.areadata.areadataBits.vnumRange ? state.areadata.vnumRange : null);
+	const showActual = actualVnumRange && (!vnumRange || actualVnumRange.min < vnumRange.min || actualVnumRange.max > vnumRange.max);
 
-	const prefilledMin = vnumRange != null ? vnumRange.min : actualVnumRange.min;
-	const prefilledMax = vnumRange != null ? vnumRange.max : actualVnumRange.max;
+	const prefilledMin = vnumRange != null ? vnumRange.min : actualVnumRange?.min || null;
+	const prefilledMax = vnumRange != null ? vnumRange.max : actualVnumRange?.max || null;
 
 	const [currentMin, setCurrentMin] = useState(prefilledMin);
 	const [currentMax, setCurrentMax] = useState(prefilledMax);
 
 	const [newMin, setNewMin] = useState(prefilledMin);
-	const newMax = currentMax - currentMin + newMin;
+	const newMax = (currentMax && currentMin && newMin) && currentMax - currentMin + newMin || null;
 
 	const dispatch = useAppDispatch();
 	const shiftVnums = function() {
-		dispatch(shiftMobileVnums({ min: currentMin, max: currentMax, newMin }));
-		dispatch(shiftObjectVnums({ min: currentMin, max: currentMax, newMin }));
-		dispatch(shiftRoomVnums({ min: currentMin, max: currentMax, newMin }));
-		dispatch(updatedVnumRange({ min: newMin, max: newMax, _error: {}}));
+		if (currentMin != null && currentMax != null && newMin != null && newMax != null) {
+			dispatch(shiftMobileVnums({ min: currentMin, max: currentMax, newMin }));
+			dispatch(shiftObjectVnums({ min: currentMin, max: currentMax, newMin }));
+			dispatch(shiftRoomVnums({ min: currentMin, max: currentMax, newMin }));
+			dispatch(updatedVnumRange({ min: newMin, max: newMax, _error: {}}));
+		}
 	};
 
 	return (
 		<>
 			{vnumRange ? <>
 				<p>
-					The area's <LinkButton
-						style={{fontFamily: "Cambo, serif", fontSize: "1rem"}}
-						title="Jump to Areadata"
-						onClick={() => dispatch(changedTab("areadata"))}
-					>VNUM range</LinkButton> is defined to be {vnumRange.min} and {vnumRange.max}.
+					The area's <a href="#" className={styles.link} title="Jump to Areadata" onClick={(e) => (e.preventDefault(), dispatch(changedTab("areadata")))}
+					>VNUM range</a> is defined to be {vnumRange.min} and {vnumRange.max}.
 				</p>
 				{showActual ? <p>(But uses VNUMs {actualVnumRange.min} through {actualVnumRange.max}.)</p> : null}
-			</> : <p>The area uses VNUMs {actualVnumRange.min} through {actualVnumRange.max}.</p>}
-			<ToolRow>
+			</> : actualVnumRange ? <p>The area uses VNUMs {actualVnumRange.min} through {actualVnumRange.max}.</p> : <p>There are no mobiles, objects, or rooms in the area to shift.</p>}
+			<ToolRow style={{alignItems: "center"}}>
 				<div>
-					<span className={inputStyles.label}>Map current VNUM range</span>
-					<NumberField value={currentMin} onUpdate={setCurrentMin} key={prefilledMin} name="Current VNUM range start" nolabel />
+					<span className={classnames(inputStyles.label, noVnums && inputStyles.disabled)}>Map current VNUM range</span>
+					<NumberField value={currentMin} onUpdate={setCurrentMin} key={`currentMin_${prefilledMin}`} disabled={noVnums} name="Current VNUM range start" nolabel />
 					&nbsp;−&nbsp;
-					<NumberField value={currentMax} onUpdate={setCurrentMax} key={prefilledMax} name="Current VNUM range end" nolabel />
+					<NumberField value={currentMax} onUpdate={setCurrentMax} key={`currentMax_${prefilledMax}`} disabled={noVnums} name="Current VNUM range end" nolabel />
 				</div>
 				<div>
-					<span className={inputStyles.label}>To new VNUM range</span>
-					<NumberField value={newMin} onUpdate={setNewMin} name="Target VNUM range start" nolabel />
+					<span className={classnames(inputStyles.label, noVnums && inputStyles.disabled)}>To new VNUM range</span>
+					<NumberField value={newMin} onUpdate={setNewMin} disabled={noVnums} name="Target VNUM range start" nolabel />
 					&nbsp;−&nbsp;
-					<NumberField value={newMax} key={newMax} name="Target VNUM range start" nolabel disabled />
+					<NumberField value={newMax} key={`newMax_${newMax}`} name="Target VNUM range start" nolabel disabled />
 				</div>
-				<Button onClick={shiftVnums}>Shift VNUMs!</Button>
+				<Button onClick={shiftVnums} disabled={noVnums}>Shift VNUMs!</Button>
 			</ToolRow>
 		</>
 	);

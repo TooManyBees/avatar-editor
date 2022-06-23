@@ -13,6 +13,7 @@ interface Props {
 	decoration?: string;
 	ariaLabel?: string;
 	title?: string;
+	disabled?: boolean;
 }
 
 export function Button(props: Props) {
@@ -27,6 +28,7 @@ export function Button(props: Props) {
 		ariaLabel,
 		decoration,
 		title,
+		disabled = false,
 	} = props;
 
 	return (
@@ -42,6 +44,7 @@ export function Button(props: Props) {
 			aria-label={ariaLabel}
 			title={title}
 			ref={buttonRef}
+			disabled={disabled}
 		>
 			{decoration && <><span aria-hidden="true">{decoration}</span> </>}{children}
 		</button>
