@@ -11,6 +11,7 @@
 }
 
 .label {
+	display: block;
 	white-space: nowrap;
 	flex-shrink: 1;
 	margin-right: 0.25rem;
