@@ -49,11 +49,13 @@ import inputStyles from "../components/inputs.module.css";
 export default function ToolsTab() {
 	const orphanedSpecials = useAppSelector(state => state.mobiles.orphanedSpecials);
 	const orphanedShops = useAppSelector(state => state.mobiles.orphanedShops);
-	const resets = useAppSelector(state => state.resets.resets);
+	const [resets, resetOrphans] = useAppSelector(state => [state.resets.resets, state.resets.orphans]);
 
 	const mobiles = useAppSelector(state => state.mobiles.mobiles);
 	const objects = useAppSelector(state => state.objects.objects);
 	const rooms = useAppSelector(state => state.rooms.rooms);
+
+	const hasOrphans = orphanedSpecials.length > 0 || orphanedShops.length > 0 || resetOrphans;
 
 	return (
 		<TabsContents>
@@ -67,9 +69,12 @@ export default function ToolsTab() {
 				rooms in this area. You can reassign them to any mob/object/room in the area. They
 				will still be written into the final <code>.are</code> file even if they stay orphaned.
 			</aside>
-			<OrphanedSpecials specials={orphanedSpecials} mobiles={mobiles} />
-			<OrphanedShops shops={orphanedShops} mobiles={mobiles} />
-			<OrphanedResets resets={resets} mobiles={mobiles} objects={objects} rooms={rooms} />
+
+			{hasOrphans ? <>
+				<OrphanedSpecials specials={orphanedSpecials} mobiles={mobiles} />
+				<OrphanedShops shops={orphanedShops} mobiles={mobiles} />
+				<OrphanedResets resets={resets} mobiles={mobiles} objects={objects} rooms={rooms} />
+			</> : <p>(There are no orphaned items in the area. 🎉)</p>}
 		</TabsContents>
 	);
 }
