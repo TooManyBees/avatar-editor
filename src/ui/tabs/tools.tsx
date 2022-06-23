@@ -1,8 +1,16 @@
 import React, { useState } from "react";
+import classnames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { SpecialU } from "../../app/models/specials";
 import { ShopU } from "../../app/models/shops";
-import { restoredShop, restoredSpecial } from "../../app/store/mobiles";
+import { updatedVnumRange } from "../../app/store/areadata";
+import {
+	restoredShop,
+	restoredSpecial,
+	shiftVnums as shiftMobileVnums,
+} from "../../app/store/mobiles";
+import { shiftVnums as shiftObjectVnums } from "../../app/store/objects";
+import { shiftVnums as shiftRoomVnums } from "../../app/store/rooms";
 import {
 	restoredMobReset,
 	restoredObjectReset,
@@ -10,7 +18,7 @@ import {
 	restoredDoorReset,
 	restoredRandomExitReset,
 } from "../../app/store/resets";
-import { selectedMobileId, selectedObjectId, selectedRoomId } from "../../app/store/ui";
+import { changedTab, selectedMobileId, selectedObjectId, selectedRoomId } from "../../app/store/ui";
 import {
 	DoorReset,
 	InObjectReset,
@@ -24,6 +32,8 @@ import {
 } from "../../app/models";
 import { TabsContents } from "./tabs-layout";
 import {
+	Button,
+	LinkButton,
 	NumberField,
 	SectionList,
 	SelectVnum,
@@ -33,29 +43,126 @@ import {
 import { SelectSpecial } from "../mobiles";
 import { SelectObjectType } from "../mobiles/ShopFields";
 import { SelectDirection, SelectDoorState } from "../rooms";
-import styles from "./orphans.module.css";
+import styles from "./tools.module.css";
+import inputStyles from "../components/inputs.module.css";
 
-export default function OrphansTab() {
+export default function ToolsTab() {
 	const orphanedSpecials = useAppSelector(state => state.mobiles.orphanedSpecials);
 	const orphanedShops = useAppSelector(state => state.mobiles.orphanedShops);
-	const resets = useAppSelector(state => state.resets.resets);
+	const [resets, resetOrphans] = useAppSelector(state => [state.resets.resets, state.resets.orphans]);
 
 	const mobiles = useAppSelector(state => state.mobiles.mobiles);
 	const objects = useAppSelector(state => state.objects.objects);
 	const rooms = useAppSelector(state => state.rooms.rooms);
 
+	const hasOrphans = orphanedSpecials.length > 0 || orphanedShops.length > 0 || resetOrphans;
+
 	return (
 		<TabsContents>
-			<h1 style={{marginTop: "0.5rem"}}>Orphaned items</h1>
+			<h1 style={{marginTop: "0.5rem"}}>Shift VNUMs</h1>
+
+			<ShiftVnums mobiles={mobiles} objects={objects} rooms={rooms} />
+
+			<h1>Orphaned items</h1>
 			<aside className={styles.description}>
 				Orphaned content are vnum references that don't link to any mobiles, objects, or
 				rooms in this area. You can reassign them to any mob/object/room in the area. They
 				will still be written into the final <code>.are</code> file even if they stay orphaned.
 			</aside>
-			<OrphanedSpecials specials={orphanedSpecials} mobiles={mobiles} />
-			<OrphanedShops shops={orphanedShops} mobiles={mobiles} />
-			<OrphanedResets resets={resets} mobiles={mobiles} objects={objects} rooms={rooms} />
+
+			{hasOrphans ? <>
+				<OrphanedSpecials specials={orphanedSpecials} mobiles={mobiles} />
+				<OrphanedShops shops={orphanedShops} mobiles={mobiles} />
+				<OrphanedResets resets={resets} mobiles={mobiles} objects={objects} rooms={rooms} />
+			</> : <p>(There are no orphaned items in the area. 🎉)</p>}
 		</TabsContents>
+	);
+}
+
+interface ShiftVnumsProps {
+	mobiles: Mobile[],
+	objects: Objekt[],
+	rooms: Room[],
+}
+
+interface HasVnum {
+	vnum: number | null;
+}
+
+function findVnumRange<T extends HasVnum>(es: T[]): [number, number] {
+	let min = Infinity;
+	let max = -Infinity;
+
+	for (const e of es) {
+		if (e.vnum != null && e.vnum < min) min = e.vnum;
+		if (e.vnum != null && e.vnum > max) max = e.vnum;
+	}
+
+	return [min, max];
+}
+
+function findActualVnumRange(mobiles: Mobile[], objects: Objekt[], rooms: Room[]): { min: number, max: number } | null {
+	const [mobMin, mobMax] = findVnumRange(mobiles);
+	const [objMin, objMax] = findVnumRange(objects);
+	const [roomMin, roomMax] = findVnumRange(rooms);
+
+	const min = Math.min(Math.min(mobMin, objMin), roomMin);
+	const max = Math.max(Math.max(mobMax, objMax), roomMax);
+
+	if (min === Infinity || max === -Infinity) return null;
+	return { min, max };
+}
+
+function ShiftVnums(props: ShiftVnumsProps) {
+	const actualVnumRange = findActualVnumRange(props.mobiles, props.objects, props.rooms);
+	const noVnums = !actualVnumRange;
+	const vnumRange = useAppSelector(state => state.areadata.areadataBits.vnumRange ? state.areadata.vnumRange : null);
+	const showActual = actualVnumRange && (!vnumRange || actualVnumRange.min < vnumRange.min || actualVnumRange.max > vnumRange.max);
+
+	const prefilledMin = vnumRange != null ? vnumRange.min : actualVnumRange?.min || null;
+	const prefilledMax = vnumRange != null ? vnumRange.max : actualVnumRange?.max || null;
+
+	const [currentMin, setCurrentMin] = useState(prefilledMin);
+	const [currentMax, setCurrentMax] = useState(prefilledMax);
+
+	const [newMin, setNewMin] = useState(prefilledMin);
+	const newMax = (currentMax && currentMin && newMin) && currentMax - currentMin + newMin || null;
+
+	const dispatch = useAppDispatch();
+	const shiftVnums = function() {
+		if (currentMin != null && currentMax != null && newMin != null && newMax != null) {
+			dispatch(shiftMobileVnums({ min: currentMin, max: currentMax, newMin }));
+			dispatch(shiftObjectVnums({ min: currentMin, max: currentMax, newMin }));
+			dispatch(shiftRoomVnums({ min: currentMin, max: currentMax, newMin }));
+			dispatch(updatedVnumRange({ min: newMin, max: newMax, _error: {}}));
+		}
+	};
+
+	return (
+		<>
+			{vnumRange ? <>
+				<p>
+					The area's <a href="#" className={styles.link} title="Jump to Areadata" onClick={(e) => (e.preventDefault(), dispatch(changedTab("areadata")))}
+					>VNUM range</a> is defined to be {vnumRange.min} and {vnumRange.max}.
+				</p>
+				{showActual ? <p>(But uses VNUMs {actualVnumRange.min} through {actualVnumRange.max}.)</p> : null}
+			</> : actualVnumRange ? <p>The area uses VNUMs {actualVnumRange.min} through {actualVnumRange.max}.</p> : <p>There are no mobiles, objects, or rooms in the area to shift.</p>}
+			<ToolRow style={{alignItems: "center"}}>
+				<div>
+					<span className={classnames(inputStyles.label, noVnums && inputStyles.disabled)}>Map current VNUM range</span>
+					<NumberField value={currentMin} onUpdate={setCurrentMin} key={`currentMin_${prefilledMin}`} disabled={noVnums} name="Current VNUM range start" nolabel />
+					&nbsp;−&nbsp;
+					<NumberField value={currentMax} onUpdate={setCurrentMax} key={`currentMax_${prefilledMax}`} disabled={noVnums} name="Current VNUM range end" nolabel />
+				</div>
+				<div>
+					<span className={classnames(inputStyles.label, noVnums && inputStyles.disabled)}>To new VNUM range</span>
+					<NumberField value={newMin} onUpdate={setNewMin} disabled={noVnums} name="Target VNUM range start" nolabel />
+					&nbsp;−&nbsp;
+					<NumberField value={newMax} key={`newMax_${newMax}`} name="Target VNUM range start" nolabel disabled />
+				</div>
+				<Button onClick={shiftVnums} disabled={noVnums}>Shift VNUMs!</Button>
+			</ToolRow>
+		</>
 	);
 }
 

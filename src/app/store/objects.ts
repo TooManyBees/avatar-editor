@@ -152,6 +152,15 @@ const objectSlice = createSlice({
 			const object = state.objects.find(m => m.id === id);
 			if (object) object.quality = payload;
 		},
+		shiftVnums(state, action: PayloadAction<{ min: number, max: number, newMin: number }>) {
+			const { min, max, newMin } = action.payload;
+			const delta = newMin - min;
+			state.objects.forEach(e => {
+				if (e.vnum != null && e.vnum >= min && e.vnum <= max) {
+					e.vnum += delta;
+				}
+			});
+		},
 	},
 });
 
@@ -181,5 +190,6 @@ export const {
 	removedApply,
 	updatedApply,
 	updatedQuality,
+	shiftVnums,
 } = objectSlice.actions;
 export default objectSlice.reducer;

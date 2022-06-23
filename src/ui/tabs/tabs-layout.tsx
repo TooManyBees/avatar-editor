@@ -10,7 +10,7 @@ import areadataIcon from "../../icons/areadata.png";
 import mobilesIcon from "../../icons/mobiles.png";
 import objectsIcon from "../../icons/objects.png";
 import roomsIcon from "../../icons/rooms.png";
-import orphansIcon from "../../icons/orphans.png";
+import toolsIcon from "../../icons/tools.png";
 import styles from "./tabs-layout.module.css";
 
 interface Props {
@@ -42,11 +42,6 @@ function TabsNav() {
 	const dispatch = useAppDispatch();
 	const currentTab = useAppSelector(state => state.ui.tab);
 	const rootState = useAppSelector(state => state);
-	const hasOrphans = useAppSelector(state => (
-		state.mobiles.orphanedSpecials.length > 0 ||
-		state.mobiles.orphanedShops.length > 0 ||
-		state.resets.orphans
-	));
 
 	function save() {
 		const output = serializeArea(rootState);
@@ -89,10 +84,10 @@ function TabsNav() {
 					Rooms
 				</span>
 			</button>
-			<button title="Orphaned content that isn't linked to any vnums in the area" className={styles.tabsNavItem} disabled={!hasOrphans} data-selected={currentTab === "orphans"} onClick={() => dispatch(changedTab("orphans"))}>
+			<button title="Orphaned content that isn't linked to any vnums in the area" className={styles.tabsNavItem} data-selected={currentTab === "tools"} onClick={() => dispatch(changedTab("tools"))}>
 				<span className={styles.tabsNavText}>
-					<img className={styles.icon} src={orphansIcon} />
-					Orphans
+					<img className={styles.icon} src={toolsIcon} />
+					Tools
 				</span>
 			</button>
 			<Button ariaLabel="Write area file (do this often)" style={{marginLeft: "1rem"}} onClick={save}>Write .are</Button>

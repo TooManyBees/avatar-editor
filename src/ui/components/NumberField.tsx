@@ -11,10 +11,11 @@ interface NumberFieldProps {
 	inline?: boolean;
 	inputRef?: React.RefObject<HTMLInputElement>;
 	disabled?: boolean;
+	nolabel?: boolean;
 }
 
 export default function NumberField(props: NumberFieldProps) {
-	const { inline = false, name, min, max, disabled } = props;
+	const { inline = false, name, min, max, disabled, nolabel = false } = props;
 	const [value, setValue] = useState(props.value?.toString() || "");
 	const [warning, setWarning] = useState(parseValue(props.value, min, max) !== props.value);
 
@@ -31,22 +32,27 @@ export default function NumberField(props: NumberFieldProps) {
 		}
 	}
 
-	return (
+	const input = (
+		<input
+			type="text"
+			value={value}
+			onChange={onChange}
+			onBlur={onBlur}
+			className={classnames(styles.input, styles.number, warning && styles.warning)}
+			aria-invalid={warning}
+			aria-label={name}
+			style={{width: "5rem"}}
+			ref={props.inputRef}
+			disabled={disabled}
+		/>
+	);
+
+	return name && !nolabel ? (
 		<label className={classnames(styles.wrapper, inline && styles.inline, disabled && styles.disabled)}>
 			{name && <span className={styles.label}>{name}:</span>}
-			<input
-				type="text"
-				value={value}
-				onChange={onChange}
-				onBlur={onBlur}
-				className={classnames(styles.input, styles.number, warning && styles.warning)}
-				aria-invalid={warning}
-				style={{width: "5rem"}}
-				ref={props.inputRef}
-				disabled={disabled}
-			/>
+			{input}
 		</label>
-	);
+	) : input;
 }
 
 function parseValue(input: string | number | null, min: number | undefined, max: number | undefined): number | null {
