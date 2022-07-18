@@ -52,6 +52,15 @@ export default function KeywordField(props: Props) {
 		setHoldingDownBackspace(false);
 	}
 
+	function onBlur(e: FocusEvent<HTMLInputElement>) {
+		const value = e.target.value;
+		let keyword = getKeyword(currentKeyword + " ");
+		if (keyword) {
+			props.onUpdate([...props.value, keyword]);
+			setCurrentKeyword("");
+		}
+	}
+
 	return (
 		<label className={inputStyles.wrapper}>
 			<span className={styles.label}>{props.name}:</span>
@@ -66,6 +75,7 @@ export default function KeywordField(props: Props) {
 				onChange={onChange}
 				onKeyDown={onKeyDown}
 				onKeyUp={onKeyUp}
+				onBlur={onBlur}
 			/>
 			</div>
 		</label>
