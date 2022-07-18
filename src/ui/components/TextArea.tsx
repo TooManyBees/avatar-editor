@@ -30,7 +30,6 @@ export default function TextArea(props: TextFieldProps) {
 	function onBlur(event: any) {
 		if (value !== props.value) {
 			let trimmed = value.trim();
-			if (trimmed) trimmed += "\n";
 			if (trimmed !== value) setValue(trimmed);
 			props.onUpdate(trimmed);
 		}
