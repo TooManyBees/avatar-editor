@@ -18,7 +18,12 @@ export function BitsFieldN(props: BitsFieldNProps) {
 			if (idx > -1){
 				onUpdate(value.slice(0, idx).concat(value.slice(idx + 1)));
 			} else {
-				onUpdate(value.concat(bit));
+				let idx = value.findIndex(n => n > bit);
+				if (idx === -1) {
+					onUpdate(value.concat(bit));
+				} else {
+					onUpdate(value.slice(0, idx).concat(bit).concat(value.slice(idx)));
+				}
 			}
 		}
 	}
